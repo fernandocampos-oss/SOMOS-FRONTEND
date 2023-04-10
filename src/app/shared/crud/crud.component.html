@@ -1,0 +1,41 @@
+<div class="mat-elevation-z1 mt-4">
+  <div class="actions">
+    <button
+    class="nuevo-button"
+    mat-raised-button
+    color="primary"
+    (click)="create.emit()"
+  >
+    <mat-icon>add</mat-icon> Nuevo
+  </button>
+    <div class="actions__separator"></div>
+    <mat-form-field *ngIf="showFilter" appearance="outline">
+      <mat-label>Filtro de búsqueda</mat-label>
+      <input matInput (keyup)="applyFilter($event)" #input>
+    </mat-form-field>
+    <button
+      *ngIf="showExport"
+      class="exportar-button"
+      mat-raised-button
+      (click)="export.emit()"
+    >
+      <mat-icon>assessment</mat-icon> Exportar
+    </button>
+
+  </div>
+  <app-table
+    [data]="data"
+    [columns]="columns"
+    [showEdit]="showEdit"
+    [showDelete]="showDelete"
+    [filterDownloadFunction]="filterDownloadFunction"
+    [filterEditFunction]="filterEditFunction"
+    [showDownload]="showDownload"
+    [showRead]="showRead"
+    (edit)="onEdit($event)"
+    (download)="onDownload($event)"
+    (read)="onRead($event)"
+    (delete)="onDelete($event)"
+  >
+  </app-table>
+</div>

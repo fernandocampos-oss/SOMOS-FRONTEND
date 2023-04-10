@@ -1,0 +1,25 @@
+@import 'base/breakpoints';
+.user {
+  display: flex;
+  &__picture {
+    border: solid 1px;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__info {
+    display: none;
+    @include sm {
+      display: flex;
+      margin-left: 0.75rem;
+    }
+  }
+  &__name {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+  }
+}

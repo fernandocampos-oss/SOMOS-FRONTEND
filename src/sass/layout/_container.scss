@@ -1,0 +1,8 @@
+.container {
+  background-color: #edf1f7;
+  padding: 4rem 1rem 0.5rem;
+  min-height: 100%;
+  @include lg {
+    padding: 5.25rem 2.25rem 0.75rem;
+  }
+}

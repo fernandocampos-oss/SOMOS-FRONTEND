@@ -1,0 +1,60 @@
+.salida-button {
+  background-color:  var(--color-Title);
+  color: white;
+}
+.btnEntrada{
+  background-color:  var(--color-MiEssalud);
+  color: white;
+}
+
+.buttons-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 1rem;
+}
+
+.alert {
+  font-weight: 500;
+  color: rgb(233, 141, 3);
+  font-size: 1rem;
+  padding: 0.75rem 0.5rem 0.75rem 1rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-left: solid 2px;
+}
+
+.alert--danger {
+  color: red;
+}
+
+.message-success {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #0A8600;
+}
+
+.message-danger {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: red;
+}
+
+.out{
+  width: 17px !important;
+  height: 23px !important;
+}
+
+.icon svg{
+  fill: #666666 !important;
+}
+mat-icon{
+  color:#A4A4A4 ;
+  margin-right: 7px;
+}
+
+.example-card {
+  max-width: 150px;
+  cursor: pointer;
+  justify-self: center;
+}

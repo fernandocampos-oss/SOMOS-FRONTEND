@@ -1,0 +1,79 @@
+<mat-table [dataSource]="dataSource" matSort>
+  <ng-container
+    *ngFor="let column of columns; let i = index"
+    [matColumnDef]="column.name"
+  >
+    <mat-header-cell class="header-cells" *matHeaderCellDef mat-sort-header>
+      {{ columns[i].label }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" class="cells" [attr.data-label]="columns[i].label">
+      <div [ngSwitch]="columns[i].type">
+        <div *ngSwitchCase="columnDateTime">
+          {{ element[column.name] | date: 'dd/MM/yyyy HH:mm' }}
+        </div>
+        <div *ngSwitchCase="columnDate">
+          {{ element[column.name] | date: 'dd/MM/yyyy' }}
+        </div>
+        <div *ngSwitchDefault>{{ element[column.name] }}</div>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container *ngIf="hasAction" matColumnDef="actions">
+    <mat-header-cell class="header-cells" *matHeaderCellDef>Acciones</mat-header-cell>
+    <mat-cell *matCellDef="let item" id="actions" data-label="Acciones">
+      <button
+        *ngIf="showRead"
+        mat-button
+        mat-icon-button
+        matSuffix
+        matTooltip="Ver Detalle"
+        (click)="onRead(item)"
+      >
+        <mat-icon color="primary">visibility</mat-icon>
+      </button>
+      <button
+        *ngIf="showEditAction(item)"
+        mat-button
+        mat-icon-button
+        matSuffix
+        matTooltip="Editar"
+        (click)="onEdit(item)"
+      >
+        <mat-icon class="has-warn">mode_edit</mat-icon>
+      </button>
+      <button
+        *ngIf="showPrintAction(item)"
+        mat-button
+        mat-icon-button
+        matSuffix
+        matTooltip="Descargar"
+        (click)="onDownload(item)"
+      >
+        <mat-icon>file_download</mat-icon>
+      </button>
+      <button
+        *ngIf="showDelete"
+        mat-button
+        mat-icon-button
+        matSuffix
+        color="warn"
+        matTooltip="Eliminar"
+        (click)="onDelete(item)"
+      >
+        <mat-icon class="has-danger">delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  <tr class="empty-row" *matNoDataRow>
+    <td class="empty-cell">Sin registros por mostrar</td>
+  </tr>
+</mat-table>
+
+<mat-paginator
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+></mat-paginator>

@@ -1,0 +1,33 @@
+<div class="auth card mat-elevation-z8">
+  <div class="auth__header">
+    <h1 class="auth__title">
+      Cambiar Contraseña
+      <span>
+        Enviaremos un enlace a tu correo para que puedas cambiar la contraseña
+      </span>
+    </h1>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth__body">
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>Número de Documento</mat-label>
+      <input matInput formControlName="numeroDocumento" />
+      <mat-error *ngIf="numeroDocumentoField.hasError('required')"
+        >El campo es obligatorio</mat-error
+      >
+    </mat-form-field>
+
+    <div class="auth__actions">
+      <button mat-raised-button color="primary" type="submit">
+        Cambiar Contraseña
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        [routerLink]="[routeLogin]"
+      >
+        Volver
+      </button>
+    </div>
+  </form>
+</div>

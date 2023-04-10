@@ -1,0 +1,99 @@
+@import 'base/breakpoints';
+
+form {
+  padding-top: 10px;
+
+  // @include sm {
+  //     grid-template-columns: 1fr 1fr ;
+  //     column-gap: 1rem;
+  //   }
+
+  // mat-grid-tile .mat-grid-tite-content {
+  //   display: block !important;
+  // }
+
+  mat-dialog-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  .text {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 19px;
+
+    color: #008ad1;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+
+  // .mat-form-field-wrapper {
+
+  //   padding-bottom: 0px !important;
+  // }
+}
+// ::ng-deep .mat-form-field-wrapper {
+//     padding-bottom: none  !important;
+// }
+
+// ::ng-deep .mat-form-field-wrapper{
+//     margin-bottom: -1.25em;
+//  }
+
+.grid > ::ng-deep .mat-grid-tile-content {
+  display: block !important;
+  justify-content: flex-start !important ;
+  align-items: flex-start !important;
+  // padding-bottom: none  !important;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+
+.option {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.center {
+ // display: flex;
+  align-items: center;
+}
+
+.mat-radio-group {
+  display: flex;
+  width: 100%;
+  //font-size: 0.5em;
+  justify-content: space-evenly;
+  // grid-template-columns: repeat(3, 1fr);
+}
+
+.texto {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #666666;
+}
+
+.btnAdd{
+  
+  size: 24px;
+  color: white;
+  background: #009EAD;
+  border-radius: 4px;
+//   min-width:  260px !important;
+//   min-height: 37px !important;
+
+}

@@ -1,0 +1,89 @@
+<div class="page">
+  <div class="matero-page-header">
+    <h1 class="matero-page-title"><mat-icon class="icon" matPrefix svgIcon="qr_code"></mat-icon> Control de Acceso<br>
+    <small class="mr-2">Escaneo del código QR</small><br>
+    <span class="back" (click)="back()"><mat-icon>reply</mat-icon> Regresar</span>
+    </h1>
+  </div>
+  <div class="page__body">
+    <div class="card shadow">
+      <div *ngIf="isMarked" class="message-success">
+        <div class="outline">
+          <mat-icon>check</mat-icon>
+        </div>
+        <p class="parrafo">Marcación Registrada Correctamente</p>
+        <p class="parrafo">El registro de su "ENTRADA/SALIDA" es: <br> 14/06/2022 13:59:04<p>
+      </div>
+      <p *ngIf="isSelectEntrada" class="message-success">
+        Escanee el código QR para registrar su <b>"ENTRADA"</b>
+      </p>
+
+      <p *ngIf="isSelectSalida" class="message-danger">
+        Escanee el código QR para registrar su <b>"SALIDA"</b>
+      </p>
+
+      <p *ngIf="isDenied" class="alert alert--danger mat-elevation-z1">
+        Debe permitir el acceso a la ubicación del dispositivo
+      </p>
+
+      <ng-container *ngIf="!isMarked && !isDenied">
+        <p class="parrafo" *ngIf="!tipoMarcacionSelected" >
+          Por favor seleccione un tipo de marcación:
+        </p>
+        <br>
+        <br>
+        
+        <div class="buttons-container">
+          
+          <div class="example-card"><img mat-card-image src="assets/images/entrada.png" alt="Entrada" (click)="selectEntrada()"></div>
+
+          <div class="example-card"><img mat-card-image src="assets/images/salida.png" alt="Entrada"  (click)="selectSalida()"></div>
+
+          <div class="example-card"><img mat-card-image src="assets/images/consulta.png" alt="Entrada" (click)="openMisMarcaciones()"></div>
+
+          <!-- 
+          <button
+            mat-raised-button
+            class="btnEntrada"
+            (click)="tipoMarcacionSelected = tipoMarcacionEntrada"
+           
+          >
+          <mat-icon class="out" svgIcon="login"></mat-icon>&nbsp;
+            Entrada
+          </button>
+          <button
+            mat-raised-button
+          class="salida-button"
+            (click)="tipoMarcacionSelected = tipoMarcacionSalida"
+          >
+          <mat-icon class="out" svgIcon="pop_out"></mat-icon>&nbsp;
+            Salida
+          </button> -->
+        </div>
+
+        <ng-container *ngIf="tipoMarcacionSelected">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Cámara</mat-label>
+            <mat-select 
+              [formControl]="cameraCtrl"
+              (valueChange)="cameraChange($event)"
+            >
+              <mat-option *ngFor="let item of cameras" [value]="item.deviceId"
+                >{{ item.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <zxing-scanner
+            #scanner
+            [formats]="allowedFormats"
+            [delayBetweenScanSuccess]="delayBetweenScanSuccess"
+            (deviceChange)="deviceChange($event)"
+            (scanSuccess)="scanSuccessHandler($event)"
+            (camerasFound)="cameraFound($event)"
+          ></zxing-scanner>
+        </ng-container>
+
+      </ng-container>
+    </div>
+  </div>
+</div>

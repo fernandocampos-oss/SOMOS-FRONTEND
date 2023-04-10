@@ -1,0 +1,65 @@
+<div class="page">
+  <!-- <div class="page__header">
+    <h1 *ngIf="programacion" class="page__title">
+      {{ programacion.zona }}<span>{{ programacion.direccion }}</span>
+    </h1>
+    <h1 *ngIf="!programacion" class="page__title">
+      Panel de Marcación<span><mat-icon >assignment_turned_in</mat-icon> Podrás revisar tus programaciones</span>
+    </h1>
+  </div> -->
+
+  <div class="matero-page-header">
+    <h1 *ngIf="programacion" class="matero-page-title"><mat-icon class="icon" matPrefix svgIcon="qr_code"></mat-icon> {{ programacion.zona }}<span>{{ programacion.direccion }}</span><br>
+      <small class="mr-2">Podrás revisar tus programaciones</small><br>
+    </h1>
+
+    <h1 *ngIf="!programacion" class="matero-page-title"><mat-icon class="icon" matPrefix svgIcon="qr_code"></mat-icon> Panel de Marcación<br>
+      <small class="mr-2">Podrás revisar tus programaciones</small><br>
+    </h1>
+
+  </div>
+
+  <br>
+  <div class="page__body">
+    <div class="card shadow">
+      <ng-container *ngIf="programacion; else empty">
+        <div class="hour-container">
+          <div class="hour hour--start">
+            <ng-container *ngIf="isSameDay; else dateInicioTemplate">
+              Hora Inicio
+              <span>{{ programacion.fechaInicio | date: 'HH:mm' }}</span>
+            </ng-container>
+            <ng-template #dateInicioTemplate>
+              Fecha Inicio
+              <span>{{ programacion.fechaInicio | date: 'HH:mm' }}</span>
+              <span>{{ programacion.fechaInicio | date: 'dd/MM/yyyy' }}</span>
+            </ng-template>
+          </div>
+          <div class="main-hour">
+            {{ currentDate$ | async | date: 'HH:mm:ss' }}
+          </div>
+          <div class="hour hour--end">
+            <ng-container *ngIf="isSameDay; else dateFinTemplate">
+              Hora Fin <span>{{ programacion.fechaFin | date: 'HH:mm' }}</span>
+            </ng-container>
+            <ng-template #dateFinTemplate>
+              Fecha Fin
+              <span>{{ programacion.fechaFin | date: 'HH:mm' }}</span>
+              <span>{{ programacion.fechaFin | date: 'dd/MM/yyyy' }}</span>
+            </ng-template>
+          </div>
+        </div>
+        <qrcode
+          *ngIf="tokenQr"
+          class="qrcode"
+          [qrdata]="tokenQr.token"
+          [errorCorrectionLevel]="'M'"
+        ></qrcode>
+      </ng-container>
+      <ng-template #empty>
+        <p class="page__title text-center">
+          <span>Sin Programación Disponible</span> </p>
+      </ng-template>
+    </div>
+  </div>
+</div>

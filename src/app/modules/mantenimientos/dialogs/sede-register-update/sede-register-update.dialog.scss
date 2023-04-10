@@ -1,0 +1,13 @@
+mat-dialog-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0.75rem;
+}
+
+.btnsave {
+  //size: 24px;
+    color: white;
+    background: #009FAD;
+    border-radius: 4px;
+    
+  }

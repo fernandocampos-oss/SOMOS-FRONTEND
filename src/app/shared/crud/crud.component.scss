@@ -1,0 +1,111 @@
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start !important;
+  column-gap: 0.5rem;
+  padding-top: 1rem;
+  flex-wrap: wrap;
+
+  .export {
+    background: #008AD1;
+    color: white;
+  }
+  &__separator {
+    flex: 1;
+  }
+}
+
+
+
+@media screen and (max-width: 960px) {
+  .mat-table {
+    border: 0;
+    vertical-align: middle;
+
+    mat-header-row {
+      display: none;
+    }
+
+    .mat-row {
+      // TODO: centralized
+      border-bottom: 5px solid #ddd;
+      display: block;
+    }
+
+    .mat-cell {
+      border-bottom: 1px solid #ddd;
+      display: block;
+      font-size: 1em;
+      text-align: right;
+      min-height: 30px;
+      margin-bottom: 4%;
+      font-weight: 400;
+
+      &::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 500;
+        font-size: 0.85em;
+      }
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      &:first-child {
+        margin: 4% 0;
+      }
+    }
+  }
+
+  mat-cell:first-of-type,
+  mat-footer-cell:first-of-type {
+    padding-left: 0;
+  }
+
+  mat-cell.mat-cell.cdk-cell {
+    padding: 0 24px;
+  }
+
+  mat-row,
+  mat-footer-row {
+    min-height: auto;
+  }
+
+  mat-row {
+    overflow: auto;
+  }
+
+  .mat-row > .mat-cell:last-child {
+    margin-bottom: 0;
+  }
+
+  #actions {
+    display: flex;
+    height: auto;
+    margin-bottom: 4%;
+
+    &::before {
+      flex-grow: 1;
+      text-align: start;
+    }
+  }
+
+  mat-row::after,
+  mat-header-row::after,
+  mat-footer-row::after {
+    display: inline;
+  }
+
+
+}
+
+
+.nuevo-button {
+  //size: 24px;
+    color: white;
+    background: #009FAD;
+    border-radius: 4px;
+    min-width:  130px !important;
+    min-height: 37px !important;
+  }

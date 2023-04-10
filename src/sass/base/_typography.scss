@@ -1,0 +1,80 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(~src/assets/fonts/material-icons.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'concord';
+  font-style: normal;
+  font-weight: 400;
+  src: url(~src/assets/fonts/concord/concord.ttf) format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'concord';
+  font-style: normal;
+  font-weight: 100;
+  src: url(~src/assets/fonts/concord/concord-thin.ttf) format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'concord';
+  font-style: normal;
+  font-weight: 200;
+  src: url(~src/assets/fonts/concord/concord-extralight.ttf) format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'concord';
+  font-style: normal;
+  font-weight: 300;
+  src: url(~src/assets/fonts/concord/concord-light.ttf) format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'concord';
+  font-style: normal;
+  font-weight: 500;
+  src: url(~src/assets/fonts/concord/concord-medium.ttf) format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'concord';
+  font-style: normal;
+  font-weight: 600;
+  src: url(~src/assets/fonts/concord/concord-bold.ttf) format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'concord';
+  font-style: normal;
+  font-weight: 700;
+  src: url(~src/assets/fonts/concord/concord-extrabold.ttf) format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'concord';
+  font-style: normal;
+  font-weight: 800;
+  src: url(~src/assets/fonts/concord/concord-extrabold.ttf) format('truetype');
+}

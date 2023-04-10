@@ -1,0 +1,17 @@
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 0.5rem;
+    padding-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.nuevo-button {
+    size: 24px;
+      color: white;
+      background: #008AD1;
+      border-radius: 4px;
+    //   min-width:  210px;
+    //   min-height: 37px;
+    }

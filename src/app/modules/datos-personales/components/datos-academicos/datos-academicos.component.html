@@ -1,0 +1,565 @@
+<form>
+    <div>
+
+        <span class="bg-text">Grado de instrucción</span>
+        <br>
+        <br>
+        <span class="text">Primaria</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+               
+                    <mat-label class="label-group">Conluido(Si/No)</mat-label>
+                  
+                    <mat-radio-group style="display: grid !important;">
+                        <mat-radio-button value="1">Si &nbsp;</mat-radio-button>&nbsp; &nbsp;
+                        <mat-radio-button value="2">No</mat-radio-button>
+                    </mat-radio-group>
+
+
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>nivel alcanzado</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <span class="text">Secundaria</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-label class="label-group">Conluido(Si/No)</mat-label>
+                <mat-radio-group style="display: grid !important;">
+                    <mat-radio-button value="1">Si &nbsp;</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>nivel alcanzado</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <span class="text">Superior técnica</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-label class="label-group">Conluido(Si/No)</mat-label>
+                <mat-radio-group style="display: grid !important;">
+                    <mat-radio-button value="1">Si &nbsp;</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>nivel alcanzado</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+<!-- 
+            <mat-grid-tile [colspan]="2" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar título técnico</label>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="3" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir Superior técnica
+                </button>
+            </mat-grid-tile> -->
+        </mat-grid-list>
+
+        <span class="text">Superior universitaria</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+               
+                    <mat-label class="label-group">Conluido(Si/No)</mat-label>
+                  
+                    <mat-radio-group style="display: grid !important;">
+                        <mat-radio-button value="1">Si &nbsp;</mat-radio-button>&nbsp; &nbsp;
+                        <mat-radio-button value="2">No</mat-radio-button>
+                    </mat-radio-group>
+
+
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>nivel alcanzado</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <br>
+        <hr>
+        <br>
+        <span class="text">Nivel técnico</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Especialidad/Profesión</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+              
+
+                <mat-radio-group >
+                    <mat-radio-button value="1">Egresado &nbsp;</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="2">Titulado</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha que opta nivel (aaaamm)</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <!-- <mat-grid-tile [colspan]="2" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar título técnico</label>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                
+            </mat-grid-tile> -->
+            <mat-grid-tile [colspan]="3" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir Superior Técnico
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <hr>
+        <br>
+        <span class="text">Nivel universitario</span>
+        <br>
+        <br>
+        <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Especialidad / profesión</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha que opta nivel</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>N° de colegiatura</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+          
+            <!-- <mat-grid-tile [colspan]="2" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar Grado/Título</label>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar colegiatura vigente</label>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                
+            </mat-grid-tile> -->
+            <mat-grid-tile [colspan]="3" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir nivel Universitaria
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <hr>
+        <br>
+        <span class="text">Post Grado</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Denominación</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución Educativa</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Concluido</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha que opta (AAAA-MM)</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+
+            </mat-grid-tile>
+            <!-- <mat-grid-tile [colspan]="2" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar Postgrado</label>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                
+            </mat-grid-tile> -->
+            <mat-grid-tile [colspan]="3" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir Post Grado
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <hr>
+        <br>
+        <span class="text">Especialidad Médica</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Denominación</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución Educativa</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha que opta (AAAA-MM)</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>N° de registro(RNE)</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Año de residentado(Solo para residentes)</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+
+            </mat-grid-tile>
+            <!-- <mat-grid-tile [colspan]="2" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar especialidad</label>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                
+            </mat-grid-tile> -->
+            <mat-grid-tile [colspan]="3" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir Especialidad
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <hr>
+        <br>
+        <span class="bg-text">CAPACITACIÓN (Recibida en los últimos 3 años)</span>
+        <br>
+        <br>
+        <span class="text">Capacitación año 1</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Actividad educativa</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución/Entidad educativa</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Modalidad educativa</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Ámbito</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Horas</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Créditos</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha(DDMMAAAA)</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha (DDMMAAAA)</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <br>
+        <span class="row">¿Beneficios otorgados por EsSalud?</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="60px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group>
+                    <mat-radio-button value="1">Si &nbsp;</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                
+            </mat-grid-tile>
+            <!-- <mat-grid-tile [colspan]="1" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar capacitación</label>
+            </mat-grid-tile> -->
+            <mat-grid-tile [colspan]="3" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir capacitación
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <hr>
+        <br>
+        <span class="text">Idiomas que domina a parte del español</span>
+        <br>
+        <br>
+        <mat-grid-list cols="4" rowHeight="80px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>idiomas</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+
+
+        </mat-grid-list>
+
+        <span class="text">Nivel</span>
+        <br>
+        <br>
+        <mat-grid-list cols="4" rowHeight="60px" gutterSize="20px">
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-radio-group layout="row">
+                    <mat-radio-button value="1">Básico &nbsp; </mat-radio-button> &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="2">Intermedio &nbsp;</mat-radio-button> &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="2">Avanzado</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="4" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir idioma
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+        <span class="text">Experiencia Laboral</span>
+        <br>
+        <br>
+        <span class="exp">Últimos cargos que ha desempeñado en EsSalud (Fuera del cargo actual y desde el cargo más
+            reciente)</span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cargo desempeñado</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Desde</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Hasta</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Dependencia</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Experiencia</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="3" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir experiencia
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <span class="text">¿Laboró en otra empresa o entidad?</span>
+        <br>
+
+        <br>
+        <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cargo desempeñado</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Empresa</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Desde</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Hasta</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Experiencia</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="4" class="grid">
+
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="3" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir experiencia
+                </button>
+            </mat-grid-tile>
+            <!-- <mat-grid-tile [colspan]="6" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar documentos de estudios</label>
+            </mat-grid-tile> -->
+           
+        </mat-grid-list>
+    </div>
+
+    <hr>
+    <div class="footer_actions">
+        <div >
+            <button mat-raised-button class="btnAction">
+                <mat-icon>upload</mat-icon>&nbsp;Subir a repositorio
+            </button>
+        </div>
+       
+    </div>
+</form>

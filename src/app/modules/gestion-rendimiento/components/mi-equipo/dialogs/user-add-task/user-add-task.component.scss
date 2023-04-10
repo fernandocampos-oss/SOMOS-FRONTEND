@@ -1,0 +1,17 @@
+@import 'base/breakpoints';
+
+form {
+  mat-dialog-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+  
+  textarea {
+    resize: none;
+  }
+}

@@ -1,0 +1,78 @@
+<form [formGroup]="form">
+    <h2 mat-dialog-title>Informar</h2>
+    <mat-dialog-content>
+      <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChanged($event)">
+        <mat-tab label="Detalle">
+          <mat-grid-list cols="2" rowHeight="90px" gutterSize="6px">
+            <mat-grid-tile [colspan]="2">
+                <mat-form-field appearance="outline">
+                  <mat-label>Descripción</mat-label>
+                  <input type="text" matInput formControlName="frmTarea" required/>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" >
+              <mat-form-field appearance="outline">
+                <mat-label>% de avance</mat-label>
+                <mat-hint>Valor: 1-100</mat-hint>
+                <input type="number" matInput formControlName="frmAvance" required/>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1">
+              <mat-form-field appearance="outline">
+                <mat-label>Estado</mat-label>
+                <input type="text" matInput formControlName="frmEstado" readonly/>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2">
+                <mat-form-field appearance="outline">
+                  <mat-label>Detalle del informe</mat-label>
+                  <textarea matInput maxlength="300" required formControlName="frmDescripcion"></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        </mat-tab>
+        <mat-tab label="Archivos">
+          <br>
+          <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+          <button mat-raised-button color="primary" class="btnUploads"
+              [class.spinner]="loading" [disabled]="loading"
+              matTooltip="Agregar" (click)="fileUpload.click()">
+              <mat-icon>attach_file</mat-icon>Cargar Archivo</button>
+          <table mat-table [dataSource]="dataSource" style="width:100%">
+        
+            <ng-container matColumnDef="item">
+                <th mat-header-cell *matHeaderCellDef width="80px"> Item </th>
+                <td mat-cell *matCellDef="let element"> {{element.item}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef > Nombre del archivo </th>
+                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef width="100px"> Acciones </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button mat-icon-button color="primary"
+                    matTooltip="Eliminar Archivo" (click)="eliminarArchivo(element)">
+                    <mat-icon>delete</mat-icon></button>
+                </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="empty-row" *matNoDataRow>
+              <td class="empty-cell">Sin registros por mostrar</td>
+            </tr>
+          </table>
+        </mat-tab>
+      </mat-tab-group>
+        
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cerrar</button>
+        <button mat-raised-button color="primary" 
+          *ngIf="selectedIndex == 0" [disabled]="form.valid == false" 
+          (click)="next()">Siguiente</button>
+    </mat-dialog-actions>
+</form>

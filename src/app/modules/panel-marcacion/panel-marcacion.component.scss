@@ -1,0 +1,75 @@
+@import 'base/breakpoints';
+
+.main-hour {
+  text-align: center;
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 3rem;
+  grid-area: center;
+}
+
+.hour {
+  font-weight: 500;
+  text-align: center;
+  &--start {
+    grid-area: start;
+  }
+  &--end {
+    grid-area: end;
+  }
+
+  span {
+    display: block;
+    font-weight: 600;
+    color: var(--color-primary);
+    @include lg {
+      font-size: 1.25rem;
+    }
+  }
+
+  &-container {
+    display: grid;
+    grid-template-areas:
+        "start end"
+        "center center";
+    grid-row-gap: .5rem;
+
+    @include lg {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.qr {
+  @include md {
+    display: block;
+    height: 18rem;
+    width: auto;
+    margin: auto;
+  }
+
+  @include xl {
+    display: block;
+    height: 19rem;
+    width: auto;
+    margin: auto;
+  }
+}
+
+::ng-deep {
+  .qrcode > canvas {
+    display: block;
+    margin: auto;
+
+    @include md {
+      min-height: 250px;
+      min-width: 250px;
+    }
+  }
+
+  video {
+    /* !important because component already sets height property */
+    height: 100% !important;
+  }
+}

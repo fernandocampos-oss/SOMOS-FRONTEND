@@ -1,0 +1,25 @@
+<form [formGroup]="form">
+    <h2 matDialogTitle>Rechazar</h2>
+    <mat-dialog-content>
+        <mat-grid-list cols="1" rowHeight="80px" gutterSize="6px">
+            <ng-container *ngIf="numerador!=2">
+                <mat-grid-tile [colspan]="1" >
+                    <mat-form-field appearance="outline">
+                      <mat-label>Dias de nuevo plazo</mat-label>
+                      <input type="number" matInput formControlName="frmDias"/>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </ng-container>
+            <mat-grid-tile [colspan]="1">
+                <mat-form-field appearance="outline">
+                  <mat-label>Motivo</mat-label>
+                  <textarea matInput maxlength="300" required formControlName="frmMotivo"></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cerrar</button>
+        <button mat-raised-button color="primary" (click)="confirmRechazar()">Grabar</button>
+    </mat-dialog-actions>
+</form>

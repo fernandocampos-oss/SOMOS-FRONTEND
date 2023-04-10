@@ -1,0 +1,23 @@
+<div class="page">
+    <div class="matero-page-header">
+      <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon> Gestión del Requerimiento<br>
+      <small class="mr-2">Gestionar tus tareas y tu equipo</small><br>
+      </h1>
+    </div>
+    <div class="page__body">
+      <div class="card shadow">
+        <mat-tab-group>
+          <mat-tab label="Requerimientos" *ngIf="rol != 1">
+            <gestion-rendimiento-mis-requerimientos></gestion-rendimiento-mis-requerimientos>
+          </mat-tab>
+          <mat-tab label="Mi Equipo" *ngIf="rol != 1">
+            <gestion-rendimiento-mi-equipo></gestion-rendimiento-mi-equipo>
+          </mat-tab>
+          <mat-tab label="Mis Tareas">
+            <gestion-rendimiento-mis-tareas></gestion-rendimiento-mis-tareas>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+  

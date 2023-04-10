@@ -1,0 +1,24 @@
+<h3>¿Está seguro de aceptar este requerimiento con estas actividades?</h3><br>
+<h4>Requerimiento elegido: </h4><p>{{requerimiento}}</p><br>
+<mat-dialog-content>
+<table mat-table [dataSource]="dataSource" style="width:100%">
+    <ng-container matColumnDef="Actividad POI">
+        <th mat-header-cell *matHeaderCellDef > Actividad POI </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr class="empty-row" *matNoDataRow>
+      <td class="empty-cell">Sin registros por mostrar</td>
+    </tr>
+</table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <!--Poner este atributo cuando se haga el formulario
+    [disabled]="form.valid == false"
+    -->
+    <button mat-raised-button color="primary" 
+      *ngIf="selectedIndex == 0" (click)="next()">Aprobar</button>
+</mat-dialog-actions>

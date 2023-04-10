@@ -1,0 +1,555 @@
+<div class="page">
+    <div class="page__header">
+        <h1 class="page__title">DDJJ Conflicto de Interés<span>
+                <mat-icon>insert_drive_file</mat-icon> Por medio de la presente, en virtud del Principio de Presunción
+                de
+                Veracidad , declaro bajo juramento que:
+            </span></h1>
+            <span class="back"  (click)="back()" > <mat-icon>reply</mat-icon> Regresar</span>
+
+    </div>
+    <br>
+    <br>
+    <div class="page__body">
+        <div class="card shadow">
+
+            <div>
+                <cdk-accordion class="example-accordion">
+                    <cdk-accordion-item #accordionItem1="cdkAccordionItem" class="example-accordion-item" role="button"
+                        tabindex="0" [attr.id]="'accordion-header-'" [attr.aria-expanded]="accordionItem1.expanded"
+                        [attr.aria-controls]="'accordion-body-'">
+                        <div class="example-accordion-item-header" (click)="accordionItem1.toggle()">
+                            <span>
+                                <mat-icon>record_voice_over</mat-icon>&nbsp; Datos Generales
+                            </span>
+                            <span class="example-accordion-item-description">
+                                <mat-icon style="color: white;">add</mat-icon>
+                            </span>
+                        </div>
+                        <div class="example-accordion-item-body" role="region"
+                            [style.display]="accordionItem1.expanded ? '' : 'none'" [attr.id]="'accordion-body-'"
+                            [attr.aria-labelledby]="'accordion-header-'">
+
+
+                            <br>
+                            <div style="display: grid; margin-bottom: 20px;">
+                                <mat-checkbox class="example-margin ">Declaración jurada al inicio del vínculo
+                                    laboral/
+                                    contractual con EsSalud</mat-checkbox>
+
+                                <mat-checkbox class="example-margin ">**Declaración jurada en caso surja un caso de
+                                    conflicto de
+                                    interés(Modificación de declaración jurada de inicio)</mat-checkbox>
+                            </div>
+
+
+                            <mat-grid-list cols="3" rowHeight="65px" gutterSize="20px">
+
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Código de planilla de 8 dígitos</mat-label>
+                                        <input matInput required />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Nombres y apellidos</mat-label>
+                                        <input matInput required />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Red</mat-label>
+                                        <input matInput required />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Área</mat-label>
+                                        <input matInput required />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Área de Unidad Orgánica</mat-label>
+                                        <input matInput required />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Cargo</mat-label>
+                                        <input matInput required />
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+
+                        </div>
+                    </cdk-accordion-item>
+
+                    <cdk-accordion-item #accordionItem2="cdkAccordionItem" class="example-accordion-item" role="button"
+                        tabindex="0" [attr.id]="'accordion-header-'" [attr.aria-expanded]="accordionItem2.expanded"
+                        [attr.aria-controls]="'accordion-body-'">
+                        <div class="example-accordion-item-header" (click)="accordionItem2.toggle()">
+                            <span class="header-accordion">
+                                <h1>1</h1>&nbsp; Datos generales
+                            </span>
+                            <span class="example-accordion-item-description">
+                                <mat-icon style="color: white;">add</mat-icon>
+                            </span>
+                        </div>
+                        <div class="example-accordion-item-body" role="region"
+                            [style.display]="accordionItem2.expanded ? '' : 'none'" [attr.id]="'accordion-body-'"
+                            [attr.aria-labelledby]="'accordion-header-'">
+                            <span class="subTitle-body">I. Sobre la documentación del legajo personal, títulos y
+                                hoja de
+                                vida</span>
+                            <br>
+                            <br>
+                            <div style="display: flex; margin-bottom: 20px; width: 100%;">
+                                <mat-checkbox class="example-margin ">El que suscribe el presente documento declara
+                                    bajo
+                                    juramento que todos los documentos presentados y consignados en mi legajo
+                                    personal y hoja de
+                                    vida( currículo vitae) son auténticos. </mat-checkbox>
+
+                            </div>
+
+
+
+                        </div>
+                    </cdk-accordion-item>
+
+                    <cdk-accordion-item #accordionItem3="cdkAccordionItem" class="example-accordion-item" role="button"
+                        tabindex="0" [attr.id]="'accordion-header-'" [attr.aria-expanded]="accordionItem3.expanded"
+                        [attr.aria-controls]="'accordion-body-'">
+                        <div class="example-accordion-item-header" (click)="accordionItem3.toggle()">
+                            <span class="header-accordion">
+                                <h1>2</h1>&nbsp; Declaración bajo juramento
+                            </span>
+                            <span class="example-accordion-item-description">
+                                <mat-icon style="color: white;">add</mat-icon>
+                            </span>
+                        </div>
+                        <div class="example-accordion-item-body" role="region"
+                            [style.display]="accordionItem3.expanded ? '' : 'none'" [attr.id]="'accordion-body-'"
+                            [attr.aria-labelledby]="'accordion-header-'">
+
+                            <br>
+                            <span class="subTitle-body">II. Vínculos Laborales entre trabajadores de EsSalud</span>
+                            <br>
+                            <br>
+                            <span class="text_sub_subtitle">El suscrito , mi cónyuge o conviviente, tenemos o hemos
+                                tenido
+                                vínculo, directo o indirecto, comercial , económico, laboral o de servicio en los 2
+                                últimos años
+                                con alguna de las empresas, contratistas o personas naturales que brindan servicios
+                                y/o bienes a
+                                la entidad.</span>
+                            <br>
+                            <br>
+                            <div style="display: flex; margin-bottom: 20px;">
+                                <mat-checkbox class="example-margin">Si</mat-checkbox>
+
+                                <mat-checkbox class="example-margin">No</mat-checkbox>
+                            </div>
+
+
+                            <span class="text_sub_subtitle">Son cónyuge o conviviente o pariente dentro del cuarto
+                                grado de
+                                consanguinidad o segundo de afinidad con alguno de los servidores de EsSalud,
+                                cualquiera fuere
+                                su modalidad de contratación.</span>
+                            <br>
+                            <br>
+                            <div style="display: flex; margin-bottom: 20px;">
+                                <mat-checkbox class="example-margin">Si</mat-checkbox>
+
+                                <mat-checkbox class="example-margin">No</mat-checkbox>
+                            </div>
+
+                            <hr>
+                            <span>Consanguinidad: 1er Grado : Padres e hijos; 2do Grado; Abuelosy nietos,
+                                hermanos(colateral),
+                                3er Grado: Bisabuelos y bisnietos,tíos y sobrinos(colateral), 4to Grado:
+                                Tatarabuelos y
+                                Tataranietos, primos y sobrinos nietros(colateral).</span>
+                            <br>
+                            <br>
+                            <span>Afinidad: 1er Grado: Suegro e hijos del cónyuge, 2do Grado: Abuelos y nietos del
+                                cónyuge,
+                                cuñados(colateral).</span>
+                            <br>
+                            <br>
+                        </div>
+                    </cdk-accordion-item>
+
+                    <cdk-accordion-item #accordionItem4="cdkAccordionItem" class="example-accordion-item" role="button"
+                        tabindex="0" [attr.id]="'accordion-header-'" [attr.aria-expanded]="accordionItem4.expanded"
+                        [attr.aria-controls]="'accordion-body-'">
+                        <div class="example-accordion-item-header" (click)="accordionItem4.toggle()">
+                            <span class="header-accordion">
+                                <h1>3</h1>&nbsp; Vínculos familiares y afectivos
+                            </span>
+                            <span class="example-accordion-item-description">
+                                <mat-icon style="color: white;">add</mat-icon>
+                            </span>
+                        </div>
+                        <div class="example-accordion-item-body" role="region"
+                            [style.display]="accordionItem4.expanded ? '' : 'none'" [attr.id]="'accordion-body-'"
+                            [attr.aria-labelledby]="'accordion-header-'">
+
+                            <br>
+                            <span class="subTitle-body">III. Vínculos familiares y afectivos</span>
+                            <br>
+                            <br>
+                            <span class="text_sub_subtitle">El suscrito , mi cónyuge o conviviente, somos parientes
+                                dentro del
+                                cuarto grado de condanguinidad o segundo de afinidad, o tenemos amistad o enemistad
+                                manifiesta,
+                                con alguno de los accionistas principales, ferentes, apoderados, asesores, abogados,
+                                consultores, ejecutivos con poder de decisión u otros de naturaleza similar de las
+                                empresas
+                                contratistas o personas naturales que brindan servicios y/o bienes a la
+                                entidad.</span>
+                            <br>
+                            <br>
+                            <div style="display: inline-flex; margin-bottom: 20px;">
+                                <mat-checkbox class="example-margin">Si</mat-checkbox>
+
+                                <mat-checkbox class="example-margin">No</mat-checkbox>
+                            </div>
+
+                            <hr>
+
+                            <span>Consanguinidad: 1er Grado : Padres e hijos; 2do Grado; Abuelosy nietos,
+                                hermanos(colateral),
+                                3er Grado: Bisabuelos y bisnietos,tíos y sobrinos(colateral), 4to Grado:
+                                Tatarabuelos y
+                                Tataranietos, primos y sobrinos nietros(colateral).</span>
+                            <br>
+                            <br>
+                            <span>Afinidad: 1er Grado: Suegro e hijos del cónyuge, 2do Grado: Abuelos y nietos del
+                                cónyuge,
+                                cuñados(colateral).</span>
+
+                            <br>
+
+                        </div>
+                    </cdk-accordion-item>
+
+                    <cdk-accordion-item #accordionItem5="cdkAccordionItem" class="example-accordion-item" role="button"
+                        tabindex="0" [attr.id]="'accordion-header-'" [attr.aria-expanded]="accordionItem5.expanded"
+                        [attr.aria-controls]="'accordion-body-'">
+                        <div class="example-accordion-item-header" (click)="accordionItem5.toggle()">
+                            <span class="header-accordion">
+                                <h1>4</h1>&nbsp; Declaración de vínculo empresarial
+                            </span>
+                            <span class="example-accordion-item-description">
+                                <mat-icon style="color: white;">add</mat-icon>
+                            </span>
+                        </div>
+                        <div class="example-accordion-item-body" role="region"
+                            [style.display]="accordionItem5.expanded ? '' : 'none'" [attr.id]="'accordion-body-'"
+                            [attr.aria-labelledby]="'accordion-header-'">
+                            <br>
+                            <span class="subTitle-body">IV. Declaración de vínculo empresarial</span>
+                            <br>
+                            <br>
+                            <span class="text_sub_subtitle">El suscrito declara ser propietario, accionista, miembro
+                                de
+                                directorio, participaciones u otros derechos sobre alguna empresa(s), asociación(es)
+                                o
+                                presona(s) jurídica.</span>
+                            <br>
+                            <br>
+                            <div style="display: inline-flex; margin-bottom: 20px;">
+                                <mat-checkbox class="example-margin">Si</mat-checkbox>
+
+                                <mat-checkbox class="example-margin">No</mat-checkbox>
+                            </div>
+
+
+                        </div>
+                    </cdk-accordion-item>
+
+                    <cdk-accordion-item #accordionItem6="cdkAccordionItem" class="example-accordion-item" role="button"
+                        tabindex="0" [attr.id]="'accordion-header-'" [attr.aria-expanded]="accordionItem6.expanded"
+                        [attr.aria-controls]="'accordion-body-'">
+                        <div class="example-accordion-item-header" (click)="accordionItem6.toggle()">
+                            <span class="header-accordion">
+                                <h1>5</h1>&nbsp; Otras situaciones
+                            </span>
+                            <span class="example-accordion-item-description">
+                                <mat-icon style="color: white;">add</mat-icon>
+                            </span>
+                        </div>
+                        <div class="example-accordion-item-body" role="region"
+                            [style.display]="accordionItem6.expanded ? '' : 'none'" [attr.id]="'accordion-body-'"
+                            [attr.aria-labelledby]="'accordion-header-'">
+                            <br>
+                            <span class="subTitle-body">V. ¿Tengo otras situaciones que podrían constituir conflictos de
+                                interés?</span>
+                            <br>
+                            <br>
+                            <br>
+                            <div style="display: inline-flex; margin-bottom: 20px;">
+                                <mat-checkbox class="example-margin">Si</mat-checkbox>
+
+                                <mat-checkbox class="example-margin">No</mat-checkbox>
+                            </div>
+
+
+                        </div>
+                    </cdk-accordion-item>
+
+
+                    <cdk-accordion-item #accordionItem7="cdkAccordionItem" class="example-accordion-item" role="button"
+                        tabindex="0" [attr.id]="'accordion-header-'" [attr.aria-expanded]="accordionItem7.expanded"
+                        [attr.aria-controls]="'accordion-body-'">
+                        <div class="example-accordion-item-header" (click)="accordionItem7.toggle()">
+                            <span class="header-accordion">
+                                <h1>6</h1>&nbsp; Declaración jurada de conflicto de interés
+                            </span>
+                            <span class="example-accordion-item-description">
+                                <mat-icon style="color: white;">add</mat-icon>
+                            </span>
+                        </div>
+                        <div class="example-accordion-item-body" role="region"
+                            [style.display]="accordionItem7.expanded ? '' : 'none'" [attr.id]="'accordion-body-'"
+                            [attr.aria-labelledby]="'accordion-header-'">
+
+                            <div class="preview">
+                                <div>
+                                    <div class="header-preview">
+                                        <div>
+                                            <img src="assets/images/Group.png" class="img" alt="Logotipo" />
+                                        </div>
+
+                                    </div>
+                                    <div class="body">
+                                        <div class="title-preview">
+                                            <span> DECLARACIÓN JURADA DE CONFLICTOS DE INTERÉS</span>
+                                        </div>
+                                        <br>
+                                        <div>
+                                            <span style="font-size: 24px; line-height: 23px; color: #EA5046; ">Para
+                                                concluir deberás
+                                                finalizar, descargar tu DDJJ y guardarla, presionando sobre el botón
+                                                FINALIZAR ubicado
+                                                en la parte final del presente documento. </span>
+                                        </div>
+                                        <br>
+                                        <div class="datos">
+                                            <div>
+                                                <span>Nombre:</span> <span>CARLOTA MELLADO VILLAFUERTE</span>
+                                            </div>
+                                            <div>
+                                                <span>Área:</span> <span>ÁREA ENCARGADA</span>
+                                            </div>
+                                            <div>
+                                                <span>Cargo:</span> <span>Director general</span>
+                                            </div>
+                                            <div>
+                                                <span>Entidad:</span> <span>EsSalud</span>
+                                            </div>
+                                            <div>
+                                                <span>Fecha:</span> <span>21/02/22</span>
+                                            </div>
+                                            <div>
+                                                <span>Tipo:</span> <span>Modificación</span>
+                                            </div>
+                                            <div>
+                                                <span>Red:</span> <span> Ancash</span>
+                                            </div>
+                                            <div>
+                                                <span>Hospital/Unidad Orgánica:</span> <span>PM-Pampas</span>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <br>
+                                        <div>
+                                            <span class="text-inline">Por medio de la presente, en virtud de Presunción
+                                                de Veracidad, declaro bajo juramento que:</span>
+                                        </div>
+
+                                        <br>
+                                        <br>
+                                        <div>
+                                            <span class="title-inline">I. Sobre la documentación del legajo personal,
+                                                títulos y hoja de vida:</span>
+                                            <br>
+                                            <br>
+                                            <mat-checkbox class="example-margin text-inline"
+                                                style="font-size: 17px !important; ">El que suscribe el presente
+                                                documento
+                                                declara bajo juramento que todos los documentos presentados y
+                                                consignados en
+                                                mi
+                                                legajo personal y hoja de vida (currículo vitae) son auténticos.
+                                            </mat-checkbox>
+                                        </div>
+                                        <hr>
+                                        <span class="text-inline">Por medio de la presente, en virtud del Principio de
+                                            Presunción de Veracidad, declaro bajo juramento que, tengo conocimiento de
+                                            lo siguiente:</span>
+
+                                        <br>
+                                        <br>
+                                        <div>
+                                            <span class="title-inline">II. Vínculos Laborales entre trabajadores de
+                                                EsSalud: </span>
+                                            <br>
+                                            <br>
+                                            <span class="text-inline">El suscrito, mi cónyuge o conviviente, tenemos o
+                                                hemos tenido vínculo, directo o indirecto, comercial, económico, laboral
+                                                o de servicio en los 2 últimos años con
+                                                alguna de las empresas, contratistas o personas naturales que brindan
+                                                servicios y/o bienes a la entidad. </span>
+                                            <br>
+                                            <br>
+                                            <div style="display: flex;  width: 50%;">
+                                                <mat-checkbox class="example-margin">Si</mat-checkbox>
+                                                <mat-checkbox class="example-margin">No</mat-checkbox>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <br>
+
+                                        <div>
+                                            <span class="title-inline">III. Vínculos familiares y afectivos: </span>
+                                            <br>
+                                            <br>
+                                            <span class="text-inline">El suscrito, mi cónyuge o conviviente, somos
+                                                parientes dentro del cuarto grado de consanguinidad o segundo de
+                                                afinidad, o tenemos amistad o enemistad
+                                                manifiesta, con alguno de los accionistas principales, gerentes,
+                                                apoderados, asesores, abogados, consultores, ejecutivos con poder de
+                                                decisión u otros de
+                                                naturaleza similar de las empresas, contratistas o personas naturales
+                                                que brindan servicios y/o bienes a la entidad. </span>
+                                            <br>
+                                            <br>
+                                            <div style="display: flex;  width: 50%;">
+                                                <mat-checkbox class="example-margin">Si</mat-checkbox>
+                                                <mat-checkbox class="example-margin">No</mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div>
+                                            <span class="title-inline">IV. Declaración de vínculo empresarial:</span>
+                                            <br>
+                                            <br>
+                                            <span class="text-inline">El suscrito declara ser propietario, accionista,
+                                                tener participaciones u otros derechos sobre las siguientes empresas,
+                                                asociaciones o personas jurídicas:</span>
+                                            <br>
+                                            <br>
+                                            <div style="display: flex;  width: 50%;">
+                                                <mat-checkbox color="primary" class="example-margin">Si</mat-checkbox>
+                                                <mat-checkbox color="primary" class="example-margin">No</mat-checkbox>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <br>
+                                        <div>
+                                            <span class="title-inline">V. Tengo otras situaciones que podrían constituir
+                                                conflicto de interés:</span>
+                                            <br>
+                                            <br>
+                                            <div style="display: flex;  width: 50%;">
+                                                <mat-checkbox class="example-margin">Si</mat-checkbox>
+                                                <mat-checkbox class="example-margin">No</mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <hr>
+
+                                        <br>
+
+                                        <span class="text-inline">Consanguinidad: 1er Grado: Padres e hijos; 2do Grado:
+                                            Abuelos y nietos, hermanos(colateral), 3er Grado: Bisabuelos y bisnietos,
+                                            tíos y sobrinos (colateral), 4to Grado:
+                                            Tatarabuelos y Tataranietos, primos y sobrinos nietos (colateral).</span>
+                                        <br>
+                                        <br>
+                                        <span class="text-inline">Afinidad: 1er Grado: Suegro e hijos del cónyuge, 2do
+                                            Grado: Abuelos y nietos del cónyuge, cuñados (colateral).</span>
+                                        <br>
+                                        <br>
+                                        <hr>
+                                        <br>
+
+                                        <span class="text-inline">Quedo notificado que, de ser falsa la información
+                                            otorgada en dicha Declaración jurada o incompleta, asumiré la
+                                            responsabilidad administrativa, civil y penal
+                                            correspondiente.</span>
+                                        <br>
+                                        <br>
+                                        <span class="text-inline">
+                                            Lima, 21 de February del 2022
+                                        </span>
+
+                                        <br>
+                                        <br>
+                                        <!-- <div class="box">
+                                            <div class="bloque">
+                                                <span>Firma del servidor</span>
+
+                                              
+                                            </div>
+
+                                            <div class="bloque">
+                                                <span>Nombre del Servidor	</span>
+                                            </div>
+
+                                            <div class="bloque">
+                                                <span>DNI</span>
+                                            </div>
+                                        </div> -->
+
+                                        <table border="1" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="vertical-align:bottom; width: 33%;">
+                                                    <p><span>Firma del servidor</span></p>
+                                                </td>
+                                                <td style="vertical-align:bottom; width: 33%;">
+                                                    <p> <span>Nombre del Servidor </span></p>
+                                                </td>
+                                                <td style="vertical-align:bottom; width: 33%;">
+                                                    <p> <span>DNI</span></p>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <br>
+                                        <br>
+
+                                    </div>
+                                    <div class="footer">
+                                        <span class="text-inline">Para finalizar deberás descarga tu DJ, imprimirlo y
+                                            presentarlo a la Unidad Orgánica de Recursos Humanos. El plazo de
+                                            presentación es de quince (15) días hábiles luego de
+                                            haber iniciado tus labores.</span>
+                                        <br>
+
+                                        <br>
+                                        <span class="text-inline">Recuerda que: Si con posterioridad a la presentación
+                                            de tu DJ surge algún cambio en la información proporcionada, deberás
+                                            comunicar dicha situación presentando la
+                                            modificación a tu DJ.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </cdk-accordion-item>
+                </cdk-accordion>
+            </div>
+        </div>
+    </div>
+</div>

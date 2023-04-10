@@ -1,0 +1,25 @@
+<h1 mat-dialog-title class="confirm-dialog__title">{{ data.title }}</h1>
+<div mat-dialog-content>
+  <p class="confirm-dialog__message">{{ data.message }}</p>
+</div>
+<div mat-dialog-actions class="confirm-dialog__footer">
+  <button
+    type="submit"
+    class="confirm-dialog__button"
+    mat-raised-button
+    [mat-dialog-close]="true"
+    [class.is--warning]="isTypeWaring"
+    [class.is--info]="isTypeInfo"
+    [class.is--error]="isTypeError"
+  >
+    Aceptar
+  </button>
+  <button
+    type="button"
+    class="confirm-dialog__button"
+    mat-button
+    mat-dialog-close
+  >
+    Cancelar
+  </button>
+</div>

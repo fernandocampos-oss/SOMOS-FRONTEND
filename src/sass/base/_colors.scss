@@ -1,0 +1,24 @@
+$colorPrimary: #009ead;
+$colorPrimaryLight: #007aff;
+
+:root {
+  --color-primary: #009ead;
+  --color-primary-light: $colorPrimaryLight;
+  // --color-primary-lighter: #0066cc;
+  // --color-primary-lightest: #0066cc;
+  // --color-accent: #0066cc;
+  // --color-accent-light: #0066cc;
+  // --color-neutral: #0066cc;
+  // --color-neutral-light: #0066cc;
+
+  --color-gray-light: #ebebeb;
+  --color-gray: #989898;
+  --color-gray-dark: #666;
+  --color-warn: #f3a31d;
+  --color-danger: red;
+  --color-success: #3fa02b;
+  --color-MiEssalud : #009EAD;
+  --color-Title : #008BD2;
+  --color-head-Body : #DBF1F4;
+  --color-head-words : #666666;
+}

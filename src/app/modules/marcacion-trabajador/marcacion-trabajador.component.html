@@ -1,0 +1,90 @@
+<div class="page">
+  <!-- <div class="page__header">
+    <h1 class="page__title">
+      Registrar Marcación a Trabajador <span> <mat-icon class="icon" matPrefix svgIcon="qr_code"></mat-icon>&nbsp; Escaneo Código QR</span>
+    </h1>
+  </div> -->
+  <div class="matero-page-header">
+    <h1 class="matero-page-title"><mat-icon class="icon" matPrefix svgIcon="qr_code"></mat-icon> Control de Acceso<br>
+    <small class="mr-2">Escaneo del código QR</small><br>
+    <span class="back" (click)="back()"><mat-icon>reply</mat-icon> Regresar</span>
+    </h1>
+  </div>
+  <div class="page__body">
+    <div class="card shadow">
+      <p
+        *ngIf="isDenied; else content"
+        class="alert alert--danger mat-elevation-z1"
+      >
+        Debe permitir el acceso a la ubicación del dispositivo
+      </p>
+      <ng-template #content>
+        <p class="parrafo"  >
+          Por favor ingresar su Número de Documento
+        </p>
+        <p *ngIf="isSelectEntrada" class="message-success">
+          Escanee el código QR para registrar su <b>"ENTRADA"</b>
+        </p>
+  
+        <p *ngIf="isSelectSalida" class="message-danger">
+          Escanee el código QR para registrar su <b>"SALIDA"</b>
+        </p>
+        <br>
+        <form [formGroup]="form">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Número de Documento</mat-label>
+            
+           <mat-icon class="icon" matPrefix>contact_mail</mat-icon>
+            
+            <input matInput  formControlName="numeroDocumento" />
+          </mat-form-field>
+
+          <div class="buttons-container">
+            <!-- <button
+            mat-raised-button
+            class="btnEntrada"
+            (click)="onChangeTipoMarcacion(tipoMarcacionEntrada)"
+          >
+          <mat-icon class="out" svgIcon="login"></mat-icon>&nbsp;
+            Entrada
+          </button>
+          <button
+            mat-raised-button
+          class="salida-button"
+          (click)="onChangeTipoMarcacion(tipoMarcacionSalida)"
+          >
+          <mat-icon class="out" svgIcon="pop_out"></mat-icon>&nbsp;
+            Salida
+          </button> -->
+
+          <div class="example-card"><img mat-card-image src="assets/images/entrada.png" alt="Entrada" (click)="selectEntrada()"></div>
+
+          <div class="example-card"><img mat-card-image src="assets/images/salida.png" alt="Entrada"  (click)="selectSalida()"></div>
+          </div>
+
+        </form>
+        <ng-container *ngIf="form.valid && tipoMarcacionSelected">
+          <mat-form-field class="w-100">
+            <mat-label>Cámara</mat-label>
+            <mat-select
+              [formControl]="cameraCtrl"
+              (valueChange)="cameraChange($event)"
+            >
+              <mat-option *ngFor="let item of cameras" [value]="item.deviceId"
+                >{{ item.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <zxing-scanner
+            #scanner
+            [formats]="allowedFormats"
+                        [delayBetweenScanSuccess]="delayBetweenScanSuccess"
+            (deviceChange)="deviceChange($event)"
+            (scanSuccess)="scanSuccessHandler($event)"
+            (camerasFound)="cameraFound($event)"
+          ></zxing-scanner>
+        </ng-container>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<mat-toolbar class="toolbar mat-elevation-z3">
+  <button mat-icon-button (click)="menuToggle.emit()">
+    <mat-icon>menu</mat-icon>
+    <!-- <mat-icon mat-list-icon class="chevron-button">chevron_right</mat-icon> -->
+  </button>
+  <a [routerLink]="['/']"
+    ><img src="assets/images/Logo-MiEsSalud-ColorHorizontal-white.png" class="toolbar__image" alt="Logotipo" /></a>
+   
+  <span class="toolbar__spacer"></span>
+  <p class="fecha">{{ fechaActual }}</p>
+  <button mat-button [matMenuTriggerFor]="menu">
+    <app-user-avatar [username]="user.nombres"></app-user-avatar>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>reply</mat-icon>
+      <span>Cerrar Sesión</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

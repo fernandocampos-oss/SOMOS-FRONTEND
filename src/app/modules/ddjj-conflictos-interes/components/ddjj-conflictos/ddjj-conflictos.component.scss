@@ -1,0 +1,227 @@
+@import 'base/breakpoints';
+
+form {
+  textarea {
+    resize: none;
+  }
+
+  .text {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 30px;
+    padding-bottom: 20px;
+    color: #008ad1;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.grid > ::ng-deep .mat-grid-tile-content {
+  display: block !important;
+}
+
+.example-margin {
+  margin: 0 10px;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.option {
+  display: flex !important;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.mat-radio-group {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.row {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 19px;
+}
+
+.subtitle {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 26px;
+
+  color: #666666;
+}
+
+.btnAdd {
+  size: 24px;
+  color: white;
+  background: #009ead;
+  border-radius: 4px;
+}
+
+.subTitle-body {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 26px;
+  padding-bottom: 20px;
+  color: #008ad1;
+}
+
+.text_sub_subtitle {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 24px;
+
+  color: #000000;
+}
+
+.preview {
+  background-color: #f8f8f8;
+  padding: 20px;
+}
+
+.title-preview {
+  font-weight: normal;
+  font-size: 28px;
+  line-height: 30px;
+  align-items: center;
+  text-align: center;
+  color: #008ad1;
+}
+
+#columna1 {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 200px;
+  margin-top: 10px;
+  background-color: #ffff55;
+}
+#columna2 {
+  margin-left: 220px;
+  margin-right: 20px;
+  margin-top: 10px;
+  background-color: #ffffbb;
+}
+// mat-checkbox ::ng-deep .mat-checkbox-inner-container   {
+//     font-size:  "Nunito", sans-serif !important;
+// }
+
+// .mat-checkbox-label{
+//     font-size:  "Nunito", sans-serif !important;
+// }
+
+.header-accordion {
+  display: flex;
+  align-items: center;
+  h1 {
+    margin-bottom: 0;
+  }
+}
+
+::ng-deep .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+.img {
+  width: 165px;
+}
+
+.header-preview {
+  padding-bottom: 20px;
+}
+
+.datos {
+  display: grid;
+  width: 70%;
+  //float: left;
+  div {
+    width: 100%;
+    display: flex;
+    padding: 5px;
+  }
+
+  span {
+    width: 100%;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 19px;
+
+    color: #008ad1;
+  }
+}
+
+.text-inline {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 19px;
+  color: #008ad1;
+}
+
+.title-inline {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 26px;
+  color: #008ad1;
+}
+
+.bloque {
+  //display: inline-block;
+  padding: 1em;
+  border: 2px solid #008ad1;
+  width: 100%;
+  text-align: center;
+
+  span {
+    vertical-align: text-bottom;
+    font-size: 18px;
+    line-height: 19px;
+    color: #008ad1;
+  }
+}
+
+.box {
+  display: flex;
+  height: 264px;
+}
+
+table {
+  // margin: 20px;
+  width: 100%;
+  border: 2px solid #008ad1;
+}
+
+td {
+  height: 264px;
+  text-align: center;
+  padding: 2px;
+
+  span {
+    vertical-align: text-bottom;
+    font-size: 18px;
+    line-height: 19px;
+    color: #008ad1;
+  }
+}
+
+.back {
+  color: #009ead;
+  cursor: pointer;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+mat-icon {
+  vertical-align: middle;
+}

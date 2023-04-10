@@ -1,0 +1,56 @@
+<div class="page">
+  <!-- <div class="page__header">
+    <h1 class="page__title">Mantenimientos <span><mat-icon >person</mat-icon>&nbsp;Aquí podrá agregar a un nuevo usuario</span></h1>
+  </div> -->
+  <div class="matero-page-header">
+    <h1 class="matero-page-title"><mat-icon >person</mat-icon> Mantenimientos<br>
+    <small class="mr-2">Aquí podrá agregar a un nuevo usuario</small><br>
+    </h1>
+  </div>
+  <div class="page__body">
+    <div class="card shadow">
+      <mat-tab-group class="tab-group">
+        <mat-tab label="Usuarios">
+          <app-crud
+            [data]="usuarioList"
+            [columns]="usuarioColumns"
+            [showEdit]="true"
+            [showDelete]="true"
+            [showFilter]="true"
+         
+            (create)="onCreateUsuario()"
+            (edit)="onEditUsuario($event)"
+            (delete)="onDeleteUsuario($event)"
+          ></app-crud>
+        </mat-tab>
+        <mat-tab *appRole="roleAdminCentral" label="Sedes">
+          <app-crud
+            [data]="sedeList"
+            [columns]="sedeColumns"
+            [showEdit]="true"
+            [showDelete]="true"
+            [showFilter]="true"
+            (create)="onCreateSede()"
+            (edit)="onEditSede($event)"
+            (delete)="onDeleteSede($event)"
+          ></app-crud>
+        </mat-tab>
+        <mat-tab label="Zonas">
+          <app-crud
+            [data]="zonaList"
+            [columns]="zonaColumns"
+            [showEdit]="true"
+            [showDelete]="true"
+            [showFilter]="true"
+            (create)="onCreateZona()"
+            (edit)="onEditZona($event)"
+            (delete)="onDeleteZona($event)"
+          ></app-crud
+        ></mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
+
+
+

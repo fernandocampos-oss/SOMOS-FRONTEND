@@ -1,0 +1,538 @@
+<form>
+    <div>
+        <span class="text">Datos personales</span>
+        <br>
+        <br>
+        <mat-grid-list cols="5" rowHeight="60px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">Nombres</span>
+                    <span class="data-label">MARVIN</span>
+                </div>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">A. Paterno</span>
+                    <span class="data-label">ORTIZ </span>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">A. Materno</span>
+                    <span class="data-label">SALAZAR</span>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">Fecha de nacimiento</span>
+                    <span class="data-label">12/12/1996</span>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">Grupo sanguineo</span>
+                    <span class="data-label">A+</span>
+                </div>
+            </mat-grid-tile>
+           
+        </mat-grid-list>
+
+        <mat-grid-list cols="5" rowHeight="60px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">Sexo</span>
+                    <span class="data-label">MASCULINO</span>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">Tipo de documentación</span>
+                    <span class="data-label">DNI</span>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">N° de documento</span>
+                    <span class="data-label">77777777</span>
+                </div>
+            </mat-grid-tile>
+
+<!-- 
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+
+            <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar DNI</label>
+                </div>
+            </mat-grid-tile> -->
+
+            
+        </mat-grid-list>
+
+        <hr>
+
+        <span class="text">Lugar de nacimiento</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">País</span>
+                    <span class="data-label">Perú</span>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">Departamento</span>
+                    <span class="data-label">Cajamarca</span>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">Provincia</span>
+                    <span class="data-label">Cajamarca</span>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <div style="display: grid;">
+                    <span class="header-label">Distrito</span>
+                    <span class="data-label">Cajamarca</span>
+                </div>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+            <mat-grid-tile [colspan]="2" class="grid">
+                <button mat-raised-button (click)="onUpdatePersonalData()" class="btnUpdateData">
+                    <mat-icon>autorenew</mat-icon>&nbsp;Actualizar tus datos
+                </button>
+            </mat-grid-tile>
+
+            <!-- <mat-grid-tile [colspan]="2" class="grid">
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar Partida Nacimiento</label>
+
+            </mat-grid-tile> -->
+        </mat-grid-list>
+
+        
+        <br>
+        <br>
+        <span class="text">Domicilio</span>
+        <br>
+        <br>
+
+
+
+        <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Departamento</mat-label>
+                    <mat-select>
+                        <mat-option value="1">Departamento1</mat-option>
+                        <mat-option value="2">Departamento2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Provincia</mat-label>
+                    <mat-select>
+                        <mat-option value="1">Provincia1</mat-option>
+                        <mat-option value="2">Provincia2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Distrito</mat-label>
+                    <mat-select>
+                        <mat-option value="1">Distrito1</mat-option>
+                        <mat-option value="2">Distrito2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo</mat-label>
+                    <mat-select>
+                        <mat-option value="1">Departamento</mat-option>
+                        <mat-option value="2">Casa</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="4" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Dirección</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Referencia</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>N°</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Dpt/ int</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Zona</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tel. Casa</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Celular</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+
+        <!-- <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Lib. Militar</mat-label>
+                    <input matInput>
+
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Autogenerado</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list> -->
+
+        <br>
+        <br>
+
+        <span class="text">Tiene discapacidad</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="40px" gutterSize="15px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group layout="row">
+                    <mat-radio-button value="1">Si &nbsp; </mat-radio-button> &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="3" rowHeight="5em" gutterSize="15px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Doc. Identidad del discap</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>N°. Resol. Ejecutiva</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <br>
+        <mat-grid-list cols="3" rowHeight="40px" gutterSize="20px">
+            <mat-grid-tile [colspan]="2" class="grid">
+                <span class="row">¿Padece de alguna enfermedad que implique ser conocido para recibir atención
+                    oportuna?</span>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group>
+                    <mat-radio-button value="1">Si</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+        <br>
+
+        <span class="text">Deportes</span>
+        <br>
+        <br>
+        <mat-grid-list cols="5" rowHeight="40px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid check">
+                <mat-checkbox class="example-margin">Futbol</mat-checkbox>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid check">
+                <mat-checkbox class="example-margin">Voley</mat-checkbox>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid check">
+                <mat-checkbox class="example-margin">Basketball</mat-checkbox>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid check">
+                <mat-checkbox class="example-margin">Natación</mat-checkbox>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid check">
+            </mat-grid-tile>
+
+
+        </mat-grid-list>
+        <mat-grid-list cols="5" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="2" class="grid ">
+                <mat-form-field appearance="outline">
+                    <mat-label>Otro deporte</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <br>
+        <br>
+
+        <span class="text">Pasatiempos</span>
+        <br>
+        <br>
+        <mat-grid-list cols="4" rowHeight="40px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid check">
+                <mat-checkbox class="example-margin">Lectura</mat-checkbox>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid check">
+                <mat-checkbox class="example-margin">Viajes de turismo</mat-checkbox>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid check">
+                <mat-checkbox class="example-margin">Manualidades</mat-checkbox>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid check">
+                <mat-checkbox class="example-margin">Técnicas de relajación</mat-checkbox>
+
+            </mat-grid-tile>
+
+        </mat-grid-list>
+        <mat-grid-list cols="5" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid ">
+                <mat-form-field appearance="outline">
+                    <mat-label>Otro pasatiempo</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <span class="text">Tallas de vestimenta y calzado</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Talla de camisa</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Talla de pantalón</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Talla de calzado</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Talla de vestido</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Talla de calzado</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+
+        <br>
+        <span class="text">Tipo de vivienda</span>
+        <br>
+        <br>
+        <mat-grid-list cols="5" rowHeight="40px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="4" class="grid">
+                <mat-radio-group>
+                    <mat-radio-button value="1">Propia</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="2">Alquilada</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="3">Alquiler/vivienda</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="4">Alojado</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+
+        <span class="text">Estado o situación civil</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="1" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group layout="row">
+                    <mat-radio-button value="1">Soltero &nbsp; </mat-radio-button> &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="2">Casado</mat-radio-button> &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="2">Divorciado</mat-radio-button> &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="2">Viudo</mat-radio-button> &nbsp; &nbsp; &nbsp;
+                    <mat-radio-button value="2">Conviviente</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+
+            <!-- <mat-grid-tile [colspan]="1" class="grid">
+
+                <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar Partida Matrimonio</label>
+
+
+            </mat-grid-tile> -->
+        </mat-grid-list>
+
+
+        <span class="text">¿Tienes hijos?</span>
+        <br>
+        <br>
+        <mat-grid-list cols="4" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group layout="row">
+                    <mat-radio-button value="1">Si &nbsp; </mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+
+                </mat-radio-group>
+
+
+            </mat-grid-tile>
+        </mat-grid-list>
+        <span class="text">Datos de los hijos</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Paterno</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Materno</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombres</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de nacimiento</mat-label>
+                    <input matInput [matDatepicker]="pickerr">
+                    <mat-datepicker-toggle matSuffix [for]="pickerr"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi="true" #pickerr></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Grado de instrucción</mat-label>
+                    <mat-select>
+
+                        <mat-option value="1">Licenciado</mat-option>
+                        <mat-option value="2">grado1</mat-option>
+                        <mat-option value="3">grado3</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Institución</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <span>Sexo</span>
+                <mat-radio-group layout="row">
+                    <mat-radio-button value="1">Masculino &nbsp; </mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Femenino</mat-radio-button>
+                </mat-radio-group>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Impedimento físico y/o mental</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <button mat-raised-button class="btnAdd">
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir otro hijo
+                </button>
+            </mat-grid-tile>
+
+            <!-- <mat-grid-tile [colspan]="1" class="grid">
+            <input style="display: none; "  class="ng-hide" id="input-file-id" multiple type="file" />
+                <label for="input-file-id" class="mat-raised-button btnChosseFile">Adjuntar Partida Nacimiento del hijo</label>
+            </mat-grid-tile>     -->
+
+
+        </mat-grid-list>
+    </div>
+
+
+    <!-- <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">Grabar</button>
+    </mat-dialog-actions> -->
+</form>

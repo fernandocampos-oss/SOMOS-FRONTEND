@@ -1,0 +1,57 @@
+<div class="sidenav">
+  <div class="sidenav__header">
+    <img src="assets/images/Logo-MiEsSalud-ColorHorizontal.png" alt="Essalud" class="sidenav__img2" />
+    <div class="sidenav__block"></div>
+  </div>
+  <div class="sidenav__body">
+    <div class="header-avatar">
+    <p class="ltitle">Bienvenido</p>
+    <img src="assets/images/avatar.png" alt="Essalud" class="sidenav__img" />
+      <b>{{ nombre | titlecase }}</b><br>
+      <h5 class="brand__description">{{ email }}</h5>
+      <mat-icon #tooltip="matTooltip" matTooltip="Perfil" class="cursor">account_box</mat-icon>
+      <mat-icon #tooltip="matTooltip" matTooltip="Cambiar contraseña" class="cursor">lock</mat-icon>
+      <h4 class="brand__description">Gerencia: {{ gerencia }}</h4>
+    </div>  
+    <mat-nav-list>
+      <ng-container>
+        <mat-list-item
+          *ngFor="let item of menuItemList"
+          routerLinkActive="active"
+          [routerLink]="['/' + item.path]"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon *ngIf ="!item.svg" mat-list-icon>{{ item.icon }}</mat-icon>
+          <mat-icon *ngIf ="item.svg" mat-list-icon svgIcon={{item.icon}} class="icon"></mat-icon>
+          <span class="option" matLine>{{ item.label }} </span>
+        </mat-list-item>
+      </ng-container>
+    </mat-nav-list>
+
+    <!-- <mat-sidenav-container class="example-container" autosize>
+      <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">
+        <mat-nav-list>
+          <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
+            <span class="full-width" *ngIf="isExpanded || isShowing">Legajo</span>
+            <mat-icon mat-list-icon>home</mat-icon>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
+            <a mat-list-item href="...">Ficha Personal</a>
+            <a mat-list-item href="...">Declaración Jurada</a>
+            <mat-list-item (click)="showSubSubMenu = !showSubSubMenu" class="parent">
+              <span class="full-width" *ngIf="isExpanded || isShowing">Nested Menu</span>
+              <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubSubMenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+            </mat-list-item>
+            <div class="submenu" [ngClass]="{'expanded' : showSubSubMenu}" *ngIf="isShowing || isExpanded">
+              <mat-list-item>SubSubmenu Item 1</mat-list-item>
+              <mat-list-item>SubSubmenu Item 2</mat-list-item>
+            </div>
+          </div>
+        </mat-nav-list>
+        <mat-nav-list>
+    </mat-nav-list>
+      </mat-sidenav>
+    </mat-sidenav-container> -->
+  </div>
+</div>

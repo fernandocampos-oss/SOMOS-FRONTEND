@@ -1,0 +1,50 @@
+<h2 matDialogTitle>Nuevo Requerimiento</h2>
+  <mat-dialog-content>
+    <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px" [formGroup]="form">
+        <mat-grid-tile [colspan]="6">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre del Requerimiento</mat-label>
+                <input matInput required formControlName="frmNombre"/>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="6">
+            <mat-form-field appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput formControlName="frmDescripcion"></textarea>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="6">
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo de Requerimiento</mat-label>
+                <mat-select required formControlName="frmTipo">
+                    <mat-option value="1">Tipo 1</mat-option>
+                    <mat-option value="2">Tipo 2</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3">
+            <mat-form-field appearance="outline">
+                <mat-label>Área Solicitante</mat-label>
+                <input matInput formControlName="frmAreaSolicitante" readonly value="{{zona}}"/>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3">
+            <mat-form-field appearance="outline">
+                <mat-label>Área Receptora</mat-label>
+                <mat-select formControlName="frmAreaReceptora">
+                    <mat-option value="1">SGSASS</mat-option>
+                    <mat-option value="2">SGSA</mat-option>
+                    <mat-option value="3">SGSI</mat-option>
+                    <mat-option value="4">SGOTI</mat-option>
+                    <mat-option value="5">SGC</mat-option>
+                    <mat-option value="6">OSI</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+</mat-grid-list>
+</mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close type="button">Cancelar</button>
+      <button mat-raised-button class="btnsave" type="submit">Grabar</button>
+    </mat-dialog-actions>
+      

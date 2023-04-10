@@ -1,0 +1,525 @@
+<div class="page">
+    <div class="matero-page-header">
+        <h1 class="matero-page-title"><mat-icon>contact_mail</mat-icon> Datos del Empleado<br>
+        <small class="mr-2">Podrás gestionar tus datos personales, familiares, educación, experiencia laboral y otros.</small><br>
+        <span class="back" (click)="back()" > <mat-icon>reply</mat-icon> Regresar</span>
+    </h1>
+    </div>
+    <div class="page__body">
+      <div class="card shadow">
+        <mat-tab-group class="tab-group">
+            <mat-tab style="padding: 5rem;">
+                <ng-template mat-tab-label>
+                    <mat-icon>record_voice_over</mat-icon>&nbsp;&nbsp;Datos Personales
+                </ng-template>
+                <form 
+                class="form"
+                autocomplete="off"
+                [formGroup]="form_dp"
+                >
+                    <div>
+                        <br>
+                        <br>
+                        <mat-grid-list cols="3" rowHeight="5em" gutterSize="15px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>DNI</mat-label>
+                                    <input matInput formControlName="dni" readonly="readonly">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>RUC</mat-label>
+                                    <input matInput formControlName="ruc">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+
+                        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Nombres</mat-label>
+                                    <input matInput required="required" formControlName="nombres" readonly="readonly">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Apellidos</mat-label>
+                                    <input matInput required="required" formControlName="apellidos" readonly="readonly">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Sexo</mat-label>
+                                    <mat-select formControlName="sexo">
+                                        <mat-option value="M">Masculino</mat-option>
+                                        <mat-option value="F">Femenino</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Fecha Nacimiento</mat-label>
+                                    <input
+                                        matInput
+                                        required
+                                        formControlName="fechaNacimiento"
+                                        [max]="maxFechaNacimiento"
+                                        [matDatepicker]="fechaNacimientoPicker"
+                                    />
+                                    <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="fechaNacimientoPicker"
+                                    ></mat-datepicker-toggle>
+                                    <mat-datepicker
+                                        #fechaNacimientoPicker
+                                        startView="multi-year"
+                                        [startAt]="startDate"
+                                    ></mat-datepicker>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput formControlName="email">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Celular</mat-label>
+                                    <input matInput formControlName="celular">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Teléfono Fijo</mat-label>
+                                    <input matInput formControlName="telefono_fijo">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <br>
+                        <br>
+                        <span class="text">Dirección de su DNI:</span>
+                        <br>
+                        <br>
+                        <mat-grid-list cols="1" rowHeight="64px" gutterSize="20px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="direccion_dni">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <br>
+                        <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+                            <mat-grid-tile [colspan]="2" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Departamento</mat-label>
+                                    <mat-select [formControl]="departmentCtrl">
+                                        <mat-option *ngFor="let item of departments" [value]="item.codigo">
+                                          {{ item.descripcion }}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="2" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Provincia</mat-label>
+                                    <mat-select [formControl]="provinceCtrl">
+                                        <mat-option *ngFor="let item of provinces" [value]="item.codigo">
+                                          {{ item.descripcion }}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="2" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Distrito</mat-label>
+                                    <mat-select formControlName="idUbigeo">
+                                        <mat-option value=""></mat-option>
+                                        <mat-option *ngFor="let item of districts" [value]="item.codigo">
+                                          {{ item.descripcion }}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <br>
+                        <br>
+                        <span class="text">Dirección Actual:</span>
+                        <br>
+                        <br>
+                        <mat-grid-list cols="1" rowHeight="64px" gutterSize="20px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="direccion_actual">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <br>
+                        <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+                            <mat-grid-tile [colspan]="2" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Departamento</mat-label>
+                                    <mat-select [formControl]="departmentCtrlAct">
+                                        <mat-option *ngFor="let item of departmentsAct" [value]="item.codigo">
+                                          {{ item.descripcion }}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="2" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Provincia</mat-label>
+                                    <mat-select [formControl]="provinceCtrlAct">
+                                        <mat-option *ngFor="let item of provincesAct" [value]="item.codigo">
+                                          {{ item.descripcion }}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="2" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Distrito</mat-label>
+                                    <mat-select formControlName="idUbigeoAct">
+                                        <mat-option value=""></mat-option>
+                                        <mat-option *ngFor="let item of districtsAct" [value]="item.codigo">
+                                          {{ item.descripcion }}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="2" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Tipo</mat-label>
+                                    <mat-select formControlName="tipo_direccion">
+                                        <mat-option value="1">Departamento</mat-option>
+                                        <mat-option value="2">Casa</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            <mat-grid-tile [colspan]="2" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Condición</mat-label>
+                                    <mat-select formControlName="condicion_direccion">
+                                        <mat-option value="1">Alquilada</mat-option>
+                                        <mat-option value="2">Propia</mat-option>
+                                        <mat-option value="3">Alquiler/Vivienda</mat-option>
+                                        <mat-option value="4">Alojado</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <br>
+                        <br>
+                        <mat-dialog-actions align="end">
+                            <button mat-raised-button color="primary" type="submit">Actualizar Datos</button>
+                        </mat-dialog-actions>
+                    </div>
+                </form>
+            </mat-tab>
+            <mat-tab style="padding: 5rem;">
+                <ng-template mat-tab-label>
+                    <mat-icon>groups</mat-icon>&nbsp;&nbsp;Datos Familiares
+                </ng-template>
+                <form [formGroup]="form_df">
+                    <div>
+                        <br>
+                        <br>
+                        <span>Número de Personas que dependen economicamente de Ud.</span>
+                        <mat-grid-list cols="6" rowHeight="5em" gutterSize="15px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <input type="number" matInput formControlName="dependientes">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <mat-grid-list cols="6" rowHeight="5em" gutterSize="15px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Estado Civil</mat-label>
+                                    <mat-select formControlName="estado_civil" (selectionChange)="selectedEstadoCivil($event)">
+                                        <mat-option value="1">Soltero/a</mat-option>
+                                        <mat-option value="2">Casado/a</mat-option>
+                                        <mat-option value="3">Conviviente</mat-option>
+                                        <mat-option value="4">Divorciado/a</mat-option>
+                                        <mat-option value="5">Viudo/a</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <mat-card class="card-detalle" id="detalle-pareja" *ngIf="estadoCivilDisb">
+                            <mat-card-subtitle>Ingrese los datos de su PAREJA</mat-card-subtitle>
+                            <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>DNI</mat-label>
+                                        <input matInput formControlName="dni_pareja">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Nombres</mat-label>
+                                        <input matInput formControlName="nombres_pareja">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="2" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Apellido Paterno</mat-label>
+                                        <input matInput formControlName="paterno_pareja">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="2" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Apellido Materno</mat-label>
+                                        <input matInput formControlName="materno_pareja">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </mat-card>
+                        <br>
+                        <mat-grid-list cols="6" rowHeight="5em" gutterSize="15px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>¿Su Padre vive?</mat-label>
+                                    <mat-select formControlName="padre_vive" (selectionChange)="selectedPadre($event)">
+                                        <mat-option value="1">SI</mat-option>
+                                        <mat-option value="2">NO</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <mat-card class="card-detalle" id="detalle-padre" *ngIf="padreDisb">
+                            <mat-card-subtitle>Ingrese los datos de su PADRE</mat-card-subtitle>
+                            <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>DNI</mat-label>
+                                        <input matInput formControlName="dni_padre">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Nombres</mat-label>
+                                        <input matInput formControlName="nombres_padre">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="2" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Apellido Paterno</mat-label>
+                                        <input matInput formControlName="paterno_padre">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="2" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Apellido Materno</mat-label>
+                                        <input matInput formControlName="materno_padre">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </mat-card>
+                        <br>
+                        <mat-grid-list cols="6" rowHeight="5em" gutterSize="15px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>¿Su Madre vive?</mat-label>
+                                    <mat-select formControlName="madre_vive" (selectionChange)="selectedMadre($event)">
+                                        <mat-option value="1">SI</mat-option>
+                                        <mat-option value="2">NO</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <mat-card class="card-detalle" id="detalle-madre" *ngIf="madreDisb">
+                            <mat-card-subtitle>Ingrese los datos de su MADRE:</mat-card-subtitle>
+                            <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>DNI</mat-label>
+                                        <input matInput formControlName="dni_madre">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="1" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Nombres</mat-label>
+                                        <input matInput formControlName="nombres_madre">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="2" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Apellido Paterno</mat-label>
+                                        <input matInput formControlName="paterno_madre">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile [colspan]="2" class="grid">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Apellido Materno</mat-label>
+                                        <input matInput formControlName="materno_madre">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </mat-card>
+                        <br>
+                        <mat-grid-list cols="6" rowHeight="5em" gutterSize="15px">
+                            <mat-grid-tile [colspan]="1" class="grid">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>¿Tiene hijos/as?</mat-label>
+                                    <mat-select formControlName="tiene_hijos" (selectionChange)="selectedHijos($event)">
+                                        <mat-option value="1">SI</mat-option>
+                                        <mat-option value="2">NO</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <app-crud *ngIf="hijosDisb"
+                            [data]="usuarioList"
+                            [columns]="hijosColumns"
+                            (create)="onCreateHijo()"
+                            [showEdit]="true"
+                            [showDelete]="true"
+                        ></app-crud>
+                        <br>
+                        <br>
+                        <mat-dialog-actions align="end">
+                            <button mat-raised-button color="primary" class="btnUpdateData" type="submit">Actualizar Datos</button>
+                        </mat-dialog-actions>
+                    </div>
+                </form>
+            </mat-tab>
+            <mat-tab style="padding: 5rem;">
+                <ng-template mat-tab-label>
+                    <mat-icon>school</mat-icon>&nbsp;&nbsp;Educación
+                </ng-template>
+                    <br>
+                    <br>
+                    <span class="text">Formación Académica:</span>
+                    <app-crud
+                        [data]="usuarioList"
+                        [columns]="educacionColumns"
+                        (create)="onCreateEducacion()"
+                        [showEdit]="true"
+                        [showDelete]="true"
+                    ></app-crud>
+                    <br>
+                    <br>
+                    <span class="text">¿Qué idiomas habla?:</span>
+                    <app-crud
+                        [data]="usuarioList"
+                        [columns]="idiomaColumns"
+                        (create)="onCreateIdioma()"
+                        [showEdit]="true"
+                        [showDelete]="true"
+                    ></app-crud>
+            </mat-tab>
+            <mat-tab style="padding: 5rem;">
+                <ng-template mat-tab-label>
+                    <mat-icon>work</mat-icon>&nbsp;&nbsp;Experiencia Laboral
+                </ng-template>
+                <br>
+                <br>    
+                <app-crud
+                    [data]="usuarioList"
+                    [columns]="experienciaColumns"
+                    (create)="onCreateExperiencia()"
+                    [showEdit]="true"
+                    [showDelete]="true"
+                ></app-crud>
+                <br>
+                <br>
+            </mat-tab>
+            <mat-tab style="padding: 5rem;">
+                <ng-template mat-tab-label>
+                    <mat-icon>person_pin</mat-icon>&nbsp;&nbsp;Otros
+                </ng-template>
+                <form [formGroup]="form_otros">
+                    <div>
+                    <br><br>
+                    <mat-grid-list cols="6" rowHeight="5em" gutterSize="15px">
+                        <mat-grid-tile [colspan]="1" class="grid">
+                            <mat-form-field appearance="outline">
+                                <mat-label>¿Tiene alguna discapacidad?</mat-label>
+                                <mat-select formControlName="discapacidad" >
+                                    <mat-option value="1">SI</mat-option>
+                                    <mat-option value="2">NO</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <br>
+                    <span>¿Padece de alguna enfermedad que implique ser conocido para recibir atención oportuna?</span>
+                    <mat-grid-list cols="6" rowHeight="5em" gutterSize="15px">
+                        <mat-grid-tile [colspan]="1" class="grid">
+                            <mat-form-field appearance="outline">
+                                <mat-select formControlName="enfermedad" (selectionChange)="selectedEnfermedad($event)">
+                                    <mat-option value="1">SI</mat-option>
+                                    <mat-option value="2">NO</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="2" class="grid" *ngIf="enfermedadDisb">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Indique enfermedad</mat-label>
+                                <input matInput formControlName="enfermedad_detalle">
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <br>
+                    <span>¿Recibe alguna pensión actualmente?</span>
+                    <mat-grid-list cols="6" rowHeight="5em" gutterSize="15px">
+                        <mat-grid-tile [colspan]="1" class="grid">
+                            <mat-form-field appearance="outline">
+                                <mat-select formControlName="pension" (selectionChange)="selectedPension($event)">
+                                    <mat-option value="1">SI</mat-option>
+                                    <mat-option value="2">NO</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="2" class="grid" *ngIf="pensionDisb">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Indique el concepto</mat-label>
+                                <input matInput formControlName="pension_concepto">
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <br>
+                    <span class="text">Tallas de Vestimenta y Calzado:</span>
+                    <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+                        <mat-grid-tile [colspan]="1" class="grid">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Talla de Camisa</mat-label>
+                                <input matInput formControlName="talla_camisa">
+                            </mat-form-field>
+                        </mat-grid-tile>
+            
+                        <mat-grid-tile [colspan]="1" class="grid">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Talla de Pantalón</mat-label>
+                                <input matInput formControlName="talla_pantalon">
+                            </mat-form-field>
+                        </mat-grid-tile>
+                        
+                        <mat-grid-tile [colspan]="1" class="grid">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Talla de Vestido</mat-label>
+                                <input matInput formControlName="talla_vestido">
+                            </mat-form-field>
+                        </mat-grid-tile>
+                        <mat-grid-tile [colspan]="1" class="grid">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Talla de Calzado</mat-label>
+                                <input matInput formControlName="talla_calzado">
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <br>
+                        <br>
+                        <mat-dialog-actions align="end">
+                            <button mat-raised-button color="primary" type="submit">Actualizar Datos</button>
+                        </mat-dialog-actions>
+                    </div>
+                </form>
+            </mat-tab>
+          </mat-tab-group>
+    </div>
+</div>
+</div>

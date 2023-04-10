@@ -1,0 +1,73 @@
+
+
+.auth {
+  // text-align: center;
+  // min-width: 1130px;
+  // max-height: 1193px;
+  &__subtitle {
+    font-weight: 400;
+    //text-align: start;
+  }
+
+  &__group {
+    display: grid;
+  }
+}
+
+// .center{
+  
+//   display: block !important;
+// }
+
+// .text-center {
+//   color: #008AD1 !important;
+// }
+
+
+.btnColor{
+  align-content: center;
+  background-color:  var(--color-MiEssalud);
+  color: white;
+//   width: 495.92px;
+// height: 46.77px;
+}
+
+
+.btnInicio{
+  align-content: center;
+  background: #FFFFFF;
+  border: 2px solid #009EAD;
+//   width: 495.92px;
+// height: 46.77px;
+border-radius: 4px;
+}
+
+// form {
+//   mat-dialog-content {
+//     display: grid;
+
+//     @include sm {
+//       grid-template-columns: 1fr 1fr;
+//       column-gap: 1rem;
+//     }
+//   }
+
+
+// }
+
+
+.btnColor{
+  background-color:  var(--color-MiEssalud);
+  color: white;
+}
+
+.image {
+  // position: absolute;
+width: 220px;
+//height: 200px;
+// left: 593px;
+// top: 230px;
+margin-left: auto;
+margin-right: auto;
+display: block;
+}

@@ -1,0 +1,23 @@
+export class AppRoute {
+  static readonly AUTH = 'auth';
+  static readonly LOGIN = 'login';
+  static readonly HOME = 'home';
+  static readonly CAMBIAR_CLAVE = 'cambiar-clave';
+  static readonly CONFIRMAR_CAMBIO_CLAVE = 'confirmar-cambio-clave';
+  static readonly PANEL_MARCACION = 'panel-marcacion';
+  static readonly MANTENIMIENTOS = 'mantenimientos';
+  static readonly REGISTRO = 'registro';
+  static readonly NOT_FOUND = '404';
+
+  static readonly MIS_MARCACIONES = 'mis-marcaciones';
+  static readonly MARCACION_TRABAJADOR = 'marcacion-trabajador';
+  static readonly SETTINGS = 'configuraciones';
+  static readonly GESTION_RENDIMIENTO = 'gestion-rendimiento';
+  static readonly DATOS_PERSONALES ='datos-personales';
+  static readonly CONTROL_ACCESO = 'control-acceso';
+  static readonly LEGAJO = 'legajo';
+  static readonly DDJJ_CONFLICTO = 'ddjj-conflicto-interes';
+  static readonly DDJJ_CONFLICTO_OTRO = 'dj-conflicto-interes';
+  static readonly ADJUNTAR_DOCUMENTOS = 'adjuntar-documentos';
+  static readonly MIS_REQUERIMIENTOS = 'mis-requerimientos';
+}

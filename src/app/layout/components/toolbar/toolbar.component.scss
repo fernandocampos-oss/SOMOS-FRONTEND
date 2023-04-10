@@ -1,0 +1,23 @@
+:host {
+  z-index: 2;
+}
+
+.fecha{
+  font-size: 15px;
+}
+
+.toolbar {
+ 
+  &__spacer {
+    flex: 1 1 auto;
+  }
+  //background: white !important;
+  background-color: #008ad1 !important;
+  color: white;
+
+  &__image {
+    display: block;
+    // height: 5rem;
+    width: 15rem;
+  }
+}

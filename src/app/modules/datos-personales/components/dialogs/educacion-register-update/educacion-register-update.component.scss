@@ -1,0 +1,40 @@
+@import 'base/breakpoints';
+
+form {
+  mat-dialog-content {
+    display: grid;
+    
+    @include md {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2rem;
+    }
+  }
+
+  mat-dialog-container {
+    border-radius: 15px !important;
+  }
+
+  mat-dialog-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+  }
+}
+
+.btnsave {
+  //size: 24px;
+  color: white;
+  background: #009fad;
+  border-radius: 4px;
+}
+
+.btnCancel {
+  background: #ffffff;
+  border: 2px solid #009ead;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.icon {
+  width: 15px;
+}

@@ -1,0 +1,52 @@
+<div class="page">
+  <!-- <div class="page__header">
+    <h1 class="page__title">Configuraciones <span><mat-icon >settings</mat-icon>&nbsp;Aquí podrá gestionar tus programaciones y marcaciones</span></h1>
+  </div> -->
+  <div class="matero-page-header">
+    <h1 class="matero-page-title"><mat-icon >settings</mat-icon> Configuraciones<br>
+    <small class="mr-2">Aquí podrá gestionar tus programaciones y marcaciones.</small><br>
+    </h1>
+  </div>
+  <div class="page__body">
+    <div class="card shadow">
+
+      <mat-tab-group>
+        <mat-tab label="Programaciones" style="padding: 5rem;">
+          <app-crud
+            [data]="programacionList"
+            [columns]="programacionColumns"
+            [showEdit]="true"
+            [showDelete]="true"
+            [showDownload]="true"
+            [showFilter]="true"
+            [filterEditFunction]="filterEditFunction"
+            [filterDownloadFunction]="filterDownloadFunction"
+            (create)="onCreateProgramacion()"
+            (edit)="onEditProgramacion($event)"
+            (download)="onDownload($event)"
+            (delete)="onDeleteProgramacion($event)"
+          ></app-crud>
+        </mat-tab>
+        <mat-tab label="Marcaciones">
+          <app-crud
+            [data]="marcacionList"
+            [columns]="marcacionColumns"
+            [showEdit]="true"
+            [showDelete]="true"
+            [showExport]="true"
+            [showFilter]="true"
+            (create)="onCreateMarcacion()"
+            (edit)="onEditMarcacion($event)"
+            (export)="onExport()"
+            (delete)="onDeleteMarcacion($event)"
+          ></app-crud>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    </div>
+  </div>
+
+
+
+
+

@@ -1,0 +1,76 @@
+<form>
+    <h1 matDialogTitle>Datos personales</h1>
+    <mat-dialog-content>
+        <mat-form-field appearance="outline">
+            <mat-label>Nombres</mat-label>
+            <input matInput required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Apellido Paterno</mat-label>
+            <input matInput />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Apellido Materno</mat-label>
+            <input matInput />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Grupo sanguineo</mat-label>
+            <input matInput />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Sexo</mat-label>
+            <mat-select required>
+                <mat-option>Masculino</mat-option>
+                <mat-option>Femenino</mat-option>
+            </mat-select>
+
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Tipo de documento</mat-label>
+            <mat-select required>
+                <mat-option>DNI</mat-option>
+                <mat-option>Pasaporte</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>N° de documento</mat-label>
+            <input matInput />
+        </mat-form-field>
+
+        <br>
+        <h1 matDialogTitle class="w-100">Lugar de nacimiento</h1>
+        <br>
+        
+        &nbsp;
+        &nbsp;
+        <mat-form-field appearance="outline">
+            <mat-label>País</mat-label>
+            <input matInput />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Departamento</mat-label>
+            <input matInput />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Distrito</mat-label>
+            <input matInput />
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close  class="btnCancel" type="button"><mat-icon class="icon" matPrefix  svgIcon="cancel"></mat-icon>&nbsp; Cancelar</button>
+        <button mat-raised-button class="btnsave" type="submit"> <mat-icon>autorenew</mat-icon>&nbsp; Actualizar</button>
+    </mat-dialog-actions>
+</form>

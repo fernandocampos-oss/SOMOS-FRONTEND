@@ -1,0 +1,486 @@
+<form>
+    <div>
+        <span class="texto">N° de personas que dependen economicamente del trabajador</span>
+        <br>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>N°</mat-label>
+                    <input matInput type="number" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                
+            </mat-grid-tile>
+          
+        
+        </mat-grid-list>
+        <br>
+
+        <span class="text">Tiene conyuge o conviviente</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="40px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group>
+                    <mat-radio-button value="1">Conyuge</mat-radio-button> &nbsp;
+                    <mat-radio-button value="2">Conviviente</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+        
+        </mat-grid-list>
+
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+        
+            
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Paterno</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Materno</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombres</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Ingreso Mensual S/.</mat-label>
+                    <input matInput required />
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <br>
+        
+        <span class="text">Datos del padre del trabajador</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Paterno</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Materno</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombres</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <span>¿Vive?</span>
+        <br>
+        <br>
+        <mat-grid-list cols="4" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group>
+                    <mat-radio-button value="1">Si &nbsp;</mat-radio-button> &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+               
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+               
+            </mat-grid-tile>
+            
+        </mat-grid-list>
+
+        <span class="text">Datos de la madre del trabajador</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Paterno</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Materno</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombres</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <span>¿Vive?</span>
+        <br>
+        <br>
+        <mat-grid-list cols="4" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group>
+                    <mat-radio-button value="1">Si &nbsp;</mat-radio-button> &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+               
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+               
+            </mat-grid-tile>
+            
+        </mat-grid-list>
+
+
+        <mat-grid-list cols="4" rowHeight="60px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="4" class="grid">
+                <span class="texto">Tiene parentesco por consanguinidad o conyuge con algún servidor, funcionario o directivo del seguro social de salud hasta el 4° grado de consanguinidad o 2° afinidad </span>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-radio-group>
+                    <mat-radio-button value="1">Si &nbsp;</mat-radio-button> &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+        <span class="text">Datos del parentesco</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="4" rowHeight="64px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Grupo</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nivel</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cargo</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Ap. Paterno</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Ap. Materno</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombres</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Parentesco</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Dependencia</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <button mat-raised-button class="btnAdd"  >
+                    <mat-icon>add_circle</mat-icon>&nbsp;Añadir parentesco</button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <span class="text">Nombre y domicilio de una persona con quien comunicarse en caso de emergencia</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Paterno</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido Materno</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombres</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <br>
+        <br>
+        <span class="text">Domicilio</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="6" rowHeight="64px" gutterSize="20px">
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Departamento</mat-label>
+                    <mat-select>
+                        <mat-option value="1">Departamento1</mat-option>
+                        <mat-option value="2">Departamento2</mat-option>
+                        <mat-option value="3">Departamento3</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Provincia</mat-label>
+                    <mat-select>
+                        <mat-option value="1">Provincia1</mat-option>
+                        <mat-option value="2">Provincia2</mat-option>
+                        <mat-option value="3">Provincia3</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Distrito</mat-label>
+                    <mat-select>
+                        <mat-option value="1">Distrito1</mat-option>
+                        <mat-option value="2">Distrito2</mat-option>
+                        <mat-option value="3">Distrito3</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="4" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Dirección</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Referencia</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>N°</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Dpto/int</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Zona</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tel. Casa</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Celular</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <span class="text">Condición y ubicación laboral</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="64px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Condición laboral</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Situación del cargo</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Grupo ocupacional</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nivel</mat-label>
+                    <mat-select>
+                        <mat-option value="1">Ejemplo1</mat-option>
+                        <mat-option value="2">Ejemplo2</mat-option>
+                        <mat-option value="3">Ejemplo3</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cargo</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de ingreso a ESSALUD</mat-label>
+                    <input matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi="true" #picker></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Dependencia donde labora</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Régimen de pensiones</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Si pertenece al régimen privado de pensiones indicar AFP</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>N° de afiliado</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+
+        <br>
+
+        <span class="text">¿Recibe pensión actualmente? </span>
+        <br>
+        <br>
+        <mat-grid-list cols="3" rowHeight="40px" gutterSize="20px">
+
+            <mat-grid-tile [colspan]="1" class="grid center">
+                <mat-radio-group>
+                    <mat-radio-button value="1">Si &nbsp;</mat-radio-button> &nbsp;
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" class="grid">
+              
+            </mat-grid-tile>
+         
+        </mat-grid-list>
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Concepto</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <br>
+        <br>
+        <span class="text">Funciones especificas que desempeña en la dependencia donde labora(las 3 funciones más representativas)</span>
+        <br>
+        <br>
+
+        <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Función N° 1</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Función N° 2</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Función N° 3</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+    </div>
+</form>

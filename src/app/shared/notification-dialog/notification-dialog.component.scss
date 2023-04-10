@@ -1,0 +1,13 @@
+.notification {
+  &__title {
+    color: var(--color-primary);
+  }
+
+  &__button {
+    width: 100%;
+  }
+}
+
+.outline {
+  color: var(--color-primary);
+}

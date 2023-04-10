@@ -1,0 +1,95 @@
+@import 'base/breakpoints';
+
+form {
+  padding-top: 10px;
+
+  textarea {
+    resize: none;
+  }
+
+  .text {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19.35px;
+    color: #008ad1;
+  }
+}
+
+.tab-group{
+  height: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.grid > ::ng-deep .mat-grid-tile-content {
+  display: block !important;
+  //vertical-align: middle !important;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+
+.option {
+  display: flex !important;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.row {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 19px;
+  color: #666666;
+}
+
+.subtitle {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 26px;
+
+  color: #666666;
+}
+
+.btnAdd {
+  size: 24px;
+  color: white;
+  background: #009ead;
+  border-radius: 4px;
+}
+
+.btnUpdateData {
+  background: #008ad1;
+  color: white;
+  border-radius: 5px;
+}
+
+.header-label {
+  color: #a4a4a4;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 17px;
+}
+
+.data-label {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 17px;
+  color: #008bd2;
+}
+
+
+.btnChosseFile{
+  background: #008BD2;
+  border-radius: 3px;
+  color: white;
+  }
+
+.card-detalle{
+  border: 1px solid #cdcdcd;
+}
