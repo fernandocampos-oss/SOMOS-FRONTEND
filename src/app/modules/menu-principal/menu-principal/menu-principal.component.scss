@@ -86,14 +86,28 @@ span{
   background: #dff1f4;
   border-radius: 11px;
   display: grid;
-}
-.box2 span{
-  color:#2b9ed8;
+  span{
+    color:#2b9ed8;
+  }
 }
 .image {
   width: 74px;
   height: 84px;
   margin: 15px;
+}
+.imgCuadro{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+  height: 300px;
+}
+.imgCuadro_Msg{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  height: 300px;
 }
 .next {
   width: 25px;
