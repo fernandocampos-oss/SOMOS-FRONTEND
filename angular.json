@@ -19,7 +19,7 @@
           "options": {
             "allowedCommonJsDependencies": ["crypto-js", "qrcode"],
             "baseHref": "/miessalud/",
-            "outputPath": "dist/miessalud",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
