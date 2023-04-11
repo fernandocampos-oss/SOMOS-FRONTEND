@@ -11,7 +11,7 @@ pipeline {
 
     tools {
         'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker-tool'
-        nodejs 'nodejs-tool'
+        nodejs 'nodejs-tool-16'
     }
 
     environment {

@@ -14,7 +14,7 @@ const data: MenuItem[] = [
   {
       path: AppRoute.MIS_MARCACIONES,
       icon: 'how_to_reg',
-      label: 'Registro Asistencia',
+      label: 'Mis Marcaciones',
   },
   {
       path: AppRoute.MARCACION_TRABAJADOR,

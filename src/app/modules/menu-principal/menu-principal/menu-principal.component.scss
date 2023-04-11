@@ -82,12 +82,34 @@ span{
 .box2 {
   margin: 8px;
   height: 362px;
-  cursor: pointer;
   background: #dff1f4;
   border-radius: 11px;
   display: grid;
   span{
     color:#2b9ed8;
+  }
+}
+.box2-1 {
+  margin: 8px;
+  height: 124px;
+  background: #dff1f4;
+  border-radius: 11px;
+  display: grid;
+  align-content: center;
+}
+.box2-2 {
+  margin: 8px;
+  height: 84px;
+  width: 100%;
+  align-content: center;
+  background: #009fad;
+  border-radius: 11px;
+  padding: 5px;
+  span{
+    font-size: 20px;
+    padding-top: 0px;
+    width: 100%;
+    text-align: center;
   }
 }
 .image {
