@@ -19,6 +19,7 @@ import { HijosRegisterUpdateComponent } from './components/dialogs/hijos-registe
 import { EducacionRegisterUpdateComponent } from './components/dialogs/educacion-register-update/educacion-register-update.component';
 import { IdiomaRegisterUpdateComponent } from './components/dialogs/idioma-register-update/idioma-register-update.component';
 import { ExperienciaRegisterUpdateComponent } from './components/dialogs/experiencia-register-update/experiencia-register-update.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ExperienciaRegisterUpdateComponent } from './components/dialogs/experie
     CommonModule,
     DatosPersonalesRoutingModule,
     MaterialModule,
+    MatIconModule,
     ReactiveFormsModule,
     CoreModule,
     SharedModule,

@@ -9,14 +9,24 @@ import {
   MarcacionSearchRequest,
   MarcacionSearchResponse,
   MarcacionTrabajadorRegister,
+  MarcacionesRequest,
+  MarcacionesResponse,
 } from '../models';
 
-const URL_BASE = `${environment.apiUrl}/marcaciones`;
+const URL_BASE = `${environment.apiUrlMarcacion}`;
 
 @Injectable({ providedIn: 'root' })
 export class MarcacionService {
   constructor(private _httpClient: HttpClient) {}
 
+  searchMarcaciones(model: MarcacionesRequest){
+    // const params = new HttpParams({fromString: 'desde=01/03/2023', fromString: })
+
+    return this._httpClient.get<MarcacionesResponse[]>(`${URL_BASE}/lista?desde=${model.desde}&hasta=${model.hasta}&codigo=${model.codigo}`);
+  }
+
+
+  // Antes del cambio
   search(model: Partial<MarcacionSearchRequest>) {
     return this._search(URL_BASE, model);
   }

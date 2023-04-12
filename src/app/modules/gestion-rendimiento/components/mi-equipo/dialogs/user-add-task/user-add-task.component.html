@@ -5,8 +5,8 @@
       <mat-grid-tile [colspan]="1">
         <mat-form-field appearance="outline">
           <mat-label>Fecha Inicio</mat-label>
-          <input matInput required formControlName="frmFecInicio" [matDatepicker]="picker1" readonly/>
-          <mat-datepicker-toggle matSuffix [for]="picker1" [disabled]="auto==true?true:false"></mat-datepicker-toggle>
+          <input matInput required formControlName="frmFecInicio" [matDatepicker]="picker1" />
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
       </mat-grid-tile>

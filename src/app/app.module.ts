@@ -28,6 +28,7 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from '@material';
 
 import { AppConfig } from '@core/configs';
+import { MatIconModule } from '@angular/material/icon';
 
 registerLocaleData(LocaleEsPe);
 
@@ -44,6 +45,7 @@ registerLocaleData(LocaleEsPe);
     AppRoutingModule,
     ToastrModule.forRoot(AppConfig.TOAST_CONFIG),
     MaterialModule,
+    MatIconModule,
     NgxSpinnerModule,
     ZXingScannerModule,
     LayoutModule,

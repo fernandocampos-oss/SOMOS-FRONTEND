@@ -9,6 +9,33 @@
   </div>
   <div class="page__body">
     <div class="card shadow">
+      <form [formGroup]="form" (ngSubmit)="Actualizar()">
+        <mat-dialog-content>
+          <mat-grid-list cols="3" rowHeight="100px" gutterSize="6px">
+            <mat-grid-tile [colspan]="1">
+              <mat-form-field appearance="outline">
+                <mat-label>Mes</mat-label>
+                <mat-select [(value)]="mesElegido" formControlName="frmMesElegido">
+                    <mat-option *ngFor="let mes of meses" [value]="mes.num">{{mes.descripcion}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1">
+              <mat-form-field appearance="outline">
+                <mat-label>Año</mat-label>
+                <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
+                    <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1">
+            <mat-dialog-actions align="end">
+              <button mat-raised-button color="primary" type="submit">Buscar</button>
+            </mat-dialog-actions>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-dialog-content>
+      </form>
       <app-table [data]="data" [columns]="columns"> </app-table>
     </div>
   </div>

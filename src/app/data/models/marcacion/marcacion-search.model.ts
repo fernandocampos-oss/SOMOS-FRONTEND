@@ -15,3 +15,20 @@ export class MarcacionSearchResponse {
   sede: string;
   zona: string;
 }
+
+export class MarcacionesRequest{
+  desde: string;
+  hasta: string;
+  codigo: string;
+}
+export interface MarcacionesResponse{
+  codplanilla: string;
+  nombrepersonal: string;
+  dni: string;
+  fecha: string;
+  hora: string;
+  terminalmarca: string;
+  descripcion: string;
+  lectora: string;
+  sede: string;  
+}
