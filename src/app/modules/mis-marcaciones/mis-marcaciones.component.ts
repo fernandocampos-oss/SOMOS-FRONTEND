@@ -4,6 +4,7 @@ import { ColumnDef} from '@shared/table/table.component';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { MarcacionesRequest, UserSession } from '@data/models';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // interface Mes{
 //   descripcion: string;
@@ -91,7 +92,9 @@ export class MisMarcacionesComponent implements OnInit {
   constructor(private _marcacionService: MarcacionService,
               private _fb: FormBuilder,
               private _authService: AuthService,
-              private _userService: UsuarioService,) {}
+              private _userService: UsuarioService,
+              private _router: Router,
+              private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.user = this._authService.getUserSession();
@@ -125,5 +128,8 @@ export class MisMarcacionesComponent implements OnInit {
   getUltimoDiaMes(){
     this.lastDayOfMonth =new Date(this.form.value.frmAnioElegido,this.form.value.frmMesElegido, 0);
     return this.lastDayOfMonth.getUTCDate();
+  }
+  back(){
+    this._router.navigate([''], { relativeTo: this.route });
   }
 }

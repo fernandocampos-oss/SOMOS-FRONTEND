@@ -6,26 +6,26 @@ import { MenuItem } from '@data/models';
 import { AuthService } from '@data/services';
 
 const data: MenuItem[] = [
-  {
-      path: AppRoute.DATOS_PERSONALES,
-      icon: 'record_voice_over',
-      label: 'Actualización de datos',
-  },
+  // {
+  //     path: AppRoute.DATOS_PERSONALES,
+  //     icon: 'record_voice_over',
+  //     label: 'Actualización de datos',
+  // },
   {
       path: AppRoute.MIS_MARCACIONES,
       icon: 'how_to_reg',
       label: 'Mis Marcaciones',
   },
-  {
-      path: AppRoute.MARCACION_TRABAJADOR,
-      icon: 'airplanemode_active',
-      label: 'Mis vacaciones',
-  },
-  {
-      path: AppRoute.MIS_REQUERIMIENTOS,
-      icon: 'payment',
-      label: 'Mis boletas de pago',
-  },
+  // {
+  //     path: AppRoute.MARCACION_TRABAJADOR,
+  //     icon: 'airplanemode_active',
+  //     label: 'Mis vacaciones',
+  // },
+  // {
+  //     path: AppRoute.MIS_REQUERIMIENTOS,
+  //     icon: 'payment',
+  //     label: 'Mis boletas de pago',
+  // },
   // // {
   // //   path: '',
   // //   icon: 'contact_mail',
@@ -54,25 +54,25 @@ const data: MenuItem[] = [
   // //   label: 'Panel de Marcación',
   // //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.CONTROL_ACCESO],
   // // },
-  // // {
-  // //   path: AppRoute.MANTENIMIENTOS,
-  // //   icon: 'widgets',
-  // //   label: 'Mantenimientos',
-  // //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
-  // // },
+  // {
+  //   path: AppRoute.MANTENIMIENTOS,
+  //   icon: 'widgets',
+  //   label: 'Mantenimientos',
+  //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+  // },
   // // {
   // //   path: AppRoute.SETTINGS,
   // //   icon: 'settings',
   // //   label: 'Configuraciones',
   // //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   // // },
-  {
-     path: AppRoute.GESTION_RENDIMIENTO,
-     icon: 'remote_menu',
-     svg : true,
-     label: 'Gestion del Requerimiento',
-     roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.TRABAJADOR],
-  },
+  // {
+  //    path: AppRoute.GESTION_RENDIMIENTO,
+  //    icon: 'remote_menu',
+  //    svg : true,
+  //    label: 'Gestion del Requerimiento',
+  //    roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.TRABAJADOR],
+  // },
   // // {
   // //   path : AppRoute.DDJJ_CONFLICTO,
   // //   icon : 'ddjj',

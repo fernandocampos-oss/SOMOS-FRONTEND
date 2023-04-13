@@ -1,7 +1,10 @@
 .column1 {
     float: left;
-    width: 25%;
+    width: 32%;
     padding: 4px;
+    position: webkit-sticky;
+    position: sticky;
+    top: 0;
 }
 .row:after {
   content: "";
@@ -30,7 +33,7 @@ span{
 }
 .column2 {
   float: left;
-  width: 50%;
+  width: 68%;
   padding: 4px;
 }  
 .box1-1 {
@@ -81,10 +84,14 @@ span{
 }
 .box2 {
   margin: 8px;
-  height: 362px;
+  height: 100%;
+  padding-bottom: 2%;
   background: #dff1f4;
   border-radius: 11px;
   display: grid;
+  .body{
+    display: contents;
+  }
   span{
     color:#2b9ed8;
   }
@@ -121,15 +128,17 @@ span{
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 75%;
-  height: 300px;
+  width: 60%;
+  padding: 10px;
+  height: 100%;
 }
 .imgCuadro_Msg{
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
-  height: 300px;
+  width: 60%;
+  padding: 10px;
+  height: 100%;
 }
 .next {
   width: 25px;

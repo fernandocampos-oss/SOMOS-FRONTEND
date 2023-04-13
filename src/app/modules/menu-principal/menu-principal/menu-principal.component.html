@@ -1,6 +1,30 @@
 <div class="row">
+  <div class="column2">
+    <div class="box2" >
+      <div class="header">
+        <span>Mensaje del día</span>    
+      </div>
+      <div class="body">
+        <!-- Aqui debe estar la ruta de donde se conseguirán las imagenes -->
+        <img src="assets/images/msg_example.png" class="imgCuadro_Msg" alt="Logotipo" />
+      </div>
+    </div>
+    <div class="box2" >
+      <div class="header">
+          <span>Informativo</span>    
+      </div>
+      <div class="body">
+        <!-- Aqui debe estar la ruta de donde se conseguirán las imagenes -->
+        <img src="assets/images/Taller_de_productividad_1.jpg" class="imgCuadro" alt="Logotipo" />
+        <img src="assets/images/taller_1_lowres.png" class="imgCuadro" alt="Logotipo" />
+        <img src="assets/images/taller_2_lowres.png" class="imgCuadro" alt="Logotipo" />
+        <img src="assets/images/taller_3_lowres.png" class="imgCuadro" alt="Logotipo" />
+      </div>
+    </div>
+
+  </div>
   <div class="column1">
-    <div class="box1-1" >
+    <!-- <div class="box1-1" >
       <div class="body">
           <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
           <span>Eventos</span>    
@@ -11,77 +35,32 @@
           <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
           <span>Programas y Talleres</span>    
       </div>
-    </div>
-    <div class="box1-1" >
+    </div> -->
+    <div class="box1-1" (click)="open(1)">
       <div class="body">
           <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
           <span>Cumpleaños</span>    
       </div>
     </div>
-    <div class="box1-2" >
+    <!-- <div class="box1-2" >
       <div class="body">
           <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
           <span>Entretenimiento</span>    
       </div>
-    </div>
-    <div class="box1-1" >
+    </div> -->
+    <div class="box1-2" (click)="open(2)">
       <div class="body">
           <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
           <span>Seguridad y Salud en el Trabajo</span>    
       </div>
     </div>
-    <div class="box1-2" >
+    <!-- <div class="box1-2" >
       <div class="body">
-        <!-- Aquí irá el qr de la encuesta <img src="assets/images/QR_example.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp; -->
+        ----Aquí irá el qr de la encuesta <img src="assets/images/QR_example.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
         <img src="assets/images/QR_example.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
         <span>Encuesta del Clima 2021</span>
         <span>Ingresa y cuéntanos tu opinión!</span>
       </div>
-    </div>
-  </div>
-  <div class="column2">
-    <div class="box2" >
-      <div class="header">
-          <span>Informativo</span>    
-      </div>
-      <div class="body">
-        <!-- Aqui debe estar la ruta de donde se conseguirán las imagenes -->
-        <img src="assets/images/informativo_example.png" class="imgCuadro" alt="Logotipo" />
-      </div>
-    </div>
-    <div class="box2" >
-      <div class="header">
-        <span>Mensaje del día</span>    
-      </div>
-      <div class="body">
-        <!-- Aqui debe estar la ruta de donde se conseguirán las imagenes -->
-        <img src="assets/images/msg_example.png" class="imgCuadro_Msg" alt="Logotipo" />
-      </div>
-    </div>
-  </div>
-  <div class="column1">
-    <div class="box1-3" >
-      <div class="header"> &nbsp;  &nbsp;
-          <!-- <span>{{eventoCercanoTitulo}}</span>     -->
-          <span>Evento Aniversario 2021</span>  
-      </div>
-      <div class="body">
-        <div class="box1-4">
-          <!-- <span class="num">{{diasCercano}}</span> -->
-          <span class="num">15</span>
-          <span class="txt">DÍAS</span>
-        </div>  
-        <div class="box1-4">
-          <!-- <span class="num">{{horasCercano}}</span> -->
-          <span class="num">09</span>
-          <span class="txt">HORAS</span>
-        </div> 
-        <div class="box1-4">
-          <!-- <span class="num">{{minutosCercano}}</span> -->
-          <span class="num">24</span>
-          <span class="txt">MINUTOS</span>
-        </div> 
-      </div>
-    </div>
+    </div> -->
   </div>
 </div>

@@ -8,11 +8,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@core/core.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { SharedModule } from '@shared/shared.module';
+import { ShowBirthdayComponent } from './components/show-birthday/show-birthday.component';
+import { ShowSstComponent } from './components/show-sst/show-sst.component';
 
 
 @NgModule({
   declarations: [
-    MenuPrincipalComponent
+    MenuPrincipalComponent,
+    ShowBirthdayComponent,
+    ShowSstComponent
   ],
   imports: [
     CommonModule,
