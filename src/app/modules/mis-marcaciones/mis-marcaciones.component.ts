@@ -113,8 +113,14 @@ export class MisMarcacionesComponent implements OnInit {
   }
   
   Actualizar(){
-    this.dato.desde = `01/${this.form.value.frmMesElegido}/${this.form.value.frmAnioElegido}`;
-    this.dato.hasta = `${this.getUltimoDiaMes()}/${this.form.value.frmMesElegido}/${this.form.value.frmAnioElegido}`;
+    if(this.form.value.frmMesElegido == 12){
+      this.dato.desde = `01/${this.form.value.frmMesElegido}/${this.form.value.frmAnioElegido}`;
+      this.dato.hasta = `01/01/${this.form.value.frmAnioElegido+1}`;
+    }
+    else{
+      this.dato.desde = `01/${this.form.value.frmMesElegido}/${this.form.value.frmAnioElegido}`;
+      this.dato.hasta = `01/${this.form.value.frmMesElegido+1}/${this.form.value.frmAnioElegido}`;
+    }
     this.user = this._authService.getUserSession();
     this._userService.get(this.user.id).subscribe( data =>{
       this.dato.codigo = data.codigoPlanilla;
