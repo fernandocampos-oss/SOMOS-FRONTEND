@@ -37,6 +37,7 @@ export class MisTareasComponent implements OnInit {
     this.services.ListarTareas(0).subscribe((dataItem) => {
       if (dataItem.codigo == 1) {
         this.dataSource = new MatTableDataSource(dataItem.data);
+        console.log(this.dataSource);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {

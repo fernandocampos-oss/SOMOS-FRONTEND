@@ -60,12 +60,12 @@ const data: MenuItem[] = [
   //   label: 'Mantenimientos',
   //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   // },
-  // // {
-  // //   path: AppRoute.SETTINGS,
-  // //   icon: 'settings',
-  // //   label: 'Configuraciones',
-  // //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
-  // // },
+  // {
+  //   path: AppRoute.SETTINGS,
+  //   icon: 'settings',
+  //   label: 'Configuraciones',
+  //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+  // },
   // {
   //    path: AppRoute.GESTION_RENDIMIENTO,
   //    icon: 'remote_menu',

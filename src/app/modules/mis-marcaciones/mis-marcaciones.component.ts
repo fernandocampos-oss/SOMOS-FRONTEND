@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService, MarcacionService, UsuarioService } from '@data/services';
 import { ColumnDef} from '@shared/table/table.component';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { MarcacionesRequest, UserSession } from '@data/models';
+import { UserSession } from '@data/models';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
-// interface Mes{
-//   descripcion: string;
-//   inicio:string;
-//   fin:string;
-// }
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortable } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 interface Mes{
   num: number;
@@ -28,8 +25,13 @@ interface Año{
   styleUrls: ['./mis-marcaciones.component.scss'],
 })
 export class MisMarcacionesComponent implements OnInit {
+  
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   form: FormGroup;
   user: UserSession;
+  dataSource: MatTableDataSource<any>;
+  displayedColumns: string[] = ['terminalmarca','fecha','hora', 'descripcion','lectora','sede'];
   lastDayOfMonth: Date;
   today = new Date();
   mesElegido: number;
@@ -52,28 +54,16 @@ export class MisMarcacionesComponent implements OnInit {
     {anio: 2022},
     {anio: 2023},
   ];
-  // meses: Mes[] = [
-  //   {descripcion:'Enero 2023', inicio:`01/01/${this.today.getFullYear()}`,fin:`31/01/${this.today.getFullYear()}`},
-  //   {descripcion:'Febrero 2023', inicio:`01/02/${this.today.getFullYear()}`,fin:`28/02/${this.today.getFullYear()}`},
-  //   {descripcion:'Marzo 2023', inicio:`01/03/${this.today.getFullYear()}`,fin:`31/03/${this.today.getFullYear()}`},
-  //   {descripcion:'Abril 2023', inicio:`01/04/${this.today.getFullYear()}`,fin:`30/04/${this.today.getFullYear()}`},
-  // ];
-  fechas: FormGroup;
   data = [];
   dato = {
     desde: '',
     hasta: '',
     codigo: '',
   }
-  codplanilla: string;
   columns: ColumnDef[] = [
     {
-      label: 'Sede',
-      name: 'sede',
-    },
-    {
-      label: 'Lectora',
-      name: 'lectora',
+      label: 'Terminal Marcacion',
+      name: 'terminalmarca',
     },
     {
       label: 'Fecha',
@@ -84,8 +74,16 @@ export class MisMarcacionesComponent implements OnInit {
       name: 'hora',
     },
     {
-      label: 'Terminal Marcacion',
-      name: 'terminalmarca',
+      label: 'Lectora',
+      name: 'descripcion',
+    },
+    {
+      label: 'Registro',
+      name: 'lectora',
+    },
+    {
+      label: 'Sede',
+      name: 'sede',
     },
   ];
 
@@ -97,13 +95,16 @@ export class MisMarcacionesComponent implements OnInit {
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.createForm();
+    this.form.controls.frmMesElegido.setValue(this.today.getMonth()+1);
+    this.form.controls.frmAnioElegido.setValue(this.today.getFullYear());
     this.user = this._authService.getUserSession();
     this._userService.get(this.user.id).subscribe( data =>{
       this.dato.codigo = data.codigoPlanilla;
+      this.Actualizar();
+      this.sort.sort(({ id: 'fecha', start: 'desc'}) as MatSortable);
       });
-    this.createForm();
   }
-
   createForm(){
     this.form = this._fb.group({
       frmMesElegido: [null],
@@ -118,11 +119,17 @@ export class MisMarcacionesComponent implements OnInit {
     this._userService.get(this.user.id).subscribe( data =>{
       this.dato.codigo = data.codigoPlanilla;
       })
-
+    
     this._marcacionService
     .searchMarcaciones(this.dato)
     .subscribe((data)=>{
-      this.data = data;   
+      if (data.length > 0) {
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      } else {
+        this.dataSource=null;
+      }
     });
   }
   getUltimoDiaMes(){

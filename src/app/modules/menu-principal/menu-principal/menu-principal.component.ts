@@ -12,8 +12,6 @@ import { ShowSstComponent } from '../components/show-sst/show-sst.component';
 export class MenuPrincipalComponent implements OnInit {
 
   constructor(
-    private _router: Router,
-    private route: ActivatedRoute,
     private dialog: MatDialog,) { }
 
   ngOnInit(): void {
