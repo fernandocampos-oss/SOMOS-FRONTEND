@@ -2,7 +2,6 @@
     float: left;
     width: 32%;
     padding: 4px;
-    position: webkit-sticky;
     position: sticky;
     top: 0;
 }
@@ -10,6 +9,7 @@
   content: "";
   display: table;
   clear: both;
+  background-color: #ffffff;
 }
 .header {
 display: flex;
@@ -36,51 +36,33 @@ span{
   width: 68%;
   padding: 4px;
 }  
-.box1-1 {
-  margin: 8px;
+.boxBirth {
+  margin: 8px 0px 0px 0px;
+  height: 288px;
+  cursor: pointer;
+  background-image: url(~src/assets/images/back-Birth.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border: #37485f;
+  border-style:solid;
+  width: 100%;
+  border-radius: 11px;
+  display: grid;
+}
+.boxSST {
+  margin: 8px 0px 0px 0px;
   height: 140px;
   cursor: pointer;
-  background: #008ad1;
+  background-image: url(~src/assets/images/SST_logo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border: #37485f;
+  border-style:solid;
   border-radius: 11px;
+  width: 100%;
   display: grid;
-}
-.box1-2 {
-  margin: 8px;
-  height: 140px;
-  cursor: pointer;
-  background: #009fad;
-  border-radius: 11px;
-  display: grid;
-}
-.box1-3 {
-  margin: 8px;
-  height: 140px;
-  background: #dff1f4;
-  border-radius: 11px;
-  display: grid;
-  .header{
-    color:#2b9ed8;
-  }
-  .body{
-    column-gap: 1rem;
-  }
-}
-.box1-4{
-  height: 85px;
-  width: 58px;
-  background: #0b8ff7;
-  border-radius: 11px;
-  display: grid;
-  .num{
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .txt{
-    font-size: 12px;
-    text-align: center;
-    padding-top: 0px;
-  }
 }
 .box2 {
   margin: 8px;
@@ -89,40 +71,14 @@ span{
   background: #dff1f4;
   border-radius: 11px;
   display: grid;
+  border: #37485f;
+  border-style:solid;
   .body{
     display: contents;
   }
   span{
     color:#2b9ed8;
   }
-}
-.box2-1 {
-  margin: 8px;
-  height: 124px;
-  background: #dff1f4;
-  border-radius: 11px;
-  display: grid;
-  align-content: center;
-}
-.box2-2 {
-  margin: 8px;
-  height: 84px;
-  width: 100%;
-  align-content: center;
-  background: #009fad;
-  border-radius: 11px;
-  padding: 5px;
-  span{
-    font-size: 20px;
-    padding-top: 0px;
-    width: 100%;
-    text-align: center;
-  }
-}
-.image {
-  width: 74px;
-  height: 84px;
-  margin: 15px;
 }
 .imgCuadro{
   display: block;

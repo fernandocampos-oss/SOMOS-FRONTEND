@@ -19,6 +19,7 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 // Modules
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
+import { LayoutModule as Layout } from '@angular/cdk/layout';
 import { LayoutModule } from './layout/layout.module';
 import { CoreModule } from './core/core.module';
 
@@ -41,6 +42,7 @@ registerLocaleData(LocaleEsPe);
     ReactiveFormsModule,
     CommonModule,
     RouterModule,
+    Layout,
 
     AppRoutingModule,
     ToastrModule.forRoot(AppConfig.TOAST_CONFIG),

@@ -12,7 +12,7 @@
     flex: 1 1 auto;
   }
   //background: white !important;
-  background-color: #008ad1 !important;
+  background-color: #37485f !important;
   color: white;
 
   &__image {
@@ -20,4 +20,7 @@
     // height: 5rem;
     width: 15rem;
   }
+}
+.info{
+  font-weight: bold;
 }

@@ -27,7 +27,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     media: MediaMatcher,
     private _router: Router
   ) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this.mobileQuery = media.matchMedia('(max-width: 790px)');
     // FIXME: Review type error
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

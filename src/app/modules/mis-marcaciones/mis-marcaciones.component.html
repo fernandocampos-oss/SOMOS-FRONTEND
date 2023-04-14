@@ -1,71 +1,97 @@
 <div class="page">
-  <!-- <div class="page__header">
-    <h1 class="page__title">Mis Marcaciones <span><mat-icon >assignment</mat-icon> Podrás visualizar detalles de tus marcaciones</span></h1>
-  </div> -->
   <div class="matero-page-header">
-    <h1 class="matero-page-title"><mat-icon >assignment</mat-icon> Mis Marcaciones<br>
-    <small class="mr-2">Podrás visualizar detalles de tus marcaciones</small><br>
-    <span class="back" (click)="back()" > <mat-icon>reply</mat-icon> Regresar</span>
-    </h1>
+    <div class="row">
+      <div class="column1" >
+        <h1 class="matero-page-title"><mat-icon >assignment</mat-icon> Mis Marcaciones<br>
+        <small class="mr-2">Podrás visualizar detalles de tus marcaciones</small><br>
+        <span class="back" (click)="back()" > <mat-icon>reply</mat-icon> Regresar</span>
+        </h1>
+      </div>
+    <div class="column2">
+    <form [formGroup]="form" (ngSubmit)="Actualizar()" >
+      <mat-dialog-content>
+        <mat-grid-list cols="6" rowHeight="100px" gutterSize="6px" *ngIf="!form4Mobile">
+          <mat-grid-tile [colspan]="1">
+            <mat-form-field appearance="outline">
+              <mat-label>Mes</mat-label>
+              <mat-select [(value)]="mesElegido" formControlName="frmMesElegido">
+                  <mat-option *ngFor="let mes of meses" [value]="mes.num">{{mes.descripcion}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <mat-form-field appearance="outline">
+              <mat-label>Año</mat-label>
+              <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
+                  <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <div class="mat-grid-tile-content" style="display:block">
+              <button mat-raised-button color="primary" class="search" type="submit">Buscar</button>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list cols="1" rowHeight="60px" gutterSize="6px" *ngIf="form4Mobile">
+          <mat-grid-tile [colspan]="1">
+            <mat-form-field appearance="outline">
+              <mat-label>Mes</mat-label>
+              <mat-select [(value)]="mesElegido" formControlName="frmMesElegido">
+                  <mat-option *ngFor="let mes of meses" [value]="mes.num">{{mes.descripcion}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <mat-form-field appearance="outline">
+              <mat-label>Año</mat-label>
+              <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
+                  <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <div class="mat-grid-tile-content" style="display:block">
+              <button mat-raised-button color="primary" class="search" type="submit">Buscar</button>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-dialog-content>
+    </form>
+    </div>
+    </div>
   </div>
   <div class="page__body">
     <div class="card shadow">
-      <form [formGroup]="form" (ngSubmit)="Actualizar()">
-        <mat-dialog-content>
-          <mat-grid-list cols="9" rowHeight="100px" gutterSize="6px">
-            <mat-grid-tile [colspan]="2">
-              <mat-form-field appearance="outline">
-                <mat-label>Mes</mat-label>
-                <mat-select [(value)]="mesElegido" formControlName="frmMesElegido">
-                    <mat-option *ngFor="let mes of meses" [value]="mes.num">{{mes.descripcion}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </mat-grid-tile>
-            <mat-grid-tile [colspan]="2">
-              <mat-form-field appearance="outline">
-                <mat-label>Año</mat-label>
-                <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
-                    <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </mat-grid-tile>
-            <mat-grid-tile [colspan]="2">
-              <div class="mat-grid-tile-content" style="display:block">
-                <button mat-raised-button color="primary" class="search" type="submit">Buscar</button>
-              </div>
-            </mat-grid-tile>
-          </mat-grid-list>
-        </mat-dialog-content>
-      </form>
       <table mat-table [dataSource]="dataSource" style="width:100%" matSort>
             
         <ng-container matColumnDef="terminalmarca">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header width="70px"> Terminal marcación </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="8%"> Terminal marcación </th>
             <td mat-cell *matCellDef="let element"> {{element.terminalmarca}} </td>
         </ng-container>
     
         <ng-container matColumnDef="fecha">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header width="70px"> Fecha </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="5%"> Fecha </th>
             <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
         </ng-container>
             
         <ng-container matColumnDef="hora">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header width="70px"> Hora </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="5%"> Hora </th>
             <td mat-cell *matCellDef="let element"> {{element.hora}} </td>
         </ng-container>
     
         <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header width="70px"> Lectora </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header width="10%"> Lectora </th>
           <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
         </ng-container>
   
         <ng-container matColumnDef="lectora">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header width="70px"> Registro </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header width="10%"> Registro </th>
           <td mat-cell *matCellDef="let element"> {{element.lectora}} </td>
         </ng-container>
     
         <ng-container matColumnDef="sede">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header width="200px"> Sede </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header width="20%"> Sede </th>
           <td mat-cell *matCellDef="let element"> {{element.sede}} </td>
         </ng-container>
 

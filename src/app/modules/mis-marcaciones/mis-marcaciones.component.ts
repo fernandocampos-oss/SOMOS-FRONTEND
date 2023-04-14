@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { BreakpointObserver, BreakpointState, Breakpoints} from '@angular/cdk/layout';
 
 interface Mes{
   num: number;
@@ -32,8 +33,8 @@ export class MisMarcacionesComponent implements OnInit {
   user: UserSession;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['terminalmarca','fecha','hora', 'descripcion','lectora','sede'];
-  lastDayOfMonth: Date;
   today = new Date();
+  form4Mobile = false;
   mesElegido: number;
   anioElegido: number;
   meses: Mes[] = [
@@ -86,15 +87,30 @@ export class MisMarcacionesComponent implements OnInit {
       name: 'sede',
     },
   ];
+  public showContainer: boolean;
 
   constructor(private _marcacionService: MarcacionService,
               private _fb: FormBuilder,
               private _authService: AuthService,
               private _userService: UsuarioService,
               private _router: Router,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute,
+              public breakpointObserver: BreakpointObserver,
+              private responsive  : BreakpointObserver,) {}
 
   ngOnInit(): void {
+    this.responsive.observe([
+      Breakpoints.HandsetLandscape,
+      Breakpoints.XSmall,   
+      Breakpoints.Small,   
+      Breakpoints.TabletLandscape,
+      ])
+      .subscribe(result => {
+        this.form4Mobile = false; 
+        if (result.matches) {
+          this.form4Mobile = true;
+        }
+  });
     this.createForm();
     this.form.controls.frmMesElegido.setValue(this.today.getMonth()+1);
     this.form.controls.frmAnioElegido.setValue(this.today.getFullYear());
@@ -137,10 +153,6 @@ export class MisMarcacionesComponent implements OnInit {
         this.dataSource=null;
       }
     });
-  }
-  getUltimoDiaMes(){
-    this.lastDayOfMonth =new Date(this.form.value.frmAnioElegido,this.form.value.frmMesElegido, 0);
-    return this.lastDayOfMonth.getUTCDate();
   }
   back(){
     this._router.navigate([''], { relativeTo: this.route });

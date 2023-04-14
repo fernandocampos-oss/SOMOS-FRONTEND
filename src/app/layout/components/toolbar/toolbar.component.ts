@@ -1,6 +1,8 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { UserSession } from '@data/models';
+import { UsuarioService } from '@data/services';
 import { AuthService } from '@data/services/auth.service';
 
 @Component({
@@ -12,12 +14,35 @@ export class ToolbarComponent implements OnInit {
   @Output()
   menuToggle = new EventEmitter<void>();
   user: UserSession;
+  nombre: string;
+  correo: string;
+  hideDate = false;
   fechaActual: String = '';
 
-  constructor(private _authService: AuthService) {}
+  constructor(private _authService: AuthService,
+              private _userService: UsuarioService,
+              private responsive  : BreakpointObserver) {}
 
   ngOnInit() {
+    this.responsive.observe([
+      Breakpoints.HandsetLandscape,
+      Breakpoints.XSmall,      
+      Breakpoints.TabletLandscape,
+      ])
+      .subscribe(result => {
+
+        this.hideDate = false; 
+
+        if (result.matches) {
+          this.hideDate = true;
+        }
+
+  });
     this.user = this._authService.getUserSession();
+    this._userService.get(this.user.id).subscribe((data)=>{
+      this.nombre = `${data.nombres} ${data.apellidos}`;
+      this.correo = data.correo;
+    });
     this.setFechaActual();
   }
 

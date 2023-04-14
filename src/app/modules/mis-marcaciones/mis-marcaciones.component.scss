@@ -1,10 +1,47 @@
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.column1 {
+  float: left;
+  width: 30%;
+  padding: 4px;
+} 
+.column2 {
+  float: left;
+  width: 70%;
+  padding: 20px;
+} 
 mat-grid-list {
     mat-form-field {
       width: 100%;
     }
 }
+.matero-page-header {
+  height: 100%;
+}
+.mat-sort-header{
+  font-size: 16px;
+  font-weight: bold;
+}
 .search{
   margin-top: 10px;
   height: 58%;
   width: 50%;
+}
+.mat-grid-tile{
+  height: 100%;
+}
+@media screen and (max-width: 800px) {
+  .matero-page-title {
+    font-size: 80%;
+  }
+  .mat-sort-header{
+    font-size: 10px;
+    font-weight: bold;
+  }
+  .mat-cell{
+    font-size: 8px;
+  }
 }
