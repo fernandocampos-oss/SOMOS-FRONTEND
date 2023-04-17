@@ -1,13 +1,11 @@
 <div class="auth card mat-elevation-z8"  style="margin-top: 10px;">
-  <div class="auth__header">
-    <div style="align-content: center;">
-      <img src="assets/images/Logo-MiEsSalud-ColorVertical.png" class="image" alt="Logotipo"
-      />
-    </div>
-    <br>
+ 
+  <div style="align-content: center;">
+    <img src="assets/images/Logo-MiEsSalud-ColorVertical.png" class="image" alt="Logotipo"/>
     <h1 class="auth__title">Registro</h1>
   </div>
   <form [formGroup]="form" (ngSubmit)="onSave()" class="auth__body">
+   <div class="column1"> 
     <div class="auth__group">
       <h2 class="auth__subtitle">Datos Generales</h2>
       <mat-form-field appearance="outline">
@@ -51,8 +49,17 @@
           >El campo es obligatorio</mat-error
         >
       </mat-form-field> -->
+        <div *ngIf="form4Mobile == false">
+          <p class="text-center" style="padding: 19.5px">
+            <mat-icon >help</mat-icon>¿Ya tienes una cuenta?
+          </p>
+          <button mat-stroked-button class="btnInicio" type="button" [routerLink]="[routeLogin]">
+            Inicia tu sesión
+          </button>
+        </div>
+      </div>
     </div>
-
+    <div class="column2">
     <div class="auth__group">
       <h2 class="auth__subtitle">Datos de la Cuenta</h2>
       <mat-form-field appearance="outline">
@@ -95,17 +102,16 @@
         Registrarme
       </button>
      
-      <p class="text-center">  <mat-icon >help</mat-icon>¿Ya tienes una cuenta?</p>
+      <div *ngIf="form4Mobile == true">
+        <p class="text-center">
+          <mat-icon >help</mat-icon>¿Ya tienes una cuenta?
+        </p>
+        <button mat-stroked-button class="btnInicio" type="button" [routerLink]="[routeLogin]">
+          Inicia tu sesión
+        </button>
+      </div>
      
-      <button
-        mat-stroked-button
-         class="btnInicio"
-        type="button"
-        [routerLink]="[routeLogin]"
-      >
-        Inicia tu sesión
-      </button>
-    </div>
+    </div></div>
   </form>
  </div>
 

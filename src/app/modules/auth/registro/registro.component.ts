@@ -16,6 +16,7 @@ import { KeyParam } from '@data/enums';
 import { AppConfig } from '@core/configs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @UntilDestroy()
 @Component({
@@ -25,6 +26,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 })
 export class RegistroComponent implements OnInit {
   form: FormGroup;
+  form4Mobile = false;
   routeLogin = `/${AppRoute.AUTH}/${AppRoute.LOGIN}`;
   sedes: Sede[] = [];
   maxFechaNacimiento = AppConfig.MAX_FECHA_NACIMIENTO;
@@ -61,7 +63,8 @@ export class RegistroComponent implements OnInit {
     private _notification: NotificationService,
     private _paramService: ParamService,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private responsive  : BreakpointObserver
   ) {
     this.matIconRegistry.addSvgIcon("dni",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/dni.svg"));
 
@@ -70,6 +73,16 @@ export class RegistroComponent implements OnInit {
   ngOnInit(): void {
     this._createForm();
     this._loadParams();
+    
+    this.responsive.observe([
+      Breakpoints.XSmall,
+      ])
+      .subscribe(result => {
+        this.form4Mobile = false; 
+        if (result.matches) {
+          this.form4Mobile = true;
+        }
+  });
   }
   private _loadParams() {
     this._paramService

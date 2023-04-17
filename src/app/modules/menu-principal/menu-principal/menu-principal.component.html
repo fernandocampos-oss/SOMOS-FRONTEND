@@ -1,5 +1,4 @@
-<div class="row">
-  <div class="column2">
+<div class="column2">
     <div class="box2-1" >
     </div>
     <div class="box2" >
@@ -38,6 +37,20 @@
           <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
           <span>Programas y Talleres</span>    
       </div>
+    </div> --> 
+    <!-- <div class="boxBirth-1">
+        <div class="header">
+          <mat-icon>cake</mat-icon><span>Cumpleaños</span>    
+        </div>
+        <div *ngFor="let items of cumpleanios">
+          <div class="contenido" *ngIf="items.dia == today.getDate()">
+            <div class="num">{{items.dia}}</div>
+            <div class="body">
+              <span style="font-size: 0.9vw; font-weight: bold;">{{items.nombres}}</span><br>
+              <span style="font-size: 0.7vw;">{{items.area_dependencia}}</span>
+            </div>
+          </div>
+        </div>
     </div> -->
     <div class="boxBirth" (click)="open(1)">
     </div>
@@ -49,20 +62,6 @@
     </div> -->
     <div class="boxSST" (click)="open(2)">
     </div>
-    <div class="boxBirth-1">
-        <div class="header">
-            <span>Cumpleaños</span>    
-        </div>
-        <div *ngFor="let items of cumpleanios">
-          <div class="contenido" *ngIf="items.dia == today">
-            <div class="num">{{items.dia}}</div>
-            <div class="body">
-              <span style="font-size: 0.9vw; font-weight: bold;">{{items.nombres}}</span><br>
-              <span style="font-size: 0.7vw;">{{items.area_dependencia}}</span>
-            </div>
-          </div>
-        </div>
-    </div>
     <!-- <div class="box1-2" >
       <div class="body">
         ----Aquí irá el qr de la encuesta <img src="assets/images/QR_example.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
@@ -71,5 +70,4 @@
         <span>Ingresa y cuéntanos tu opinión!</span>
       </div>
     </div> -->
-  </div>
 </div>

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ShowBirthdayComponent } from '../components/show-birthday/show-birthday.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShowSstComponent } from '../components/show-sst/show-sst.component';
+import { interval } from 'rxjs';
 
 interface Cumpleaño{
   nombres: string;
@@ -17,7 +18,16 @@ interface Cumpleaño{
 })
 export class MenuPrincipalComponent implements OnInit {
 
-  today = (new Date()).getDate();
+  today = new Date();
+  nextDay = new Date('05/01/2023');
+  
+  diferencia: number;
+  division: number;
+  daysLeft: number;
+  hoursLeft: number;
+  minutesLeft: number;
+
+  nom: number = this.today.getMinutes();
   cumpleanios: Cumpleaño[] = [
     {nombres: "Apolinario Pantoja, Suzety Fresia",dia: 17, area_dependencia: "Órgano de Control Institucional"},
     {nombres: "Bazán Gutierrez, Carlos Alberto",dia: 17, area_dependencia: "Secretaría General"},
@@ -51,15 +61,13 @@ export class MenuPrincipalComponent implements OnInit {
     {nombres: "Ponce Robles, Erika",dia: 19, area_dependencia: "Centro Nacional De Telemedicina - CENATE"},
     {nombres: "Rodriguez Manrique, Marel Danitza",dia: 19, area_dependencia: "Gerencia Central de Operaciones"},
     {nombres: "Román Schmitt, Natali Victoria",dia: 19, area_dependencia: "Gerencia Central de Planeamiento y Presupuesto"},
-    {nombres: "Schmidt Monteverde, Karin Rita",dia: 19, area_dependencia: "Gerencia Central de Gestión de las Personas"},
-    
-    
+    {nombres: "Schmidt Monteverde, Karin Rita",dia: 19, area_dependencia: "Gerencia Central de Gestión de las Personas"}, 
   ]
+  interval: NodeJS.Timeout;
   constructor(
     private dialog: MatDialog,) { }
 
   ngOnInit(): void {
-    console.log(this.today);
   }
 
   open(cuadro: number) {
@@ -68,6 +76,7 @@ export class MenuPrincipalComponent implements OnInit {
       const dialogRef: MatDialogRef<ShowBirthdayComponent> = this.dialog.open(ShowBirthdayComponent, {
         disableClose: false,
         width: '50%',
+        height: '70%',
         autoFocus: false,
       });
   
@@ -84,4 +93,32 @@ export class MenuPrincipalComponent implements OnInit {
           break;
     }
   }
+
+  // getDateDiff(startDate: Date, endDate: Date){
+  //   const msInDay = 24 * 60 * 60 * 1000;
+  //   const msInHours = 60 * 60 * 1000;
+  //   const msInMinutes = 60 * 1000;//13 dias - 13 horas - 49 minutos
+  //   this.diferencia = Math.abs(Number(endDate) - Number(startDate));
+  //   this.division = (this.diferencia - msInDay)/ msInDay;
+  //   this.daysLeft = Math.round(this.division);
+  //   console.log(this.daysLeft);
+
+  //   this.diferencia = Math.abs(this.diferencia - (this.daysLeft*msInDay));
+  //   this.division = this.diferencia/msInHours;
+  //   this.hoursLeft = Math.round(this.division);
+  //   console.log(this.hoursLeft);
+
+  //   this.diferencia = Math.abs(this.diferencia - (this.hoursLeft*msInHours));
+  //   this.division = this.diferencia/msInMinutes;
+  //   this.daysLeft = Math.round(this.division);
+  //   console.log(this.daysLeft);
+  //   // this.diferencia = this. diferencia - (this.daysLeft*msInDay);
+  //   // this.division = (this.diferencia - msInHours)/ msInHours;
+  //   // this.hoursLeft = Math.round(this.division);
+  //   // console.log(this.hoursLeft);
+  //   // //a partir de aqui todo bien
+  //   // this.diferencia = this. diferencia - (this.hoursLeft*msInHours);
+  //   // this.minutesLeft = Math.round((this.diferencia - msInMinutes)/ msInMinutes);
+  //   // console.log(this.minutesLeft);
+  // }
 }

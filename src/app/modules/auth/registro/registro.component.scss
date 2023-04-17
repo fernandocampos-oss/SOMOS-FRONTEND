@@ -1,9 +1,7 @@
-
-
 .auth {
   // text-align: center;
-  // min-width: 1130px;
-  // max-height: 1193px;
+  max-width: 60em;
+  height: 720px;
   &__subtitle {
     font-weight: 400;
     //text-align: start;
@@ -11,6 +9,9 @@
 
   &__group {
     display: grid;
+  }
+  &__title{
+    text-align: center;
   }
 }
 
@@ -22,8 +23,18 @@
 // .text-center {
 //   color: #008AD1 !important;
 // }
+.column1 {
+  float: left;
+  width: 50%;
+  padding: 2%;
+  top: 0;
+}
 
-
+.column2 {
+  float: left;
+  width: 50%;
+  padding: 2% 2% 2% 2%;
+} 
 .btnColor{
   align-content: center;
   background-color:  var(--color-MiEssalud);
@@ -36,6 +47,9 @@
 .btnInicio{
   align-content: center;
   background: #FFFFFF;
+  height: 48px;
+  width: 100%;
+  margin-top: 25.5px;
   border: 2px solid #009EAD;
 //   width: 495.92px;
 // height: 46.77px;
@@ -63,11 +77,33 @@ border-radius: 4px;
 
 .image {
   // position: absolute;
-width: 180px;
-//height: 200px;
-// left: 593px;
-// top: 230px;
-margin-left: auto;
-margin-right: auto;
-display: block;
+  
+  width: 12.7em;
+  //height: 200px;
+  // left: 593px;
+  // top: 230px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+@media screen and (max-width: 599px) {
+  .column1 {
+    float: none;
+    width: 100%;
+    padding: 0%;
+    top: 0;
+  }
+  .column2 {
+    float: none;
+    width: 100%;
+    padding: 0%;
+  } 
+  .auth {
+    // text-align: center;
+    height: 100%;
+  }
+  .btnInicio{
+    margin-top: 25.5px;
+
+  }
 }
