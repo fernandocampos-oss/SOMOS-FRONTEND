@@ -20,35 +20,54 @@ span{
   padding-top: 5px;
 }
 }
-.body {
-  display: flex;
-  width: 100%;
-  span {
-    font-style: normal;
-    font-size: 24px;
-    line-height: 26px;
-    padding-top: 25px;
-    color: #ffffff;
-  }
-}
 .column2 {
   float: left;
   width: 68%;
   padding: 4px;
-}  
-.boxBirth {
+} 
+.boxBirth, .boxBirth-1{
   margin: 8px 0px 0px 0px;
   height: 288px;
-  cursor: pointer;
-  background-image: url(~src/assets/images/back-Birth.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   border: #37485f;
   border-style:solid;
   width: 100%;
   border-radius: 11px;
   display: grid;
+}
+.boxBirth {
+  cursor: pointer;
+  background-image: url(~src/assets/images/back-Birth.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.boxBirth-1 {
+  overflow: auto;
+  background-image: url(~src/assets/images/back-Birth.jpg);
+  background: rgba(76, 175, 80, 0.1);
+  .contenido{
+    display: flex;
+    .num{
+      border: #37485f;
+      font-size: 1vw;
+      border-style:solid;
+      margin: 2%;
+      display: grid;
+      align-items: center;
+      color:white;
+      font-weight: bold;
+      border-radius: 100%;
+      padding: 2%;
+      background-color: #2b9ed8;
+    }
+    .body{
+      display: block;
+      padding-top: 2%;
+      span{
+        color: black;
+      }
+    }
+  }
 }
 .boxSST {
   margin: 8px 0px 0px 0px;

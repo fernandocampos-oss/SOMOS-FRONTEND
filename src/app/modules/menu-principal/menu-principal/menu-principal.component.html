@@ -1,5 +1,7 @@
 <div class="row">
   <div class="column2">
+    <div class="box2-1" >
+    </div>
     <div class="box2" >
       <div class="header">
         <span>Mensaje del día</span>    
@@ -7,6 +9,7 @@
       <div class="body">
         <!-- Aqui debe estar la ruta de donde se conseguirán las imagenes -->
         <img src="assets/images/msg_example.png" class="imgCuadro_Msg" alt="Logotipo" />
+
       </div>
     </div>
     <div class="box2" >
@@ -45,6 +48,20 @@
       </div>
     </div> -->
     <div class="boxSST" (click)="open(2)">
+    </div>
+    <div class="boxBirth-1">
+        <div class="header">
+            <span>Cumpleaños</span>    
+        </div>
+        <div *ngFor="let items of cumpleanios">
+          <div class="contenido" *ngIf="items.dia == today">
+            <div class="num">{{items.dia}}</div>
+            <div class="body">
+              <span style="font-size: 0.9vw; font-weight: bold;">{{items.nombres}}</span><br>
+              <span style="font-size: 0.7vw;">{{items.area_dependencia}}</span>
+            </div>
+          </div>
+        </div>
     </div>
     <!-- <div class="box1-2" >
       <div class="body">
