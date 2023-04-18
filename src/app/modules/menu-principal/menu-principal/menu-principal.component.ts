@@ -4,6 +4,7 @@ import { ShowBirthdayComponent } from '../components/show-birthday/show-birthday
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShowSstComponent } from '../components/show-sst/show-sst.component';
 import { interval } from 'rxjs';
+import { RegisterDatosEncuestaComponent } from '../components/register-datos-encuesta/register-datos-encuesta.component';
 
 interface Cumpleaño{
   nombres: string;
@@ -91,6 +92,16 @@ export class MenuPrincipalComponent implements OnInit {
     
         dialogRef2.afterClosed().subscribe(result => { });
           break;
+      case 3: 
+      const dialogRef3: MatDialogRef<RegisterDatosEncuestaComponent> = this.dialog.open(RegisterDatosEncuestaComponent, {
+        disableClose: false,
+        minWidth: '10em',
+        maxHeight:'50em',
+        autoFocus: false,
+      });
+  
+      dialogRef3.afterClosed().subscribe(result => { });
+        break;
     }
   }
 
