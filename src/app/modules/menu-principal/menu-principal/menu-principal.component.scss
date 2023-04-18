@@ -52,6 +52,8 @@ span{
     .num{
       border: #37485f;
       font-size: 1vw;
+      width: 2.5vw;
+      height: 2.65vw;
       border-style:solid;
       margin: 2%;
       display: grid;
@@ -71,7 +73,7 @@ span{
     }
   }
 }
-.boxSST, .boxSST-1, .boxSST-2{
+.boxSST, .boxEncuesta, .boxSST-2{
   margin: 8px 0px 0px 0px;
   height: 140px;
   cursor: pointer;
@@ -87,7 +89,7 @@ span{
   background-position: center;
   display: grid;
 }
-.boxSST-1{
+.boxEncuesta{
   font-weight: bold;
   align-content: center;
   display: flex;
@@ -168,17 +170,17 @@ mat-grid-list {
   .boxBirth, .boxBirth-1{
     height: 16vw;
   }
-  .boxSST-1{
+  .boxEncuesta{
     font-size: 1vw;
   }
 }
 @media screen and (min-width: 840px) and (max-width: 1024px) {
-  .boxSST-1{
+  .boxEncuesta{
     font-size: 1.5vw;
   }
 }
 @media screen and (min-width: 500px) and (max-width: 840px) {
-  .boxSST-1{
+  .boxEncuesta{
     font-size: 2vw;
   }
 }

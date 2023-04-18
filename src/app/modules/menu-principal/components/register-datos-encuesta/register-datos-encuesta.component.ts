@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '@core/services';
+import { DialogService, NotificationService } from '@core/services';
+import { constants } from 'buffer';
 
 interface sede_Demo{
   descripcion: string;
@@ -100,7 +101,8 @@ export class RegisterDatosEncuestaComponent implements OnInit {
     {id: 44, num: 44, descripcion:'En terminos generales, este en un buen lugar para trabajar'},   
   ]
   constructor(private _notification   : NotificationService,
-              private _fb             : FormBuilder,) { }
+              private _fb             : FormBuilder,
+              private _dialogService  : DialogService,) { }
 
   ngOnInit(): void {
     this._createForm();
@@ -126,5 +128,10 @@ export class RegisterDatosEncuestaComponent implements OnInit {
   
   next(){
     this.selectedIndex=1;
+  }
+  sendInfo(){
+    const title = `Encuesta enviada satisfactoriamente`;
+    const message = `¡Gracias por responder la encuesta!`;
+    this._dialogService.success(message,title);
   }
 }
