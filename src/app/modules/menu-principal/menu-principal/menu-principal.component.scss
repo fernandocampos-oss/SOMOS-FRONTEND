@@ -13,6 +13,7 @@
 }
 .header {
 display: flex;
+font-weight: bold;
 justify-content: center;
 span{
   font-style: normal;
@@ -27,7 +28,8 @@ span{
 } 
 .boxBirth, .boxBirth-1{
   margin: 8px 0px 0px 0px;
-  height: 288px;
+  height: 20vw;
+  // height: 288px;
   border: #37485f;
   border-style:solid;
   width: 100%;
@@ -87,6 +89,11 @@ span{
 }
 .boxSST-1{
   font-weight: bold;
+  align-content: center;
+  display: flex;
+  font-size: 3vw;
+  color: #37485f;
+  background-color: #8de4ff;
 }
 .box2 {
   margin: 8px;
@@ -105,6 +112,7 @@ span{
   }
 }
 .imgCuadro{
+  border-radius: 11px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -113,6 +121,7 @@ span{
   height: 100%;
 }
 .imgCuadro_Msg{
+  border-radius: 11px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -120,12 +129,34 @@ span{
   padding: 10px;
   height: 100%;
 }
-.next {
-  width: 25px;
-  height: 25px;
-}
 mat-grid-list {
   mat-form-field {
     width: 100%;
+  }
+}
+
+.image{
+  margin: 4%;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 10%;
+}
+
+@media screen and (min-width: 1024px) {
+  .boxBirth, .boxBirth-1{
+    height: 16vw;
+  }
+  .boxSST-1{
+    font-size: 1vw;
+  }
+}
+@media screen and (min-width: 840px) and (max-width: 1024px) {
+  .boxSST-1{
+    font-size: 1.5vw;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 840px) {
+  .boxSST-1{
+    font-size: 2vw;
   }
 }

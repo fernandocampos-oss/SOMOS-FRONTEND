@@ -76,8 +76,10 @@ export class MenuPrincipalComponent implements OnInit {
       case 1: 
       const dialogRef: MatDialogRef<ShowBirthdayComponent> = this.dialog.open(ShowBirthdayComponent, {
         disableClose: false,
-        width: '50%',
-        height: '70%',
+        minWidth: '25em',
+        maxWidth: '50em',
+        minHeight: '20em',
+        maxHeight: '50em',
         autoFocus: false,
       });
   
@@ -86,7 +88,7 @@ export class MenuPrincipalComponent implements OnInit {
       case 2:
       const dialogRef2: MatDialogRef<ShowSstComponent> = this.dialog.open(ShowSstComponent, {
           disableClose: false,
-          width: '60%',
+          width: '80%',
           autoFocus: false,
         });
     
@@ -94,8 +96,9 @@ export class MenuPrincipalComponent implements OnInit {
           break;
       case 3: 
       const dialogRef3: MatDialogRef<RegisterDatosEncuestaComponent> = this.dialog.open(RegisterDatosEncuestaComponent, {
-        disableClose: false,
-        minWidth: '10em',
+        disableClose: true,
+        minWidth: '22em',
+        maxWidth:'40em',
         maxHeight:'50em',
         autoFocus: false,
       });
