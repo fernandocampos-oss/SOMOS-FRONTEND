@@ -71,7 +71,7 @@ span{
     }
   }
 }
-.boxSST, .boxSST-1{
+.boxSST, .boxSST-1, .boxSST-2{
   margin: 8px 0px 0px 0px;
   height: 140px;
   cursor: pointer;
@@ -94,6 +94,28 @@ span{
   font-size: 3vw;
   color: #37485f;
   background-color: #8de4ff;
+}
+.boxSST-2{
+  font-weight: bold;
+  align-content: center;
+  display: flex;
+  font-size: 1.2vw;
+  color: #37485f;
+  background-color: #8de4ff;
+}
+.info{
+  margin: 2%;
+  padding: 2%;
+  cursor:auto;
+  border: #37485f;
+  display: grid;
+  border-style:solid;
+  border-radius: 11px;
+  width: 100%;
+  background-color: #ccebf5;
+  align-content: center;
+  justify-content: center;
+
 }
 .box2 {
   margin: 8px;
