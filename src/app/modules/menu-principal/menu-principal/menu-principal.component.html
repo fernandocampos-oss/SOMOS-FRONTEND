@@ -40,16 +40,19 @@
     </div> --> 
     <div class="boxBirth">
         <div class="header">
-          <mat-grid-list cols="5" rowHeight="50px" gutterSize="6px">
-            <mat-grid-tile [colspan]="2">
-              <mat-form-field class="cambioFecha" appearance="s">
-              <input #input matInput disabled [matDatepicker]="picker1" [(value)] = today>
-              <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
-              <mat-datepicker [disabled]="false" #picker1 (closed)="ActualizarOnomasticos(input.value)"></mat-datepicker>
+          <mat-grid-list cols="7" rowHeight="50px" gutterSize="6px">
+            <mat-grid-tile class="asdf" [colspan]="1" style="left: -1.6%; top: 10%;">
+              <mat-form-field class="cambioFecha" appearance="_">
+              <input #input matInput disabled [matDatepicker]="picker1" [(value)] = today style="display: none;">
+              <mat-datepicker-toggle matSuffix [for]="picker1"matTooltip="Cambiar dia de cumpleaños"></mat-datepicker-toggle>
+              <mat-datepicker [disabled]="false" #picker1 (closed)="ActualizarOnomasticos(input.value)" ></mat-datepicker>
               </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="3">
-              <mat-icon>cake</mat-icon><span><b>Cumpleaños</b></span></mat-grid-tile>
+            <mat-grid-tile [colspan]="6">
+              <div style="width: 100%; display: inline-flex; align-items: center;">
+                <mat-icon >cake</mat-icon><span><b>Cumpleaños el {{input.value}}</b></span>
+              </div>
+            </mat-grid-tile>
             </mat-grid-list>
         </div>
         <div class="OnomasticosDia">
