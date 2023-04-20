@@ -38,16 +38,29 @@
           <span>Programas y Talleres</span>    
       </div>
     </div> --> 
-    <div class="boxBirth-1">
+    <div class="boxBirth">
         <div class="header">
-          <mat-icon>cake</mat-icon><span><b>Cumpleaños</b></span>    
+          <mat-grid-list cols="5" rowHeight="50px" gutterSize="6px">
+            <mat-grid-tile [colspan]="2">
+              <mat-form-field class="cambioFecha" appearance="s">
+              <input #input matInput disabled [matDatepicker]="picker1" [(value)] = today>
+              <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker [disabled]="false" #picker1 (closed)="ActualizarOnomasticos(input.value)"></mat-datepicker>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="3">
+              <mat-icon>cake</mat-icon><span><b>Cumpleaños</b></span></mat-grid-tile>
+            </mat-grid-list>
         </div>
-        <div *ngFor="let items of cumpleanios">
-          <div class="contenido" *ngIf="items.dia == today.getDate()">
-            <div class="num">{{items.dia}}</div>
-            <div class="body">
-              <span style="font-size: 0.9vw; font-weight: bold;">{{items.nombres}}</span><br>
-              <span style="font-size: 0.7vw;">{{items.area_dependencia}}</span>
+        <div class="OnomasticosDia">
+          <div *ngFor="let items of onomasticos">
+            <div class="contenido">
+            <!-- <div class="contenido" *ngIf="items.dia == today.getDate()"> -->
+              <div class="num">{{items.dia}}</div>
+              <div class="body">
+                <span class="nomBirth">{{items.nombres}}</span><br>
+                <span class="areaBirth">{{items.dependencia}}</span>
+              </div>
             </div>
           </div>
         </div>

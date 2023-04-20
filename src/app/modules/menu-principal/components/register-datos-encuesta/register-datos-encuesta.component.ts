@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService, NotificationService } from '@core/services';
 import { constants } from 'buffer';
 
@@ -28,6 +28,12 @@ interface questions{
 export class RegisterDatosEncuestaComponent implements OnInit {
 
   form: FormGroup;
+  ansValue: number;
+  answers(){
+    return this._fb.group({
+      valor: this.ansValue,
+    })
+  }
   selectedIndex=0;
   sedes: sede_Demo[] = [
     {descripcion:'Central'},
@@ -106,6 +112,7 @@ export class RegisterDatosEncuestaComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm();
+    this.form.value.frmRespuestas = 1;
   }
   
   onTabChanged(event){
@@ -122,7 +129,7 @@ export class RegisterDatosEncuestaComponent implements OnInit {
       frmGrupoPersonal    : [null,[Validators.required]],
       frmAreaPersonal     : [null,[Validators.required]],
       frmTiempoServicio   : [null,[Validators.required]],
-      frmRespuestas       : [''],
+      frmRespuestas       : this._fb.array([this.answers()]),
     });
   }
   
@@ -133,5 +140,9 @@ export class RegisterDatosEncuestaComponent implements OnInit {
     const title = `Encuesta enviada satisfactoriamente`;
     const message = `¡Gracias por responder la encuesta!`;
     this._dialogService.success(message,title);
+    console.log(this.form.value);
+  }
+  getfrmRespuestas(index) {
+    return this.form.controls["frmRespuestas"] as FormArray;
   }
 }

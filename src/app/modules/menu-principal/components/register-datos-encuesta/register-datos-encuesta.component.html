@@ -43,7 +43,7 @@
                 <mat-expansion-panel-header>
                     <mat-panel-title><b class="Descrip">{{pregunta.num}}. {{pregunta.descripcion}}</b></mat-panel-title>
                 </mat-expansion-panel-header>
-                <mat-radio-group formControlName="frmRespuestas">
+                <mat-radio-group formArrayName="frmRespuestas">
                     <mat-radio-button value="1">1</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <mat-radio-button value="2">2</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <mat-radio-button value="3">3</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -54,6 +54,7 @@
         </mat-tab>
       </mat-tab-group>
     </mat-dialog-content>
+    
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cerrar</button>
         <button mat-raised-button color="primary" 

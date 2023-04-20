@@ -28,23 +28,33 @@ span{
 } 
 .boxBirth, .boxBirth-1{
   margin: 8px 0px 0px 0px;
-  height: 20vw;
-  // height: 288px;
   border: #37485f;
+  min-height: 10vw;
+  max-height: 22vw;
   border-style:solid;
   width: 100%;
   border-radius: 11px;
   display: grid;
 }
-.boxBirth {
+.boxBirth-1 {
   cursor: pointer;
   background-image: url(~src/assets/images/back-Birth.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
-.boxBirth-1 {
-  overflow: auto;
+.boxBirth {
+  .header{
+    display: block;
+    position: sticky;
+    top: 0;
+  }
+  .OnomasticosDia{
+    min-height: 10vw;
+    max-height: 17.2vw;
+    top: 0;
+    overflow-y: auto;
+  }
   background-image: url(~src/assets/images/back-Birth.jpg);
   background: rgba(76, 175, 80, 0.1);
   .contenido{
@@ -55,6 +65,7 @@ span{
       width: 2.5vw;
       height: 2.65vw;
       border-style:solid;
+      align-self: center;
       margin: 2%;
       display: grid;
       align-items: center;
@@ -67,8 +78,9 @@ span{
     .body{
       display: block;
       padding-top: 2%;
-      span{
-        color: black;
+      color: black;
+      .nomBirth{
+        font-weight: bold;
       }
     }
   }
@@ -154,8 +166,10 @@ span{
   height: 100%;
 }
 mat-grid-list {
+  
   mat-form-field {
-    width: 100%;
+    width: 70%;
+    top:5%;
   }
 }
 
@@ -167,20 +181,47 @@ mat-grid-list {
 }
 
 @media screen and (min-width: 1024px) {
-  .boxBirth, .boxBirth-1{
-    height: 16vw;
-  }
   .boxEncuesta{
     font-size: 1vw;
+  }
+  .nomBirth{
+    font-size: 0.9vw; 
+  }
+  .areaBirth{
+    font-size: 0.7vw;
   }
 }
 @media screen and (min-width: 840px) and (max-width: 1024px) {
   .boxEncuesta{
     font-size: 1.5vw;
   }
+  .nomBirth{
+    font-size: 0.9vw; 
+  }
+  .areaBirth{
+    font-size: 0.7vw;
+  }
 }
 @media screen and (min-width: 500px) and (max-width: 840px) {
   .boxEncuesta{
     font-size: 2vw;
+  }
+  .nomBirth{
+    font-size: 2vw; 
+  }
+  .areaBirth{
+    font-size: 1.6vw;
+  }
+  icon{
+    width:1px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .nomBirth{
+    font-size: 2vw; 
+  }
+  .areaBirth{
+    font-size: 1.6vw;
   }
 }

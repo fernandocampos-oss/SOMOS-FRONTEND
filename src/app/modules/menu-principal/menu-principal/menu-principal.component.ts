@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ShowBirthdayComponent } from '../components/show-birthday/show-birthday.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShowSstComponent } from '../components/show-sst/show-sst.component';
-import { interval } from 'rxjs';
 import { RegisterDatosEncuestaComponent } from '../components/register-datos-encuesta/register-datos-encuesta.component';
-
-interface Cumpleaño{
-  nombres: string;
-  dia: number;
-  area_dependencia: string;
-}
+import { MenuPrincipalService } from '@data/services/menu-principal.service';
+import { OnomasticosResponse } from '@data/models/menu-principal/menu-principal.model';
 
 @Component({
   selector: 'app-menu-principal',
@@ -19,56 +13,31 @@ interface Cumpleaño{
 })
 export class MenuPrincipalComponent implements OnInit {
 
+  onomasticos: OnomasticosResponse[] = [];
   today = new Date();
   nextDay = new Date('05/01/2023');
-  
+  dateD: Date;
+  ocultar = true;
   diferencia: number;
   division: number;
   daysLeft: number;
   hoursLeft: number;
   minutesLeft: number;
 
-  nom: number = this.today.getMinutes();
-  cumpleanios: Cumpleaño[] = [
-    {nombres: "Apolinario Pantoja, Suzety Fresia",dia: 17, area_dependencia: "Órgano de Control Institucional"},
-    {nombres: "Bazán Gutierrez, Carlos Alberto",dia: 17, area_dependencia: "Secretaría General"},
-    {nombres: "Campos Sanchez, Victor Julio",dia: 17, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Chan Del Pino, Fernando",dia: 17, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Chávez Escobar, Luis Alejandro",dia: 17, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Coloma Estrada, Nancy Rosa",dia: 17, area_dependencia: "Gerencia Central de Seguros y Prestaciones Económicas"},
-    {nombres: "Escalón Tuestas, Enrique Benjamín",dia: 17, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Eyzaguirre Aparicio, Renan",dia: 17, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Hinostroza Casano, Betsy Dianna",dia: 17, area_dependencia: "Gerencia Central de Gestión de las Personas"},
-    {nombres: "Perez Romero, Orlando Bernabe",dia: 17, area_dependencia: "Gerencia Central de Asesoría Jurídica"},
-    {nombres: "Ríos Huarcaya, Maritza Narcisa",dia: 17, area_dependencia: "Programa CEI Modelo"},
-    {nombres: "Rodriguez Gutierrez, Juan Manuel",dia: 17, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Rosales Guevara, Luis Junnior",dia: 17, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Saavedra Vitteri, Violeta",dia: 17, area_dependencia: "Gerencia Central de Seguros y Prestaciones Económicas"},
-    {nombres: "Calderón Diaz, Zoila",dia: 18, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Camarena Rodriguez, Gina Isabel",dia: 18, area_dependencia: "Gerencia Central de la Persona Adulta Mayor y Persona con Discapacidad"},
-    {nombres: "Cancino Linares, Ana Cecilia",dia: 18, area_dependencia: "Gerencia Central de Asesoría Jurídica"},
-    {nombres: "Coronado Camargo, Cesar Amadeo",dia: 18, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Cuba Angulo, Gerson Efraín",dia: 18, area_dependencia: "Oficina de Defensa Nacional"},
-    {nombres: "Dávila Palomino, Armando Héctor",dia: 18, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Medina Cubas, Yerson Jhonny",dia: 18, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Zela Qquenta, Marisol",dia: 18, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Almora Quispe, Percy Manuel",dia: 19, area_dependencia: "Órgano de Control Institucional"},
-    {nombres: "Barreda Jara, Berta Teresa Rafaela",dia: 19, area_dependencia: "Gerencia Central de Seguros y Prestaciones Económicas"},
-    {nombres: "Cabanillas Gonzales, Luis Carlos",dia: 19, area_dependencia: "Centro Nacional De Telemedicina - CENATE"},
-    {nombres: "Castillo Rodriguez, Juan Pablo",dia: 19, area_dependencia: "Centro Nacional De Telemedicina - CENATE"},
-    {nombres: "Cutipa Barrios, Irma Natali",dia: 19, area_dependencia: "Gerencia Central de Asesoría Jurídica"},
-    {nombres: "Guerra Lozano, Teresa Carla",dia: 19, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Pinas Mendez, Julio Cesar",dia: 19, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Ponce Robles, Erika",dia: 19, area_dependencia: "Centro Nacional De Telemedicina - CENATE"},
-    {nombres: "Rodriguez Manrique, Marel Danitza",dia: 19, area_dependencia: "Gerencia Central de Operaciones"},
-    {nombres: "Román Schmitt, Natali Victoria",dia: 19, area_dependencia: "Gerencia Central de Planeamiento y Presupuesto"},
-    {nombres: "Schmidt Monteverde, Karin Rita",dia: 19, area_dependencia: "Gerencia Central de Gestión de las Personas"}, 
-  ]
-  interval: NodeJS.Timeout;
-  constructor(
-    private dialog: MatDialog,) { }
+  diaHoy = this.today.getDate();
+  mesHoy = this.today.getMonth()+1;
+
+  parametros = {
+    mesConsulta: '',
+    diaConsulta: '',
+  }
+
+  constructor(private dialog: MatDialog,
+              private _menuService:MenuPrincipalService) { }
 
   ngOnInit(): void {
+    this.convertirDiaMes(this.diaHoy, this.mesHoy);
+    this.CargarOnomasticos();
   }
 
   open(cuadro: number) {
@@ -108,6 +77,41 @@ export class MenuPrincipalComponent implements OnInit {
     }
   }
 
+  convertirDiaMes(dia: number, mes: number){
+    if (dia >= 10) {
+      this.parametros.diaConsulta = dia.toString();
+    }
+    else{
+      this.parametros.diaConsulta = `0${dia.toString()}`;
+    }
+
+    if (mes >= 10) {
+      this.parametros.mesConsulta = mes.toString();
+    }
+    else{
+      this.parametros.mesConsulta = `0${mes.toString()}`;
+    }
+  }
+
+  CargarOnomasticos(){
+    this._menuService.searchOnomasticos(this.parametros).subscribe(data=>{
+      if (data.length > 0) {
+        this.onomasticos = data;
+      } else {
+        this.onomasticos=null;
+      }
+    });
+  }
+
+  ActualizarOnomasticos(fecha: string){
+    this.parametros.diaConsulta = `${fecha[0]}${fecha[1]}`;
+    this.parametros.mesConsulta = `${fecha[3]}${fecha[4]}`;
+    this.CargarOnomasticos();
+  }
+  printwhatyousee(num: string){
+    console.log(this.dateD);
+    console.log(num);
+  }
   // getDateDiff(startDate: Date, endDate: Date){
   //   const msInDay = 24 * 60 * 60 * 1000;
   //   const msInHours = 60 * 60 * 1000;
