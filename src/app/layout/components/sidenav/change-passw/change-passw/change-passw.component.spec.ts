@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShowBirthdayComponent } from './show-birthday.component';
+import { ChangePasswComponent } from './change-passw.component';
 
-describe('ShowBirthdayComponent', () => {
-  let component: ShowBirthdayComponent;
-  let fixture: ComponentFixture<ShowBirthdayComponent>;
+describe('ChangePasswComponent', () => {
+  let component: ChangePasswComponent;
+  let fixture: ComponentFixture<ChangePasswComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShowBirthdayComponent ]
+      declarations: [ ChangePasswComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShowBirthdayComponent);
+    fixture = TestBed.createComponent(ChangePasswComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

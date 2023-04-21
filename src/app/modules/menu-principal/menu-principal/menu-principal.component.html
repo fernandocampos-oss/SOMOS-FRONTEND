@@ -58,8 +58,7 @@
         <div class="OnomasticosDia">
           <div *ngFor="let items of onomasticos">
             <div class="contenido">
-            <!-- <div class="contenido" *ngIf="items.dia == today.getDate()"> -->
-              <div class="num">{{items.dia}}</div>
+              <div class="num"></div>
               <div class="body">
                 <span class="nomBirth">{{items.nombres}}</span><br>
                 <span class="areaBirth">{{items.dependencia}}</span>
@@ -68,14 +67,6 @@
           </div>
         </div>
     </div>
-    <!-- <div class="boxBirth" (click)="open(1)">
-    </div> -->
-    <!-- <div class="box1-2" >
-      <div class="body">
-          <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
-          <span>Entretenimiento</span>    
-      </div>
-    </div> -->
     <div class="boxSST" (click)="open(2)">
     </div>
     <div class="boxEncuesta" (click)="open(3)">

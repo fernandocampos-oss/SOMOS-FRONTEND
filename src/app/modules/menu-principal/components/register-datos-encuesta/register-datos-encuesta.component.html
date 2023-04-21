@@ -1,8 +1,8 @@
 <form [formGroup]="form">
     <h2 mat-dialog-title>Encuesta de Clima Laboral Essalud</h2>
-    <mat-dialog-content>
       <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChanged($event)">
-        <mat-tab label="Datos Demográficos">
+        <mat-tab label="Datos Demográficos" class="Stik">
+          <mat-dialog-content>
           <mat-grid-list cols="2" rowHeight="90px" gutterSize="6px">
             <mat-grid-tile [colspan]="1" class="grid">
                 <mat-form-field appearance="outline">
@@ -37,29 +37,41 @@
                 </mat-form-field>
             </mat-grid-tile>
           </mat-grid-list>
+          </mat-dialog-content>
         </mat-tab>
         <mat-tab label="Encuesta">
-            <mat-expansion-panel [expanded]="true" *ngFor="let pregunta of preguntas">
+          <mat-dialog-content>
+            <div *ngFor="let pregunta of preguntas; index as i">
+                <br><h4 class="Descrip">{{pregunta.num}}. {{pregunta.descripcion}}</h4><br>
+                <mat-radio-group formArrayName="frmRespuestas">
+                    <mat-radio-button value="1" (click)="changeSelection(i,1)">1</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="2" (click)="changeSelection(i,2)">2</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="3" (click)="changeSelection(i,3)">3</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="4" (click)="changeSelection(i,4)">4</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="5" (click)="changeSelection(i,5)">5</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <!-- <mat-expansion-panel [expanded]="true" *ngFor="let pregunta of preguntas; index as i">
                 <mat-expansion-panel-header>
                     <mat-panel-title><b class="Descrip">{{pregunta.num}}. {{pregunta.descripcion}}</b></mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-radio-group formArrayName="frmRespuestas">
-                    <mat-radio-button value="1">1</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="2">2</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="3">3</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="4">4</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="5">5</mat-radio-button>
+                    <mat-radio-button value="1" (click)="changeSelection(i,1)">1</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="2" (click)="changeSelection(i,2)">2</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="3" (click)="changeSelection(i,3)">3</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="4" (click)="changeSelection(i,4)">4</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="5" (click)="changeSelection(i,5)">5</mat-radio-button>
                 </mat-radio-group>
-            </mat-expansion-panel>
+            </mat-expansion-panel> -->
+          </mat-dialog-content>
         </mat-tab>
       </mat-tab-group>
-    </mat-dialog-content>
     
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cerrar</button>
         <button mat-raised-button color="primary" 
             *ngIf="selectedIndex == 0" [disabled]="form.valid == false" (click)="next()">Siguiente</button>
         <button mat-raised-button color="primary" 
-            *ngIf="selectedIndex == 1" [disabled]="form.valid == false" (click)="sendInfo()">Enviar</button>
+            *ngIf="selectedIndex == 1" [disabled]="validarEncuesta() == false" (click)="sendInfo()">Enviar</button>
     </mat-dialog-actions>
 </form>

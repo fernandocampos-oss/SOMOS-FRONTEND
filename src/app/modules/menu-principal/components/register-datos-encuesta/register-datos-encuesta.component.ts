@@ -30,9 +30,7 @@ export class RegisterDatosEncuestaComponent implements OnInit {
   form: FormGroup;
   ansValue: number;
   answers(){
-    return this._fb.group({
-      valor: this.ansValue,
-    })
+    return this._fb.group({valor: this.ansValue,})
   }
   selectedIndex=0;
   sedes: sede_Demo[] = [
@@ -140,9 +138,26 @@ export class RegisterDatosEncuestaComponent implements OnInit {
     const title = `Encuesta enviada satisfactoriamente`;
     const message = `¡Gracias por responder la encuesta!`;
     this._dialogService.success(message,title);
-    console.log(this.form.value);
   }
   getfrmRespuestas(index) {
     return this.form.controls["frmRespuestas"] as FormArray;
+  }
+
+  changeSelection(index: number,valor: number){
+    this.form.value.frmRespuestas[index] = valor;
+  }
+
+  validarEncuesta(): boolean{
+    if (this.form.value.frmRespuestas.length == 44 ) {
+      if (this.form.value.frmRespuestas.includes(undefined)) {
+        return false;        
+      }
+      else{
+        return true;
+      }
+    }
+    else{
+      return false;
+    }
   }
 }

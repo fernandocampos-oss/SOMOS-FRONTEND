@@ -11,6 +11,11 @@ const data: MenuItem[] = [
   //     icon: 'record_voice_over',
   //     label: 'Actualización de datos',
   // },
+  // {
+  //   path: AppRoute.CAMBIAR_CONTRA,
+  //   icon: 'https',
+  //   label: 'Cambiar Contraseña',
+  // },
   {
       path: AppRoute.MIS_MARCACIONES,
       icon: 'how_to_reg',

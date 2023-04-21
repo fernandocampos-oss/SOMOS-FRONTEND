@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ShowBirthdayComponent } from '../components/show-birthday/show-birthday.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShowSstComponent } from '../components/show-sst/show-sst.component';
 import { RegisterDatosEncuestaComponent } from '../components/register-datos-encuesta/register-datos-encuesta.component';
@@ -42,18 +41,6 @@ export class MenuPrincipalComponent implements OnInit {
 
   open(cuadro: number) {
     switch (cuadro) {
-      case 1: 
-      const dialogRef: MatDialogRef<ShowBirthdayComponent> = this.dialog.open(ShowBirthdayComponent, {
-        disableClose: false,
-        minWidth: '25em',
-        maxWidth: '50em',
-        minHeight: '20em',
-        maxHeight: '50em',
-        autoFocus: false,
-      });
-  
-      dialogRef.afterClosed().subscribe(result => { });
-        break;
       case 2:
       const dialogRef2: MatDialogRef<ShowSstComponent> = this.dialog.open(ShowSstComponent, {
           disableClose: false,
@@ -69,10 +56,11 @@ export class MenuPrincipalComponent implements OnInit {
         minWidth: '22em',
         maxWidth:'40em',
         maxHeight:'50em',
+        
         autoFocus: false,
       });
   
-      dialogRef3.afterClosed().subscribe(result => { });
+      dialogRef3.afterClosed();
         break;
     }
   }
@@ -96,7 +84,7 @@ export class MenuPrincipalComponent implements OnInit {
   CargarOnomasticos(){
     this._menuService.searchOnomasticos(this.parametros).subscribe(data=>{
       if (data.length > 0) {
-        this.onomasticos = data;
+        this.onomasticos = data.sort((a,b) => a.nombres.localeCompare(b.nombres));
       } else {
         this.onomasticos=null;
       }
@@ -108,10 +96,10 @@ export class MenuPrincipalComponent implements OnInit {
     this.parametros.mesConsulta = `${fecha[3]}${fecha[4]}`;
     this.CargarOnomasticos();
   }
-  printwhatyousee(num: string){
-    console.log(this.dateD);
-    console.log(num);
-  }
+  // printwhatyousee(num: string){
+  //   console.log(this.dateD);
+  //   console.log(num);
+  // }
   // getDateDiff(startDate: Date, endDate: Date){
   //   const msInDay = 24 * 60 * 60 * 1000;
   //   const msInHours = 60 * 60 * 1000;

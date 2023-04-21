@@ -53,7 +53,7 @@ span{
   }
   .OnomasticosDia{
     min-height: 10vw;
-    max-height: 17.2vw;
+    max-height: 14.9vw;
     top: 0;
     overflow-y: auto;
   }
@@ -61,26 +61,36 @@ span{
   background: rgba(76, 175, 80, 0.1);
   .contenido{
     display: flex;
+    // .num{
+    //   border: #37485f;
+    //   font-size: 1vw;
+    //   width: 2.5vw;
+    //   height: 2.65vw;
+    //   border-style:solid;
+    //   align-self: center;
+    //   margin: 2%;
+    //   display: grid;
+    //   align-items: center;
+    //   color:white;
+    //   font-weight: bold;
+    //   border-radius: 100%;
+    //   padding: 2%;
+    //   background-color: #2b9ed8;
+    // }
     .num{
-      border: #37485f;
-      font-size: 1vw;
-      width: 2.5vw;
-      height: 2.65vw;
-      border-style:solid;
-      align-self: center;
-      margin: 2%;
-      display: grid;
-      align-items: center;
-      color:white;
-      font-weight: bold;
-      border-radius: 100%;
-      padding: 2%;
-      background-color: #2b9ed8;
+      background-image: url(~src/assets/images/avatar.png);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      width: 3vw;
+      height: 3.25vw;
+      margin:1%;
     }
     .body{
       display: block;
       padding-top: 2%;
       color: black;
+      align-self: center;
       .nomBirth{
         font-weight: bold;
       }

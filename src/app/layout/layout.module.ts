@@ -9,6 +9,8 @@ import { MaterialModule } from '@material';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
 import { LayoutRoutingModule } from './layout-routing.module';
+import { ChangePasswComponent } from './components/sidenav/change-passw/change-passw/change-passw.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,8 @@ import { LayoutRoutingModule } from './layout-routing.module';
     FooterComponent,
     SidenavComponent,
     UserAvatarComponent,
+    ChangePasswComponent,
   ],
-  imports: [CommonModule, RouterModule, MaterialModule, LayoutRoutingModule],
+  imports: [CommonModule, RouterModule, MaterialModule, LayoutRoutingModule, ReactiveFormsModule],
 })
 export class LayoutModule {}

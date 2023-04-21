@@ -18,7 +18,6 @@ export const ROUTES: Routes = [
           ),
       },
       {
-        //path: AppRoute.LEGAJO,
         path:AppRoute.DATOS_PERSONALES,
         loadChildren: () =>
           import('../modules/datos-personales/datos-personales.module').then(
@@ -104,13 +103,13 @@ export const ROUTES: Routes = [
             (m) => m.ConfiguracionesModule
           ),
       },
-      {
-        path: AppRoute.MIS_REQUERIMIENTOS,
-        loadChildren: () => 
-          import('../modules/mis-requerimientos/mis-requerimientos.module').then(
-            (m) => m.MisRequerimientosModule
-          ),
-      }
+      // {
+      //   path: AppRoute.MIS_REQUERIMIENTOS,
+      //   loadChildren: () => 
+      //     import('../modules/mis-requerimientos/mis-requerimientos.module').then(
+      //       (m) => m.MisRequerimientosModule
+      //     ),
+      // },
     ],
   },
 ];
