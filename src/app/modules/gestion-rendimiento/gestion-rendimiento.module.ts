@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { GestionRendimientoComponent } from './gestion-rendimiento/gestion-rendimiento.component';
 import { GestionRendimientoRoutingModule } from './gestion-rendimiento-routing.module'
 import { MaterialModule } from '@material';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@core/core.module';
 import { SharedModule } from '@shared/shared.module';
 import { MisTareasComponent } from './components/mis-tareas/mis-tareas.component';
@@ -24,6 +24,7 @@ import { ReadRequirementComponent } from './components/mis-requerimientos/dialog
 import { ConfirmAcceptComponent } from './components/mis-requerimientos/dialogs/confirm-accept/confirm-accept.component';
 import { DissaproveRequirementComponent } from './components/mis-requerimientos/dialogs/dissaprove-requirement/dissaprove-requirement.component';
 import { MoveRequirementComponent } from './components/mis-requerimientos/dialogs/move-requirement/move-requirement.component';
+import { SolicitudRequirementComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/solicitud-requirement.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MoveRequirementComponent } from './components/mis-requerimientos/dialog
     ReadRequirementComponent,
     ConfirmAcceptComponent,
     DissaproveRequirementComponent,
-    MoveRequirementComponent
+    MoveRequirementComponent,
+    SolicitudRequirementComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,9 @@ import { MoveRequirementComponent } from './components/mis-requerimientos/dialog
     CoreModule,
     SharedModule,
     MatGridListModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+
+    FormsModule,
   ]
 })
 export class GestionRendimientoModule { }

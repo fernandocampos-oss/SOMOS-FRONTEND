@@ -8,6 +8,7 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
 import { ConfirmAcceptComponent } from './dialogs/confirm-accept/confirm-accept.component';
 import { MoveRequirementComponent } from './dialogs/move-requirement/move-requirement.component';
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
+import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -57,6 +58,22 @@ export class MisRequerimientosComponent implements OnInit {
     const dialogRef: MatDialogRef<ReadRequirementComponent> = this.dialog.open(ReadRequirementComponent, {
       disableClose: false,
       width: '40%',
+      //height: '780px',
+      autoFocus: false,
+      data: {
+        obj : element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTable();
+    });
+  }
+
+  showDialogSolicitud(element) {
+    const dialogRef: MatDialogRef<SolicitudRequirementComponent> = this.dialog.open(SolicitudRequirementComponent, {
+      disableClose: false,
+      width: '80%',
       //height: '780px',
       autoFocus: false,
       data: {

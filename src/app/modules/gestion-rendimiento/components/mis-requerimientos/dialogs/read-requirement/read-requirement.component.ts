@@ -16,22 +16,22 @@ interface Poi{
   styleUrls: ['./read-requirement.component.scss']
 })
 export class ReadRequirementComponent implements OnInit {
-  @ViewChild(MatTable,{static:true}) table: MatTable<any>;
+  // @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   
-  displayedColumns: string[] = ['Actividad POI', 'Acciones'];
+  // displayedColumns: string[] = ['Actividad POI', 'Acciones'];
   selectedIndex=0;
   objElement: any;
   idEstado: any;
   form: FormGroup;
   requerimiento: String = '';
-  pois: Poi[] = [
-    {descripcion:'Implementar los sistemas administrativos'},
-    {descripcion:'Desarrollar y mantener los sistemas administrativos'},
-    {descripcion:'Realizar actividades de soporte operativo y administrativo para garantizar la ejecución presupuestal de la GCTIC'},
-  ];
-  descripcionPoi: string;
-  poiList:Array<{descripcionPoi: string}> = [];
-  dataSource = this.poiList;
+  // pois: Poi[] = [
+  //   {descripcion:'Implementar los sistemas administrativos'},
+  //   {descripcion:'Desarrollar y mantener los sistemas administrativos'},
+  //   {descripcion:'Realizar actividades de soporte operativo y administrativo para garantizar la ejecución presupuestal de la GCTIC'},
+  // ];
+  // descripcionPoi: string;
+  // poiList:Array<{descripcionPoi: string}> = [];
+  // dataSource = this.poiList;
   constructor(
     private _dialogService: DialogService,
     private _fb: FormBuilder,
@@ -58,15 +58,15 @@ export class ReadRequirementComponent implements OnInit {
     });
   }
 
-  onPoiCreate(){
-    this.poiList.push({descripcionPoi: this.descripcionPoi});
-    this.descripcionPoi = "";
-    this.table.renderRows();
-  }
-
-  deletePoi(index){
-    this.poiList.splice(index,1);
-    this.table.renderRows();
-  }
+  // onPoiCreate(){
+  //   this.poiList.push({descripcionPoi: this.descripcionPoi});
+  //   this.descripcionPoi = "";
+  //   this.table.renderRows();
   // }
+
+  // deletePoi(index){
+  //   this.poiList.splice(index,1);
+  //   this.table.renderRows();
+  // }
+  
 }

@@ -75,7 +75,7 @@ const data: MenuItem[] = [
   //    path: AppRoute.GESTION_RENDIMIENTO,
   //    icon: 'remote_menu',
   //    svg : true,
-  //    label: 'Gestion del Requerimiento',
+  //    label: 'Gestion del Rendimiento',
   //    roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.TRABAJADOR],
   // },
   // // {
