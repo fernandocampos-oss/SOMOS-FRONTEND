@@ -3,7 +3,7 @@ import { HttpClient} from '@angular/common/http';
 import { environment } from '@env';
 import { OnomasticosRequest, OnomasticosResponse } from '@data/models/menu-principal/menu-principal.model';
 
-const URL_BASE = `${environment.apiUrlMarcacion}`;
+const URL_BASE = `${environment.apiUrl}`;
 
 @Injectable({ providedIn: 'root' })
 export class MenuPrincipalService {
