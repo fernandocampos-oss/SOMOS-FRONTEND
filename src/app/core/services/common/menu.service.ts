@@ -71,13 +71,13 @@ const data: MenuItem[] = [
   //   label: 'Configuraciones',
   //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   // },
-  {
-     path: AppRoute.GESTION_RENDIMIENTO,
-     icon: 'remote_menu',
-     svg : true,
-     label: 'Gestion del Rendimiento',
-     roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.TRABAJADOR],
-  },
+  // {
+  //    path: AppRoute.GESTION_RENDIMIENTO,
+  //    icon: 'remote_menu',
+  //    svg : true,
+  //    label: 'Gestion del Rendimiento',
+  //    roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.TRABAJADOR],
+  // },
   // // {
   // //   path : AppRoute.DDJJ_CONFLICTO,
   // //   icon : 'ddjj',
