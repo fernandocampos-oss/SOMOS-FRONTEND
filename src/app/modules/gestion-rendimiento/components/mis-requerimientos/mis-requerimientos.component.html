@@ -26,6 +26,9 @@
             <button mat-icon-button color="primary" matTooltip="Ver Requerimiento" (click)="showDialogReadRequirement(element)">
                 <mat-icon>remove_red_eye</mat-icon>
             </button>
+            <button mat-icon-button color="primary" matTooltip="Solicitud" (click)="showDialogSolicitud(element)">
+                <mat-icon>settings</mat-icon>
+            </button>
             <button mat-icon-button color="primary" *ngIf="element.idEstado ==1" matTooltip="Aprobar" (click)="showDialogConfirmAccept(element)">
                 <mat-icon>check</mat-icon>
             </button>

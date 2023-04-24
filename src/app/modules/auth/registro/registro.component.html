@@ -1,44 +1,33 @@
-<div class="auth card mat-elevation-z8"  style="margin-top: 10px;">
- 
+<div class="auth card mat-elevation-z8" style="margin-top: 10px;">
+
   <div style="align-content: center;">
-    <img src="assets/images/Logo-MiEsSalud-ColorVertical.png" class="image" alt="Logotipo"/>
+    <img src="assets/images/Logo-MiEsSalud-ColorVertical.png" class="image" alt="Logotipo" />
     <h1 class="auth__title">Registro</h1>
   </div>
   <form [formGroup]="form" (ngSubmit)="onSave()" class="auth__body">
-   <div class="column1"> 
-    <div class="auth__group">
-      <h2 class="auth__subtitle">Datos Generales</h2>
-      <mat-form-field appearance="outline">
-        <mat-label>Número Documento</mat-label>
-        <input matInput required formControlName="numeroDocumento" />
-        <mat-error *ngIf="numeroDocumentoField.hasError('required')"
-          >El campo es obligatorio</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Código Planilla SAP</mat-label>
-        <input matInput required formControlName="codigoPlanilla" />
-        <mat-error *ngIf="codigoPlanillaSapField.hasError('required')"
-          >El campo es obligatorio</mat-error
-        >
-      </mat-form-field>
-    
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha Nacimiento</mat-label>
-        <input
-          matInput
-          required
-          formControlName="fechaNacimiento"
-          [max]="maxFechaNacimiento"
-          [matDatepicker]="picker"
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker startView="multi-year"></mat-datepicker>
-        <mat-error *ngIf="fechaNacimientoField.hasError('required')"
-          >El campo es obligatorio</mat-error
-        >
-      </mat-form-field>
-      <!-- <mat-form-field appearance="outline">
+    <div class="column1">
+      <div class="auth__group">
+        <h2 class="auth__subtitle">Datos Generales</h2>
+        <mat-form-field appearance="outline">
+          <mat-label>Número Documento</mat-label>
+          <input matInput required formControlName="numeroDocumento" />
+          <mat-error *ngIf="numeroDocumentoField.hasError('required')">El campo es obligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Código Planilla SAP</mat-label>
+          <input matInput required formControlName="codigoPlanilla" />
+          <mat-error *ngIf="codigoPlanillaSapField.hasError('required')">El campo es obligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha Nacimiento</mat-label>
+          <input matInput required formControlName="fechaNacimiento" [max]="maxFechaNacimiento"
+            [matDatepicker]="picker" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+          <mat-error *ngIf="fechaNacimientoField.hasError('required')">El campo es obligatorio</mat-error>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline">
         <mat-label>Sede</mat-label>
         <mat-select required formControlName="idSede">
           <mat-option *ngFor="let option of sedes" [value]="option.codigo">
@@ -51,7 +40,7 @@
       </mat-form-field> -->
         <div *ngIf="form4Mobile == false">
           <p class="text-center" style="padding: 19.5px">
-            <mat-icon >help</mat-icon>¿Ya tienes una cuenta?
+            <mat-icon>help</mat-icon>¿Ya tienes una cuenta?
           </p>
           <button mat-stroked-button class="btnInicio" type="button" [routerLink]="[routeLogin]">
             Inicia tu sesión
@@ -60,62 +49,45 @@
       </div>
     </div>
     <div class="column2">
-    <div class="auth__group">
-      <h2 class="auth__subtitle">Datos de la Cuenta</h2>
-      <mat-form-field appearance="outline">
-        <mat-label>Correo Personal</mat-label>
-        <input matInput required formControlName="correo" />
-        <mat-error *ngIf="correoField.hasError('required')"
-          >El campo es obligatorio</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Celular</mat-label>
-        <input matInput required formControlName="numeroCelular" />
-        <mat-error *ngIf="celularField.hasError('required')"
-          >El campo es obligatorio</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Contraseña</mat-label>
-        <input matInput type="password" required formControlName="password" />
-        <mat-error *ngIf="claveField.hasError('required')"
-          >El campo es obligatorio</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Confirmar Contraseña</mat-label>
-        <input
-          matInput
-          type="password"
-          required
-          formControlName="confirmarPassword"
-        />
-        <mat-error *ngIf="confirmarClaveField.hasError('required')"
-          >El campo es obligatorio</mat-error
-        >
-      </mat-form-field>
-    </div>
-
-    <div class="auth__actions">
-      <button mat-raised-button class="btnColor" type="submit">
-        Registrarme
-      </button>
-     
-      <div *ngIf="form4Mobile == true">
-        <p class="text-center">
-          <mat-icon >help</mat-icon>¿Ya tienes una cuenta?
-        </p>
-        <button mat-stroked-button class="btnInicio" type="button" [routerLink]="[routeLogin]">
-          Inicia tu sesión
-        </button>
+      <div class="auth__group">
+        <h2 class="auth__subtitle">Datos de la Cuenta</h2>
+        <mat-form-field appearance="outline">
+          <mat-label>Correo Personal</mat-label>
+          <input matInput required formControlName="correo" />
+          <mat-error *ngIf="correoField.hasError('required')">El campo es obligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Celular</mat-label>
+          <input matInput required formControlName="numeroCelular" />
+          <mat-error *ngIf="celularField.hasError('required')">El campo es obligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" required formControlName="password" />
+          <mat-error *ngIf="claveField.hasError('required')">El campo es obligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar Contraseña</mat-label>
+          <input matInput type="password" required formControlName="confirmarPassword" />
+          <mat-error *ngIf="confirmarClaveField.hasError('required')">El campo es obligatorio</mat-error>
+        </mat-form-field>
       </div>
-     
-    </div></div>
+
+      <div class="auth__actions">
+        <button mat-raised-button class="btnColor" type="submit">
+          Registrarme
+        </button>
+
+        <div *ngIf="form4Mobile == true">
+          <p class="text-center">
+            <mat-icon>help</mat-icon>¿Ya tienes una cuenta?
+          </p>
+          <button mat-stroked-button class="btnInicio" type="button" [routerLink]="[routeLogin]">
+            Inicia tu sesión
+          </button>
+        </div>
+
+      </div>
+    </div>
   </form>
- </div>
-
-  
-
-
-
+</div>
