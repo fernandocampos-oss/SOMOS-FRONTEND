@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShowSstComponent } from '../components/show-sst/show-sst.component';
+import { interval, Subscription } from 'rxjs';
 import { RegisterDatosEncuestaComponent } from '../components/register-datos-encuesta/register-datos-encuesta.component';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { OnomasticosResponse } from '@data/models/menu-principal/menu-principal.model';
 
+interface fechas_Imp{ // Provisional: para tener las fechas importantes
+  descripcion: string;
+  dia: Date;
+}
 @Component({
   selector: 'app-menu-principal',
   templateUrl: './menu-principal.component.html',
@@ -14,15 +19,16 @@ export class MenuPrincipalComponent implements OnInit {
 
   onomasticos: OnomasticosResponse[] = [];
   today = new Date();
-  nextDay = new Date('05/01/2023');
-  dateD: Date;
-  ocultar = true;
-  diferencia: number;
-  division: number;
   daysLeft: number;
   hoursLeft: number;
   minutesLeft: number;
+  identificador= 0;
 
+  fechas: fechas_Imp[] = [
+    {descripcion:'Día del Trabajador',dia: new Date('05/01/2023')},
+    {descripcion:'Día del Trabajador',dia: new Date('05/06/2023')},
+    {descripcion:'Día del Trabajador2',dia: new Date('05/26/2023')},
+  ]
   diaHoy = this.today.getDate();
   mesHoy = this.today.getMonth()+1;
 
@@ -30,12 +36,13 @@ export class MenuPrincipalComponent implements OnInit {
     mesConsulta: '',
     diaConsulta: '',
   }
-
+  subscription: Subscription;
   constructor(private dialog: MatDialog,
-              private _menuService:MenuPrincipalService) { }
+              private _menuService:MenuPrincipalService,) { }
 
   ngOnInit(): void {
     this.convertirDiaMes(this.diaHoy, this.mesHoy);
+    this.getDateDiff(this.fechas[this.identificador].dia,this.today);// Provisional: para tener las fechas importantes
     this.CargarOnomasticos();
   }
 
@@ -96,35 +103,22 @@ export class MenuPrincipalComponent implements OnInit {
     this.parametros.mesConsulta = `${fecha[3]}${fecha[4]}`;
     this.CargarOnomasticos();
   }
-  // printwhatyousee(num: string){
-  //   console.log(this.dateD);
-  //   console.log(num);
-  // }
-  // getDateDiff(startDate: Date, endDate: Date){
-  //   const msInDay = 24 * 60 * 60 * 1000;
-  //   const msInHours = 60 * 60 * 1000;
-  //   const msInMinutes = 60 * 1000;//13 dias - 13 horas - 49 minutos
-  //   this.diferencia = Math.abs(Number(endDate) - Number(startDate));
-  //   this.division = (this.diferencia - msInDay)/ msInDay;
-  //   this.daysLeft = Math.round(this.division);
-  //   console.log(this.daysLeft);
 
-  //   this.diferencia = Math.abs(this.diferencia - (this.daysLeft*msInDay));
-  //   this.division = this.diferencia/msInHours;
-  //   this.hoursLeft = Math.round(this.division);
-  //   console.log(this.hoursLeft);
+  getDateDiff(endDate: Date, startDate: Date){
+    var delta = Math.abs(Number(endDate) - Number(startDate)) / 1000;
 
-  //   this.diferencia = Math.abs(this.diferencia - (this.hoursLeft*msInHours));
-  //   this.division = this.diferencia/msInMinutes;
-  //   this.daysLeft = Math.round(this.division);
-  //   console.log(this.daysLeft);
-  //   // this.diferencia = this. diferencia - (this.daysLeft*msInDay);
-  //   // this.division = (this.diferencia - msInHours)/ msInHours;
-  //   // this.hoursLeft = Math.round(this.division);
-  //   // console.log(this.hoursLeft);
-  //   // //a partir de aqui todo bien
-  //   // this.diferencia = this. diferencia - (this.hoursLeft*msInHours);
-  //   // this.minutesLeft = Math.round((this.diferencia - msInMinutes)/ msInMinutes);
-  //   // console.log(this.minutesLeft);
-  // }
+    // calculate (and subtract) whole days
+    this.daysLeft = Math.floor(delta / 86400);
+    delta -= this.daysLeft * 86400;
+
+    // calculate (and subtract) whole hours
+    this.hoursLeft = Math.floor(delta / 3600) % 24;
+    delta -= this.hoursLeft * 3600;
+
+    // calculate (and subtract) whole minutes
+    this.minutesLeft = Math.floor(delta / 60) % 60;
+    delta -= this.minutesLeft * 60;
+    
+    console.log("Dias:",this.daysLeft,"Horas:",this.hoursLeft,"Minutos:",this.minutesLeft);
+  }
 }

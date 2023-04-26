@@ -3,12 +3,19 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { environment } from '@env';
 import { UsuarioNombres, Usuario, UsuarioRegisterUpdate } from '@data/models';
+import { UsuarioPassword } from '@data/models/usuario/usuario-password.model';
 
 const URL_BASE = `${environment.apiUrl}/usuarios`;
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
   constructor(private _httpClient: HttpClient) {}
+
+  updatePassword(id: number, model: UsuarioPassword){
+    const url = `${URL_BASE}/${id}/cambiar-clave`;
+    return this._httpClient.put(url,model);
+  }
+
   search() {
     const url = `${URL_BASE}`;
     return this._httpClient.get<Usuario[]>(url);

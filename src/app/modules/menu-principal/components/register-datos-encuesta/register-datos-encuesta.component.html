@@ -42,13 +42,13 @@
         <mat-tab label="Encuesta">
           <mat-dialog-content>
             <div *ngFor="let pregunta of preguntas; index as i">
-                <br><h4 class="Descrip">{{pregunta.num}}. {{pregunta.descripcion}}</h4><br>
-                <mat-radio-group formArrayName="frmRespuestas">
-                    <mat-radio-button value="1" (click)="changeSelection(i,1)">1</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="2" (click)="changeSelection(i,2)">2</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="3" (click)="changeSelection(i,3)">3</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="4" (click)="changeSelection(i,4)">4</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="5" (click)="changeSelection(i,5)">5</mat-radio-button>
+                <br><mat-divider *ngIf="i != 0"></mat-divider><br><h4 class="Descrip" style="text-align: justify;">{{pregunta.num}}. {{pregunta.descripcion}}</h4><br>
+                <mat-radio-group formArrayName="frmRespuestas" (change)="changeSelection(i,$event)">
+                    <mat-radio-button value=1>1</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value=2>2</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value=3>3</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value=4>4</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value=5>5</mat-radio-button>
                 </mat-radio-group>
             </div>
             <!-- <mat-expansion-panel [expanded]="true" *ngFor="let pregunta of preguntas; index as i">

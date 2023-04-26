@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatRadioChange } from '@angular/material/radio';
 import { DialogService, NotificationService } from '@core/services';
 import { constants } from 'buffer';
 
@@ -28,10 +29,6 @@ interface questions{
 export class RegisterDatosEncuestaComponent implements OnInit {
 
   form: FormGroup;
-  ansValue: number;
-  answers(){
-    return this._fb.group({valor: this.ansValue,})
-  }
   selectedIndex=0;
   sedes: sede_Demo[] = [
     {descripcion:'Central'},
@@ -110,7 +107,6 @@ export class RegisterDatosEncuestaComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm();
-    this.form.value.frmRespuestas = 1;
   }
   
   onTabChanged(event){
@@ -118,6 +114,9 @@ export class RegisterDatosEncuestaComponent implements OnInit {
       this.selectedIndex=0;
       this._notification.error("Se deben ingresar los datos para continuar");
     }
+    
+    if(this.form.value.frmRespuestas[43] == undefined)
+      this.form.value.frmRespuestas[43] = undefined;
   }
   
 
@@ -127,7 +126,7 @@ export class RegisterDatosEncuestaComponent implements OnInit {
       frmGrupoPersonal    : [null,[Validators.required]],
       frmAreaPersonal     : [null,[Validators.required]],
       frmTiempoServicio   : [null,[Validators.required]],
-      frmRespuestas       : this._fb.array([this.answers()]),
+      frmRespuestas       : this._fb.array([]),
     });
   }
   
@@ -135,20 +134,19 @@ export class RegisterDatosEncuestaComponent implements OnInit {
     this.selectedIndex=1;
   }
   sendInfo(){
+    console.log(this.form.value);
     const title = `Encuesta enviada satisfactoriamente`;
     const message = `¡Gracias por responder la encuesta!`;
     this._dialogService.success(message,title);
   }
-  getfrmRespuestas(index) {
-    return this.form.controls["frmRespuestas"] as FormArray;
-  }
 
-  changeSelection(index: number,valor: number){
-    this.form.value.frmRespuestas[index] = valor;
+  changeSelection(index: number,data: MatRadioChange){
+    this.form.value.frmRespuestas[index] = parseInt(data.value);
+    console.log(this.form.value.frmRespuestas);
   }
 
   validarEncuesta(): boolean{
-    if (this.form.value.frmRespuestas.length == 44 ) {
+    if (this.form.value.frmRespuestas.length == 44) {
       if (this.form.value.frmRespuestas.includes(undefined)) {
         return false;        
       }

@@ -40,9 +40,9 @@ export class SidenavComponent implements OnInit {
     this.user = this._authService.getUserSession();
     this._userService.get(this.user.id).subscribe( data =>{
       this.email = data.correo;
-      this._zonaService.get(data.idZonaControl).subscribe(info=>{
-        this.gerencia = info.descripcion;
-      })
+      // this._zonaService.get(data.idZonaControl).subscribe(info=>{
+      //   this.gerencia = info.descripcion;
+      // })
       this.nombre = data.nombres;
     })
   }
@@ -70,8 +70,11 @@ export class SidenavComponent implements OnInit {
   cambiar_contra(){
     const dialogRef: MatDialogRef<ChangePasswComponent> = this.dialog.open(ChangePasswComponent, {
         disableClose: false,
-        width: '20%',
+        width: '340px',
         autoFocus: false,
+        data:{
+          idUser: this.user.id
+        }
       });
   
       dialogRef.afterClosed().subscribe(result => { });

@@ -45,3 +45,8 @@ mat-grid-list {
     font-size: 8px;
   }
 }
+@media screen and (max-width: 445px) {
+  ::ng-deep .card{
+    padding: 0px;
+  }
+}

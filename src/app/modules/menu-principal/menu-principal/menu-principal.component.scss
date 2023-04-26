@@ -30,21 +30,10 @@ span{
   padding: 4px;
 } 
 .boxBirth, .boxBirth-1{
-  margin: 8px 0px 0px 0px;
-  border: #37485f;
   min-height: 10vw;
   max-height: 22vw;
-  border-style:solid;
   width: 100%;
-  border-radius: 11px;
   display: grid;
-}
-.boxBirth-1 {
-  cursor: pointer;
-  background-image: url(~src/assets/images/back-Birth.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
 }
 .boxBirth {
   .header{
@@ -61,22 +50,6 @@ span{
   background: rgba(76, 175, 80, 0.1);
   .contenido{
     display: flex;
-    // .num{
-    //   border: #37485f;
-    //   font-size: 1vw;
-    //   width: 2.5vw;
-    //   height: 2.65vw;
-    //   border-style:solid;
-    //   align-self: center;
-    //   margin: 2%;
-    //   display: grid;
-    //   align-items: center;
-    //   color:white;
-    //   font-weight: bold;
-    //   border-radius: 100%;
-    //   padding: 2%;
-    //   background-color: #2b9ed8;
-    // }
     .num{
       background-image: url(~src/assets/images/avatar.png);
       background-repeat: no-repeat;
@@ -97,37 +70,49 @@ span{
     }
   }
 }
-.boxSST, .boxEncuesta, .boxSST-2{
+.boxBorde{
   margin: 8px 0px 0px 0px;
-  height: 140px;
-  cursor: pointer;
   border: #37485f;
   border-style:solid;
   border-radius: 11px;
-  width: 100%;
+}
+.boxSST, .boxEncuesta, .boxSST-2{
+  cursor: pointer;
+  font-weight: bold;
+  align-content: center;
+  display: flex;
+  color: #37485f;
 }
 .boxSST {
+  height: 140px;
+  width: 100%;
   background-image: url(~src/assets/images/SST_logo.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  display: grid;
 }
 .boxEncuesta{
-  font-weight: bold;
-  align-content: center;
-  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
   font-size: 3vw;
-  color: #37485f;
   background-color: #8de4ff;
 }
 .boxSST-2{
-  font-weight: bold;
-  align-content: center;
-  display: flex;
+  width: 100%;
+  cursor:auto;
   font-size: 1.2vw;
-  color: #37485f;
   background-color: #8de4ff;
+}
+.boxSST-3{
+  float: left;
+  height: 100px;
+  width: 49%;
+  display: grid;
+  align-content: center;
+  text-align: center;
+  color: white;
+  font-size: 0.9vw;
+  background-color: #a36237;
 }
 .info{
   margin: 2%;
@@ -159,16 +144,7 @@ span{
     color:#2b9ed8;
   }
 }
-.imgCuadro{
-  border-radius: 11px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 60%;
-  padding: 10px;
-  height: 100%;
-}
-.imgCuadro_Msg{
+.imgCuadro, .imgCuadro_Msg{
   border-radius: 11px;
   display: block;
   margin-left: auto;
@@ -178,7 +154,6 @@ span{
   height: 100%;
 }
 mat-grid-list {
-  
   mat-form-field {
     width: 90%;
     top:10px;

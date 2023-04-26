@@ -1,6 +1,4 @@
 <div class="column2">
-    <div class="box2-1" >
-    </div>
     <div class="box2" >
       <div class="header">
         <span>Mensaje del día</span>    
@@ -38,10 +36,10 @@
           <span>Programas y Talleres</span>    
       </div>
     </div> --> 
-    <div class="boxBirth">
+    <div class="boxBorde boxBirth">
         <div class="header">
           <mat-grid-list cols="7" rowHeight="50px" gutterSize="6px">
-            <mat-grid-tile class="asdf" [colspan]="1" style="left: -1.6%; top: 10%;">
+            <mat-grid-tile [colspan]="1" style="left: -1.6%; top: 10%;">
               <mat-form-field class="cambioFecha" appearance="_">
               <input #input matInput disabled [matDatepicker]="picker1" [(value)] = today style="display: none;">
               <mat-datepicker-toggle matSuffix [for]="picker1"matTooltip="Cambiar dia de cumpleaños"></mat-datepicker-toggle>
@@ -67,16 +65,16 @@
           </div>
         </div>
     </div>
-    <div class="boxSST" (click)="open(2)">
+    <div class="boxBorde boxSST" (click)="open(2)">
     </div>
-    <div class="boxEncuesta" (click)="open(3)">
+    <div class="boxBorde boxEncuesta" (click)="open(3)">
       <img src="assets/images/QR_example.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
       <div style="display: grid; align-content: center;">
         <span>Encuesta Cultural y Clima</span><br>
         <span>¡Ingresa y cuéntanos tu opinión!</span>
       </div>
     </div>
-    <div class="boxSST-2">
+    <div class="boxBorde boxSST-2">
       <div class="info" matTooltip="Gerencia Políticas y Organización del Recurso Humano">
         <span>GPyORH</span>
       </div>
@@ -87,4 +85,14 @@
         <span>GDP</span>
       </div>
     </div>
+    <!-- <div class="boxBorde boxSST-3" style="margin-right: 1%;">
+    <h5>{{fechas[0].descripcion}}</h5>
+      <span>Dias: {{daysLeft}}</span>
+      <span>Horas: {{hoursLeft}}</span>
+      <span>Minutos: {{minutesLeft}}</span>
+    </div>
+    <div class="boxBorde boxSST-3"style="margin-left: 1%;">
+      <h4>Consultas:</h4>
+      <span>sgrhs@essalud.gob.pe</span>
+    </div> -->
 </div>
