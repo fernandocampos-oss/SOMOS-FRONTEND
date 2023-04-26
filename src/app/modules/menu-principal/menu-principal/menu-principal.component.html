@@ -1,24 +1,26 @@
 <div class="column2">
-    <div class="box2" >
+    <!-- <div class="box2" >
       <div class="header">
         <span>Mensaje del día</span>    
       </div>
       <div class="body">
-        <!-- Aqui debe estar la ruta de donde se conseguirán las imagenes -->
         <img src="assets/images/msg_example.png" class="imgCuadro_Msg" alt="Logotipo" />
-
       </div>
-    </div>
+    </div> -->
     <div class="box2" >
       <div class="header">
           <span>Informativo</span>    
       </div>
       <div class="body">
-        <!-- Aqui debe estar la ruta de donde se conseguirán las imagenes -->
-        <img src="assets/images/Taller_de_productividad_1.jpg" class="imgCuadro" alt="Logotipo" />
-        <img src="assets/images/taller_1_lowres.png" class="imgCuadro" alt="Logotipo" />
-        <img src="assets/images/taller_2_lowres.png" class="imgCuadro" alt="Logotipo" />
-        <img src="assets/images/taller_3_lowres.png" class="imgCuadro" alt="Logotipo" />
+        <div class="boxPublicacion boxBorde" *ngFor="let pub of publicaciones">
+          <div class="descrPub">
+            <span>{{pub.nombre}}</span>
+            <span style="float: right;">{{pub.fechaPub}}</span>
+          </div>
+          <div>
+          <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
+          <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></div>
+        </div>
       </div>
     </div>
 
@@ -67,13 +69,13 @@
     </div>
     <div class="boxBorde boxSST" (click)="open(2)">
     </div>
-    <div class="boxBorde boxEncuesta" (click)="open(3)">
+    <!-- <div class="boxBorde boxEncuesta" (click)="open(3)">
       <img src="assets/images/QR_example.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
       <div style="display: grid; align-content: center;">
         <span>Encuesta Cultural y Clima</span><br>
         <span>¡Ingresa y cuéntanos tu opinión!</span>
       </div>
-    </div>
+    </div> -->
     <div class="boxBorde boxSST-2">
       <div class="info" matTooltip="Gerencia Políticas y Organización del Recurso Humano">
         <span>GPyORH</span>

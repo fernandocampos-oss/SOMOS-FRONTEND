@@ -29,13 +29,11 @@ span{
   width: 68%;
   padding: 4px;
 } 
-.boxBirth, .boxBirth-1{
+.boxBirth {
   min-height: 10vw;
   max-height: 22vw;
   width: 100%;
   display: grid;
-}
-.boxBirth {
   .header{
     display: block;
     top: 0;
@@ -126,7 +124,6 @@ span{
   background-color: #ccebf5;
   align-content: center;
   justify-content: center;
-
 }
 .box2 {
   margin: 8px;
@@ -144,15 +141,31 @@ span{
     color:#2b9ed8;
   }
 }
-.imgCuadro, .imgCuadro_Msg{
-  border-radius: 11px;
+.boxPublicacion{
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
-  padding: 10px;
-  height: 100%;
+  width: 80%;
+  .descrPub{
+    font-size: 0.85vw;
+    font-weight: bold;
+    padding: 8px;
+    background: #a9bfdf;
+    border-bottom: #37485f;
+    border-bottom-style:solid;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    span{
+      color:#000000;
+    }
+  }
+  .imgInfo{
+    height: 100%;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
 }
+
 mat-grid-list {
   mat-form-field {
     width: 90%;
@@ -168,6 +181,9 @@ mat-grid-list {
 }
 
 @media screen and (min-width: 1024px) {
+  .boxPublicacion{
+    width: 60%;
+  }
   .boxEncuesta{
     font-size: 1vw;
   }

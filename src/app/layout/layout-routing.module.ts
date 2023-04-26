@@ -103,6 +103,13 @@ export const ROUTES: Routes = [
             (m) => m.ConfiguracionesModule
           ),
       },
+      {
+        path: AppRoute.ADMINISTRAR_ENCUESTA,
+        loadChildren: () =>
+          import('../modules/administracion/administracion.module').then(
+            (m) => m.AdministracionModule
+          ),
+      },
       // {
       //   path: AppRoute.MIS_REQUERIMIENTOS,
       //   loadChildren: () => 

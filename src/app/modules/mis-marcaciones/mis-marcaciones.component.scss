@@ -46,7 +46,9 @@ mat-grid-list {
   }
 }
 @media screen and (max-width: 445px) {
-  ::ng-deep .card{
-    padding: 0px;
+  .marcaciones{
+    ::ng-deep .card{
+      padding: 0px;
+    }
   }
 }

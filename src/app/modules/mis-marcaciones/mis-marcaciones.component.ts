@@ -52,6 +52,7 @@ export class MisMarcacionesComponent implements OnInit {
     {num: 12,descripcion: 'Diciembre'},
   ];
   anios: Año[] = [
+    {anio: 2021},
     {anio: 2022},
     {anio: 2023},
   ];

@@ -22,6 +22,11 @@ const data: MenuItem[] = [
       label: 'Mis Marcaciones',
   },
   // {
+  //     path: AppRoute.ADMINISTRAR_ENCUESTA,
+  //     icon: 'settings',
+  //     label: 'Administrar Resultados Encuesta',
+  // },
+  // {
   //     path: AppRoute.MARCACION_TRABAJADOR,
   //     icon: 'airplanemode_active',
   //     label: 'Mis vacaciones',

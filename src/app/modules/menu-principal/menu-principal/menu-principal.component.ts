@@ -10,6 +10,14 @@ interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
   dia: Date;
 }
+
+interface publicacion{
+  nombre: string;
+  fechaPub: string;
+  imgRuta: string;
+  redireccion?: string;  
+}
+
 @Component({
   selector: 'app-menu-principal',
   templateUrl: './menu-principal.component.html',
@@ -26,9 +34,21 @@ export class MenuPrincipalComponent implements OnInit {
 
   fechas: fechas_Imp[] = [
     {descripcion:'Día del Trabajador',dia: new Date('05/01/2023')},
-    {descripcion:'Día del Trabajador',dia: new Date('05/06/2023')},
-    {descripcion:'Día del Trabajador2',dia: new Date('05/26/2023')},
   ]
+
+  publicaciones: publicacion[] = [
+    {nombre: 'Visita Turística a Antioquía', fechaPub: '26/04/2023 - 10:55', imgRuta: 'assets/images/Turismo.jpg'},
+    {nombre: 'Campaña por el Día de la Madre', fechaPub: '26/04/2023 - 10:42', imgRuta: 'assets/images/CampSolidaridad.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/FORMATO_DE_DONACION_2023.docx'},
+    {nombre: 'Feria Agropecuaria', fechaPub: '26/04/2023 - 08:39', imgRuta: 'assets/images/Agropecuaria.jpg'},
+    {nombre: 'Día de la Secretaria', fechaPub: '26/04/2023 - 10:00', imgRuta: 'assets/images/DiaSecretaria.jpg'},
+    {nombre: 'Aniversario Hospital II Tarapoto - San Martín', fechaPub: '25/04/2023 - 11:17', imgRuta: 'assets/images/Tarapoto.jpg'},
+    {nombre: 'Aviso de Buenas prácticas estadísticas', fechaPub: '25/04/2023 - 10:12', imgRuta: 'assets/images/Aviso.jpg', redireccion: 'http://intranet.essalud/portal/GCPP/pdfs/R_GCPyP_002_GCPP_ESSALUD_2023.pdf'},
+    {nombre: 'Cruzada Solidaria', fechaPub: '24/04/2023 - 16:56', imgRuta: 'assets/images/Cruzada.jpg'},
+    {nombre: 'Aniversarios Establecimientos de Salud', fechaPub: '24/04/2023 - 15:33', imgRuta: 'assets/images/Aniversario27.jpg'},
+    {nombre: 'Normativa de trabajo con integridad', fechaPub: '24/04/2023 - 14:31', imgRuta: 'assets/images/TrabajoIntegridad.jpg', redireccion: 'https://ww1.essalud.gob.pe/ofin/wp-content/uploads/2023/03/RESOLUCION-N%C2%B0423-GG-ESSALUD-202320230315_08214357.pdf'},
+    {nombre: 'Talleres de Productividad', fechaPub: '15/04/2023 - 12:00', imgRuta: 'assets/images/Taller_de_productividad_1.jpg'},
+  ]
+
   diaHoy = this.today.getDate();
   mesHoy = this.today.getMonth()+1;
 
