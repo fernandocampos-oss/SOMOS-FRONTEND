@@ -22,7 +22,7 @@
             </mat-grid-tile>
             <mat-grid-tile [colspan]="2" class="grid">
                 <mat-form-field appearance="outline">
-                    <mat-label>Area de Personal</mat-label>
+                    <mat-label>Cargo de Personal</mat-label>
                     <mat-select formControlName="frmAreaPersonal">
                         <mat-option *ngFor="let area of  areasP" [value]="area.descripcion">{{area.descripcion}}</mat-option>
                     </mat-select>

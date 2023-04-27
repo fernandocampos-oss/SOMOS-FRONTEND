@@ -5,15 +5,6 @@
     position: sticky;
     top: 0;
 }
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-  background-color: #ffffff;
-}
-.asdf{
-  left: -1.6%; top: 10%;
-}
 .header {
 display: flex;
 font-weight: bold;
@@ -44,7 +35,6 @@ span{
     top: 0;
     overflow-y: auto;
   }
-  background-image: url(~src/assets/images/back-Birth.jpg);
   background: rgba(76, 175, 80, 0.1);
   .contenido{
     display: flex;
@@ -103,14 +93,15 @@ span{
 }
 .boxSST-3{
   float: left;
-  height: 100px;
-  width: 49%;
+  padding: 2%;
+  height: 100%;
+  width: 100%;
   display: grid;
   align-content: center;
   text-align: center;
-  color: white;
+  color: #2f74eb;
+  background: white;
   font-size: 0.9vw;
-  background-color: #a36237;
 }
 .info{
   margin: 2%;
@@ -166,6 +157,26 @@ span{
   }
 }
 
+.boxCounter{
+  display: flex;
+  justify-content: center;
+}
+
+.boxTimer{
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  border-radius: 8px;
+  padding: 1%;
+  margin: 0% 3% 0 3%;
+  width: 3.2vw;
+  // background: linear-gradient(0.25turn, #99e3fd 0%, #157cef 50%, #99e3fd );
+  background: linear-gradient(0.35turn, #1cbdb4,#0e7ef5, #60d0f6);
+  color: white;
+  span{
+    font-size: 1.8vw;
+    font-weight: bolder;
+  }
+}
+
 mat-grid-list {
   mat-form-field {
     width: 90%;
@@ -181,6 +192,9 @@ mat-grid-list {
 }
 
 @media screen and (min-width: 1024px) {
+  .boxSST-3{
+    width: 49%;
+  }
   .boxPublicacion{
     width: 60%;
   }

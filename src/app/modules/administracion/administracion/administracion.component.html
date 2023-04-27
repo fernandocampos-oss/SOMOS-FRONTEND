@@ -11,7 +11,7 @@
             <div style="float: left; display: grid; width: 75.5%; height: 100%;">
                 <h4>Total de Registros: 484</h4>
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" (change)="printValue($event)">Todos los registros</mat-checkbox>
+                    <mat-checkbox class="example-margin" (change)="restringirFiltros($event)">Todos los registros</mat-checkbox>
                 </section>
             </div>
             <div style="float:right; display: grid; width: 24.5%; height: 100%; align-content: center;">
@@ -23,9 +23,8 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Sede</mat-label>
-                    <mat-select [disabled]="!restringir" formControlName="sexo">
-                        <mat-option value="M">Masculino</mat-option>
-                        <mat-option value="F">Femenino</mat-option>
+                    <mat-select [disabled]="restringir">
+                        <mat-option *ngFor="let sede of  sedes" [value]="sede.descripcion">{{sede.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -33,9 +32,8 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Grupo de personal</mat-label>
-                    <mat-select formControlName="sexo">
-                        <mat-option value="M">Masculino</mat-option>
-                        <mat-option value="F">Femenino</mat-option>
+                    <mat-select [disabled]="restringir">
+                        <mat-option *ngFor="let grupo of  gruposPers" [value]="grupo.descripcion">{{grupo.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -43,9 +41,8 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Cargo de personal</mat-label>
-                    <mat-select formControlName="sexo">
-                        <mat-option value="M">Masculino</mat-option>
-                        <mat-option value="F">Femenino</mat-option>
+                    <mat-select [disabled]="restringir">
+                        <mat-option *ngFor="let area of  areasP" [value]="area.descripcion">{{area.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -53,9 +50,8 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Tiempo de servicio</mat-label>
-                    <mat-select formControlName="sexo">
-                        <mat-option value="M">Masculino</mat-option>
-                        <mat-option value="F">Femenino</mat-option>
+                    <mat-select [disabled]="restringir">
+                        <mat-option *ngFor="let tiempo of  tiemposServ" [value]="tiempo.descripcion">{{tiempo.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>

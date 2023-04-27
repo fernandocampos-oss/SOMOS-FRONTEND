@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShowSstComponent } from '../components/show-sst/show-sst.component';
-import { interval, Subscription } from 'rxjs';
 import { RegisterDatosEncuestaComponent } from '../components/register-datos-encuesta/register-datos-encuesta.component';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { OnomasticosResponse } from '@data/models/menu-principal/menu-principal.model';
@@ -37,6 +36,7 @@ export class MenuPrincipalComponent implements OnInit {
   ]
 
   publicaciones: publicacion[] = [
+    {nombre: 'Cronograma capacitaciones mayo 2023', fechaPub: '27/04/2023 - 14:27', imgRuta: 'assets/images/Cronograma.jpg'},
     {nombre: 'Campaña de salud integral', fechaPub: '26/04/2023 - 16:15', imgRuta: 'assets/images/diaTrabajo_2.jpg'},
     {nombre: 'Anuncio Actividades 27 de abril', fechaPub: '26/04/2023 - 13:31', imgRuta: 'assets/images/diaTrabajo_1.jpg'},
     {nombre: 'Visita Turística a Antioquía', fechaPub: '26/04/2023 - 10:55', imgRuta: 'assets/images/Turismo.jpg'},
@@ -58,7 +58,6 @@ export class MenuPrincipalComponent implements OnInit {
     mesConsulta: '',
     diaConsulta: '',
   }
-  subscription: Subscription;
   constructor(private dialog: MatDialog,
               private _menuService:MenuPrincipalService,) { }
 
@@ -66,6 +65,11 @@ export class MenuPrincipalComponent implements OnInit {
     this.convertirDiaMes(this.diaHoy, this.mesHoy);
     this.getDateDiff(this.fechas[this.identificador].dia,this.today);// Provisional: para tener las fechas importantes
     this.CargarOnomasticos();
+    setInterval(() => {  
+     var cambiar = new Date();
+     this.getDateDiff(this.fechas[this.identificador].dia,cambiar);
+    }, 1000); // Mil es 1 seg
+    
   }
 
   open(cuadro: number) {

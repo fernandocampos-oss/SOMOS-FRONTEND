@@ -26,18 +26,6 @@
 
   </div>
   <div class="column1">
-    <!-- <div class="box1-1" >
-      <div class="body">
-          <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
-          <span>Eventos</span>    
-      </div>
-    </div>
-    <div class="box1-2" >
-      <div class="body">
-          <img src="assets/images/legajos_box1.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
-          <span>Programas y Talleres</span>    
-      </div>
-    </div> --> 
     <div class="boxBorde boxBirth">
         <div class="header">
           <mat-grid-list cols="7" rowHeight="50px" gutterSize="6px">
@@ -87,14 +75,27 @@
         <span>GDP</span>
       </div>
     </div>
-    <!-- <div class="boxBorde boxSST-3" style="margin-right: 1%;">
-    <h5>{{fechas[0].descripcion}}</h5>
-      <span>Dias: {{daysLeft}}</span>
-      <span>Horas: {{hoursLeft}}</span>
-      <span>Minutos: {{minutesLeft}}</span>
+    <div class="boxChange">
+      <div class="boxBorde boxSST-3" style="margin-right: 1%;">
+        <h4>{{fechas[0].descripcion}}</h4>
+        <div class="boxCounter">
+          <div class="boxTimer">
+            <span>{{daysLeft}}</span>
+            <h5>Dias</h5>
+          </div>
+          <div class="boxTimer">
+            <span>{{hoursLeft}}</span>
+            <h5>Horas</h5>
+          </div>
+          <div class="boxTimer">
+            <span>{{minutesLeft}}</span>
+            <h5>Minutos</h5>
+          </div>
+        </div>
+      </div>
+      <div class="boxBorde boxSST-3"style="margin-left: 1%;">
+        <h4>Consultas:</h4>
+        <span>sgrhs@essalud.gob.pe</span>
+      </div>
     </div>
-    <div class="boxBorde boxSST-3"style="margin-left: 1%;">
-      <h4>Consultas:</h4>
-      <span>sgrhs@essalud.gob.pe</span>
-    </div> -->
 </div>
