@@ -37,6 +37,8 @@ export class MenuPrincipalComponent implements OnInit {
   ]
 
   publicaciones: publicacion[] = [
+    {nombre: 'Campaña de salud integral', fechaPub: '26/04/2023 - 16:15', imgRuta: 'assets/images/diaTrabajo_2.jpg'},
+    {nombre: 'Anuncio Actividades 27 de abril', fechaPub: '26/04/2023 - 13:31', imgRuta: 'assets/images/diaTrabajo_1.jpg'},
     {nombre: 'Visita Turística a Antioquía', fechaPub: '26/04/2023 - 10:55', imgRuta: 'assets/images/Turismo.jpg'},
     {nombre: 'Campaña por el Día de la Madre', fechaPub: '26/04/2023 - 10:42', imgRuta: 'assets/images/CampSolidaridad.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/FORMATO_DE_DONACION_2023.docx'},
     {nombre: 'Feria Agropecuaria', fechaPub: '26/04/2023 - 08:39', imgRuta: 'assets/images/Agropecuaria.jpg'},

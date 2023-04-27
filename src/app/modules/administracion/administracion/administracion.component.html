@@ -7,7 +7,59 @@
     </div>
     <div class="page__body">
       <div class="card shadow">
-          
+        <div style="height: 80px;">
+            <div style="float: left; display: grid; width: 75.5%; height: 100%;">
+                <h4>Total de Registros: 484</h4>
+                <section class="example-section">
+                    <mat-checkbox class="example-margin" (change)="printValue($event)">Todos los registros</mat-checkbox>
+                </section>
+            </div>
+            <div style="float:right; display: grid; width: 24.5%; height: 100%; align-content: center;">
+                <button mat-raised-button color="primary" class="search" type="submit" style="height: 100%;">Exportar a Excel</button>
+            </div>
+        </div>
+            <mat-grid-list cols="4" rowHeight="87px" gutterSize="6px">
+            
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline">
+                    <mat-label>Sede</mat-label>
+                    <mat-select [disabled]="!restringir" formControlName="sexo">
+                        <mat-option value="M">Masculino</mat-option>
+                        <mat-option value="F">Femenino</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline">
+                    <mat-label>Grupo de personal</mat-label>
+                    <mat-select formControlName="sexo">
+                        <mat-option value="M">Masculino</mat-option>
+                        <mat-option value="F">Femenino</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cargo de personal</mat-label>
+                    <mat-select formControlName="sexo">
+                        <mat-option value="M">Masculino</mat-option>
+                        <mat-option value="F">Femenino</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tiempo de servicio</mat-label>
+                    <mat-select formControlName="sexo">
+                        <mat-option value="M">Masculino</mat-option>
+                        <mat-option value="F">Femenino</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
       </div>
     </div>
   </div>
