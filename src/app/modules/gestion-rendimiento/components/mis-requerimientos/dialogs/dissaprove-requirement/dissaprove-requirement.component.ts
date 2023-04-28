@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-dissaprove-requirement',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DissaproveRequirementComponent implements OnInit {
 
-  constructor() { }
+  dataSource: MatTableDataSource<any>;
+  displayedColumns: string[] = ['Actividad POI'];
+  objElement: any;
+  requerimiento: String = '';
+  selectedIndex = 0;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { }
 
   ngOnInit(): void {
+    this.objElement=this.data.obj;
+    this.requerimiento = this.objElement.descripcion;
+
   }
 
 }
+

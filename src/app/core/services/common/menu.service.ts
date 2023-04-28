@@ -31,11 +31,11 @@ const data: MenuItem[] = [
   //     icon: 'payment',
   //     label: 'Mis boletas de pago',
   // },
-  // // {
-  // //   path: '',
-  // //   icon: 'contact_mail',
-  // //   label: 'Legajo Personal',
-  // // },
+  // {
+  //   path: '',
+  //   icon: 'contact_mail',
+  //   label: 'Legajo Personal',
+  // },
   // // {
   // //   path: AppRoute.CONTROL_ACCESO,
   // //   icon: 'check_circle',
@@ -71,13 +71,13 @@ const data: MenuItem[] = [
   //   label: 'Configuraciones',
   //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   // },
-  // {
-  //    path: AppRoute.GESTION_RENDIMIENTO,
-  //    icon: 'remote_menu',
-  //    svg : true,
-  //    label: 'Gestion del Rendimiento',
-  //    roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.TRABAJADOR],
-  // },
+  {
+     path: AppRoute.GESTION_RENDIMIENTO,
+     icon: 'remote_menu',
+     svg : true,
+     label: 'Gestion del Rendimiento',
+     roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.TRABAJADOR],
+  },
   // // {
   // //   path : AppRoute.DDJJ_CONFLICTO,
   // //   icon : 'ddjj',

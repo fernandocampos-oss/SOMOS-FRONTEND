@@ -1,177 +1,192 @@
 <h2 class="auth__subtitle">Solicitud para un sistema de Gestión del Rendimiento</h2><br>
-<h3>Seleccione los POI, relacionados al requerimiento</h3>
-<div>
-    <div class="column1">
-        <div class="solicitud__group">
-            <mat-dialog-content>
-                <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
-                    <mat-grid-tile [colspan]="5" class="grid">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Seleccione</mat-label>
-                            <mat-select [(value)]="descripcionPoi">
-                                <mat-option *ngFor="let poi of pois"
-                                    [value]="poi.descripcion">{{poi.descripcion}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]="1">
-                        <button mat-raised-button color="primary" class="aniadir"
-                            (click)="onPoiCreate()">Añadir</button>
-                    </mat-grid-tile>
-                </mat-grid-list>
-                <table mat-table [dataSource]="dataSource" style="width:100%">
-                    <ng-container matColumnDef="Ver">
-                        <th mat-header-cell *matHeaderCellDef width="100px"> Ver </th>
-                        <td mat-cell *matCellDef="let element;index as i">
-                            <button mat-icon-button color="primary" matTooltip="Ver" (click)="verPoi(element)">
-                                <mat-icon>remove_red_eye</mat-icon>
-                            </button>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Prioridades Anuales de Gestión">
-                        <th mat-header-cell *matHeaderCellDef> Prioridades Anuales de Gestión </th>
-                        <td mat-cell *matCellDef="let element"> {{element.descripcionPoi}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Quitar">
-                        <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
-                        <td mat-cell *matCellDef="let element;index as i">
-                            <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deletePoi(i)">
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-                        </td>
-                    </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    <tr class="empty-row" *matNoDataRow>
-                        <td class="empty-cell">Sin registros por mostrar</td>
-                    </tr>
-                </table>
-                <br><br><br>
-                <!-- nivel 2 -->
-                <h4>POI: {{ nombrePoi }}</h4><br>
+<mat-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>POI</ng-template>
+            <br>
+            <h3>Seleccione los POI, relacionados al requerimiento</h3>
+            <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+                <mat-grid-tile [colspan]="5" class="grid">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Seleccione</mat-label>
+                        <mat-select [(value)]="descripcionPoi">
+                            <mat-option *ngFor="let poi of pois"
+                                [value]="poi.descripcion">{{poi.descripcion}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1">
+                    <button mat-raised-button color="primary" class="aniadir" (click)="onPoiCreate()">Añadir</button>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <table mat-table [dataSource]="dataSource" style="width:100%">
+                <ng-container matColumnDef="Ver">
+                    <th mat-header-cell *matHeaderCellDef width="100px"> Ver </th>
+                    <td mat-cell *matCellDef="let element;index as i">
+                        <button mat-icon-button color="primary" matTooltip="Ver" matStepperNext (click)="verPoi(element)">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Prioridades Anuales de Gestión">
+                    <th mat-header-cell *matHeaderCellDef> Prioridades Anuales de Gestión </th>
+                    <td mat-cell *matCellDef="let element"> {{element.descripcionPoi}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Quitar">
+                    <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
+                    <td mat-cell *matCellDef="let element;index as i">
+                        <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deletePoi(i)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
 
-                <mat-grid-list cols="6" rowHeight="80px" gutterSize="6px">
-                    <mat-grid-tile [colspan]="6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Ingrese el/los indicadores</mat-label>
-                            <input type="text" [(ngModel)]="indicadorNgModel" matInput maxlength="80" />
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </mat-grid-list>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr class="empty-row" *matNoDataRow>
+                    <td class="empty-cell">Sin registros por mostrar</td>
+                </tr>
+            </table>
+            <br><br>
+            <!-- <div align="end">
+                <button mat-raised-button matStepperNext>Siguiente</button>
+            </div> -->
+        </form>
+    </mat-step>
 
-                <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
-                    <mat-grid-tile [colspan]="3" class="grid">
-                        <h4>Valor meta</h4>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]="2" class="grid">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Placeholder</mat-label>
-                            <input type="text" matInput maxlength="50" />
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]="1">
-                        <button mat-raised-button color="primary" class="aniadir"
-                            (click)="onMetaCreate()">Añadir</button>
-                    </mat-grid-tile>
-                </mat-grid-list>
+    <mat-step [stepControl]="secondFormGroup" label="Indicadores">
+        <form [formGroup]="secondFormGroup">
+            <div>
+                <button mat-raised-button matStepperPrevious>Volver</button>
+                <!-- <button mat-button matStepperNext>Siguiente</button> -->
+            </div>
+            <br>
+            <h4>POI: {{ nombrePoi }}</h4>
+            <mat-grid-list cols="6" rowHeight="80px" gutterSize="6px">
+                <mat-grid-tile [colspan]="6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Ingrese el/los indicadores</mat-label>
+                        <input type="text" [(ngModel)]="indicadorNgModel" matInput maxlength="80" />
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
 
-                <table mat-table [dataSource]="metas" style="width:100%">
-                    <ng-container matColumnDef="Ver">
-                        <th mat-header-cell *matHeaderCellDef width="100px"> Ver </th>
-                        <td mat-cell *matCellDef="let element;index as i">
-                            <button mat-icon-button color="primary" matTooltip="Ver" (click)="verMeta(element)">
-                                <mat-icon>remove_red_eye</mat-icon>
-                            </button>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Indicadores / Producto">
-                        <th mat-header-cell *matHeaderCellDef> Indicadores / Producto </th>
-                        <td mat-cell *matCellDef="let element"> {{element.producto}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Valor Meta">
-                        <th mat-header-cell *matHeaderCellDef> Valor Meta </th>
-                        <td mat-cell *matCellDef="let element"> {{element.meta}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Quitar">
-                        <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
-                        <td mat-cell *matCellDef="let element;index as i">
-                            <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deleteMeta(i)">
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-                        </td>
-                    </ng-container>
+            <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+                <mat-grid-tile [colspan]="3" class="grid">
+                    <h4>Valor meta</h4>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2" class="grid">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Placeholder</mat-label>
+                        <input type="text" matInput maxlength="50" />
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1">
+                    <button mat-raised-button color="primary" class="aniadir" (click)="onMetaCreate()">Añadir</button>
+                </mat-grid-tile>
+            </mat-grid-list>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns_2"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
-                    <tr class="empty-row" *matNoDataRow>
-                        <td class="empty-cell">Sin registros por mostrar</td>
-                    </tr>
-                </table>
+            <table mat-table [dataSource]="metas" style="width:100%">
+                <ng-container matColumnDef="Ver">
+                    <th mat-header-cell *matHeaderCellDef width="100px"> Ver </th>
+                    <td mat-cell *matCellDef="let element;index as i">
+                        <button mat-icon-button color="primary" matTooltip="Ver" matStepperNext (click)="verMeta(element)">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Indicadores / Producto">
+                    <th mat-header-cell *matHeaderCellDef> Indicadores / Producto </th>
+                    <td mat-cell *matCellDef="let element"> {{element.producto}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Valor Meta">
+                    <th mat-header-cell *matHeaderCellDef> Valor Meta </th>
+                    <td mat-cell *matCellDef="let element"> {{element.meta}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Quitar">
+                    <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
+                    <td mat-cell *matCellDef="let element;index as i">
+                        <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deleteMeta(i)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
 
-            </mat-dialog-content>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns_2"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
+                <tr class="empty-row" *matNoDataRow>
+                    <td class="empty-cell">Sin registros por mostrar</td>
+                </tr>
+            </table>            
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Tareas</ng-template>
+        <div>
+            <button mat-raised-button matStepperPrevious>Volver</button>
+            <!-- <button mat-button (click)="stepper.reset()">Descartar</button> -->
         </div>
-    </div>
-    <div class="column2">
-        <div class="solicitud__group">
-            <mat-dialog-content>
-                <h4>Indicador: {{ nombreMeta }}</h4><br>
+        <br>
+        <h4>Indicador: {{ nombreMeta }}</h4><br>
+        <mat-grid-list cols="6" rowHeight="80px" gutterSize="6px">
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Ingrese la(s) tareas realcionadas al indicador</mat-label>
+                    <input type="text" matInput maxlength="80" />
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
 
-                <mat-grid-list cols="6" rowHeight="80px" gutterSize="6px">
-                    <mat-grid-tile [colspan]="6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Ingrese la(s) tareas realcionadas al indicador</mat-label>
-                            <input type="text" matInput maxlength="80" />
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </mat-grid-list>
+        <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+            <mat-grid-tile [colspan]="2" class="grid">
+                <h4>Plazo máximo</h4>
+            </mat-grid-tile>
 
-                <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
-                    <mat-grid-tile [colspan]="3" class="grid">
-                        <h4>Plazo máximo</h4>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]="2" class="grid">
-                        <mat-form-field appearance="outline">
-                            <mat-label>DD/MM/AA</mat-label>
-                            <input type="text" matInput maxlength="50" />
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]="1">
-                        <button mat-raised-button color="primary" class="aniadir"
-                            (click)="onIndicadorCreate()">Añadir</button>
-                    </mat-grid-tile>
-                </mat-grid-list>
+            <mat-grid-tile [colspan]="3" class="grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>DD/MM/AAAA</mat-label>
+                  <input matInput required [matDatepicker]="picker1" />
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </mat-grid-tile>
 
-                <table mat-table [dataSource]="tareas" style="width:100%">
-                    <ng-container matColumnDef="Tarea">
-                        <th mat-header-cell *matHeaderCellDef> Tarea </th>
-                        <td mat-cell *matCellDef="let element"> {{element.tarea}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Plazo">
-                        <th mat-header-cell *matHeaderCellDef> Plazo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Quitar">
-                        <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
-                        <td mat-cell *matCellDef="let element;index as i">
-                            <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deleteTarea(i)">
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-                        </td>
-                    </ng-container>
+            <mat-grid-tile [colspan]="1">
+                <button mat-raised-button color="primary" class="aniadir" (click)="onIndicadorCreate()">Añadir</button>
+            </mat-grid-tile>
+        </mat-grid-list>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns_3"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns_3;"></tr>
-                    <tr class="empty-row" *matNoDataRow>
-                        <td class="empty-cell">Sin registros por mostrar</td>
-                    </tr>
-                </table>
-            </mat-dialog-content>
-            <br><br><br>
-            <mat-dialog-actions align="center">
-                <button mat-button mat-dialog-close>CANCELAR</button>
-                <button mat-raised-button color="primary" *ngIf="poiList.length != 0" (click)="next()">GRABAR</button>
-            </mat-dialog-actions>
-        </div>
-    </div>
-</div>
+        <table mat-table [dataSource]="tareas" style="width:100%">
+            <ng-container matColumnDef="Tarea">
+                <th mat-header-cell *matHeaderCellDef> Tarea </th>
+                <td mat-cell *matCellDef="let element"> {{element.tarea}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Plazo">
+                <th mat-header-cell *matHeaderCellDef> Plazo </th>
+                <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Quitar">
+                <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
+                <td mat-cell *matCellDef="let element;index as i">
+                    <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deleteTarea(i)">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns_3"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns_3;"></tr>
+            <tr class="empty-row" *matNoDataRow>
+                <td class="empty-cell">Sin registros por mostrar</td>
+            </tr>
+        </table>        
+    </mat-step>
+</mat-stepper>
+<mat-divider></mat-divider>
+<br>
+<mat-dialog-actions align="center">
+    <button mat-raised-button mat-dialog-close>CANCELAR</button>
+    <button mat-raised-button color="primary" *ngIf="poiList.length != 0" (click)="next()">GRABAR</button>
+</mat-dialog-actions>
+<br>

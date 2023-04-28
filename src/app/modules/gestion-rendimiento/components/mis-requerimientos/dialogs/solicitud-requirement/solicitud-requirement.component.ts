@@ -1,6 +1,7 @@
 import { element } from 'protractor';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
+import {FormBuilder, Validators} from '@angular/forms';
 
 interface Poi {
   descripcion: string;
@@ -59,7 +60,18 @@ export class SolicitudRequirementComponent implements OnInit {
   tareaList: Array<{ descripcionTarea: string }> = [];
   dataSource_3 = this.tareaList;
 
-  constructor() { }
+  //mat-stteper
+  firstFormGroup = this._formBuilder.group({
+    firstCtrl: ['', Validators.required],
+  });
+  secondFormGroup = this._formBuilder.group({
+    secondCtrl: ['', Validators.required],
+  });
+  isLinear = false;
+
+  constructor(
+    private _formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
   }

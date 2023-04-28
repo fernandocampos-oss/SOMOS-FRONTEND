@@ -35,7 +35,7 @@
     <input matInput maxlength="300" (keyup)="filter($event.target.value)"/>
 </mat-form-field> -->
 
-<table mat-table [dataSource]="dataSource" style="width:100%" matSort>
+<table mat-table [dataSource]="equipos" style="width:100%" matSort>
             
     <ng-container matColumnDef="item">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px"> Item </th>
@@ -52,7 +52,7 @@
         <td mat-cell *matCellDef="let element"> {{element.cargo}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="tareas" >
+    <!-- <ng-container matColumnDef="tareas" >
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="80px"> Tareas </th>
         <td mat-cell *matCellDef="let element"><div class="init">{{element.tareas}}</div></td>
     </ng-container>
@@ -62,14 +62,14 @@
         <td mat-cell *matCellDef="let element" class="{{element.medida}}">
             <div class="center">{{element.pendientes}}</div>
         </td>
-    </ng-container>
+    </ng-container> -->
 
-    <ng-container matColumnDef="pendientesAprobacion">
+    <!-- <ng-container matColumnDef="pendientesAprobacion">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="80px"> Por Aprobar </th>
         <td mat-cell *matCellDef="let element" class="{{element.pendientesAprobacion > 0 ? 'aprobar':''}}">
             <div class="center">{{element.pendientesAprobacion}}</div>
         </td>
-    </ng-container>
+    </ng-container> -->
 
     <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef width="120px"> Acciones </th>
@@ -77,9 +77,9 @@
             <button mat-icon-button color="primary" (click)="showDialogTaks(element)"
                 matTooltip="Asignar Tarea" >
             <mat-icon>remove_red_eye</mat-icon></button>
-            <button mat-icon-button color="primary" (click)="showDialogEdit(element)"
+            <button mat-icon-button color="primary" (click)="showDialogAdd(element)"
                 matTooltip="Editar datos del colaborador" >
-            <mat-icon>edit</mat-icon></button>
+            <mat-icon>add_circle</mat-icon></button>
         </td>
     </ng-container>
   

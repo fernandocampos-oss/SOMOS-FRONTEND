@@ -9,6 +9,7 @@ import { ConfirmAcceptComponent } from './dialogs/confirm-accept/confirm-accept.
 import { MoveRequirementComponent } from './dialogs/move-requirement/move-requirement.component';
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
+import { DissaproveRequirementComponent } from './dialogs/dissaprove-requirement/dissaprove-requirement.component';
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -73,7 +74,7 @@ export class MisRequerimientosComponent implements OnInit {
   showDialogSolicitud(element) {
     const dialogRef: MatDialogRef<SolicitudRequirementComponent> = this.dialog.open(SolicitudRequirementComponent, {
       disableClose: false,
-      width: '80%',
+      width: '40%',
       //height: '780px',
       autoFocus: false,
       data: {
@@ -89,7 +90,7 @@ export class MisRequerimientosComponent implements OnInit {
   showDialogConfirmAccept(element){
     const dialogRef: MatDialogRef<ConfirmAcceptComponent> = this.dialog.open(ConfirmAcceptComponent, {
       disableClose: false,
-      width: '30%',
+      width: '35%',
       autoFocus: false,
       data: {
         obj : element
@@ -100,10 +101,26 @@ export class MisRequerimientosComponent implements OnInit {
       this.loadTable();
     });
   }
+
+  showDialogDissaproveRequirement(element){
+    const dialogRef: MatDialogRef<DissaproveRequirementComponent> = this.dialog.open(DissaproveRequirementComponent, {
+      disableClose: false,
+      width: '35%',
+      autoFocus: false,
+      data: {
+        obj : element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTable();
+    });
+  }
+
   showDialogMoveRequirement(element){
     const dialogRef: MatDialogRef<MoveRequirementComponent> = this.dialog.open(MoveRequirementComponent, {
       disableClose: false,
-      width: '20%',
+      width: '35%',
       autoFocus: false,
       data: {
         obj : element

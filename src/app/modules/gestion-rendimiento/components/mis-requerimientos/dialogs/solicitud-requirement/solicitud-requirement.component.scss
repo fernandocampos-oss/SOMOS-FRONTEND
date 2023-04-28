@@ -1,61 +1,13 @@
 mat-grid-list {
-    mat-form-field {
-      width: 100%;
-    }
-}
-
-.aniadir{
-  position: absolute;
-  bottom:27px;
-  height: 65%;
-  width: 100%;
-}
-
-.solicitud {
-  // text-align: center;
-  max-width: 60em;
-  height: 720px;
-  &__subtitle {
-    font-weight: 400;
-    //text-align: start;
-  }
-
-  &__group {
-    display: grid;
-  }
-  &__title{
-    text-align: center;
-  }
-}
-
-.column1 {
-  float: left;
-  width: 50%;
-  padding: 2%;
-  top: 0;
-}
-
-.column2 {
-  float: left;
-  width: 50%;
-  padding: 2% 2% 2% 2%;
-} 
-
-@media screen and (max-width: 599px) {
-  .column1 {
-    float: none;
+  mat-form-field {
     width: 100%;
-    padding: 0%;
-    top: 0;
   }
-  .column2 {
-    float: none;
-    width: 100%;
-    padding: 0%;
-  } 
-  .solicitud {
-    // text-align: center;
-    height: 100%;
-  }
-  
+}
+
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
 }

@@ -1,59 +1,69 @@
 <h2 mat-dialog-title>Tareas Asignadas: {{nombreUsuario}}</h2>
 <mat-dialog-content>
     <div align="end">
-        <button mat-raised-button color="primary" matTooltip="Agregar Tarea" 
-            (click)="showDialogTaksUser()">
-          <mat-icon>add</mat-icon>Agregar Tarea</button>
+        <button mat-raised-button color="primary" matTooltip="Agregar Tarea" (click)="showDialogTaksUser()">
+            <mat-icon>add</mat-icon>Agregar Tarea</button>
     </div>
-    <table mat-table [dataSource]="dataSource" style="width:100%">
-            
+    <table mat-table [dataSource]="tareas" style="width:100%">
+
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef width="100px"> Item </th>
             <td mat-cell *matCellDef="let element"> {{element.item}} </td>
         </ng-container>
-    
-        <ng-container matColumnDef="descripcion">
-            <th mat-header-cell *matHeaderCellDef> Descripción de la tarea </th>
-            <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+
+        <ng-container matColumnDef="tarea">
+            <th mat-header-cell *matHeaderCellDef> Tarea </th>
+            <td mat-cell *matCellDef="let element"> {{element.tarea}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="porcentaje">
-            <th mat-header-cell *matHeaderCellDef width="100px"> % de avance </th>
-            <td mat-cell *matCellDef="let element"> {{element.avance}} %</td>
-        </ng-container>
-    
-        <ng-container matColumnDef="fecIni">
-            <th mat-header-cell *matHeaderCellDef width="100px"> Fecha de inicio </th>
-            <td mat-cell *matCellDef="let element"> {{element.fechaInicio | date: 'dd/MM/yyyy'}} </td>
-        </ng-container>
-    
-        <ng-container matColumnDef="fecFin">
-            <th mat-header-cell *matHeaderCellDef width="100px"> Fecha de fin </th>
-            <td mat-cell *matCellDef="let element"> {{element.fechaFin | date: 'dd/MM/yyyy'}} </td>
-        </ng-container>
-    
         <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef width="100px"> Estado </th>
             <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
         </ng-container>
-    
-        <ng-container matColumnDef="acciones">
+
+        <ng-container matColumnDef="porcentaje">
+            <th mat-header-cell *matHeaderCellDef width="100px"> % de avance </th>
+            <td mat-cell *matCellDef="let element"> {{element.porcentaje}} %</td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="fecFin">
+            <th mat-header-cell *matHeaderCellDef width="100px"> Fecha de fin </th>
+            <td mat-cell *matCellDef="let element"> {{element.fechaFin | date: 'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef width="100px"> Estado </th>
+            <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+        </ng-container> -->
+
+        <!-- <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef width="100px"> Acciones </th>
-            <td mat-cell *matCellDef="let element"> 
-                <button mat-icon-button color="primary"
-                matTooltip="Visualizar tarea" (click)="showDialogDownloadTask(element)">
-                <mat-icon>search</mat-icon></button>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" matTooltip="Visualizar tarea"
+                    (click)="showDialogDownloadTask(element)">
+                    <mat-icon>search</mat-icon></button>
+            </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef width="120px"> Acciones </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" (click)="showDialogDownloadTask(element)"
+                    matTooltip="Visualizar tarea">
+                    <mat-icon>remove_red_eye</mat-icon></button>
+                <button mat-icon-button color="primary" (click)="finalizarTarea(element)" *ngIf="element.porcentaje==100" matTooltip="Finalizar tarea">
+                    <mat-icon>check</mat-icon></button>
             </td>
         </ng-container>
-      
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="empty-row" *matNoDataRow>
-          <td class="empty-cell">Sin registros por mostrar</td>
+            <td class="empty-cell">Sin registros por mostrar</td>
         </tr>
-      </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button mat-dialog-close>Cerrar</button>
 </mat-dialog-actions>
