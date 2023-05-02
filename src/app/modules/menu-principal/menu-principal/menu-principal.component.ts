@@ -32,7 +32,8 @@ export class MenuPrincipalComponent implements OnInit {
   identificador= 0;
 
   fechas: fechas_Imp[] = [
-    {descripcion:'Día del Trabajador',dia: new Date('05/01/2023')},
+    //{descripcion:'Día del Trabajador',dia: new Date('05/01/2023')},
+    {descripcion:'Día de la Madre',dia: new Date('05/14/2023')},
   ]
 
   publicaciones: publicacion[] = [
