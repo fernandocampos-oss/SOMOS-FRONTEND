@@ -95,6 +95,7 @@ span{
   float: left;
   padding: 2%;
   height: 100%;
+  // height: 7vw;
   width: 100%;
   display: grid;
   align-content: center;
@@ -125,11 +126,9 @@ span{
   display: grid;
   border: #37485f;
   border-style:solid;
+  color:#2b9ed8;
   .body{
     display: contents;
-  }
-  span{
-    color:#2b9ed8;
   }
 }
 .boxPublicacion{
@@ -192,9 +191,10 @@ mat-grid-list {
 }
 
 @media screen and (min-width: 1024px) {
-  .boxSST-3{
-    width: 49%;
-  }
+  // .boxSST-3{
+  //   width: 49%;
+  //   height: 6.5vw;
+  // }
   .boxPublicacion{
     width: 60%;
   }

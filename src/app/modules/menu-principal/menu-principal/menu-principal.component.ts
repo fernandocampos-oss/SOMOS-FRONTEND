@@ -37,6 +37,9 @@ export class MenuPrincipalComponent implements OnInit {
   ]
 
   publicaciones: publicacion[] = [
+    {nombre: 'Asesoría personalizada: Análisis estadístico 2023 ', fechaPub: '02/05/2023 - 09:23', imgRuta: 'assets/images/programaAsesoria.jpg', redireccion: 'https://redcap.link/mentoriaanalisisbasededatos'},
+    {nombre: 'Formación científica: Análisis de datos 2023', fechaPub: '02/05/2023 - 08:54', imgRuta: 'assets/images/programaFormacion.jpg', redireccion: 'https://redcap.link/PFCanalisisdedatos2023'},
+    {nombre: 'Saludo del Presidente Ejecutivo', fechaPub: '27/04/2023 - 17:25', imgRuta: 'assets/images/mensaje.jpg', redireccion: 'https://portal.essalud.gob.pe/index.php/dia-internacional-del-trabajo-2023/'},
     {nombre: 'Cronograma capacitaciones mayo 2023', fechaPub: '27/04/2023 - 14:27', imgRuta: 'assets/images/Cronograma.jpg'},
     {nombre: 'Campaña de salud integral', fechaPub: '26/04/2023 - 16:15', imgRuta: 'assets/images/diaTrabajo_2.jpg'},
     {nombre: 'Anuncio Actividades 27 de abril', fechaPub: '26/04/2023 - 13:31', imgRuta: 'assets/images/diaTrabajo_1.jpg'},
@@ -146,6 +149,5 @@ export class MenuPrincipalComponent implements OnInit {
     this.minutesLeft = Math.floor(delta / 60) % 60;
     delta -= this.minutesLeft * 60;
     
-    console.log("Dias:",this.daysLeft,"Horas:",this.hoursLeft,"Minutos:",this.minutesLeft);
   }
 }
