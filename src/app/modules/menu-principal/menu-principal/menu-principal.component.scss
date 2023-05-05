@@ -12,7 +12,6 @@ justify-content: center;
 span{
   font-style: normal;
   font-size: 1vw;
-  padding-top: 5px;
 }
 }
 .column2 {
@@ -79,11 +78,16 @@ span{
   background-size: cover;
   background-position: center;
 }
-.boxEncuesta{
+.boxEncuesta, .boxEncuestaRes{
   width: 100%;
   flex-wrap: wrap;
   font-size: 3vw;
   background-color: #8de4ff;
+}
+.boxEncuestaRes{
+  padding: 3% 0% 3% 0%;
+  font-weight: bold;
+  color: #37485f;
 }
 .boxSST-2{
   width: 100%;
@@ -120,7 +124,7 @@ span{
 .box2 {
   margin: 8px;
   height: 100%;
-  padding-bottom: 2%;
+  padding: 1% 2% 1% 2%;
   background: #dff1f4;
   border-radius: 11px;
   display: grid;
@@ -135,9 +139,11 @@ span{
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
+  overflow: hidden;
+  width: 100%;
+  height: 97.5%;
   .descrPub{
-    font-size: 0.85vw;
+    font-size: 0.7vw;
     font-weight: bold;
     padding: 8px;
     background: #a9bfdf;
@@ -150,7 +156,8 @@ span{
     }
   }
   .imgInfo{
-    height: 100%;
+    height: 305px;
+    cursor: pointer;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
@@ -195,11 +202,8 @@ mat-grid-list {
   //   width: 49%;
   //   height: 6.5vw;
   // }
-  .boxPublicacion{
-    width: 60%;
-  }
-  .boxEncuesta{
-    font-size: 1vw;
+  .boxEncuesta, .boxEncuestaRes{
+    font-size: 0.9vw;
   }
   .nomBirth{
     font-size: 0.9vw; 

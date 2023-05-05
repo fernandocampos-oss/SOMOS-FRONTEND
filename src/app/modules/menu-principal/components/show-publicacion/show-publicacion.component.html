@@ -1,0 +1,3 @@
+<h4>{{objPublicacion.nom_largo}}</h4>
+<a *ngIf="objPublicacion.redireccion != undefined" href='{{objPublicacion.redireccion}}' target="_blank"><img class="imgInfo boxBorde" src='{{objPublicacion.imgRuta}}' alt='{{objPublicacion.nombre}}'></a>
+<img *ngIf="objPublicacion.redireccion == undefined" class="imgInfo boxBorde" src='{{objPublicacion.imgRuta}}' alt='{{objPublicacion.nombre}}'>

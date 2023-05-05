@@ -9,18 +9,24 @@
     </div> -->
     <div class="box2" >
       <div class="header">
-          <span>Informativo</span>    
-      </div>
+        <span>Informativo</span> 
+      </div>   
       <div class="body">
-        <div class="boxPublicacion boxBorde" *ngFor="let pub of publicaciones">
-          <div class="descrPub">
-            <span>{{pub.nombre}}</span>
-            <span style="float: right;">{{pub.fechaPub}}</span>
-          </div>
-          <div>
-          <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
-          <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></div>
-        </div>
+        <mat-grid-list cols="2" rowHeight="350px" gutterSize="20px">
+          <mat-grid-tile [colspan]="publicacionLong" *ngFor="let pub of publicaciones">
+            <div class="boxPublicacion boxBorde">
+              <div class="descrPub">
+                <span>{{pub.nom_corto}}</span>
+                <span style="float: right;">{{pub.fechaPub}}</span>
+              </div>
+              <div>
+                <img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}' (click)="showPublicacion(pub)">
+                <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
+                <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
+              </div>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
       </div>
     </div>
 
@@ -29,7 +35,7 @@
     <div class="boxBorde boxBirth">
         <div class="header">
           <mat-grid-list cols="7" rowHeight="50px" gutterSize="6px">
-            <mat-grid-tile [colspan]="1" style="left: -1.6%; top: 10%;">
+            <mat-grid-tile [colspan]="1" style="top: 10%;">
               <mat-form-field class="cambioFecha" appearance="_">
               <input #input matInput disabled [matDatepicker]="picker1" [(value)] = today style="display: none;">
               <mat-datepicker-toggle matSuffix [for]="picker1"matTooltip="Cambiar dia de cumpleaños"></mat-datepicker-toggle>
@@ -55,15 +61,21 @@
           </div>
         </div>
     </div>
-    <div class="boxBorde boxSST" (click)="open(2)">
+    <div class="boxBorde boxSST" (click)="open(1)">
     </div>
-    <!-- <div class="boxBorde boxEncuesta" (click)="open(3)">
+    <div class="boxBorde boxEncuestaRes" *ngIf="encuestaRespondida">
+      <div style="display: grid; align-content: center;">
+        <span style="justify-self: center;">¡Encuesta Respondida!</span><br>
+        <span style="justify-self: center;">¡Gracias por darnos tu opinión!</span>
+      </div>
+    </div>
+    <div class="boxBorde boxEncuesta" (click)="open(2)" *ngIf="!encuestaRespondida">
       <img src="assets/images/QR_example.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
       <div style="display: grid; align-content: center;">
-        <span>Encuesta Cultural y Clima</span><br>
+        <span>{{encuestaNombre}}</span><br>
         <span>¡Ingresa y cuéntanos tu opinión!</span>
       </div>
-    </div> -->
+    </div>
     <!-- <div class="boxBorde boxSST-2">
       <div class="info" matTooltip="Gerencia Políticas y Organización del Recurso Humano">
         <span>GPyORH</span>
@@ -77,7 +89,7 @@
     </div> -->
     <div class="boxChange">
       <div class="boxBorde boxSST-3" style="margin-right: 1%;">
-        <h4>{{fechas[0].descripcion}}</h4>
+        <h4>{{fechas[identificador].descripcion}}</h4>
         <div class="boxCounter">
           <div class="boxTimer">
             <span>{{daysLeft}}</span>
