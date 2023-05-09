@@ -38,6 +38,9 @@ export class MenuPrincipalComponent implements OnInit {
 
   // diasElegidos = new Array;
   publicaciones: MenuPublicacion[] = [
+    {nom_largo:'EsSalud es Sano: ¡Cuidado! Enfermedades cardiovasculares son la mayor causa de muerte en el mundo' ,nom_corto: 'Cuidado con las enfermedades cardiovasculares', fechaPub: '09/05/2023 - 10:08', imgRuta: 'assets/images/p_EnfCardio.jpg', redireccion: 'https://www.youtube.com/@EsSaludPeruOficial/featured'},
+    {nom_largo:'EsSalud TV - ¡Envía tu foto por el Día de la Madre!' ,nom_corto: 'EsSalud TV - ¡Envía tu foto por el Día de la Madre!', fechaPub: '09/05/2023 - 09:10', imgRuta: 'assets/images/p_FotoDiaMadr.jpg'},
+    {nom_largo:'Reporte de noticias EsSalud - 5, 6 y 7 de mayo' ,nom_corto: 'Reporte de noticias EsSalud - 5, 6 y 7 de mayo', fechaPub: '08/05/2023 - 10:37', imgRuta: 'assets/images/p_Reporte2.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/reporte_de_noticias_05052023.pdf'},
     {nom_largo:'Curso sincrónico virtual: Manejo de Víctimas Múltiples' ,nom_corto: 'Curso sincrónico virtual: Manejo de Víctimas Múltiples', fechaPub: '04/05/2023 - 15:56', imgRuta: 'assets/images/p_ManejoVictimas.jpg', redireccion: 'https://forms.gle/mWHe78x8VjtnJChP8'},
     {nom_largo:'Campaña de Solidaridad por el Día de la Madre - ¡Puedes sumarte hasta el 12 de mayo!' ,nom_corto: '¡Súmate a la Campaña de Solidaridad!', fechaPub: '04/05/2023 - 12:52', imgRuta: 'assets/images/p_CampaniaSolidaridad2.jpg'},
     {nom_largo:'Reporte de noticias EsSalud - 2 de mayo' ,nom_corto: 'Reporte de noticias EsSalud - 2 de mayo', fechaPub: '04/05/2023 - 08:50', imgRuta: 'assets/images/p_Reporte.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/reporte_de_noticias_02052023.pdf'},

@@ -43,7 +43,8 @@
         <mat-tab label="Encuesta">
           <mat-dialog-content>
             <div *ngFor="let pregunta of preguntasEncuesta; index as i">
-                <br><mat-divider *ngIf="i != 0"></mat-divider><br><h4 class="Descrip" style="text-align: justify;">{{pregunta.idPregunta}}. {{pregunta.descripcion}}</h4><br>
+                <br><mat-divider *ngIf="i != 0"></mat-divider><br>
+                <h4 class="Descrip" [ngStyle]="{color: changeColor[i]}">{{pregunta.idPregunta}}. {{pregunta.descripcion}}</h4><br>
                 <mat-radio-group formArrayName="frmRespuestas" (change)="changeSelection(i,$event)">
                     <mat-radio-button *ngFor="let answer of preguntasEncuesta[i].alternativas" [value]="answer.valor" style="margin-right: 3.5vw;">{{answer.valor}}</mat-radio-button>
                 </mat-radio-group>
@@ -64,11 +65,16 @@
         </mat-tab>
       </mat-tab-group>
     
-    <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>Cerrar</button>
-        <button mat-raised-button color="primary" 
+    <mat-dialog-actions>
+        <div>
+            <span *ngIf="selectedIndex == 1" >Restantes: {{restantes}}</span>
+        </div>
+        <div>
+            <button mat-button mat-dialog-close>Cerrar</button>
+            <button mat-raised-button color="primary" 
             *ngIf="selectedIndex == 0" [disabled]="form.valid == false" (click)="next()">Siguiente</button>
-        <button mat-raised-button color="primary" 
-            *ngIf="selectedIndex == 1" [disabled]="validarEncuesta() == false" (click)="sendInfo()">Enviar</button>
+            <button mat-raised-button color="primary" 
+            *ngIf="selectedIndex == 1" (click)="sendInfo()">Enviar</button>
+        </div>
     </mat-dialog-actions>
 </form>

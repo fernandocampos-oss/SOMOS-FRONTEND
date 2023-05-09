@@ -15,12 +15,16 @@ import { ConfirmRegisterEncuestaComponent } from './dialogs/confirm-register-enc
 export class RegisterDatosEncuestaComponent implements OnInit {
 
   encuestaDescripcion: string;
+  
+  restantes: number = 44;
 
   identificadorEncuesta: number;
   datosSedes = new Array;
   datosGrupoPersonal = new Array;
   datosCargoPersonal = new Array;
   datosTiempoServicio = new Array;
+  changeColor = new Array;
+  automaticChange = false;
 
   preguntasEncuesta = new Array;
 
@@ -71,20 +75,31 @@ export class RegisterDatosEncuestaComponent implements OnInit {
     this.selectedIndex=1;
   }
   sendInfo(){
-    const dialogRef: MatDialogRef<ConfirmRegisterEncuestaComponent> = this.dialog.open(ConfirmRegisterEncuestaComponent, {
-      disableClose: false,
-      autoFocus: false,
-      data: {
-        idEncuesta: this.identificadorEncuesta,
-        encuesta: this._getModel()
-      }
-    });
+    this.changeToRed();
+    if (this.validarEncuesta() == false){
+      this._notification.warning('Aún quedan preguntas sin responder');
+      this.automaticChange = true;
+    }
+    else{
+      const dialogRef: MatDialogRef<ConfirmRegisterEncuestaComponent> = this.dialog.open(ConfirmRegisterEncuestaComponent, {
+        disableClose: false,
+        autoFocus: false,
+        data: {
+          idEncuesta: this.identificadorEncuesta,
+          encuesta: this._getModel()
+        }
+      });
+    }
   }
 
   changeSelection(index: number,data: MatRadioChange){
     var idPregunta = index + 1;
     var idAlternativa = parseInt(data.value);
     this.form.value.frmRespuestas[index] = {idPregunta,idAlternativa};
+    this.countUndefined();
+    if(this.automaticChange ==true){
+      this.changeToRed();
+    }
   }
 
   validarEncuesta(): boolean{
@@ -109,5 +124,28 @@ export class RegisterDatosEncuestaComponent implements OnInit {
       idTiempoServicio: this.form.value.frmTiempoServicio,
       respuestas: this.form.value.frmRespuestas,
     };
+  }
+
+  changeToRed(){
+    this.changeColor = [];
+    for (let i = 0; i < this.form.value.frmRespuestas.length; i++) { 
+      if (this.form.value.frmRespuestas[i] != undefined || this.form.value.frmRespuestas[i] != null){
+          this.changeColor[i] = 'black';
+      }
+      else{
+        this.changeColor[i] = 'red';
+      }
+    }
+  }
+  countUndefined(){
+    var Quantity: number = this.form.value.frmRespuestas.length;
+
+    for (let i = 0; i < this.form.value.frmRespuestas.length; i++) { 
+      if (this.form.value.frmRespuestas[i] != undefined || this.form.value.frmRespuestas[i] != null){
+          Quantity = Quantity - 1;
+      }
+    }
+    
+    this.restantes = Quantity;
   }
 }
