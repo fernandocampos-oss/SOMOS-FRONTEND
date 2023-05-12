@@ -23,7 +23,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Sede</mat-label>
-                    <mat-select [disabled]="restringir">
+                    <mat-select [disabled]="restringir" formControlName="frmSede">
                         <mat-option *ngFor="let sede of  sedes" [value]="sede.descripcion">{{sede.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -32,7 +32,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Grupo de personal</mat-label>
-                    <mat-select [disabled]="restringir">
+                    <mat-select [disabled]="restringir" formControlName="frmGrupoPers">
                         <mat-option *ngFor="let grupo of  gruposPers" [value]="grupo.descripcion">{{grupo.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -41,7 +41,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Cargo de personal</mat-label>
-                    <mat-select [disabled]="restringir">
+                    <mat-select [disabled]="restringir" formControlName="frmAreaPers">
                         <mat-option *ngFor="let area of  areasP" [value]="area.descripcion">{{area.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -50,7 +50,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Tiempo de servicio</mat-label>
-                    <mat-select [disabled]="restringir">
+                    <mat-select [disabled]="restringir" formControlName="frmTiempoServ">
                         <mat-option *ngFor="let tiempo of  tiemposServ" [value]="tiempo.descripcion">{{tiempo.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>

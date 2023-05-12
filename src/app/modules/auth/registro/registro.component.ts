@@ -72,7 +72,7 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm();
-    this._loadParams();
+    // this._loadParams();
     
     this.responsive.observe([
       Breakpoints.XSmall,
@@ -84,12 +84,12 @@ export class RegistroComponent implements OnInit {
         }
   });
   }
-  private _loadParams() {
-    this._paramService
-      .getParams(KeyParam.SEDES)
-      .pipe(untilDestroyed(this))
-      .subscribe((params) => (this.sedes = params[KeyParam.SEDES]));
-  }
+  // private _loadParams() {
+  //   this._paramService
+  //     .getParams(KeyParam.SEDES)
+  //     .pipe(untilDestroyed(this))
+  //     .subscribe((params) => (this.sedes = params[KeyParam.SEDES]));
+  // }
   onSave() {
     if (this.form.valid && this._validatePasswordMatch()) {
       this._authService

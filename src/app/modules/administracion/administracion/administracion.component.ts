@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 interface sede_Demo{
@@ -22,19 +23,19 @@ export class AdministracionComponent implements OnInit {
 
   restringir = false;
   sedes: sede_Demo[] = [
-    {descripcion: undefined},
+    {descripcion:'Todos'},
     {descripcion:'Central'},
     {descripcion:'INCOR'},
     {descripcion:'Salud Renal'},
   ]
   gruposPers: grupoPers_Demo[] = [
-    {descripcion: undefined},
+    {descripcion:'Todos'},
     {descripcion:'D.L 276'},
     {descripcion:'D.L 728'},
     {descripcion:'D.L 1057'},
   ]
   areasP: areaPers_Demo[] = [
-    {descripcion: undefined},
+    {descripcion:'Todos'},
     {descripcion:'Auxiliar'},
     {descripcion:'Ejecutivo'},
     {descripcion:'Profesional'},
@@ -42,7 +43,7 @@ export class AdministracionComponent implements OnInit {
     {descripcion:'Residente'},
   ]
   tiemposServ: tiempoServicio_Demo[] = [
-    {descripcion: undefined},
+    {descripcion:'Todos'},
     {descripcion:'Menor a 06 meses'},
     {descripcion:'De 06 meses a 1 año'},
     {descripcion:'De 1 año 1 día hasta 5 años'},
@@ -50,6 +51,15 @@ export class AdministracionComponent implements OnInit {
     {descripcion:'De 10 años 1 día hasta 15 años'},
     {descripcion:'De 15 años 1 día a más'},
   ]
+
+  frmSede = new FormControl([''],[Validators.pattern('Todos')]);
+
+  frmGrupoPers = new FormControl([''],[Validators.pattern('Todos')]);
+
+  frmAreaPers = new FormControl([''],[Validators.pattern('Todos')]);
+
+  frmTiempoServ = new FormControl([''],[Validators.pattern('Todos')]);
+
   constructor(private _router : Router,
               private route   : ActivatedRoute,) { }
 
@@ -62,5 +72,9 @@ export class AdministracionComponent implements OnInit {
   }
   restringirFiltros(event){
     this.restringir = event.checked;
+    console.log(this.frmSede, this.frmAreaPers.value, this.frmGrupoPers.value, this.frmTiempoServ.value);
+    if (this.restringir == true){
+
+    }
   }
 }
