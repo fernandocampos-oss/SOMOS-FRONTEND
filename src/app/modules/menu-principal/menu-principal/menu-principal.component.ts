@@ -38,6 +38,15 @@ export class MenuPrincipalComponent implements OnInit {
 
   // diasElegidos = new Array;
   publicaciones: MenuPublicacion[] = [
+    {nom_largo:'Simulacro Nacional Multipeligro - 31 de mayo ' ,nom_corto: 'Simulacro Nacional Multipeligro - 31 de mayo ', fechaPub: '16/05/2023 - 11:53', imgRuta: 'assets/images/p_Simulacro.jpg'},
+    {nom_largo:'Biblioteca en 1 minuto-Medicina de urgencias' ,nom_corto: 'Biblioteca en 1 minuto-Medicina de urgencias', fechaPub: '16/05/2023 - 10:54', imgRuta: 'assets/images/p_BiblioMed.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/07_MEDICINA_DE_URGENCIAS_page_0001.pdf'},
+    {nom_largo:'Reuniones para brigadistas - Simulacro Nacional Multipeligro 2023' ,nom_corto: 'Reuniones para brigadistas', fechaPub: '16/05/2023 - 10:07', imgRuta: 'assets/images/p_Brigadistas.jpg'},
+    {nom_largo:'Campaña de Solidaridad por el Día de la Madre - ¡Gracias por tu apoyo!' ,nom_corto: '¡Gracias por tu apoyo!', fechaPub: '15/05/2023 - 16:37', imgRuta: 'assets/images/p_Grac.jpg'},
+    {nom_largo:'Curso sincrónico virtual - Atención Básica de Desastres' ,nom_corto: 'Curso sincrónico virtual - Atención Básica de Desastres', fechaPub: '15/05/2023 - 15:45', imgRuta: 'assets/images/p_CursoDesastres.jpg', redireccion: 'https://forms.gle/527FeQhAuxz8PvaQA'},
+    {nom_largo:'Capacitaciones virtuales de Seguridad y Salud en el Trabajo' ,nom_corto: 'Capacitaciones virtuales de Seguridad y Salud en el Trabajo', fechaPub: '15/05/2023 - 14:21', imgRuta: 'assets/images/p_SST.jpg', redireccion: 'https://capacitacion.essalud.gob.pe/login/index.php'},
+    {nom_largo:'Concurso de fotografía "El control está en tus manos ¡Mídete la presión arterial!"' ,nom_corto: '¡Mídete la presión arterial!', fechaPub: '12/05/2023 - 14:52', imgRuta: 'assets/images/p_ConFoto.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/concurso_de_fotografia_2023.pdf'},
+    {nom_largo:'Curso sincrónico virtual - Manejo de la Vía Aérea Básica' ,nom_corto: 'Curso sincrónico virtual - Manejo de la Vía Aérea Básica', fechaPub: '12/05/2023 - 12:13', imgRuta: 'assets/images/p_CursoVia.jpg', redireccion: 'https://forms.gle/4FCR5mUvFvi9fqMf9'},
+    
     {nom_largo:'Curso sincrónico virtual - Soporte Básico del Trauma' ,nom_corto: 'Curso sincrónico virtual - Soporte Básico del Trauma', fechaPub: '11/05/2023 - 15:15', imgRuta: 'assets/images/p_SoporteBas.jpg', redireccion: 'https://forms.gle/PZ3ZKa818CE3mykF6'},
     {nom_largo:'Día de la Madre - Invitación "Agasajo para mamá"' ,nom_corto: 'Día de la Madre - Invitación "Agasajo para mamá"', fechaPub: '10/05/2023 - 16:58', imgRuta: 'assets/images/p_Agasajo.jpg'},
     {nom_largo:'Biblioteca en 1 minuto-Fisiopatología pulmonar' ,nom_corto: 'Biblioteca en 1 minuto-Fisiopatología pulmonar', fechaPub: '10/05/2023 - 11:53', imgRuta: 'assets/images/p_BiblioFisio.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/22_FISIOPATOLOGIA_PULMONAR_page_0001.pdf'},
@@ -114,7 +123,7 @@ export class MenuPrincipalComponent implements OnInit {
         Actualidad = new Date(data.datetime);
         this.getDateDiff(this.fechas[this.identificador].dia,Actualidad);
        }) ;
-      }, 1000); // Mil es 1 seg
+      }, 30000); // Mil es 1 seg
     }
     else{
       this.daysLeft= 0;
