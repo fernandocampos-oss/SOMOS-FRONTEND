@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfirmAcceptComponent } from './confirm-accept.component';
+import { AssignTaskUserComponent } from './assign-task-user.component';
 
-describe('ConfirmAcceptComponent', () => {
-  let component: ConfirmAcceptComponent;
-  let fixture: ComponentFixture<ConfirmAcceptComponent>;
+describe('AssignTaskUserComponent', () => {
+  let component: AssignTaskUserComponent;
+  let fixture: ComponentFixture<AssignTaskUserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfirmAcceptComponent ]
+      declarations: [ AssignTaskUserComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmAcceptComponent);
+    fixture = TestBed.createComponent(AssignTaskUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

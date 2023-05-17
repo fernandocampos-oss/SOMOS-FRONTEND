@@ -1,24 +1,50 @@
 <div class="page">
-    <div class="matero-page-header">
-      <h1 class="matero-page-title"><mat-icon>description</mat-icon> Mis Requerimientos<br>
-      <small class="mr-2">Aquí podrá solicitar o ver el estado de sus requerimientos solicitados</small><br>
-      </h1>
-    </div>
-    <div class="page__body">
-        <div class="card shadow">
-          <app-crud
-          [data]="requerimientoList"
-          [columns]="requerimientoColumns"
-          [showEdit]="true"
-          [showDelete]="true"
-          [showFilter]="true"
-          
-          (create)="onCreateRequerimiento()"
-          (delete)="onDeleteRequerimiento($event)"
+  <div class="matero-page-header">
+    <h1 class="matero-page-title"><mat-icon>description</mat-icon> Mis Requerimientos<br>
+    <small class="mr-2">Aquí podrá solicitar o ver el estado de sus requerimientos solicitados</small><br>
+    </h1>
+  </div>
+  <div class="page__body">
+    <div class="card shadow">
+      <mat-tab-group class="tab-group">
+        <mat-tab label="Pendientes">
+        <app-crud
+        [data]="reqPendientes"
+        [columns]="reqPendientesColumns"
+        [showRead]="true"
+        [showFilter]="true"
+        [filterReadFunction]="filterReadFunction"
+        [nameActions]="actionPend"
+        
+        (create)="onCreateRequerimiento()"
         ></app-crud>
-        </div>
+        </mat-tab>
+        <mat-tab label="Finalizados">
+        <app-crud
+        [data]="reqFinalizados"
+        [columns]="reqFinalizadosColumns"
+        [showFilter]="true"
+        [showRead]="true"
+        [showCreate]="false"
+        [nameActions]="actionFin"
+        
+        (create)="onCreateRequerimiento()"
+        (delete)="onDeleteRequerimiento($event)"
+        ></app-crud>
+        </mat-tab>
+        <mat-tab label="Rechazados">
+        <app-crud
+        [data]="reqRechazados"
+        [columns]="reqDerivadosColumns"
+        [showFilter]="true"
+        [showCreate]="false"
+        
+        ></app-crud>
+        </mat-tab>
+     </mat-tab-group>
     </div>
   </div>
+</div>
   
   
   

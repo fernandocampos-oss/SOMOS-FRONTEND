@@ -53,10 +53,16 @@ export class TableComponent implements OnInit, AfterViewInit {
   showDownload = false;
 
   @Input()
+  nameActions = 'Acciones';
+
+  @Input()
   showEdit = false;
 
   @Input()
   showDelete = false;
+
+  @Input()
+  filterReadFunction: (data: any) => boolean;
 
   @Input()
   filterDownloadFunction: (data: any) => boolean;
@@ -110,6 +116,13 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   onDownload(item: any) {
     this.download.emit(item);
+  }
+
+  showReadAction<T>(item: T) {
+    return (
+      this.showRead &&
+      (!this.filterReadFunction || this.filterReadFunction(item))
+    );
   }
 
   showPrintAction<T>(item: T) {

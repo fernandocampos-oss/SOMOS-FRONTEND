@@ -2,6 +2,7 @@
   <div class="actions">
     <button
     class="nuevo-button"
+    *ngIf="showCreate"
     mat-raised-button
     color="primary"
     (click)="create.emit()"
@@ -28,6 +29,8 @@
     [columns]="columns"
     [showEdit]="showEdit"
     [showDelete]="showDelete"
+    [nameActions]="nameActions"
+    [filterReadFunction]="filterReadFunction"
     [filterDownloadFunction]="filterDownloadFunction"
     [filterEditFunction]="filterEditFunction"
     [showDownload]="showDownload"

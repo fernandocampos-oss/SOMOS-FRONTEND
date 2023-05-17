@@ -13,6 +13,7 @@ import { TaskRejectComponent } from './dialogs/task-reject/task-reject.component
 import { PdfComponent } from './dialogs/pdf/pdf.component';
 import { UserDownloadFileComponent } from './dialogs/user-download-file/user-download-file.component';
 import { UserDownloadTaskComponent } from './dialogs/user-download-task/user-download-task.component';
+import { AssignTaskUserComponent } from './dialogs/assign-task-user/assign-task-user.component';
 
 interface Equipo {
   item: number;
@@ -51,9 +52,9 @@ export class MiEquipoComponent implements OnInit {
   }
 
   showDialogAdd(item) {
-    const dialogRef: MatDialogRef<UserTaskComponent> = this.dialog.open(UserTaskComponent, {
+    const dialogRef: MatDialogRef<AssignTaskUserComponent> = this.dialog.open(AssignTaskUserComponent, {
       disableClose: false,
-      width: '70%',
+      width: '50%',
       autoFocus: false,
       data: {
         id: item.id,
@@ -82,7 +83,7 @@ export class MiEquipoComponent implements OnInit {
     });
   }
 
-  showDialogTaks(item) {
+  showDialogTasks(item) {
     const dialogRef: MatDialogRef<UserTaskComponent> = this.dialog.open(UserTaskComponent, {
       disableClose: false,
       width: '70%',
@@ -100,8 +101,8 @@ export class MiEquipoComponent implements OnInit {
 
   loadTable() {
     this.services.ListarIntegrantes().subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.dataSource = new MatTableDataSource(dataItem.data);
+      if (dataItem.codigo == 0) { // cambiar el codigo a 1 luego de hacer el servicio
+        this.dataSource = new MatTableDataSource(this.equipos);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {

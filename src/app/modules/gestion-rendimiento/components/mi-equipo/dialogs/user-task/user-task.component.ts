@@ -107,9 +107,9 @@ export class UserTaskComponent implements OnInit {
     });
   }
 
-  finalizarTarea() {
+  finalizarTarea(element) {
     this._dialogService
-      .openConfirm('¿Está seguro de finalizar la tarea?')
+      .openConfirm('¿Está seguro de aprobar la tarea?', element.tarea)
       .pipe(filter((isConfirmed) => isConfirmed))
       .subscribe(() => this.onSave());
   }

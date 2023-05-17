@@ -7,10 +7,10 @@
     <div class="page__body">
       <div class="card shadow">
         <mat-tab-group>
-          <mat-tab label="Requerimientos" *ngIf="rol != 1">
+          <mat-tab label="Requerimientos" *ngIf="rol != trabajador">
             <gestion-rendimiento-mis-requerimientos></gestion-rendimiento-mis-requerimientos>
           </mat-tab>
-          <mat-tab label="Mi Equipo" *ngIf="rol != 1">
+          <mat-tab label="Mi Equipo" *ngIf="rol != trabajador">
             <gestion-rendimiento-mi-equipo></gestion-rendimiento-mi-equipo>
           </mat-tab>
           <mat-tab label="Mis Tareas">

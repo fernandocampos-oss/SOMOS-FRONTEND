@@ -103,13 +103,13 @@ export const ROUTES: Routes = [
             (m) => m.ConfiguracionesModule
           ),
       },
-      // {
-      //   path: AppRoute.MIS_REQUERIMIENTOS,
-      //   loadChildren: () => 
-      //     import('../modules/mis-requerimientos/mis-requerimientos.module').then(
-      //       (m) => m.MisRequerimientosModule
-      //     ),
-      // },
+      {
+        path: AppRoute.MIS_REQUERIMIENTOS,
+        loadChildren: () => 
+          import('../modules/mis-requerimientos/mis-requerimientos.module').then(
+            (m) => m.MisRequerimientosModule
+          ),
+      },
     ],
   },
 ];

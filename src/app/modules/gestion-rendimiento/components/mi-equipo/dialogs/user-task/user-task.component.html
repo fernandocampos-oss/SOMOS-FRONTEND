@@ -1,9 +1,5 @@
 <h2 mat-dialog-title>Tareas Asignadas: {{nombreUsuario}}</h2>
 <mat-dialog-content>
-    <div align="end">
-        <button mat-raised-button color="primary" matTooltip="Agregar Tarea" (click)="showDialogTaksUser()">
-            <mat-icon>add</mat-icon>Agregar Tarea</button>
-    </div>
     <table mat-table [dataSource]="tareas" style="width:100%">
 
         <ng-container matColumnDef="item">
@@ -51,7 +47,7 @@
                 <button mat-icon-button color="primary" (click)="showDialogDownloadTask(element)"
                     matTooltip="Visualizar tarea">
                     <mat-icon>remove_red_eye</mat-icon></button>
-                <button mat-icon-button color="primary" (click)="finalizarTarea(element)" *ngIf="element.porcentaje==100" matTooltip="Finalizar tarea">
+                <button mat-icon-button color="primary" (click)="finalizarTarea(element)" [disabled]="element.porcentaje!=100" matTooltip="Aprobar tarea">
                     <mat-icon>check</mat-icon></button>
             </td>
         </ng-container>

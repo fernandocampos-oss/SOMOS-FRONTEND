@@ -1,65 +1,30 @@
 <h2 class="auth__subtitle">Solicitud para un sistema de Gestión del Rendimiento</h2><br>
 
-<mat-stepper [linear]="isLinear" #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>POI</ng-template>
+<mat-stepper [linear]="true">
+    <mat-step [stepControl]="formActividadSelect" label="Elección POI">
+        <form [formGroup]="formActividadSelect">
             <br>
-            <h3>Seleccione los POI, relacionados al requerimiento</h3>
-            <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+            <h4>Seleccione la actividad relacionada al requerimiento</h4>
+            <mat-grid-list cols="6" rowHeight="86px" gutterSize="6px">
                 <mat-grid-tile [colspan]="5" class="grid">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Seleccione</mat-label>
-                        <mat-select [(value)]="descripcionPoi">
-                            <mat-option *ngFor="let poi of pois"
-                                [value]="poi.descripcion">{{poi.descripcion}}</mat-option>
+                    <mat-form-field appearance="outline" >
+                        <mat-select formControlName="frmActividad">
+                            <mat-option *ngFor="let actividad of fonafeAct"
+                                [value]="actividad.descripcion">{{actividad.descripcion}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="1">
-                    <button mat-raised-button color="primary" class="aniadir" (click)="onPoiCreate()">Añadir</button>
+                    <button mat-raised-button color="primary" class="botonPoi" matStepperNext required>Elegir</button>
                 </mat-grid-tile>
             </mat-grid-list>
-            <table mat-table [dataSource]="dataSource" style="width:100%">
-                <ng-container matColumnDef="Ver">
-                    <th mat-header-cell *matHeaderCellDef width="100px"> Ver </th>
-                    <td mat-cell *matCellDef="let element;index as i">
-                        <button mat-icon-button color="primary" matTooltip="Ver" matStepperNext (click)="verPoi(element)">
-                            <mat-icon>remove_red_eye</mat-icon>
-                        </button>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="Prioridades Anuales de Gestión">
-                    <th mat-header-cell *matHeaderCellDef> Prioridades Anuales de Gestión </th>
-                    <td mat-cell *matCellDef="let element"> {{element.descripcionPoi}} </td>
-                </ng-container>
-                <ng-container matColumnDef="Quitar">
-                    <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
-                    <td mat-cell *matCellDef="let element;index as i">
-                        <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deletePoi(i)">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                <tr class="empty-row" *matNoDataRow>
-                    <td class="empty-cell">Sin registros por mostrar</td>
-                </tr>
-            </table>
-            <br><br>
-            <!-- <div align="end">
-                <button mat-raised-button matStepperNext>Siguiente</button>
-            </div> -->
         </form>
     </mat-step>
 
-    <mat-step [stepControl]="secondFormGroup" label="Indicadores">
+    <!-- <mat-step [stepControl]="secondFormGroup" label="Indicadores">
         <form [formGroup]="secondFormGroup">
             <div>
                 <button mat-raised-button matStepperPrevious>Volver</button>
-                <!-- <button mat-button matStepperNext>Siguiente</button> -->
             </div>
             <br>
             <h4>POI: {{ nombrePoi }}</h4>
@@ -120,73 +85,64 @@
                 </tr>
             </table>            
         </form>
-    </mat-step>
+    </mat-step> -->
     <mat-step>
+        <form [formGroup]="formTareasListadas">
         <ng-template matStepLabel>Tareas</ng-template>
-        <div>
-            <button mat-raised-button matStepperPrevious>Volver</button>
-            <!-- <button mat-button (click)="stepper.reset()">Descartar</button> -->
-        </div>
         <br>
-        <h4>Indicador: {{ nombreMeta }}</h4><br>
-        <mat-grid-list cols="6" rowHeight="80px" gutterSize="6px">
+        <h4>Actividad elegida: {{ formActividadSelect.value.frmActividad}}</h4>
+        <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Ingrese la(s) tareas realcionadas al indicador</mat-label>
-                    <input type="text" matInput maxlength="80" />
+                    <mat-label>Ingrese la(s) tareas relacionadas al requerimiento</mat-label>
+                    <input type="text" matInput maxlength="80" formControlName="frmDescTarea"/>
                 </mat-form-field>
             </mat-grid-tile>
-        </mat-grid-list>
-
-        <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
-            <mat-grid-tile [colspan]="2" class="grid">
-                <h4>Plazo máximo</h4>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="3" class="grid">
+            <mat-grid-tile [colspan]="5" class="grid">
                 <mat-form-field appearance="outline">
-                  <mat-label>DD/MM/AAAA</mat-label>
-                  <input matInput required [matDatepicker]="picker1" />
+                  <mat-label>Plazo máximo</mat-label>
+                  <input #input matInput [matDatepicker]="picker1" formControlName="frmDateTarea" [min]="minFechaTarea"/>
                   <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                   <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
               </mat-grid-tile>
 
             <mat-grid-tile [colspan]="1">
-                <button mat-raised-button color="primary" class="aniadir" (click)="onIndicadorCreate()">Añadir</button>
+                <button mat-raised-button color="primary" class="botonPoi" (click)="onTareaCreate(input.value); formTareasListadas.reset()">Añadir</button>
             </mat-grid-tile>
         </mat-grid-list>
+        <div style="max-height: 160px; overflow-y: auto;">
+            <table mat-table [dataSource]="tareaList" style="width:100%">
+                <ng-container matColumnDef="Tarea">
+                    <th mat-header-cell *matHeaderCellDef width="50%"> Tarea </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombreTarea}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Plazo">
+                    <th mat-header-cell *matHeaderCellDef width="15%"> Plazo </th>
+                    <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Quitar">
+                    <th mat-header-cell *matHeaderCellDef width="10%"> Quitar </th>
+                    <td mat-cell *matCellDef="let element;index as i">
+                        <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deleteTarea(i)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
 
-        <table mat-table [dataSource]="tareas" style="width:100%">
-            <ng-container matColumnDef="Tarea">
-                <th mat-header-cell *matHeaderCellDef> Tarea </th>
-                <td mat-cell *matCellDef="let element"> {{element.tarea}} </td>
-            </ng-container>
-            <ng-container matColumnDef="Plazo">
-                <th mat-header-cell *matHeaderCellDef> Plazo </th>
-                <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
-            </ng-container>
-            <ng-container matColumnDef="Quitar">
-                <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
-                <td mat-cell *matCellDef="let element;index as i">
-                    <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deleteTarea(i)">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns_3"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns_3;"></tr>
-            <tr class="empty-row" *matNoDataRow>
-                <td class="empty-cell">Sin registros por mostrar</td>
-            </tr>
-        </table>        
+                <tr mat-header-row *matHeaderRowDef="displayedColumns_3"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns_3;"></tr>
+                <tr class="empty-row" *matNoDataRow>
+                    <td class="empty-cell">Sin registros por mostrar</td>
+                </tr>
+            </table>
+        </div>
+        </form>        
     </mat-step>
 </mat-stepper>
 <mat-divider></mat-divider>
-<br>
-<mat-dialog-actions align="center">
-    <button mat-raised-button mat-dialog-close>CANCELAR</button>
-    <button mat-raised-button color="primary" *ngIf="poiList.length != 0" (click)="next()">GRABAR</button>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close> Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="formActividadSelect.value.frmActividad == ''" (click)="ValidarTareas()">Grabar</button>
 </mat-dialog-actions>
 <br>

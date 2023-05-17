@@ -31,6 +31,12 @@ export class CrudComponent implements OnInit, AfterViewInit {
   showRead = false;
 
   @Input()
+  showCreate = true;
+
+  @Input()
+  nameActions = 'Acciones';
+
+  @Input()
   showDownload = false;
 
   @Input()
@@ -44,6 +50,9 @@ export class CrudComponent implements OnInit, AfterViewInit {
 
   @Input()
   showFilter = false;
+
+  @Input()
+  filterReadFunction: (data: any) => boolean;
 
   @Input()
   filterDownloadFunction: (data: any) => boolean;

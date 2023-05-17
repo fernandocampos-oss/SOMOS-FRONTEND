@@ -84,11 +84,11 @@ const data: MenuItem[] = [
   // //   svg : true,
   // //   label : 'DD.JJ'
   // // }
-  // {
-  //   path: AppRoute.MIS_REQUERIMIENTOS,
-  //   icon: 'description',
-  //   label: 'Mis Requerimientos',
-  // },
+  {
+    path: AppRoute.MIS_REQUERIMIENTOS,
+    icon: 'description',
+    label: 'Mis Requerimientos',
+  },
 ];
 
 @Injectable({ providedIn: 'root' })

@@ -20,10 +20,10 @@
   </ng-container>
 
   <ng-container *ngIf="hasAction" matColumnDef="actions">
-    <mat-header-cell class="header-cells" *matHeaderCellDef>Acciones</mat-header-cell>
+    <mat-header-cell class="header-cells" *matHeaderCellDef>{{nameActions}}</mat-header-cell>
     <mat-cell *matCellDef="let item" id="actions" data-label="Acciones">
       <button
-        *ngIf="showRead"
+        *ngIf="showReadAction(item)"
         mat-button
         mat-icon-button
         matSuffix

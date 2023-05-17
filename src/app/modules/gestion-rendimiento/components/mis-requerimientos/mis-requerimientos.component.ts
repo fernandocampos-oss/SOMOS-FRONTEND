@@ -5,11 +5,21 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
-import { ConfirmAcceptComponent } from './dialogs/confirm-accept/confirm-accept.component';
+import { AcceptRejectRequirementComponent } from './dialogs/accept-reject-requirement/accept-reject-requirement.component';
 import { MoveRequirementComponent } from './dialogs/move-requirement/move-requirement.component';
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
-import { DissaproveRequirementComponent } from './dialogs/dissaprove-requirement/dissaprove-requirement.component';
+
+interface Requerimiento {
+  id: number;
+  nombreRequerimiento: string;
+  tipoRequerimiento: string;
+  descripcion: string;
+  gerenciaSolicitante: string;
+  gerenciaReceptora: string;
+  estado: string;
+  motivo?: string;
+}
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -21,11 +31,20 @@ export class MisRequerimientosComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Item','Nombre del Requerimiento','Gerencia Solicitante','Estado','Acciones'];
+  displayedColumns: string[] = ['Item','nombreRequerimiento','gerenciaSolicitante','estado','acciones'];
   menuToggle = new EventEmitter<void>();
 
-  data =[];
-
+  // data: Requerimiento[] = [
+  //   { id: 1,  nombreRequerimiento: 'Hacer informe del SAP Planillas	', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 1', gerenciaSolicitante: 'GPyORH', gerenciaReceptora:'SGSA', estado:'EN PROCESO'},
+  //   { id: 2,  nombreRequerimiento: 'Requerimiento Prueba 1', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 2', gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'PENDIENTE'},
+  //   { id: 3,  nombreRequerimiento: 'Requerimiento Prueba 2', tipoRequerimiento:'Problemas de acceso', descripcion: 'Descripcion medianamente larga para el requerimiento 3', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'DERIVADO'},
+  //   { id: 4,  nombreRequerimiento: 'Requerimiento Prueba 3', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 4', gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'EN PROCESO'},
+  //   { id: 5,  nombreRequerimiento: 'Requerimiento Prueba 4', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 5', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'PENDIENTE'},
+  //   { id: 6,  nombreRequerimiento: 'Requerimiento Prueba 5', tipoRequerimiento:'Problemas de encendido', descripcion: 'Descripcion medianamente larga para el requerimiento 6', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'DERIVADO'},
+  //   { id: 7,  nombreRequerimiento: 'Requerimiento Prueba 6', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 7', gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'EN PROCESO'},
+  //   { id: 8,  nombreRequerimiento: 'Requerimiento Prueba 7', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 8', gerenciaSolicitante: 'GPyORH', gerenciaReceptora:'SGSA', estado:'DERIVADO'},
+  // ];
+  dataSorteada: Requerimiento[];
   constructor(
     private dialog: MatDialog,
     private services: GestionRendimientoService,
@@ -37,9 +56,10 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   loadTable(){
+    this.sortearTabla();
     this.services.ListarTareas(0).subscribe((dataItem) => {
       if (dataItem.codigo == 1) {
-        this.dataSource = new MatTableDataSource(dataItem.data);
+        this.dataSource = new MatTableDataSource(this.dataSorteada);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
@@ -53,6 +73,12 @@ export class MisRequerimientosComponent implements OnInit {
         }
       }
     });
+  }
+
+  sortearTabla(){
+    this.dataSorteada = this.services.FauxTablaRequerimientos().filter(function(a){
+      return a.gerenciaReceptora =='SGSA';
+    })
   }
 
   showDialogReadRequirement(element) {
@@ -73,8 +99,9 @@ export class MisRequerimientosComponent implements OnInit {
 
   showDialogSolicitud(element) {
     const dialogRef: MatDialogRef<SolicitudRequirementComponent> = this.dialog.open(SolicitudRequirementComponent, {
-      disableClose: false,
+      disableClose: true,
       width: '40%',
+      maxHeight: '700px',
       //height: '780px',
       autoFocus: false,
       data: {
@@ -87,28 +114,13 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  showDialogConfirmAccept(element){
-    const dialogRef: MatDialogRef<ConfirmAcceptComponent> = this.dialog.open(ConfirmAcceptComponent, {
+  showDialogAcceptRejectRequirement(element, onDelete: boolean){
+    const dialogRef: MatDialogRef<AcceptRejectRequirementComponent> = this.dialog.open(AcceptRejectRequirementComponent, {
       disableClose: false,
-      width: '35%',
       autoFocus: false,
       data: {
-        obj : element
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
-  }
-
-  showDialogDissaproveRequirement(element){
-    const dialogRef: MatDialogRef<DissaproveRequirementComponent> = this.dialog.open(DissaproveRequirementComponent, {
-      disableClose: false,
-      width: '35%',
-      autoFocus: false,
-      data: {
-        obj : element
+        obj : element,
+        rechazar: onDelete
       }
     });
 
@@ -123,7 +135,8 @@ export class MisRequerimientosComponent implements OnInit {
       width: '35%',
       autoFocus: false,
       data: {
-        obj : element
+        obj : element,
+        moreData: this.services.FauxTablaRequerimientos()
       }
     });
 

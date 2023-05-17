@@ -21,10 +21,11 @@ import { PdfComponent } from './components/mi-equipo/dialogs/pdf/pdf.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { MisRequerimientosComponent } from './components/mis-requerimientos/mis-requerimientos.component';
 import { ReadRequirementComponent } from './components/mis-requerimientos/dialogs/read-requirement/read-requirement.component';
-import { ConfirmAcceptComponent } from './components/mis-requerimientos/dialogs/confirm-accept/confirm-accept.component';
-import { DissaproveRequirementComponent } from './components/mis-requerimientos/dialogs/dissaprove-requirement/dissaprove-requirement.component';
+import { AcceptRejectRequirementComponent } from './components/mis-requerimientos/dialogs/accept-reject-requirement/accept-reject-requirement.component';
 import { MoveRequirementComponent } from './components/mis-requerimientos/dialogs/move-requirement/move-requirement.component';
 import { SolicitudRequirementComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/solicitud-requirement.component';
+import { ConfirmRequerimientoComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/dialog/confirm-requerimiento/confirm-requerimiento.component';
+import { AssignTaskUserComponent } from './components/mi-equipo/dialogs/assign-task-user/assign-task-user.component';
 
 @NgModule({
   declarations: [
@@ -42,10 +43,11 @@ import { SolicitudRequirementComponent } from './components/mis-requerimientos/d
     PdfComponent,
     MisRequerimientosComponent,
     ReadRequirementComponent,
-    ConfirmAcceptComponent,
-    DissaproveRequirementComponent,
+    AcceptRejectRequirementComponent,
     MoveRequirementComponent,
-    SolicitudRequirementComponent
+    SolicitudRequirementComponent,
+    ConfirmRequerimientoComponent,
+    AssignTaskUserComponent
   ],
   imports: [
     CommonModule,

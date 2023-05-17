@@ -25,19 +25,19 @@
         <mat-grid-tile [colspan]="3">
             <mat-form-field appearance="outline">
                 <mat-label>Área Solicitante</mat-label>
-                <input matInput formControlName="frmAreaSolicitante" readonly value="{{zona}}"/>
+                <input matInput formControlName="frmAreaSolicitante" readonly value="SGSA"/>
             </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="3">
             <mat-form-field appearance="outline">
                 <mat-label>Área Receptora</mat-label>
                 <mat-select formControlName="frmAreaReceptora">
-                    <mat-option value="1">SGSASS</mat-option>
-                    <mat-option value="2">SGSA</mat-option>
-                    <mat-option value="3">SGSI</mat-option>
-                    <mat-option value="4">SGOTI</mat-option>
-                    <mat-option value="5">SGC</mat-option>
-                    <mat-option value="6">OSI</mat-option>
+                    <mat-option value="SGSASS">SGSASS</mat-option>
+                    <mat-option value="SGSA">SGSA</mat-option>
+                    <mat-option value="SGSI">SGSI</mat-option>
+                    <mat-option value="SGOTI">SGOTI</mat-option>
+                    <mat-option value="SGC">SGC</mat-option>
+                    <mat-option value="OSI">OSI</mat-option>
                 </mat-select>
             </mat-form-field>
         </mat-grid-tile>
@@ -45,6 +45,6 @@
 </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close type="button">Cancelar</button>
-      <button mat-raised-button class="btnsave" type="submit">Grabar</button>
+      <button mat-raised-button class="btnsave" type="submit" (click)="submitRequerimiento()">Grabar</button>
     </mat-dialog-actions>
       
