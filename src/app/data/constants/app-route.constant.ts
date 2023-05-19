@@ -1,6 +1,7 @@
 export class AppRoute {
   static readonly AUTH = 'auth';
   static readonly LOGIN = 'login';
+  static readonly LOGIN_ADMIN = 'login-admin';
   static readonly HOME = 'home';
   static readonly CAMBIAR_CLAVE = 'cambiar-clave';
   static readonly CONFIRMAR_CAMBIO_CLAVE = 'confirmar-cambio-clave';
@@ -21,4 +22,5 @@ export class AppRoute {
   static readonly ADJUNTAR_DOCUMENTOS = 'adjuntar-documentos';
   static readonly MIS_REQUERIMIENTOS = 'mis-requerimientos';
   static readonly ADMINISTRAR_ENCUESTA = 'administracion';
+  static readonly ADMINISTRAR_USUARIOS = 'administrar-usuarios';
 }

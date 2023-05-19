@@ -21,6 +21,12 @@ const data: MenuItem[] = [
       icon: 'how_to_reg',
       label: 'Mis Marcaciones',
   },
+  {
+    path: AppRoute.ADMINISTRAR_USUARIOS,
+    icon: 'settings',
+    label: 'Administrar Usuarios',
+    roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+  },
   // {
   //     path: AppRoute.ADMINISTRAR_ENCUESTA,
   //     icon: 'settings',

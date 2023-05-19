@@ -9,7 +9,10 @@
     </div> -->
     <div class="box2" >
       <div class="header">
-        <span>Informativo</span> 
+        <span style="text-align-last: center;">Informativo</span> 
+        <button *ngIf="rol == 4" mat-mini-fab color="primary" (click)="open(3)">
+          <mat-icon>add_photo_alternate</mat-icon>
+        </button>
       </div>   
       <div class="body">
         <mat-grid-list cols="2" rowHeight="350px" gutterSize="20px">
@@ -34,20 +37,13 @@
   <div class="column1">
     <div class="boxBorde boxBirth">
         <div class="header">
-          <mat-grid-list cols="7" rowHeight="50px" gutterSize="6px">
-            <mat-grid-tile [colspan]="1" style="top: 10%;">
-              <mat-form-field class="cambioFecha" appearance="_">
-              <input #input matInput disabled [matDatepicker]="picker1" [(value)] = today style="display: none;">
-              <mat-datepicker-toggle matSuffix [for]="picker1"matTooltip="Cambiar dia de cumpleaños"></mat-datepicker-toggle>
-              <mat-datepicker [disabled]="false" #picker1 (closed)="ActualizarOnomasticos(input.value)" ></mat-datepicker>
+              <mat-form-field style="width:0px; height:0px;visibility:hidden;">
+                <input #input matInput [(value)]=today [matDatepicker]="picker">
+                <mat-datepicker #picker (closed)="ActualizarOnomasticos(input.value)"></mat-datepicker>
               </mat-form-field>
-            </mat-grid-tile>
-            <mat-grid-tile [colspan]="6">
-              <div style="width: 100%; display: inline-flex; align-items: center;">
-                <mat-icon >cake</mat-icon><span><b>Cumpleaños el {{input.value}}</b></span>
-              </div>
-            </mat-grid-tile>
-            </mat-grid-list>
+              <button mat-button class="boxBorde" (click)="picker.open()" matTooltip="Cambiar fecha de cumpleaños"><mat-icon >cake</mat-icon></button>
+           
+                <span style="margin-left: 0.4vw;"><b>Cumpleaños el {{input.value}}</b></span>
         </div>
         <div class="OnomasticosDia">
           <div *ngFor="let items of onomasticos">
@@ -63,7 +59,7 @@
     </div>
     <div class="boxBorde boxSST" (click)="open(1)">
     </div>
-    <!-- <div class="boxBorde boxEncuestaRes" *ngIf="encuestaRespondida">
+    <div class="boxBorde boxEncuestaRes" *ngIf="encuestaRespondida">
       <div style="display: grid; align-content: center;">
         <span style="justify-self: center;">¡Encuesta Respondida!</span><br>
         <span style="justify-self: center;">¡Gracias por darnos tu opinión!</span>
@@ -75,7 +71,7 @@
         <span>{{encuestaNombre}}</span><br>
         <span>¡Ingresa y cuéntanos tu opinión!</span>
       </div>
-    </div> -->
+    </div>
     <!-- <div class="boxBorde boxSST-2">
       <div class="info" matTooltip="Gerencia Políticas y Organización del Recurso Humano">
         <span>GPyORH</span>

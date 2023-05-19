@@ -4,8 +4,22 @@ import { LayoutComponent } from './layout.component';
 import { AppRoute } from '../data/constants/app-route.constant';
 import { MarcacionTrabajadorModule } from '../modules/marcacion-trabajador/marcacion-trabajador.module';
 import { DjConflictoInteresComponent } from '../modules/dj-conflicto-interes/dj-conflicto-interes.component';
+import { MenuPrincipalAdminComponent } from '@modules/menu-principal-admin/menu-principal-admin/menu-principal-admin.component';
 
 export const ROUTES: Routes = [
+  {
+    path: 'admin',
+    component: LayoutComponent,
+    children:[
+      {
+        path: '',
+        loadChildren: () =>
+        import('../modules/menu-principal-admin/menu-principal-admin.module').then(
+        (m) => m.MenuPrincipalAdminModule
+        ),
+      }
+    ]
+  },
   {
     path: '',
     component: LayoutComponent,
@@ -108,6 +122,13 @@ export const ROUTES: Routes = [
         loadChildren: () =>
           import('../modules/administracion/administracion.module').then(
             (m) => m.AdministracionModule
+          ),
+      },
+      {
+        path: AppRoute.ADMINISTRAR_USUARIOS,
+        loadChildren: () =>
+          import('../modules/administrar-usuarios/administrar-usuarios.module').then(
+            (m) => m.AdministrarUsuariosModule
           ),
       },
       // {

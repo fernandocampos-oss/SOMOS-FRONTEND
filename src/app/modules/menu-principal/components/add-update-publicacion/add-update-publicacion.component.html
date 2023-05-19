@@ -1,0 +1,31 @@
+<div class="preview form__field--full">
+    <mat-grid-list cols="6" rowHeight="45px" gutterSize="6px" [formGroup]="form">
+        <mat-grid-tile [colspan]="2" [rowspan]="6" >
+            <div>
+                <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="file.click()" color="primary" *ngIf="!retrievedImage">
+                  <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
+                </button>
+                <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()" color="warn" *ngIf="retrievedImage">
+                  <mat-icon>clear</mat-icon> Remover Imagen
+                </button>
+                <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)"/>
+                <img class="preview__img" [src]="retrievedImage" *ngIf="retrievedImage"/>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="4" [rowspan]="2" >
+        <h3>Añadir Publicación</h3>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="4" [rowspan]="2" >
+            <mat-form-field appearance="outline">
+                <mat-label>Título de la publicación</mat-label>
+                <input matInput required formControlName="frmTítulo"/>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="4" [rowspan]="2" >
+            <mat-form-field appearance="outline">
+                <mat-label>Enlace externo de la publicación</mat-label>
+                <input matInput required formControlName="frmEnlace"/>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

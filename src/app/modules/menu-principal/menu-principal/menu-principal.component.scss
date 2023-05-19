@@ -8,8 +8,11 @@
 .header {
 display: flex;
 font-weight: bold;
-justify-content: center;
+justify-content: space-between;
+align-items: center;
 span{
+  text-align-last: left;
+  width: 100%;
   font-style: normal;
   font-size: 1vw;
 }
@@ -25,7 +28,13 @@ span{
   width: 100%;
   display: grid;
   .header{
-    display: block;
+    margin: 0px 0.2vw 0px 0.2vw;
+    padding-top: 0.2vw;
+    .boxBorde{
+      margin:0px;
+      width: 3vw;
+      background: radial-gradient(circle, rgba(255,255,255,1) 6%, rgba(0,212,255,1) 100%);
+    }
     top: 0;
   }
   .OnomasticosDia{
@@ -34,7 +43,10 @@ span{
     top: 0;
     overflow-y: auto;
   }
-  background: rgba(76, 175, 80, 0.1);
+  background-image: url(~src/assets/images/fondoCumple.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   .contenido{
     display: flex;
     .num{

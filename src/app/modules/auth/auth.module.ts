@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ConfirmTokenDialog } from './registro/dialogs/confirm-token/confirm-token.dialog';
 import { ConfirmarCambioClaveComponent } from './confirmar-cambio-clave/confirmar-cambio-clave.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { LoginAdminComponent } from './login-admin/login-admin.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -25,6 +26,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AuthComponent,
     ConfirmTokenDialog,
     ConfirmarCambioClaveComponent,
+    LoginAdminComponent,
   ],
   imports: [
     CommonModule,

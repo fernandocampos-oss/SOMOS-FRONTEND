@@ -7,6 +7,9 @@ import { OnomasticosResponse } from '@data/models/menu-principal/menu-principal.
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ShowPublicacionComponent } from '../components/show-publicacion/show-publicacion.component';
 import { MenuPublicacion } from '@data/models/menu-principal/menu-publicacion.model';
+import { AddUpdatePublicacionComponent } from '../components/add-update-publicacion/add-update-publicacion.component';
+import { AuthService } from '@data/services';
+import { FormControl } from '@angular/forms';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -26,18 +29,24 @@ export class MenuPrincipalComponent implements OnInit {
   hoursLeft: number;
   minutesLeft: number;
 
+  rol: number;
   identificador: number;
   fechas: fechas_Imp[] = [
+    {descripcion:'No Hay Fecha',dia: new Date('12/21/2012 00:00:00')},
     {descripcion:'Prueba1',dia: new Date('12/25/2023 00:00:00')},
     {descripcion:'Prueba2',dia: new Date('11/25/2023 00:00:00')},
     {descripcion:'Prueba3',dia: new Date('10/24/2023 00:00:00')},
-    {descripcion:'Prueba4',dia: new Date('07/17/2023 00:00:00')},
+    {descripcion:'Día del Padre',dia: new Date('06/18/2023 00:00:00')},
     {descripcion:'Día de la Madre',dia: new Date('05/14/2023 00:00:00')},
     {descripcion:'Prueba7',dia: new Date('03/01/2023 00:00:00')},
   ]
 
   // diasElegidos = new Array;
   publicaciones: MenuPublicacion[] = [
+    {nom_largo:'Día de la madre' ,nom_corto: 'Día de la madre', fechaPub: '14/05/2023 - 08:39', imgRuta: 'assets/images/p_diaMadre.jpg'},
+    {nom_largo:'Feria Agropecuaria - 26 de abril' ,nom_corto: 'Feria Agropecuaria', fechaPub: '26/04/2023 - 08:39', imgRuta: 'assets/images/p_Agropecuaria.jpg'},
+  ]
+  publicaciones2: MenuPublicacion[] = [
     {nom_largo:'Simulacro Nacional Multipeligro - 31 de mayo ' ,nom_corto: 'Simulacro Nacional Multipeligro - 31 de mayo ', fechaPub: '16/05/2023 - 11:53', imgRuta: 'assets/images/p_Simulacro.jpg'},
     {nom_largo:'Biblioteca en 1 minuto-Medicina de urgencias' ,nom_corto: 'Biblioteca en 1 minuto-Medicina de urgencias', fechaPub: '16/05/2023 - 10:54', imgRuta: 'assets/images/p_BiblioMed.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/07_MEDICINA_DE_URGENCIAS_page_0001.pdf'},
     {nom_largo:'Reuniones para brigadistas - Simulacro Nacional Multipeligro 2023' ,nom_corto: 'Reuniones para brigadistas', fechaPub: '16/05/2023 - 10:07', imgRuta: 'assets/images/p_Brigadistas.jpg'},
@@ -46,7 +55,6 @@ export class MenuPrincipalComponent implements OnInit {
     {nom_largo:'Capacitaciones virtuales de Seguridad y Salud en el Trabajo' ,nom_corto: 'Capacitaciones virtuales de Seguridad y Salud en el Trabajo', fechaPub: '15/05/2023 - 14:21', imgRuta: 'assets/images/p_SST.jpg', redireccion: 'https://capacitacion.essalud.gob.pe/login/index.php'},
     {nom_largo:'Concurso de fotografía "El control está en tus manos ¡Mídete la presión arterial!"' ,nom_corto: '¡Mídete la presión arterial!', fechaPub: '12/05/2023 - 14:52', imgRuta: 'assets/images/p_ConFoto.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/concurso_de_fotografia_2023.pdf'},
     {nom_largo:'Curso sincrónico virtual - Manejo de la Vía Aérea Básica' ,nom_corto: 'Curso sincrónico virtual - Manejo de la Vía Aérea Básica', fechaPub: '12/05/2023 - 12:13', imgRuta: 'assets/images/p_CursoVia.jpg', redireccion: 'https://forms.gle/4FCR5mUvFvi9fqMf9'},
-    
     {nom_largo:'Curso sincrónico virtual - Soporte Básico del Trauma' ,nom_corto: 'Curso sincrónico virtual - Soporte Básico del Trauma', fechaPub: '11/05/2023 - 15:15', imgRuta: 'assets/images/p_SoporteBas.jpg', redireccion: 'https://forms.gle/PZ3ZKa818CE3mykF6'},
     {nom_largo:'Día de la Madre - Invitación "Agasajo para mamá"' ,nom_corto: 'Día de la Madre - Invitación "Agasajo para mamá"', fechaPub: '10/05/2023 - 16:58', imgRuta: 'assets/images/p_Agasajo.jpg'},
     {nom_largo:'Biblioteca en 1 minuto-Fisiopatología pulmonar' ,nom_corto: 'Biblioteca en 1 minuto-Fisiopatología pulmonar', fechaPub: '10/05/2023 - 11:53', imgRuta: 'assets/images/p_BiblioFisio.jpg', redireccion: 'http://www.essalud.gob.pe/mailing/22_FISIOPATOLOGIA_PULMONAR_page_0001.pdf'},
@@ -95,9 +103,11 @@ export class MenuPrincipalComponent implements OnInit {
   }
   constructor(private dialog: MatDialog,
               private _menuService:MenuPrincipalService,
-              private responsive  : BreakpointObserver) { }
+              private responsive  : BreakpointObserver,
+              private _authService: AuthService) { }
 
   ngOnInit(): void {
+    this.rol = this._authService.getRol();
     this.identificador = this.nearestDay(this.today);
     this.responsive.observe([
       Breakpoints.HandsetLandscape,
@@ -114,8 +124,7 @@ export class MenuPrincipalComponent implements OnInit {
     
     this.convertirDiaMes(this.diaHoy, this.mesHoy);
     this.CargarOnomasticos();
-    if((this.fechas[this.identificador].dia.getMonth() >= this.today.getMonth() && this.fechas[this.identificador].dia.getDate() > this.today.getDate() 
-     && this.fechas[this.identificador].dia.getFullYear() >= this.today.getFullYear() )){
+    if(this.identificador != 0){
       this.getDateDiff(this.fechas[this.identificador].dia,this.today);// Provisional: para tener las fechas importantes
       setInterval(() => {  
        var Actualidad;
@@ -156,6 +165,15 @@ export class MenuPrincipalComponent implements OnInit {
           this._menuService.getEncuestaActiva().subscribe(data => {if (data == null) this.encuestaRespondida= true });
         });
           break;
+      case 3:
+        const dialogRef3: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
+          disableClose: false,
+          width:'40vw',
+          maxHeight:'50em',
+        });
+        dialogRef3.afterClosed().subscribe(result => {
+        });
+          break;
     }
   }
 
@@ -177,8 +195,8 @@ export class MenuPrincipalComponent implements OnInit {
     var nearest = Infinity;
     var winner = -1;
     this.fechas.forEach(function(diaDate, index){
-      if(diaDate.dia.getMonth() >= hoy.getMonth() && diaDate.dia.getDate() > hoy.getDate()
-      && diaDate.dia.getFullYear() >= hoy.getFullYear()){
+      if((diaDate.dia.getMonth() >= hoy.getMonth() && diaDate.dia.getDate() > hoy.getDate()
+      && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getMonth() > hoy.getMonth() && diaDate.dia.getFullYear() >= hoy.getFullYear())){
         var diaD:number;
         if (diaDate.dia instanceof Date) {
           diaD = diaDate.dia.getTime();   
