@@ -127,11 +127,8 @@ export class MenuPrincipalComponent implements OnInit {
     if(this.identificador != 0){
       this.getDateDiff(this.fechas[this.identificador].dia,this.today);// Provisional: para tener las fechas importantes
       setInterval(() => {  
-       var Actualidad;
-       this._menuService.getDiaAhora().then(async (data: any) => {
-        Actualidad = new Date(data.datetime);
-        this.getDateDiff(this.fechas[this.identificador].dia,Actualidad);
-       }) ;
+      var Actualidad = new Date();
+      this.getDateDiff(this.fechas[this.identificador].dia,Actualidad);
       }, 30000); // Mil es 1 seg
     }
     else{

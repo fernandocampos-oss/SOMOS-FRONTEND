@@ -38,6 +38,8 @@ export class AddUpdatePublicacionComponent implements OnInit {
       this.applicationFile = files[0];
       this.retrievedImage = reader.result;
       this.isImageUpdate = true;
+      console.log(this.applicationFile);
+      console.log(this.retrievedImage);
     };
   }
 
