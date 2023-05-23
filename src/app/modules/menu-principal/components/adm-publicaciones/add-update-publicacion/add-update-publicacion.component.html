@@ -1,0 +1,57 @@
+<div *ngIf="data.funcion != 3" [formGroup]="form">
+    <mat-grid-list cols="6" rowHeight="20px" >
+        <mat-grid-tile [colspan]="6" [rowspan]="2" >
+        <h3 *ngIf="data.funcion == 1">Añadir Publicación</h3>
+        <h3 *ngIf="data.funcion == 2">Editar Publicación</h3>
+        </mat-grid-tile>
+        <mat-grid-tile class="cargaImg" [colspan]="2" gutterSize="2px" [rowspan]="14" >
+            <div class="imageBox">
+                <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="file.click()" color="primary" *ngIf="!retrievedImage">
+                  <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
+                </button>
+                <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()" color="warn" *ngIf="retrievedImage">
+                  <mat-icon>clear</mat-icon> Remover Imagen
+                </button>
+                <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)"/>
+                <img class="preview__img" [src]="retrievedImage" *ngIf="retrievedImage"/>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4" >
+            <mat-form-field appearance="outline">
+                <mat-label>Título de la publicación</mat-label>
+                <input matInput required formControlName="frmTitulo"/>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="5" >
+            <mat-form-field appearance="outline">
+                <mat-label>Descripcion de la publicación</mat-label>
+                <textarea matInput required formControlName="frmDescripcion"></textarea>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="5" >
+            <mat-form-field appearance="outline">
+                <mat-label>Enlace externo de la publicación (Opcional)</mat-label>
+                <input matInput formControlName="frmEnlace"/>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="NewPublicacion()" *ngIf="data.funcion == 1"><mat-icon>add</mat-icon> Guardar</button>
+    <button mat-raised-button color="primary" (click)="UpdatePublicacion()" *ngIf="data.funcion == 2"><mat-icon>add</mat-icon> Guardar</button>
+    </mat-dialog-actions>
+</div>
+<div *ngIf="data.funcion == 3">
+    <div class="alert">
+        <h2>¿Está seguro de eliminar esta publicación?</h2>
+        <span style="justify-self: center;">Una vez eliminado, no se podrá deshacer</span><br>
+    </div>
+    <mat-grid-list cols="2" rowHeight="40px" gutterSize="6px">
+        <mat-grid-tile [colspan]="1" class="grid">
+            <button mat-button matDialogClose class="boton">Volver</button>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" class="grid">
+            <button mat-raised-button (click)="DeletePublicacion()" color="primary" class="boton">Enviar</button>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

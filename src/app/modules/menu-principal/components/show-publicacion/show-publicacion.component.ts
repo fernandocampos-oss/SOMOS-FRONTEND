@@ -9,12 +9,11 @@ import { MenuPublicacion } from '@data/models/menu-principal/menu-publicacion.mo
 })
 export class ShowPublicacionComponent implements OnInit {
 
-  objPublicacion: MenuPublicacion = new MenuPublicacion();
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,) { }
 
   ngOnInit(): void {
-    this.objPublicacion = this.data.obj;
+    console.log(this.data.obj);
   }
 
 }

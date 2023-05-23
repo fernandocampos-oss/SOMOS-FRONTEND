@@ -3,6 +3,7 @@ import { HttpClient} from '@angular/common/http';
 import { environment } from '@env';
 import { OnomasticosRequest, OnomasticosResponse } from '@data/models/menu-principal/menu-principal.model';
 import { MenuEncuestaShow, encuestaRespuesta } from '@data/models/menu-principal/menu-encuesta.model';
+import { PublicacionRequest, PublicacionResponse } from '@data/models/menu-principal/menu-publicacion.model';
 
 const URL_BASE = `${environment.apiUrl}`;
 
@@ -12,7 +13,27 @@ export class MenuPrincipalService {
   constructor(private _httpClient: HttpClient) { }
 
   getDiaAhora(): any{
-    return fetch("http://worldtimeapi.org/api/timezone/America/Lima",{method: "GET",mode: "cors"}).then((resp) => resp.json());
+    return fetch("http://worldtimeapi.org/api/timezone/America/Lima",{method: "GET",mode: "cors"}).then((resp) => resp.json()).then((resultado)=> (console.log(resultado)));
+  }
+
+  newPublicacion(model: PublicacionRequest){
+    const url = `${URL_BASE}/publicaciones`;
+    return this._httpClient.post(url,model);
+  }
+
+  getPublicaciones(){
+    const url = `${URL_BASE}/publicaciones`;
+    return this._httpClient.get<PublicacionResponse[]>(url);
+  }
+
+  updatePublicacion(idPublicacion: number, model: PublicacionRequest){
+    const url = `${URL_BASE}/publicaciones/${idPublicacion}`;
+    return this._httpClient.put(url,model);
+  }
+  
+  deletePublicacion(idPublicacion: number){
+    const url = `${URL_BASE}/publicaciones/${idPublicacion}`;
+    return this._httpClient.delete(url);
   }
 
   sendEncuesta(idEncuesta: number, model: encuestaRespuesta){

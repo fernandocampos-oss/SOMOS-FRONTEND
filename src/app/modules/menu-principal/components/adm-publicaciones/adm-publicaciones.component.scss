@@ -1,0 +1,49 @@
+.preview {
+    &__img {
+        width: 100%;
+        max-height: 8rem;
+    }
+    &__button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+.boxBorde{
+  border: #37485f;
+  border-style:solid;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 170px;
+  height: 160px;
+  border-radius: 11px;
+  margin: 0.5vw 10px 0.5vw 10px;
+  div{
+    text-align-last: center;
+    border: #37485f;
+    border-style:solid;
+    border-radius: 100%;
+    width: 37.2px;
+    padding: 6px;
+    background: aquamarine;
+    font-weight: bold;
+    margin: 5px 0px 0px 5px;
+  }
+}
+.boxPublicacionesAdm{
+    overflow: auto;
+    ::ng-deep .mat-grid-tile-content {
+        flex-wrap: wrap;
+        align-content: flex-start;
+        align-items: flex-start;
+    }
+}
+.boxListaPub{
+    overflow: auto;
+    ::ng-deep .mat-grid-tile-content {
+        align-items: flex-start;
+    }
+}
+// mat-grid-tile{
+//     background: rgb(197, 196, 196);
+// }

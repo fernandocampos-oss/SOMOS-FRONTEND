@@ -12,7 +12,9 @@ import { ShowSstComponent } from './components/show-sst/show-sst.component';
 import { RegisterDatosEncuestaComponent } from './components/register-datos-encuesta/register-datos-encuesta.component';
 import { ShowPublicacionComponent } from './components/show-publicacion/show-publicacion.component';
 import { ConfirmRegisterEncuestaComponent } from './components/register-datos-encuesta/dialogs/confirm-register-encuesta/confirm-register-encuesta.component';
-import { AddUpdatePublicacionComponent } from './components/add-update-publicacion/add-update-publicacion.component';
+import { AdmPublicaciones } from './components/adm-publicaciones/adm-publicaciones.component';
+import { AddUpdatePublicacionComponent } from './components/adm-publicaciones/add-update-publicacion/add-update-publicacion.component';
+import { DeletePublicacionComponent } from './components/adm-publicaciones/delete-publicacion/delete-publicacion.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { AddUpdatePublicacionComponent } from './components/add-update-publicaci
     RegisterDatosEncuestaComponent,
     ShowPublicacionComponent,
     ConfirmRegisterEncuestaComponent,
-    AddUpdatePublicacionComponent
+    AdmPublicaciones,
+    AddUpdatePublicacionComponent,
+    DeletePublicacionComponent
   ],
   imports: [
     CommonModule,

@@ -9,8 +9,8 @@
     </div> -->
     <div class="box2" >
       <div class="header">
-        <span style="text-align-last: center;">Informativo</span> 
-        <button *ngIf="rol == 4" mat-mini-fab color="primary" (click)="open(3)">
+        <span style="text-align-last: center;">Informativo {{temp}}</span> 
+        <button *ngIf="rol == 4" mat-mini-fab color="primary" (click)="open(3)" matTooltip="Administrar publicaciones">
           <mat-icon>add_photo_alternate</mat-icon>
         </button>
       </div>   
@@ -19,11 +19,11 @@
           <mat-grid-tile [colspan]="publicacionLong" *ngFor="let pub of publicaciones">
             <div class="boxPublicacion boxBorde">
               <div class="descrPub">
-                <span>{{pub.nom_corto}}</span>
-                <span style="float: right;">{{pub.fechaPub}}</span>
+                <span>{{pub.titulo}}</span>
+                <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
               </div>
               <div>
-                <img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}' (click)="showPublicacion(pub)">
+                <img class="imgInfo" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showPublicacion(pub)">
                 <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
                 <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
               </div>
