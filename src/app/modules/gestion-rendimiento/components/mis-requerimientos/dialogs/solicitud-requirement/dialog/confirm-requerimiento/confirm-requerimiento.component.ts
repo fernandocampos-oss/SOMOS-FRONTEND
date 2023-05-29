@@ -1,6 +1,8 @@
+import { TareaDTO } from '@data/models/gestion-rendimiento/tareaDTO';
+import { Tarea } from './../../../../../../../../data/models/gestion-rendimiento/tarea';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { SnackbarService } from '@core/services';
+import { NotificationService, SnackbarService } from '@core/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
@@ -10,19 +12,35 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
 })
 export class ConfirmRequerimientoComponent implements OnInit {
 
-  constructor(private dialogRef       : MatDialog,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private _snackbar       : SnackbarService,
-              private _service        : GestionRendimientoService,) { }
+  tarea: Tarea
+
+  constructor(
+    private dialogRef: MatDialog,
+    private _snackbar: SnackbarService,
+    private _service: GestionRendimientoService,
+    private _notification: NotificationService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { }
 
   ngOnInit(): void {
-    console.log(this.data.obj);
+    console.log("confirmar", this.data.obj);
   }
 
-  closeAll(){
-    console.log(this.data.obj);
-    this._service.updateTareasFauxRequerimientos(this.data.obj);
-    this._snackbar.success("Requerimiento asignado adecuadamente");
-    this.dialogRef.closeAll();
+  // closeAll() {
+  //   this._service.updateTareasFauxRequerimientos(this.data.obj);
+  //   this._snackbar.success("Requerimiento asignado adecuadamente");
+  //   this.dialogRef.closeAll();
+  // }
+
+  registrarTareas() {
+    if (this.data.obj.idRequerimiento !== 0) {
+      this._service.registrarTareas(this.data.obj).subscribe(data => {
+        this._snackbar.success("Requerimiento asignado adecuadamente");
+        this.dialogRef.closeAll();
+      });
+    } else {
+      this._notification.error("Error al registrar tareas");
+    }
   }
+
 }

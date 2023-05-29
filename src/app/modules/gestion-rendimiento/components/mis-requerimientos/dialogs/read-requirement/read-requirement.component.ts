@@ -19,9 +19,9 @@ export class ReadRequirementComponent implements OnInit {
     private services: GestionRendimientoService,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.objElement=this.data.obj;
-    this.estadoReq = this.data.obj.estado;
+    this.estadoReq = this.data.obj.estadoRequerimiento.descripcion;
     this.requerimiento = this.objElement.nombreRequerimiento;
     this.createForm();
   }
@@ -30,7 +30,7 @@ export class ReadRequirementComponent implements OnInit {
       frmTipo: [this.objElement.tipoRequerimiento],
       frmDescripcion: [this.objElement.descripcion],
       frmAreaSolicitante:[this.objElement.gerenciaSolicitante],
-      frmAreaDestinatario:[this.objElement.gerenciaReceptora],
+      frmAreaDestinatario:[this.objElement.gerenciaReceptor],
       frmMotivo:[this.objElement.motivo],
       frmEstado: [this.objElement.estado]
     });

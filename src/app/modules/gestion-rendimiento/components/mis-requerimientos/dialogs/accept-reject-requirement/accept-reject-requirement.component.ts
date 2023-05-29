@@ -2,6 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { NotificationService } from '@core/services';
+import { AppRoute } from '@data/constants';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-accept-reject-requirement',
@@ -13,6 +16,8 @@ export class AcceptRejectRequirementComponent implements OnInit {
   form: FormGroup;
   reject: boolean;
   constructor(
+    private services: GestionRendimientoService,
+    private _notification: NotificationService,
     private _fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
@@ -20,7 +25,7 @@ export class AcceptRejectRequirementComponent implements OnInit {
   ngOnInit(): void {
     this.requerimiento = this.data.obj.nombreRequerimiento;
     this.reject = this.data.rechazar;
-    if(this.reject == true){
+    if (this.reject == true) {
       this.createForm();
     }
   }
@@ -30,12 +35,32 @@ export class AcceptRejectRequirementComponent implements OnInit {
       frmMotivo: [null, [Validators.required]]
     });
   }
-  aprobarReq(){
-    this.data.obj.estado = 'APROBADO';
+
+  aprobarReq() {
+    // this.data.obj.estado = 'APROBADO';
+    this.services.aprobarRequerimiento(AppRoute.ESTADO_REQUERIMIENTO_APROBADO, this.data.obj.idRequerimiento).subscribe(data => {
+      if (data) {
+        this._notification.success("Requerimiento aprobado");        
+      } else {
+        this._notification.error("Error al aprobar requerimento")
+      }
+
+    });
   }
-  rechazarReq(){
-    this.data.obj.estado = 'RECHAZADO';
+
+  rechazarReq() {
+    // this.data.obj.estado = 'RECHAZADO';
     this.data.obj.motivo = this.form.value.frmMotivo;
-    console.log(this.data.obj.motivo);
+
+    this.services.rechazarRequerimiento(AppRoute.ESTADO_REQUERIMIENTO_RECHAZADO, this.data.obj.motivo, this.data.obj.idRequerimiento).subscribe(data => {
+      if (data) {
+        this._notification.success("Requerimiento rechazado");        
+      } else {
+        this._notification.error("Error al rechazar requerimento")
+      }
+
+    });
+
   }
+
 }

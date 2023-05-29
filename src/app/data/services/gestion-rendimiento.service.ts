@@ -1,8 +1,11 @@
+import { Tarea } from './../models/gestion-rendimiento/tarea';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
 import { Requerimiento, RequerimientoAsignado} from '@data/models/requerimiento/requerimiento.model';
+import { Poi } from '@data/models/gestion-rendimiento/poi';
+import { TareaDTO } from '@data/models/gestion-rendimiento/tareaDTO';
 
 @Injectable({ providedIn: 'root' })
 export class GestionRendimientoService {
@@ -133,6 +136,39 @@ export class GestionRendimientoService {
 
   RegistrarIntegranteDetalle(data):Observable<any> {
     return this.http.post(`${environment.apiUrl}/equipo/registrarIntegranteDetalle`,data);
+  }
+
+  //acciones requerimientos
+  listarRequerimiento() {
+    console.log(`${environment.apiUrlGestionRendimiento}/requerimientos`);
+    return this.http.get<Requerimiento[]>(`${environment.apiUrlGestionRendimiento}/requerimientos`);
+  }
+  
+  aprobarRequerimiento(estado: number, idrequerimiento: number) {
+    console.log(`${environment.apiUrlGestionRendimiento}/requerimientos/aprobar?estado=${estado}&idrequerimiento=${idrequerimiento}`);
+    return this.http.get<any[]>(`${environment.apiUrlGestionRendimiento}/requerimientos/aprobar?estado=${estado}&idrequerimiento=${idrequerimiento}`);
+  }
+
+  rechazarRequerimiento(estado: number, motivo: string, idrequerimiento: number) {
+    console.log(`${environment.apiUrlGestionRendimiento}/requerimientos/rechazar?estado=${estado}&motivo=${motivo}&idrequerimiento=${idrequerimiento}`);
+    return this.http.get<any[]>(`${environment.apiUrlGestionRendimiento}/requerimientos/rechazar?estado=${estado}&motivo=${motivo}&idrequerimiento=${idrequerimiento}`);
+  }
+
+  derivarRequerimiento(estado: number, motivo: string, gerenciareceptor: string,idrequerimiento: number) {
+    console.log(`${environment.apiUrlGestionRendimiento}/requerimientos/derivar?estado=${estado}&motivo=${motivo}&gerenciareceptor=${gerenciareceptor}&idrequerimiento=${idrequerimiento}`);
+    return this.http.get<any[]>(`${environment.apiUrlGestionRendimiento}/requerimientos/derivar?estado=${estado}&motivo=${motivo}&gerenciareceptor=${gerenciareceptor}&idrequerimiento=${idrequerimiento}`);
+  }
+
+  //acciones poi
+  listarPoi() {
+    console.log(`${environment.apiUrlGestionRendimiento}/pois`);
+    return this.http.get<Poi[]>(`${environment.apiUrlGestionRendimiento}/pois`);
+  }
+
+  //acciones tarea
+  registrarTareas(tareaDTO: TareaDTO) {
+    console.log(`${environment.apiUrlGestionRendimiento}/tareas/registrar/transaccion`, tareaDTO);
+    return this.http.post(`${environment.apiUrlGestionRendimiento}/tareas/registrar/transaccion`, tareaDTO);
   }
   
 }

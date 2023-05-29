@@ -27,11 +27,11 @@ interface Requerimiento {
   styleUrls: ['./mis-requerimientos.component.scss']
 })
 export class MisRequerimientosComponent implements OnInit {
-  
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Item','nombreRequerimiento','gerenciaSolicitante','estado','acciones'];
+  displayedColumns: string[] = ['Item', 'nombreRequerimiento', 'gerenciaSolicitante', 'estado', 'acciones'];
   menuToggle = new EventEmitter<void>();
 
   // data: Requerimiento[] = [
@@ -49,35 +49,55 @@ export class MisRequerimientosComponent implements OnInit {
     private dialog: MatDialog,
     private services: GestionRendimientoService,
     private _notification: NotificationService,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.loadTable();
   }
 
-  loadTable(){
+  loadTable() {
     this.sortearTabla();
-    this.services.ListarTareas(0).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
+    // this.services.ListarTareas(0).subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.dataSource = new MatTableDataSource(this.dataSorteada);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
+    //   } else {
+    //     this.dataSource = null;
+    //     if (dataItem.msj == "LISTA VACIA") {
+    //       this._notification.warning(dataItem.msj)
+    //     } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+    //       this._notification.warning(dataItem.msj)
+    //     } else {
+    //       this._notification.error(dataItem.msj)
+    //     }
+    //   }
+    // });
+
+    this.services.listarRequerimiento().subscribe((data) => {
+      console.log(">", data);
+      if (data) {
+        this.dataSorteada=data;
         this.dataSource = new MatTableDataSource(this.dataSorteada);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this.dataSource=null;
-        if(dataItem.msj=="LISTA VACIA"){
-          this._notification.warning(dataItem.msj)
-        } if(dataItem.msj=="USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO"){
-          this._notification.warning(dataItem.msj)
-        } else {
-          this._notification.error(dataItem.msj)
-        }
+        this.dataSource = null;
+        // if (dataItem.msj == "LISTA VACIA") {
+        //   this._notification.warning(dataItem.msj)
+        // } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+        //   this._notification.warning(dataItem.msj)
+        // } else {
+        //   this._notification.error(dataItem.msj)
+        // }
       }
     });
+
   }
 
-  sortearTabla(){
-    this.dataSorteada = this.services.FauxTablaRequerimientos().filter(function(a){
-      return a.gerenciaReceptora =='SGSA';
+  sortearTabla() {
+    this.dataSorteada = this.services.FauxTablaRequerimientos().filter(function (a) {
+      return a.gerenciaReceptora == 'SGSA';
     })
   }
 
@@ -88,7 +108,7 @@ export class MisRequerimientosComponent implements OnInit {
       //height: '780px',
       autoFocus: false,
       data: {
-        obj : element
+        obj: element
       }
     });
 
@@ -105,7 +125,7 @@ export class MisRequerimientosComponent implements OnInit {
       //height: '780px',
       autoFocus: false,
       data: {
-        obj : element
+        obj: element
       }
     });
 
@@ -114,12 +134,12 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  showDialogAcceptRejectRequirement(element, onDelete: boolean){
+  showDialogAcceptRejectRequirement(element, onDelete: boolean) {
     const dialogRef: MatDialogRef<AcceptRejectRequirementComponent> = this.dialog.open(AcceptRejectRequirementComponent, {
       disableClose: false,
       autoFocus: false,
       data: {
-        obj : element,
+        obj: element,
         rechazar: onDelete
       }
     });
@@ -129,13 +149,13 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  showDialogMoveRequirement(element){
+  showDialogMoveRequirement(element) {
     const dialogRef: MatDialogRef<MoveRequirementComponent> = this.dialog.open(MoveRequirementComponent, {
       disableClose: false,
       width: '35%',
       autoFocus: false,
       data: {
-        obj : element,
+        obj: element,
         moreData: this.services.FauxTablaRequerimientos()
       }
     });

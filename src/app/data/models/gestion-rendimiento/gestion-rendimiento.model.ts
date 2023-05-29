@@ -1,4 +1,4 @@
-export class Tarea {
+export class Tarea1 {
   idEquipoIntegrante?:number;
   fechaInicio?:Date;
   fechaFin?:Date;

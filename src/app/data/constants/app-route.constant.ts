@@ -13,7 +13,7 @@ export class AppRoute {
   static readonly MARCACION_TRABAJADOR = 'marcacion-trabajador';
   static readonly SETTINGS = 'configuraciones';
   static readonly GESTION_RENDIMIENTO = 'gestion-rendimiento';
-  static readonly DATOS_PERSONALES ='datos-personales';
+  static readonly DATOS_PERSONALES = 'datos-personales';
   static readonly CONTROL_ACCESO = 'control-acceso';
   static readonly LEGAJO = 'legajo';
   static readonly DDJJ_CONFLICTO = 'ddjj-conflicto-interes';
@@ -21,4 +21,11 @@ export class AppRoute {
   static readonly ADJUNTAR_DOCUMENTOS = 'adjuntar-documentos';
   static readonly MIS_REQUERIMIENTOS = 'mis-requerimientos';
   static readonly CAMBIAR_CONTRA = 'change-passwrd';
+
+  static readonly ESTADO_REQUERIMIENTO_PENDIENTE = 1;
+  static readonly ESTADO_REQUERIMIENTO_APROBADO = 2;
+  static readonly ESTADO_REQUERIMIENTO_EN_PROCESO = 3;
+  static readonly ESTADO_REQUERIMIENTO_DERIVADO = 4;
+  static readonly ESTADO_REQUERIMIENTO_RECHAZADO = 5;
+  static readonly ESTADO_REQUERIMIENTO_FINALIZADO = 6;
 }
