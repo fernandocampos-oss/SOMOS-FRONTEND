@@ -37,7 +37,7 @@ export class AcceptRejectRequirementComponent implements OnInit {
   }
 
   aprobarReq() {
-    // this.data.obj.estado = 'APROBADO';
+    // this.data.obj.estado = 'APROBADO'; Descomentar cuando se quiera ver el flujo en local
     this.services.aprobarRequerimiento(AppRoute.ESTADO_REQUERIMIENTO_APROBADO, this.data.obj.idRequerimiento).subscribe(data => {
       if (data) {
         this._notification.success("Requerimiento aprobado");        
@@ -49,7 +49,7 @@ export class AcceptRejectRequirementComponent implements OnInit {
   }
 
   rechazarReq() {
-    // this.data.obj.estado = 'RECHAZADO';
+    // this.data.obj.estado = 'RECHAZADO'; Descomentar cuando se quiera ver el flujo en local
     this.data.obj.motivo = this.form.value.frmMotivo;
 
     this.services.rechazarRequerimiento(AppRoute.ESTADO_REQUERIMIENTO_RECHAZADO, this.data.obj.motivo, this.data.obj.idRequerimiento).subscribe(data => {

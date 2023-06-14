@@ -1,25 +1,33 @@
 <h2 matDialogTitle>Nuevo Requerimiento</h2>
+<form [formGroup]="form">
   <mat-dialog-content>
-    <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px" [formGroup]="form">
+    <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
         <mat-grid-tile [colspan]="6">
             <mat-form-field appearance="outline">
                 <mat-label>Nombre del Requerimiento</mat-label>
                 <input matInput required formControlName="frmNombre"/>
             </mat-form-field>
         </mat-grid-tile>
+    </mat-grid-list>
+    <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="frmDescripcion"></textarea>
+    </mat-form-field>
+    <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px" >
         <mat-grid-tile [colspan]="6">
             <mat-form-field appearance="outline">
-                <mat-label>Descripción</mat-label>
-                <textarea matInput formControlName="frmDescripcion"></textarea>
+                <mat-label>Medio de información del requerimiento</mat-label>
+                <mat-select required formControlName="frmMedio">
+                    <mat-option value="Correo">Correo</mat-option>
+                    <mat-option value="Llamada">Llamada</mat-option>
+                    <mat-option value="Reunión">Reunión</mat-option>
+                </mat-select>
             </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="6">
             <mat-form-field appearance="outline">
-                <mat-label>Tipo de Requerimiento</mat-label>
-                <mat-select required formControlName="frmTipo">
-                    <mat-option value="1">Tipo 1</mat-option>
-                    <mat-option value="2">Tipo 2</mat-option>
-                </mat-select>
+                <mat-label>Identificador del documento del requerimiento</mat-label>
+                <input matInput required formControlName="frmDocumento"/>
             </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="3">
@@ -43,6 +51,7 @@
         </mat-grid-tile>
 </mat-grid-list>
 </mat-dialog-content>
+</form>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close type="button">Cancelar</button>
       <button mat-raised-button class="btnsave" type="submit" (click)="submitRequerimiento()">Grabar</button>

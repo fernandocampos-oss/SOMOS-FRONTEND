@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
-import { Requerimiento, RequerimientoAsignado} from '@data/models/requerimiento/requerimiento.model';
+import { Equipo, Requerimiento, Requerimiento_Integrante} from '@data/models/requerimiento/requerimiento.model';
 import { Poi } from '@data/models/gestion-rendimiento/poi';
 import { TareaDTO } from '@data/models/gestion-rendimiento/tareaDTO';
 
@@ -11,60 +11,83 @@ import { TareaDTO } from '@data/models/gestion-rendimiento/tareaDTO';
 export class GestionRendimientoService {
   constructor(private http: HttpClient) {}
 
+  equipo: Equipo[] = [//Tabla Provisional
+  { id: 1, nombrePersona: 'Luis Lopez Gutierrez', cargo: 'Analista de costos'},
+  { id: 2, nombrePersona: 'Leandro Zarsosa Manuel', cargo: 'Analista de procesos'},
+  { id: 3, nombrePersona: 'Celia Requena Egas', cargo: 'Administrador de BD'},
+  { id: 4, nombrePersona: 'Elder Lizana Rodriguez', cargo: 'Tester QA'},
+  { id: 5, nombrePersona: 'Maria Lopez Uribe', cargo: 'Analista funcional'},
+  ];
+
+  requesAsociados: Requerimiento_Integrante[] = [
+  {idReq: 8, idIntegrante: 1, nombreTarea: 'Prueba de tarea 1', plazo: '27/5/2023', estado: 'PENDIENTE', avance: 0},
+  {idReq: 8, idIntegrante: 3, nombreTarea: 'Prueba de tarea 2', plazo: '28/5/2023', estado: 'PENDIENTE', avance: 20},
+  {idReq: 9, idIntegrante: 4, nombreTarea: 'Prueba de tarea 3', plazo: '29/5/2023', estado: 'PENDIENTE', avance: 0},
+  {idReq: 9, idIntegrante: 5, nombreTarea: 'Prueba de tarea 4', plazo: '30/5/2023', estado: 'PENDIENTE', avance: 40},
+  {idReq: 10, idIntegrante: 1, nombreTarea: 'Prueba de tarea 5', plazo: '31/5/2023', estado: 'PENDIENTE', avance: 0},
+  {idReq: 10, idIntegrante: 2, nombreTarea: 'Prueba de tarea 6', plazo: '1/6/2023', estado: 'PENDIENTE', avance: 60},
+  {idReq: 10, idIntegrante: 5, nombreTarea: 'Prueba de tarea 7', plazo: '2/6/2023', estado: 'PENDIENTE', avance: 40},
+  {idReq: 12, idIntegrante: 3, nombreTarea: 'Prueba de tarea 8', plazo: '3/6/2023', estado: 'PENDIENTE', avance: 0},
+  {idReq: 12, idIntegrante: 1, nombreTarea: 'Prueba de tarea 9', plazo: '4/6/2023', estado: 'PENDIENTE', avance: 10},
+  {idReq: 13, idIntegrante: 4, nombreTarea: 'Prueba de tarea 10', plazo: '5/6/2023', estado: 'PENDIENTE', avance: 0},
+  {idReq: 13, idIntegrante: 2, nombreTarea: 'Prueba de tarea 11', plazo: '6/6/2023', estado: 'PENDIENTE', avance: 60},
+  {idReq: 16, idIntegrante: 4, nombreTarea: 'Prueba de tarea 12', plazo: '7/6/2023', estado: 'PENDIENTE', avance: 0},
+  ];
+  
   reques: Requerimiento[] = [//Tabla Provisional
-    { id: 1,  nombreRequerimiento: 'Hacer informe del SAP Planillas	', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 1', gerenciaSolicitante: 'GPyORH', gerenciaReceptora:'SGSA', estado:'APROBADO'},
-    { id: 2,  nombreRequerimiento: 'Requerimiento Prueba 1', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 2', gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'PENDIENTE'},
-    { id: 3,  nombreRequerimiento: 'Requerimiento Prueba 2', tipoRequerimiento:'Problemas de acceso', descripcion: 'Descripcion medianamente larga para el requerimiento 3', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'DERIVADO', motivo: 'Requerimiento a atender con Sistemas Administrativos'},
-    { id: 4,  nombreRequerimiento: 'Requerimiento Prueba 3', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 4', gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'APROBADO'},
-    { id: 5,  nombreRequerimiento: 'Requerimiento Prueba 4', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 5', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'PENDIENTE'},
-    { id: 6,  nombreRequerimiento: 'Requerimiento Prueba 5', tipoRequerimiento:'Problemas de encendido', descripcion: 'Descripcion medianamente larga para el requerimiento 6', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'DERIVADO', motivo: 'Requerimiento a atender con Sistemas Administrativos'},
-    { id: 7,  nombreRequerimiento: 'Requerimiento Prueba 6', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 7', gerenciaSolicitante: 'GDP', gerenciaReceptora:'OSI', estado:'APROBADO'},
-    { id: 8,  nombreRequerimiento: 'Requerimiento Prueba 7', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 8', gerenciaSolicitante: 'SGSA', gerenciaReceptora:'SGSA', estado:'EN PROCESO', actividad: 'Implementar los sistemas administrativos', 
-    tareas: [{nombreTarea: 'Creación de documento 1', plazo: '20/05/2023', idPersonaAsignada:'Leandro Zarsosa Manuel'},
-             {nombreTarea: 'Revisión de la documentación', plazo: '26/05/2023', idPersonaAsignada:'Leandro Zarsosa Manuel'},
-             {nombreTarea: 'Implementación de documentación', plazo: '28/05/2023', idPersonaAsignada:'Celia Requena Egas'}]},
-    { id: 9,  nombreRequerimiento: 'Requerimiento Prueba 8', tipoRequerimiento:'Problemas de encendido', descripcion: 'Descripcion medianamente larga para el requerimiento 9', gerenciaSolicitante: 'SGSA', gerenciaReceptora:'SGSA', estado:'EN PROCESO', motivo: 'Requerimiento a atender con Sistemas Administrativos', actividad:'Realizar actividades de soporte operativo y administrativo para garantizar la ejecución presupuestal de la GCTIC', 
-    tareas: [{nombreTarea: 'Creación de documento 2', plazo: '14/06/2023'},
-             {nombreTarea: 'Creación de documento 4', plazo: '26/06/2023'},
-             {nombreTarea: 'Implementación de documentación', plazo: '28/06/2023'}]},
-    { id: 10,  nombreRequerimiento: 'Requerimiento Prueba 9', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 10', gerenciaSolicitante: 'SGSA', gerenciaReceptora:'OSI', estado:'EN PROCESO', actividad: 'Implementar los sistemas administrativos', 
-    tareas: [{nombreTarea: 'Creación de documento 3', plazo: '19/05/2023'},
-             {nombreTarea: 'Revisión de la documentación', plazo: '22/05/2023'},
-             {nombreTarea: 'Implementación de documentación', plazo: '27/05/2023'}]},
-    { id: 11,  nombreRequerimiento: 'Requerimiento Prueba 10', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 11', gerenciaSolicitante: 'GPyORH', gerenciaReceptora:'SGSA', estado:'DERIVADO', motivo: 'Requerimiento a atender con Sistemas Administrativos'},
-    { id: 12,  nombreRequerimiento: 'Requerimiento Prueba 11', tipoRequerimiento:'Errores con programas', descripcion: 'Descripcion medianamente larga para el requerimiento 12', gerenciaSolicitante: 'GPyORH', gerenciaReceptora: 'SGSA', estado: 'EN PROCESO', motivo: 'No se proporcionó información relevante', actividad: 'Desarrollar y mantener los sistemas administrativos', 
-    tareas: [{nombreTarea: 'Creación de documento 5', plazo: '20/05/2023', idPersonaAsignada:'Leandro Zarsosa Manuel'},
-             {nombreTarea: 'Revisión de la documentación', plazo: '26/05/2023', idPersonaAsignada:'Leandro Zarsosa Manuel'},
-             {nombreTarea: 'Implementación de documentación', plazo: '28/05/2023'}]},
-    { id: 13, nombreRequerimiento: 'Requerimiento Prueba 12', tipoRequerimiento:'Problemas de acceso', descripcion: 'Descripcion medianamente larga para el requerimiento 13', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'EN PROCESO', actividad: 'Implementar los sistemas administrativos', 
-    tareas: [{nombreTarea: 'Creación de documento 6', plazo: '20/05/2023', idPersonaAsignada:'Leandro Zarsosa Manuel'},
-             {nombreTarea: 'Revisión de la documentación', plazo: '26/05/2023', idPersonaAsignada:'Leandro Zarsosa Manuel'},
-             {nombreTarea: 'Implementación de documentación', plazo: '28/05/2023'}]},
-    { id: 14,  nombreRequerimiento: 'Requerimiento Prueba 13', tipoRequerimiento:'Errores con programas', descripcion: 'Descripcion medianamente larga para el requerimiento 14', gerenciaSolicitante: 'GPyORH', gerenciaReceptora: 'OSI', estado: 'RECHAZADO', motivo: 'No se proporcionó información relevante'},
-    { id: 15, nombreRequerimiento: 'Requerimiento Prueba 14', tipoRequerimiento:'Problemas de acceso', descripcion: 'Descripcion medianamente larga para el requerimiento 15', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'FINALIZADO'},
-    { id: 16, nombreRequerimiento: 'Requerimiento Prueba 15', tipoRequerimiento:'Problemas de acceso', descripcion: 'Descripcion medianamente larga para el requerimiento 16', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'EN PROCESO', motivo: 'Requerimiento a atender con Sistemas Administrativos', actividad: 'Desarrollar y mantener los sistemas administrativos', 
-    tareas: [{nombreTarea: 'Creación de documento 7', plazo: '20/05/2023'}, 
-             {nombreTarea: 'Revisión de la documentación', plazo: '26/05/2023', idPersonaAsignada:'Leandro Zarsosa Manuel'},
-             {nombreTarea: 'Implementación de documentación', plazo: '28/05/2023'}]},
-    { id: 17, nombreRequerimiento: 'Requerimiento Prueba 16', tipoRequerimiento:'Errores con programas', descripcion: 'Descripcion medianamente larga para el requerimiento 17', gerenciaSolicitante: 'GPyORH', gerenciaReceptora: 'SGSA', estado: 'RECHAZADO', motivo: 'No se proporcionó información relevante'},
-    { id: 18, nombreRequerimiento: 'Requerimiento Prueba 17', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 18', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'RECHAZADO', motivo: 'No se proporcionó información relevante'},
-    { id: 19, nombreRequerimiento: 'Requerimiento Prueba 18', tipoRequerimiento:'Errores con programas', descripcion: 'Descripcion medianamente larga para el requerimiento 19', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'APROBADO'},
-    { id: 20, nombreRequerimiento: 'Requerimiento Prueba 19', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 20', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'FINALIZADO'},
+    { id: 1,  nombreRequerimiento: 'Hacer informe del SAP Planillas	', descripcion: 'Descripcion medianamente larga para el requerimiento 1',  medio: 'Correo', documentoIdentificador: 'DOC-NN1',gerenciaSolicitante: 'GPyORH', gerenciaReceptora:'SGSA', estado:'APROBADO'},
+    { id: 2,  nombreRequerimiento: 'Requerimiento Prueba 1', descripcion: 'Descripcion medianamente larga para el requerimiento 2',  medio: 'Reunión', documentoIdentificador: 'DOC-NN2',gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'PENDIENTE'},
+    { id: 3,  nombreRequerimiento: 'Requerimiento Prueba 2', descripcion: 'Descripcion medianamente larga para el requerimiento 3',  medio: 'Correo', documentoIdentificador: 'DOC-NN3',gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'DERIVADO', motivo: 'Requerimiento a atender con Sistemas Administrativos'},
+    { id: 4,  nombreRequerimiento: 'Requerimiento Prueba 3', descripcion: 'Descripcion medianamente larga para el requerimiento 4',  medio: 'Llamada', documentoIdentificador: 'DOC-NN4',gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'APROBADO'},
+    { id: 5,  nombreRequerimiento: 'Requerimiento Prueba 4', descripcion: 'Descripcion medianamente larga para el requerimiento 5',  medio: 'Correo', documentoIdentificador: 'DOC-NN5',gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'PENDIENTE'},
+    { id: 6,  nombreRequerimiento: 'Requerimiento Prueba 5', descripcion: 'Descripcion medianamente larga para el requerimiento 6',  medio: 'Llamada', documentoIdentificador: 'DOCDOC-NN6',gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'DERIVADO', motivo: 'Requerimiento a atender con Sistemas Administrativos'},
+    { id: 7,  nombreRequerimiento: 'Requerimiento Prueba 6', descripcion: 'Descripcion medianamente larga para el requerimiento 7',  medio: 'Reunión', documentoIdentificador: 'DOC-NN7',gerenciaSolicitante: 'GDP', gerenciaReceptora:'OSI', estado:'APROBADO'},
+    { id: 8,  nombreRequerimiento: 'Requerimiento Prueba 7', descripcion: 'Descripcion medianamente larga para el requerimiento 8',  medio: 'Correo', documentoIdentificador: 'DOC-NN8',gerenciaSolicitante: 'SGSA', gerenciaReceptora:'SGSA', estado:'EN PROCESO', actividad: 'Implementar los sistemas administrativos'},
+    { id: 9,  nombreRequerimiento: 'Requerimiento Prueba 8', descripcion: 'Descripcion medianamente larga para el requerimiento 9',  medio: 'Correo', documentoIdentificador: 'DOC-NN9',gerenciaSolicitante: 'SGSA', gerenciaReceptora:'SGSA', estado:'EN PROCESO', motivo: 'Requerimiento a atender con Sistemas Administrativos', actividad:'Realizar actividades de soporte operativo y administrativo para garantizar la ejecución presupuestal de la GCTIC'},
+    { id: 10,  nombreRequerimiento: 'Requerimiento Prueba 9', descripcion: 'Descripcion medianamente larga para el requerimiento 10', medio: 'Llamada', documentoIdentificador: 'DOC-NN10', gerenciaSolicitante: 'SGSA', gerenciaReceptora:'SGSA', estado:'EN PROCESO', actividad: 'Implementar los sistemas administrativos'},
+    { id: 11,  nombreRequerimiento: 'Requerimiento Prueba 10', descripcion: 'Descripcion medianamente larga para el requerimiento 11', medio: 'Reunión', documentoIdentificador: 'DOC-NN11', gerenciaSolicitante: 'GPyORH', gerenciaReceptora:'SGSA', estado:'DERIVADO', motivo: 'Requerimiento a atender con Sistemas Administrativos'},
+    { id: 12,  nombreRequerimiento: 'Requerimiento Prueba 11', descripcion: 'Descripcion medianamente larga para el requerimiento 12', medio: 'Correo', documentoIdentificador: 'DOC-NN12', gerenciaSolicitante: 'GPyORH', gerenciaReceptora: 'SGSA', estado: 'EN PROCESO', motivo: 'No se proporcionó información relevante', actividad: 'Desarrollar y mantener los sistemas administrativos'},
+    { id: 13, nombreRequerimiento: 'Requerimiento Prueba 12', descripcion: 'Descripcion medianamente larga para el requerimiento 13', medio: 'Llamada', documentoIdentificador: 'DOC-NN13', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'EN PROCESO', actividad: 'Implementar los sistemas administrativos'},
+    { id: 14,  nombreRequerimiento: 'Requerimiento Prueba 13', descripcion: 'Descripcion medianamente larga para el requerimiento 14', medio: 'Reunión', documentoIdentificador: 'DOC-NN14', gerenciaSolicitante: 'GPyORH', gerenciaReceptora: 'OSI', estado: 'RECHAZADO', motivo: 'No se proporcionó información relevante'},
+    { id: 15, nombreRequerimiento: 'Requerimiento Prueba 14', descripcion: 'Descripcion medianamente larga para el requerimiento 15', medio: 'Reunión', documentoIdentificador: 'DOC-NN15', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'FINALIZADO'},
+    { id: 16, nombreRequerimiento: 'Requerimiento Prueba 15', descripcion: 'Descripcion medianamente larga para el requerimiento 16', medio: 'Correo', documentoIdentificador: 'DOC-NN16', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'EN PROCESO', motivo: 'Requerimiento a atender con Sistemas Administrativos', actividad: 'Desarrollar y mantener los sistemas administrativos'},
+    { id: 17, nombreRequerimiento: 'Requerimiento Prueba 16', descripcion: 'Descripcion medianamente larga para el requerimiento 17', medio: 'Reunión', documentoIdentificador: 'DOC-NN17', gerenciaSolicitante: 'GPyORH', gerenciaReceptora: 'SGSA', estado: 'RECHAZADO', motivo: 'No se proporcionó información relevante'},
+    { id: 18, nombreRequerimiento: 'Requerimiento Prueba 17', descripcion: 'Descripcion medianamente larga para el requerimiento 18', medio: 'Reunión', documentoIdentificador: 'DOC-NN18', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'RECHAZADO', motivo: 'No se proporcionó información relevante'},
+    { id: 19, nombreRequerimiento: 'Requerimiento Prueba 18', descripcion: 'Descripcion medianamente larga para el requerimiento 19', medio: 'Reunión', documentoIdentificador: 'DOC-NN19', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'APROBADO'},
+    { id: 20, nombreRequerimiento: 'Requerimiento Prueba 19', descripcion: 'Descripcion medianamente larga para el requerimiento 20', medio: 'Llamada', documentoIdentificador: 'DOC-NN20', gerenciaSolicitante: 'SGSA', gerenciaReceptora: 'SGSA', estado: 'FINALIZADO'},
   ];
 
   FauxTablaRequerimientos(): Requerimiento[]{
     return this.reques;
   }
 
+  getFauxRequerimiento(idReq: number): Requerimiento{
+    return this.reques.find((x) => x.id == idReq);
+  }
+
+  FauxTablaEquipo(): Equipo[]{
+    return this.equipo;
+  }
+
   insertFauxRequerimientos(model: Requerimiento){
     this.reques.push(model);
   }
 
-  updateTareasFauxRequerimientos(model: RequerimientoAsignado){
-    this.reques[model.id-1].actividad = model.actividad;
-    this.reques[model.id-1].tareas = model.tareas;
-    this.reques[model.id-1].estado = 'EN PROCESO';
+  insertTareasFauxRequerimientos(actividad: string, model: Requerimiento_Integrante[]){
+    for (let i = 0; i < model.length; i++) {
+      this.requesAsociados.push(model[i]);
+    }
+    this.reques.find(x => x.id == model[0].idReq).actividad = actividad;
+    this.reques.find(x => x.id == model[0].idReq).estado = 'EN PROCESO';
+    console.log(this.requesAsociados);
+    console.log(this.reques.find(x => x.id == model[0].idReq));
   }
+  getFauxTablaRequeAsignados(id: number): Requerimiento_Integrante[]{
+    return this.requesAsociados.filter(function(x){
+      return x.idIntegrante ==id;
+    })
+  }
+
   //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   BuscarPersona(data): Observable<any> {
     return this.http.get(`${environment.apiUrl}/equipo/filtarPersonal/${data}`);

@@ -9,17 +9,8 @@ import { AcceptRejectRequirementComponent } from './dialogs/accept-reject-requir
 import { MoveRequirementComponent } from './dialogs/move-requirement/move-requirement.component';
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
-
-interface Requerimiento {
-  id: number;
-  nombreRequerimiento: string;
-  tipoRequerimiento: string;
-  descripcion: string;
-  gerenciaSolicitante: string;
-  gerenciaReceptora: string;
-  estado: string;
-  motivo?: string;
-}
+import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
+//import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -57,27 +48,8 @@ export class MisRequerimientosComponent implements OnInit {
 
   loadTable() {
     this.sortearTabla();
-    // this.services.ListarTareas(0).subscribe((dataItem) => {
-    //   if (dataItem.codigo == 1) {
-    //     this.dataSource = new MatTableDataSource(this.dataSorteada);
-    //     this.dataSource.paginator = this.paginator;
-    //     this.dataSource.sort = this.sort;
-    //   } else {
-    //     this.dataSource = null;
-    //     if (dataItem.msj == "LISTA VACIA") {
-    //       this._notification.warning(dataItem.msj)
-    //     } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-    //       this._notification.warning(dataItem.msj)
-    //     } else {
-    //       this._notification.error(dataItem.msj)
-    //     }
-    //   }
-    // });
-
-    this.services.listarRequerimiento().subscribe((data) => {
-      console.log(">", data);
-      if (data) {
-        this.dataSorteada=data;
+    this.services.ListarTareas(0).subscribe((dataItem) => {
+      if (dataItem.codigo == 1) {
         this.dataSource = new MatTableDataSource(this.dataSorteada);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -92,6 +64,25 @@ export class MisRequerimientosComponent implements OnInit {
         // }
       }
     });
+
+    // this.services.listarRequerimiento().subscribe((data) => {
+    //   console.log(">", data);
+    //   if (data) {
+    //     this.dataSorteada=data;
+    //     this.dataSource = new MatTableDataSource(this.dataSorteada);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
+    //   } else {
+    //     this.dataSource = null;
+    //     // if (dataItem.msj == "LISTA VACIA") {
+    //     //   this._notification.warning(dataItem.msj)
+    //     // } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+    //     //   this._notification.warning(dataItem.msj)
+    //     // } else {
+    //     //   this._notification.error(dataItem.msj)
+    //     // }
+    //   }
+    // });
 
   }
 
@@ -121,7 +112,7 @@ export class MisRequerimientosComponent implements OnInit {
     const dialogRef: MatDialogRef<SolicitudRequirementComponent> = this.dialog.open(SolicitudRequirementComponent, {
       disableClose: true,
       width: '40%',
-      maxHeight: '700px',
+      maxHeight: '810px',
       //height: '780px',
       autoFocus: false,
       data: {

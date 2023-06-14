@@ -1,0 +1,46 @@
+<h2 matDialogTitle>Editar datos del colaborador</h2>
+
+<mat-grid-list class="editRequerimientosPersona" cols="6" rowHeight="40px" gutterSize="6px" [formGroup]="formEditar">
+    <mat-grid-tile [colspan]="4" [rowspan]="2">
+        <mat-form-field appearance="outline">
+            <mat-label>Cargo desempeñado</mat-label>
+            <input matInput formControlName="frmCargo">
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="2">
+        <!-- <button mat-raised-button color="primary">Cambiar</button> -->
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <h3>Requerimiento Asignado</h3>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <h3>Tarea Asignada</h3>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <h3>Plazo Máximo</h3>
+    </mat-grid-tile>
+    <div formArrayName="tareas">
+        <div *ngFor="let element of tareas.controls, index as i">
+            <form [formGroup]="element">
+                <mat-grid-tile [colspan]="2" [rowspan]="2">
+                    <span>{{requerimientos[i].nombreRequerimiento}}</span>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2" [rowspan]="2">
+                    <mat-form-field appearance="outline">
+                        <input matInput formControlName="frmTarea">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="2">
+                    <mat-form-field appearance="outline">
+                        <input matInput formControlName="frmPlazo" [min]="minFechaTarea" [matDatepicker]="fechaPlazo"/>
+                        <mat-datepicker-toggle matSuffix [for]="fechaPlazo"></mat-datepicker-toggle>
+                        <mat-datepicker #fechaPlazo></mat-datepicker>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1" [rowspan]="2">
+                    <button mat-raised-button color="primary" (click)="mostrarElemento(element)">Cambiar</button>
+                </mat-grid-tile>
+            </form>
+        </div>
+    </div>
+</mat-grid-list>

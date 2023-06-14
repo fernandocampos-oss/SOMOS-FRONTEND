@@ -30,7 +30,8 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
     this.form = this._fb.group({
       frmNombre: [null, [Validators.required]],
       frmDescripcion: [null, [Validators.required]],
-      frmTipo: [null, [Validators.required]],
+      frmMedio: [null, [Validators.required]],
+      frmDocumento:[null, [Validators.required]],
       frmAreaSolicitante: 'SGSA',
       frmAreaReceptora: [null, [Validators.required]],
     });
@@ -46,7 +47,8 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
       id: (this._gestionReqService.FauxTablaRequerimientos().length + 1),
       nombreRequerimiento: this.form.value.frmNombre,
       descripcion: this.form.value.frmDescripcion,
-      tipoRequerimiento: this.form.value.frmTipo,
+      medio: this.form.value.frmMedio,
+      documentoIdentificador: this.form.value.frmDocumento,
       gerenciaSolicitante: this.form.value.frmAreaSolicitante,
       gerenciaReceptora: this.form.value.frmAreaReceptora,
       estado: 'PENDIENTE',

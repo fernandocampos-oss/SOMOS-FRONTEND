@@ -8,6 +8,7 @@ import { UserDownloadTaskComponent } from '../mi-equipo/dialogs/user-download-ta
 import { ReportTaskComponent } from './dialogs/report-task/report-task.component';
 import { GestionRendimientoService } from '../../../../data/services/gestion-rendimiento.service'
 import { NotificationService } from '@core/services';
+import { Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
 
 @Component({
   selector: 'gestion-rendimiento-mis-tareas',
@@ -21,6 +22,8 @@ export class MisTareasComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['item','descripcion','avance', 'fechaFin','estado','acciones'];
 
+  datosAsignados: Requerimiento_Integrante[] = [];
+
   data =[];
 
   constructor(
@@ -31,6 +34,7 @@ export class MisTareasComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTable();
+    this.cargarRequerimientos();
   }
 
   loadTable(){
@@ -52,15 +56,19 @@ export class MisTareasComponent implements OnInit {
     });
   }
 
-  showDialogDownloadTask(element){
+  cargarRequerimientos(){
+    this.datosAsignados = this.services.getFauxTablaRequeAsignados(1);
+  }
+  
+  showDialogDownloadTask(element, i: number){
     const dialogRef: MatDialogRef<UserDownloadTaskComponent> = this.dialog.open(UserDownloadTaskComponent, {
       disableClose: false,
       width: '70%',
       //height: '780px',
       autoFocus: false,
       data: {
-        obj: element,
-        flg: false
+        obj: this.services.getFauxRequerimiento(this.datosAsignados[i].idReq),
+        objAsignacion:this.datosAsignados[i],
       }
     });
 

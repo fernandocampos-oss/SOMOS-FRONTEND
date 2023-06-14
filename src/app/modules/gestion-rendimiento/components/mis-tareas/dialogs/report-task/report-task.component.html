@@ -23,13 +23,11 @@
                 <input type="text" matInput formControlName="frmEstado" readonly/>
               </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="2">
-                <mat-form-field appearance="outline">
-                  <mat-label>Detalle del informe</mat-label>
-                  <textarea matInput maxlength="300" required formControlName="frmDescripcion"></textarea>
-                </mat-form-field>
-            </mat-grid-tile>
         </mat-grid-list>
+        <mat-form-field appearance="outline">
+          <mat-label>Detalle del informe</mat-label>
+          <textarea matInput maxlength="300" required formControlName="frmDescripcion"></textarea>
+        </mat-form-field>
         </mat-tab>
         <mat-tab label="Archivos">
           <br>

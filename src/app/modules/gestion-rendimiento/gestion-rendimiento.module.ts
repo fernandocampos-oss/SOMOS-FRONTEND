@@ -26,6 +26,7 @@ import { MoveRequirementComponent } from './components/mis-requerimientos/dialog
 import { SolicitudRequirementComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/solicitud-requirement.component';
 import { ConfirmRequerimientoComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/dialog/confirm-requerimiento/confirm-requerimiento.component';
 import { AssignTaskUserComponent } from './components/mi-equipo/dialogs/assign-task-user/assign-task-user.component';
+import { EditUserSelectedComponent } from './components/mi-equipo/dialogs/edit-user-selected/edit-user-selected.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { AssignTaskUserComponent } from './components/mi-equipo/dialogs/assign-t
     MoveRequirementComponent,
     SolicitudRequirementComponent,
     ConfirmRequerimientoComponent,
-    AssignTaskUserComponent
+    AssignTaskUserComponent,
+    EditUserSelectedComponent
   ],
   imports: [
     CommonModule,
