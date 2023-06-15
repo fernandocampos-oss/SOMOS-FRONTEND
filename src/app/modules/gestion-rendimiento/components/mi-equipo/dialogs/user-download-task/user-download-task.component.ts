@@ -44,6 +44,8 @@ export class UserDownloadTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.data.obj);
+    console.log(this.data.objAsignacion);
     this.idEstado=this.data.obj.idEstado;
     this.idTarea=this.data.obj.id;
     this.flgJefe=this.data.flg;
@@ -57,10 +59,9 @@ export class UserDownloadTaskComponent implements OnInit {
 
   createForm(){
     this.form = this._fb.group({
-      frmDescripcion: [this.objElement.descripcion],
-      frmFecIni: [this.datepipe.transform(this.objElement.fechaInicio, 'dd-MM-yyyy')],
-      frmFecFin: [this.datepipe.transform(this.objElement.fechaFin, 'dd-MM-yyyy')],
-      frmEstado: [this.objElement.estado],
+      frmDescripcion: [this.data.objAsignacion.nombreTarea],
+      frmFecFin: [[new Date(this.data.objAsignacion.plazo.split('/')[2],this.data.objAsignacion.plazo.split('/')[1]-1,this.data.objAsignacion.plazo.split('/')[0]).toLocaleDateString()]],
+      frmEstado: [this.data.objAsignacion.estado],
       frmCodigo: [this.objElement.codigo],
       frmReferencia: [this.objElement.referencia],
       frmMotivo: [this.objElement.motivo]

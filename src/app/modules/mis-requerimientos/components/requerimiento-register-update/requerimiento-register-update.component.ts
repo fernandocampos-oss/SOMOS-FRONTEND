@@ -30,16 +30,36 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
     this.form = this._fb.group({
       frmNombre: [null, [Validators.required]],
       frmDescripcion: [null, [Validators.required]],
-      frmTipo: [null, [Validators.required]],
+      frmMedio: [null, [Validators.required]],
+      frmDocumento:[null, [Validators.required]],
       frmAreaSolicitante: 'SGSA',
       frmAreaReceptora: [null, [Validators.required]],
     });
   }
   submitRequerimiento(){
+<<<<<<< HEAD
     // console.log(this._getModel());
     // this._gestionReqService.insertFauxRequerimientos(this._getModel());
     // console.log(this._gestionReqService.FauxTablaRequerimientos());
     // this.dialogRef.closeAll();
+=======
+    console.log(this._getModel());
+    this._gestionReqService.insertFauxRequerimientos(this._getModel());
+    console.log(this._gestionReqService.FauxTablaRequerimientos());
+    this.dialogRef.closeAll();
+  }
+  private _getModel(): Requerimiento{
+    return {
+      id: (this._gestionReqService.FauxTablaRequerimientos().length + 1),
+      nombreRequerimiento: this.form.value.frmNombre,
+      descripcion: this.form.value.frmDescripcion,
+      medio: this.form.value.frmMedio,
+      documentoIdentificador: this.form.value.frmDocumento,
+      gerenciaSolicitante: this.form.value.frmAreaSolicitante,
+      gerenciaReceptora: this.form.value.frmAreaReceptora,
+      estado: 'PENDIENTE',
+    };
+>>>>>>> 5c20c85fad9390a2da713a16fb33417d7e801f14
   }
   // private _getModel(): Requerimiento{
   //   return {

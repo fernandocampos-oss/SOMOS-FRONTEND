@@ -9,6 +9,8 @@ import { UserAddTaskComponent } from '../user-add-task/user-add-task.component';
 import { UserDownloadTaskComponent } from '../user-download-task/user-download-task.component';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { DialogService, NotificationService } from '@core/services';
+import { Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
+//import * as XLSX from 'xlsx';
 
 interface Tarea {
   item: number;
@@ -28,7 +30,7 @@ export class UserTaskComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
   // displayedColumns: string[] = ['item', 'descripcion','porcentaje','fecIni', 'fecFin','estado','acciones'];
-  displayedColumns: string[] = ['item', 'tarea', 'estado', 'porcentaje', 'acciones'];
+  displayedColumns: string[] = ['item', 'requerimiento', 'estado', 'porcentaje', 'acciones'];
   idUsuario: number;
   nombreUsuario: string;
 
@@ -37,6 +39,10 @@ export class UserTaskComponent implements OnInit {
     { item: 2, tarea: 'Nombre Tarea 2', estado: 'PENDIENTE', porcentaje: '50' },
     { item: 3, tarea: 'Nombre Tarea 3', estado: 'FINALIZADO', porcentaje: '100' },
   ];
+
+  datosAsignados: Requerimiento_Integrante[] = [];
+
+  reqAsignados = new Array;
 
   constructor(
     private _fb: FormBuilder,
@@ -49,15 +55,40 @@ export class UserTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.idUsuario = this.data.id;
-    this.nombreUsuario = this.data.colaborador;
-    this.loadTable();
+    // console.log(this.data.obj);
+    // this.idUsuario = this.data.obj.id;
+    // this.nombreUsuario = this.data.obj.colaborador;
+    // this.cargarRequerimientos();
+    // this.loadTable();
+    // var workbook = XLSX.utils.book_new();
+    // var worksheet = XLSX.utils.aoa_to_sheet([]);
+  
+    // for (let i = 0; i < this.datosAsignados.length; i++) {
+    //   XLSX.utils.sheet_add_aoa(worksheet,[[this.datosAsignados[i].idReq,this.datosAsignados[i].nombreTarea,this.datosAsignados[i].avance]], { origin: `B${i+1}` })
+    // }
+    // XLSX.utils.book_append_sheet(workbook, worksheet, 'Prueba 1');
+    // console.log(worksheet);
+    // console.log(workbook);
+    // XLSX.writeFile(workbook, "out.xlsx");
+  }
+
+  cargarRequerimientos(){
+    this.datosAsignados = this.services.getFauxTablaRequeAsignados(this.data.obj.id);
+    for (let i = 0; i < this.datosAsignados.length; i++) {
+      var requerimiento = this.services.getFauxRequerimiento(this.datosAsignados[i].idReq);
+      this.reqAsignados.push({"idReq":requerimiento.id,
+        "idColaborador": this.data.obj.id,
+        "requerimiento":requerimiento.nombreRequerimiento,
+        "estado":this.datosAsignados[i].estado,
+        "porcentaje": this.datosAsignados[i].avance  
+    });
+    }
   }
 
   loadTable() {
     this.services.ListarTareas(this.idUsuario).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.dataSource = new MatTableDataSource(dataItem.data);
+      if (dataItem.codigo == 0) {
+        this.dataSource = new MatTableDataSource(this.reqAsignados);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
@@ -88,15 +119,15 @@ export class UserTaskComponent implements OnInit {
     });
   }
 
-  showDialogDownloadTask(element) {
+  showDialogDownloadTask(element, id:number) {
     const dialogRef: MatDialogRef<UserDownloadTaskComponent> = this.dialog.open(UserDownloadTaskComponent, {
       disableClose: false,
       width: '70%',
       //height: '780px',
       autoFocus: false,
       data: {
-        obj: element,
-        flg: true
+        obj: this.services.getFauxRequerimiento(this.datosAsignados[id].idReq),
+        objAsignacion:this.datosAsignados[id],
       }
     });
 

@@ -21,7 +21,8 @@ export class ReadRequirementComponent implements OnInit {
 
   ngOnInit(): void {    
     this.objElement=this.data.obj;
-    this.estadoReq = this.data.obj.estadoRequerimiento.descripcion;
+    this.estadoReq = this.data.obj.estado;
+    // this.estadoReq = this.data.obj.estadoRequerimiento.descripcion;
     this.requerimiento = this.objElement.nombreRequerimiento;
     this.createForm();
   }

@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Detalle de la Tarea</h2>
+<h2 mat-dialog-title>Detalle de la Tarea - {{data.obj.nombreRequerimiento}}</h2>
 <mat-dialog-content>
     <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px" [formGroup]="form">
         <mat-grid-tile [colspan]="6">
@@ -7,19 +7,13 @@
                 <input matInput formControlName="frmDescripcion" readonly>
               </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="1">
-            <mat-form-field appearance="outline">
-                <mat-label>Código Tarea</mat-label>
-                <input matInput formControlName="frmCodigo" readonly>
-              </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1">
+        <mat-grid-tile [colspan]="3">
             <mat-form-field appearance="outline">
                 <mat-label>Plazo Máximo</mat-label>
                 <input matInput formControlName="frmFecFin" readonly>
               </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="4">
+        <mat-grid-tile [colspan]="3">
             <mat-form-field appearance="outline">
                 <mat-label>Estado</mat-label>
                 <input matInput formControlName="frmEstado" readonly>
