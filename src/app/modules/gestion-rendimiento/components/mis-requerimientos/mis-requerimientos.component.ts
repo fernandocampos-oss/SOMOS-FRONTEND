@@ -9,17 +9,18 @@ import { AcceptRejectRequirementComponent } from './dialogs/accept-reject-requir
 import { MoveRequirementComponent } from './dialogs/move-requirement/move-requirement.component';
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
+import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
 
-interface Requerimiento {
-  id: number;
-  nombreRequerimiento: string;
-  tipoRequerimiento: string;
-  descripcion: string;
-  gerenciaSolicitante: string;
-  gerenciaReceptora: string;
-  estado: string;
-  motivo?: string;
-}
+// interface Requerimiento {
+//   id: number;
+//   nombreRequerimiento: string;
+//   tipoRequerimiento: string;
+//   descripcion: string;
+//   gerenciaSolicitante: string;
+//   gerenciaReceptora: string;
+//   estado: string;
+//   motivo?: string;
+// }
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -56,7 +57,8 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   loadTable() {
-    this.sortearTabla();
+    // this.sortearTabla();
+
     // this.services.ListarTareas(0).subscribe((dataItem) => {
     //   if (dataItem.codigo == 1) {
     //     this.dataSource = new MatTableDataSource(this.dataSorteada);
@@ -95,11 +97,11 @@ export class MisRequerimientosComponent implements OnInit {
 
   }
 
-  sortearTabla() {
-    this.dataSorteada = this.services.FauxTablaRequerimientos().filter(function (a) {
-      return a.gerenciaReceptora == 'SGSA';
-    })
-  }
+  // sortearTabla() {
+  //   this.dataSorteada = this.services.FauxTablaRequerimientos().filter(function (a) {
+  //     return a.gerenciaReceptora == 'SGSA';
+  //   })
+  // }
 
   showDialogReadRequirement(element) {
     const dialogRef: MatDialogRef<ReadRequirementComponent> = this.dialog.open(ReadRequirementComponent, {
@@ -156,7 +158,7 @@ export class MisRequerimientosComponent implements OnInit {
       autoFocus: false,
       data: {
         obj: element,
-        moreData: this.services.FauxTablaRequerimientos()
+        // moreData: this.services.FauxTablaRequerimientos()
       }
     });
 

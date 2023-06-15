@@ -10,7 +10,7 @@ export class Requerimiento {
     gerenciaSolicitante: string;
     gerenciaReceptor: string;
     motivo: string;
-    estadoRequerimeinto: EstadoRequerimiento;
+    estadoRequerimiento: EstadoRequerimiento;
     poi: Poi;
     tarea: Tarea[];
 }

@@ -35,7 +35,7 @@ export class ConfirmRequerimientoComponent implements OnInit {
   registrarTareas() {
     if (this.data.obj.idRequerimiento !== 0) {
       this._service.registrarTareas(this.data.obj).subscribe(data => {
-        this._snackbar.success("Requerimiento asignado adecuadamente");
+        this._snackbar.success("Se registró correctamente");
         this.dialogRef.closeAll();
       });
     } else {

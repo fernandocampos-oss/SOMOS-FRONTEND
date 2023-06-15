@@ -1,4 +1,4 @@
 export class Indicador {
-    idindicador: number;
+    idIndicador: number;
     descripcion: string;
 }

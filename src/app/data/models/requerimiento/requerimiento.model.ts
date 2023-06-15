@@ -1,4 +1,4 @@
-export interface Requerimiento{
+export interface Requerimiento1{
     id: number;
     nombreRequerimiento: string;
     descripcion: string;

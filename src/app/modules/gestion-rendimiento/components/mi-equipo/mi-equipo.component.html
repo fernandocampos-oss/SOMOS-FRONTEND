@@ -39,17 +39,17 @@
             
     <ng-container matColumnDef="item">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px"> Item </th>
-        <td mat-cell *matCellDef="let element"> {{element.item}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.idPersonal}} </td>
     </ng-container>
 
     <ng-container matColumnDef="colaborador">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="300px"> Colaborador </th>
-        <td mat-cell *matCellDef="let element"> {{element.colaborador}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.nombres}} {{element.apellidoPaterno}} {{element.apellidoMaterno}}</td>
     </ng-container>
 
     <ng-container matColumnDef="cargo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="200px"> Cargo </th>
-        <td mat-cell *matCellDef="let element"> {{element.cargo}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.cargo.descripcion}} </td>
     </ng-container>
 
     <!-- <ng-container matColumnDef="tareas" >

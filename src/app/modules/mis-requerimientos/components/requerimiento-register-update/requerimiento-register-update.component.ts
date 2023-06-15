@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UserSession } from '@data/models';
-import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
+// import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
 import { AuthService, UsuarioService, ZonaService } from '@data/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { UntilDestroy } from '@ngneat/until-destroy';
@@ -36,20 +36,20 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
     });
   }
   submitRequerimiento(){
-    console.log(this._getModel());
-    this._gestionReqService.insertFauxRequerimientos(this._getModel());
-    console.log(this._gestionReqService.FauxTablaRequerimientos());
-    this.dialogRef.closeAll();
+    // console.log(this._getModel());
+    // this._gestionReqService.insertFauxRequerimientos(this._getModel());
+    // console.log(this._gestionReqService.FauxTablaRequerimientos());
+    // this.dialogRef.closeAll();
   }
-  private _getModel(): Requerimiento{
-    return {
-      id: (this._gestionReqService.FauxTablaRequerimientos().length + 1),
-      nombreRequerimiento: this.form.value.frmNombre,
-      descripcion: this.form.value.frmDescripcion,
-      tipoRequerimiento: this.form.value.frmTipo,
-      gerenciaSolicitante: this.form.value.frmAreaSolicitante,
-      gerenciaReceptora: this.form.value.frmAreaReceptora,
-      estado: 'PENDIENTE',
-    };
-  }
+  // private _getModel(): Requerimiento{
+  //   return {
+  //     id: (this._gestionReqService.FauxTablaRequerimientos().length + 1),
+  //     nombreRequerimiento: this.form.value.frmNombre,
+  //     descripcion: this.form.value.frmDescripcion,
+  //     tipoRequerimiento: this.form.value.frmTipo,
+  //     gerenciaSolicitante: this.form.value.frmAreaSolicitante,
+  //     gerenciaReceptora: this.form.value.frmAreaReceptora,
+  //     estado: 'PENDIENTE',
+  //   };
+  // }
 }

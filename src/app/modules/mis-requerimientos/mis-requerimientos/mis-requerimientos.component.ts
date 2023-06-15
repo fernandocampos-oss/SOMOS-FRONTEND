@@ -1,7 +1,7 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
+// import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
 import { untilDestroyed } from '@ngneat/until-destroy';
 import { ColumnDef} from '@shared/table/table.component';
 import { filter } from 'rxjs/operators';
@@ -23,7 +23,7 @@ export class MisRequerimientosComponent implements OnInit {
   actionPend = 'Avance';
   actionFin = 'Ver';
 
-  requerimientos: Requerimiento[];
+  // requerimientos: Requerimiento[];
   reqPendientesColumns: ColumnDef[] = [
     {
       label: 'Requerimiento',
@@ -68,7 +68,7 @@ export class MisRequerimientosComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.requerimientos = this._services.FauxTablaRequerimientos();
+    // this.requerimientos = this._services.FauxTablaRequerimientos();
     this.catalogarRequerimientos();
   }
 
@@ -86,7 +86,7 @@ export class MisRequerimientosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.reqFinalizados = []; this.reqPendientes = []; this.reqRechazados = [];
-      this.requerimientos = this._services.FauxTablaRequerimientos();
+      // this.requerimientos = this._services.FauxTablaRequerimientos();
       this.catalogarRequerimientos();
       console.log(this.reqPendientes);
     });
@@ -111,32 +111,32 @@ export class MisRequerimientosComponent implements OnInit {
       .subscribe(() => callback.call(this));
   }
 
-  filterReadFunction(row: Requerimiento): boolean {
-    return !(row.estado == 'PENDIENTE' || row.estado == 'APROBADO' || row.estado == 'DERIVADO');
-  }
+  // filterReadFunction(row: Requerimiento): boolean {
+  //   return !(row.estado == 'PENDIENTE' || row.estado == 'APROBADO' || row.estado == 'DERIVADO');
+  // }
 
   catalogarRequerimientos(){
-    for (let i = 0; i < this.requerimientos.length; i++) {
-      switch (this.requerimientos[i].estado) {
-        case 'RECHAZADO':
-          this.reqRechazados.push(this.requerimientos[i]);
-          break;
-        case 'FINALIZADO':
-          this.reqFinalizados.push(this.requerimientos[i]);
-          break;
-        case 'EN PROCESO':
-          this.reqPendientes.push(this.requerimientos[i]);
-          break;
-        case 'DERIVADO':
-          this.reqPendientes.push(this.requerimientos[i]);
-          break;
-        case 'PENDIENTE':
-          this.reqPendientes.push(this.requerimientos[i]);
-          break;
-        case 'APROBADO':
-          this.reqPendientes.push(this.requerimientos[i]);
-          break;
-      }
-    }
+    // for (let i = 0; i < this.requerimientos.length; i++) {
+    //   switch (this.requerimientos[i].estado) {
+    //     case 'RECHAZADO':
+    //       this.reqRechazados.push(this.requerimientos[i]);
+    //       break;
+    //     case 'FINALIZADO':
+    //       this.reqFinalizados.push(this.requerimientos[i]);
+    //       break;
+    //     case 'EN PROCESO':
+    //       this.reqPendientes.push(this.requerimientos[i]);
+    //       break;
+    //     case 'DERIVADO':
+    //       this.reqPendientes.push(this.requerimientos[i]);
+    //       break;
+    //     case 'PENDIENTE':
+    //       this.reqPendientes.push(this.requerimientos[i]);
+    //       break;
+    //     case 'APROBADO':
+    //       this.reqPendientes.push(this.requerimientos[i]);
+    //       break;
+    //   }
+    // }
   }
 }

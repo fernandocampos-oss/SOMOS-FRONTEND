@@ -14,12 +14,14 @@ import { PdfComponent } from './dialogs/pdf/pdf.component';
 import { UserDownloadFileComponent } from './dialogs/user-download-file/user-download-file.component';
 import { UserDownloadTaskComponent } from './dialogs/user-download-task/user-download-task.component';
 import { AssignTaskUserComponent } from './dialogs/assign-task-user/assign-task-user.component';
+import { Personal } from '@data/models/gestion-rendimiento/personal';
+import { AppRoute } from '@data/constants';
 
-interface Equipo {
-  item: number;
-  colaborador: string;
-  cargo: string;
-}
+// interface Equipo {
+//   item: number;
+//   colaborador: string;
+//   cargo: string;
+// }
 
 @Component({
   selector: 'gestion-rendimiento-mi-equipo',
@@ -34,14 +36,14 @@ export class MiEquipoComponent implements OnInit {
   // displayedColumns: string[] = ['item', 'colaborador','cargo', 'tareas','pendientes', 'pendientesAprobacion','acciones'];
   displayedColumns: string[] = ['item', 'colaborador', 'cargo', 'acciones'];
 
-  equipos: Equipo[] = [
-    { item: 1, colaborador: 'Luis Lopez Gutierrez', cargo: 'Analista de costos' },
-    { item: 2, colaborador: 'Leandro Zarsosa Manuel', cargo: 'Analista de procesos' },
-    { item: 3, colaborador: 'Celia Requena Egas', cargo: 'Administrador de BD' },
-    { item: 4, colaborador: 'Elder Lizana Rodriguez', cargo: 'Tester QA' },
-    { item: 5, colaborador: 'Maria Lopez Uribe', cargo: 'Analista funcional' },
-  ];
-
+  // equipos: Equipo[] = [
+  //   { item: 1, colaborador: 'Luis Lopez Gutierrez', cargo: 'Analista de costos' },
+  //   { item: 2, colaborador: 'Leandro Zarsosa Manuel', cargo: 'Analista de procesos' },
+  //   { item: 3, colaborador: 'Celia Requena Egas', cargo: 'Administrador de BD' },
+  //   { item: 4, colaborador: 'Elder Lizana Rodriguez', cargo: 'Tester QA' },
+  //   { item: 5, colaborador: 'Maria Lopez Uribe', cargo: 'Analista funcional' },
+  // ];
+  dataSorteada: Personal[];
   constructor(
     private dialog: MatDialog,
     private services: GestionRendimientoService,
@@ -100,18 +102,39 @@ export class MiEquipoComponent implements OnInit {
   }
 
   loadTable() {
-    this.services.ListarIntegrantes().subscribe((dataItem) => {
-      if (dataItem.codigo == 0) { // cambiar el codigo a 1 luego de hacer el servicio
-        this.dataSource = new MatTableDataSource(this.equipos);
+    // this.services.ListarIntegrantes().subscribe((dataItem) => {
+    //   if (dataItem.codigo == 0) { // cambiar el codigo a 1 luego de hacer el servicio
+    //     this.dataSource = new MatTableDataSource(this.equipos);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
+    //   } else {
+    //     this.dataSource = null;
+    //     if (dataItem.msj == "LISTA VACIA") {
+    //       this._notification.warning(dataItem.msj)
+    //     } else {
+    //       this._notification.error(dataItem.msj)
+    //     }
+    //   }
+    // });
+
+    let idDependencia = 2;
+
+    this.services.listarPersonalPorDependenciaAsignado(idDependencia, AppRoute.ESTADO_PERSONAL_ASIGNADO).subscribe((data: any) => {   
+      console.log(">> dependencia=2", data);   
+      if (data) {      
+        this.dataSorteada=data;  
+        this.dataSource = new MatTableDataSource(this.dataSorteada);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
         this.dataSource = null;
-        if (dataItem.msj == "LISTA VACIA") {
-          this._notification.warning(dataItem.msj)
-        } else {
-          this._notification.error(dataItem.msj)
-        }
+        // if (dataItem.msj == "LISTA VACIA") {
+        //   this._notification.warning(dataItem.msj)
+        // } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+        //   this._notification.warning(dataItem.msj)
+        // } else {
+        //   this._notification.error(dataItem.msj)
+        // }
       }
     });
   }

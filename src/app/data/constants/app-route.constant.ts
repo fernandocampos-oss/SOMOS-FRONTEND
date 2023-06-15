@@ -28,4 +28,6 @@ export class AppRoute {
   static readonly ESTADO_REQUERIMIENTO_DERIVADO = 4;
   static readonly ESTADO_REQUERIMIENTO_RECHAZADO = 5;
   static readonly ESTADO_REQUERIMIENTO_FINALIZADO = 6;
+
+  static readonly ESTADO_PERSONAL_ASIGNADO = 'A';
 }
