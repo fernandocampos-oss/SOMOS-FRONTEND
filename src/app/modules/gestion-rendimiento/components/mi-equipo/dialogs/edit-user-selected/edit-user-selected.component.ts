@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppConfig } from '@core/configs';
-import { Requerimiento, Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
+import { Requerimiento1, Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class EditUserSelectedComponent implements OnInit {
   minFechaTarea = AppConfig.MAX_FECHA_NACIMIENTO;
 
   datosAsignados: Requerimiento_Integrante[] = [];
-  requerimientos: Requerimiento[] = [];
+  requerimientos: Requerimiento1[] = [];
   
 
   formEditar = this._fb.group({
@@ -33,12 +33,12 @@ export class EditUserSelectedComponent implements OnInit {
   }
 
   cargarRequerimientos(){
-    this.datosAsignados = this._gestionRendimientoService.getFauxTablaRequeAsignados(this.data.obj.id);
-    for (let i = 0; i < this.datosAsignados.length; i++) {
-      var requerimiento = this._gestionRendimientoService.getFauxRequerimiento(this.datosAsignados[i].idReq);
-      this.requerimientos.push(requerimiento);
-      this.addTareas(this.datosAsignados[i]);      
-    }
+    // this.datosAsignados = this._gestionRendimientoService.getFauxTablaRequeAsignados(this.data.obj.id);
+    // for (let i = 0; i < this.datosAsignados.length; i++) {
+    //   var requerimiento = this._gestionRendimientoService.getFauxRequerimiento(this.datosAsignados[i].idReq);
+    //   this.requerimientos.push(requerimiento);
+    //   this.addTareas(this.datosAsignados[i]);      
+    // }
   }
   get tareas() {
     return this.formEditar.controls["tareas"] as FormArray;

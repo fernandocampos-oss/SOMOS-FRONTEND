@@ -9,8 +9,9 @@ import { AcceptRejectRequirementComponent } from './dialogs/accept-reject-requir
 import { MoveRequirementComponent } from './dialogs/move-requirement/move-requirement.component';
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
-<<<<<<< HEAD
 import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
+// import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
+//import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
 
 // interface Requerimiento {
 //   id: number;
@@ -22,10 +23,6 @@ import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
 //   estado: string;
 //   motivo?: string;
 // }
-=======
-import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
-//import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
->>>>>>> 5c20c85fad9390a2da713a16fb33417d7e801f14
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -62,7 +59,6 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   loadTable() {
-<<<<<<< HEAD
     // this.sortearTabla();
 
     // this.services.ListarTareas(0).subscribe((dataItem) => {
@@ -85,12 +81,7 @@ export class MisRequerimientosComponent implements OnInit {
     this.services.listarRequerimiento().subscribe((data) => {
       console.log(">", data);
       if (data) {
-        this.dataSorteada=data;
-=======
-    this.sortearTabla();
-    this.services.ListarTareas(0).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
->>>>>>> 5c20c85fad9390a2da713a16fb33417d7e801f14
+        this.dataSorteada = data;
         this.dataSource = new MatTableDataSource(this.dataSorteada);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -105,25 +96,6 @@ export class MisRequerimientosComponent implements OnInit {
         // }
       }
     });
-
-    // this.services.listarRequerimiento().subscribe((data) => {
-    //   console.log(">", data);
-    //   if (data) {
-    //     this.dataSorteada=data;
-    //     this.dataSource = new MatTableDataSource(this.dataSorteada);
-    //     this.dataSource.paginator = this.paginator;
-    //     this.dataSource.sort = this.sort;
-    //   } else {
-    //     this.dataSource = null;
-    //     // if (dataItem.msj == "LISTA VACIA") {
-    //     //   this._notification.warning(dataItem.msj)
-    //     // } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-    //     //   this._notification.warning(dataItem.msj)
-    //     // } else {
-    //     //   this._notification.error(dataItem.msj)
-    //     // }
-    //   }
-    // });
 
   }
 

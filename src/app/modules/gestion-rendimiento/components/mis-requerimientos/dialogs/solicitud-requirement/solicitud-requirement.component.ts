@@ -85,7 +85,7 @@ export class SolicitudRequirementComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.equipoArea = this.services.FauxTablaEquipo();
+    // this.equipoArea = this.services.FauxTablaEquipo();
     console.log(this.data.obj);
     this.listarPoi();
   }

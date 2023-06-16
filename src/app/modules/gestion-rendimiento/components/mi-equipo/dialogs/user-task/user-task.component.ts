@@ -73,16 +73,16 @@ export class UserTaskComponent implements OnInit {
   }
 
   cargarRequerimientos(){
-    this.datosAsignados = this.services.getFauxTablaRequeAsignados(this.data.obj.id);
-    for (let i = 0; i < this.datosAsignados.length; i++) {
-      var requerimiento = this.services.getFauxRequerimiento(this.datosAsignados[i].idReq);
-      this.reqAsignados.push({"idReq":requerimiento.id,
-        "idColaborador": this.data.obj.id,
-        "requerimiento":requerimiento.nombreRequerimiento,
-        "estado":this.datosAsignados[i].estado,
-        "porcentaje": this.datosAsignados[i].avance  
-    });
-    }
+    // this.datosAsignados = this.services.getFauxTablaRequeAsignados(this.data.obj.id);
+    // for (let i = 0; i < this.datosAsignados.length; i++) {
+    //   var requerimiento = this.services.getFauxRequerimiento(this.datosAsignados[i].idReq);
+    //   this.reqAsignados.push({"idReq":requerimiento.id,
+    //     "idColaborador": this.data.obj.id,
+    //     "requerimiento":requerimiento.nombreRequerimiento,
+    //     "estado":this.datosAsignados[i].estado,
+    //     "porcentaje": this.datosAsignados[i].avance  
+    // });
+    // }
   }
 
   loadTable() {
@@ -126,7 +126,7 @@ export class UserTaskComponent implements OnInit {
       //height: '780px',
       autoFocus: false,
       data: {
-        obj: this.services.getFauxRequerimiento(this.datosAsignados[id].idReq),
+        // obj: this.services.getFauxRequerimiento(this.datosAsignados[id].idReq),
         objAsignacion:this.datosAsignados[id],
       }
     });

@@ -57,7 +57,7 @@ export class MisTareasComponent implements OnInit {
   }
 
   cargarRequerimientos(){
-    this.datosAsignados = this.services.getFauxTablaRequeAsignados(1);
+    // this.datosAsignados = this.services.getFauxTablaRequeAsignados(1);
   }
   
   showDialogDownloadTask(element, i: number){
@@ -67,7 +67,7 @@ export class MisTareasComponent implements OnInit {
       //height: '780px',
       autoFocus: false,
       data: {
-        obj: this.services.getFauxRequerimiento(this.datosAsignados[i].idReq),
+        // obj: this.services.getFauxRequerimiento(this.datosAsignados[i].idReq),
         objAsignacion:this.datosAsignados[i],
       }
     });
