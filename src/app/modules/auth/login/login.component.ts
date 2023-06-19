@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
           })
         )
         .subscribe((rta) => {
-          //console.log("rta from login...", rta);
+          console.log("rta from login...", rta);
           this._router.navigate(['/'])});
         
     } else {

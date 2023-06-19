@@ -18,6 +18,7 @@ mat-grid-list {
       width: 100%;
     }
 }
+
 .matero-page-header {
   height: 100%;
 }
@@ -26,9 +27,14 @@ mat-grid-list {
   font-weight: bold;
 }
 .search{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 10px;
   height: 58%;
   width: 75%;
+  background-color: var(--color-MiEssalud);
+  color: white;
 }
 .mat-grid-tile{
   height: 100%;

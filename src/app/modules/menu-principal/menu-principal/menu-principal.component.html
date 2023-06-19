@@ -9,20 +9,20 @@
     </div> -->
     <div class="box2" >
       <div class="header">
-        <span style="text-align-last: center;">Informativo {{temp}}</span> 
-        <button *ngIf="rol == 4" mat-mini-fab color="primary" (click)="open(3)" matTooltip="Administrar publicaciones">
+        <span>Informativo</span> 
+        <button *ngIf="rol == 4" mat-mini-fab class="buttonAdmImg" (click)="open(3)" matTooltip="Administrar publicaciones">
           <mat-icon>add_photo_alternate</mat-icon>
         </button>
       </div>   
       <div class="body">
-        <mat-grid-list cols="2" rowHeight="350px" gutterSize="20px">
+        <mat-grid-list cols="2" rowHeight="379px" gutterSize="35px">
           <mat-grid-tile [colspan]="publicacionLong" *ngFor="let pub of publicaciones">
-            <div class="boxPublicacion boxBorde">
+            <div class="boxPublicacion">
               <div class="descrPub">
                 <span>{{pub.titulo}}</span>
                 <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
               </div>
-              <div>
+              <div class="containerImg">
                 <img class="imgInfo" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showPublicacion(pub)">
                 <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
                 <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
@@ -41,9 +41,10 @@
                 <input #input matInput [(value)]=today [matDatepicker]="picker">
                 <mat-datepicker #picker (closed)="ActualizarOnomasticos(input.value)"></mat-datepicker>
               </mat-form-field>
-              <button mat-button class="boxBorde" (click)="picker.open()" matTooltip="Cambiar fecha de cumpleaños"><mat-icon >cake</mat-icon></button>
+              <img src="assets/images/cake.png" (click)="picker.open()" matTooltip="Cambiar fecha de cumpleaños">
+              <!-- <button mat-button class="boxBorde" (click)="picker.open()" matTooltip="Cambiar fecha de cumpleaños"><mat-icon >cake</mat-icon></button> -->
            
-                <span style="margin-left: 0.4vw;"><b>Cumpleaños el {{input.value}}</b></span>
+              <span class="birthDescrp"><b>Cumpleaños el {{input.value}}</b></span>
         </div>
         <div class="OnomasticosDia">
           <div *ngFor="let items of onomasticos">
@@ -59,7 +60,7 @@
     </div>
     <div class="boxBorde boxSST" (click)="open(1)">
     </div>
-    <div class="boxBorde boxEncuestaRes" *ngIf="encuestaRespondida">
+    <!-- <div class="boxBorde boxEncuestaRes" *ngIf="encuestaRespondida">
       <div style="display: grid; align-content: center;">
         <span style="justify-self: center;">¡Encuesta Respondida!</span><br>
         <span style="justify-self: center;">¡Gracias por darnos tu opinión!</span>
@@ -68,10 +69,11 @@
     <div class="boxBorde boxEncuesta" (click)="open(2)" *ngIf="!encuestaRespondida">
       <img src="assets/images/QR_example.png" class="image" alt="Logotipo" /> &nbsp;  &nbsp;
       <div style="display: grid; align-content: center;">
-        <span>{{encuestaNombre}}</span><br>
-        <span>¡Ingresa y cuéntanos tu opinión!</span>
+        <span>¡Ingresa y cuéntanos tu opinión!</span><br>
+        <span>{{encuestaNombre}}</span>
       </div>
-    </div>
+    </div> -->
+
     <!-- <div class="boxBorde boxSST-2">
       <div class="info" matTooltip="Gerencia Políticas y Organización del Recurso Humano">
         <span>GPyORH</span>
@@ -89,21 +91,21 @@
         <div class="boxCounter">
           <div class="boxTimer">
             <span>{{daysLeft}}</span>
-            <h5>Dias</h5>
+            <h5>días</h5>
           </div>
           <div class="boxTimer">
             <span>{{hoursLeft}}</span>
-            <h5>Horas</h5>
+            <h5>horas</h5>
           </div>
           <div class="boxTimer">
             <span>{{minutesLeft}}</span>
-            <h5>Minutos</h5>
+            <h5>minutos</h5>
           </div>
         </div>
       </div>
-      <!-- <div class="boxBorde boxSST-3"style="margin-left: 1%;">
-        <h4>Consultas:</h4>
-        <span>sgrhs@essalud.gob.pe</span>
-      </div> -->
+      <div class="boxBorde boxPagos" (click)="open(4)">
+        <h4>Cronograma de Pagos 2023</h4>
+        <img class="imgPayment" src="assets/images/payment_calendar.png">
+      </div>
     </div>
 </div>

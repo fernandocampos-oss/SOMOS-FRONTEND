@@ -6,7 +6,7 @@
         </mat-grid-tile>
         <mat-grid-tile class="cargaImg" [colspan]="2" gutterSize="2px" [rowspan]="14" >
             <div class="imageBox">
-                <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="file.click()" color="primary" *ngIf="!retrievedImage">
+                <button type="button" class="preview__button btnColor" mat-raised-button MatPrefix (click)="file.click()" color="primary" *ngIf="!retrievedImage">
                   <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
                 </button>
                 <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()" color="warn" *ngIf="retrievedImage">
@@ -37,8 +37,8 @@
     </mat-grid-list>
     <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close type="button">Cancelar</button>
-    <button mat-raised-button color="primary" (click)="NewPublicacion()" *ngIf="data.funcion == 1"><mat-icon>add</mat-icon> Guardar</button>
-    <button mat-raised-button color="primary" (click)="UpdatePublicacion()" *ngIf="data.funcion == 2"><mat-icon>add</mat-icon> Guardar</button>
+    <button mat-raised-button class="btnColor" (click)="NewPublicacion()" *ngIf="data.funcion == 1"><mat-icon>add</mat-icon> Guardar</button>
+    <button mat-raised-button class="btnColor" (click)="UpdatePublicacion()" *ngIf="data.funcion == 2"><mat-icon>add</mat-icon> Guardar</button>
     </mat-dialog-actions>
 </div>
 <div *ngIf="data.funcion == 3">
@@ -51,7 +51,7 @@
             <button mat-button matDialogClose class="boton">Volver</button>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1" class="grid">
-            <button mat-raised-button (click)="DeletePublicacion()" color="primary" class="boton">Enviar</button>
+            <button mat-raised-button (click)="DeletePublicacion()" color="warn" class="boton">Eliminar</button>
         </mat-grid-tile>
     </mat-grid-list>
 </div>

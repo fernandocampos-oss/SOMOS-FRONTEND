@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { PublicacionRequest } from '@data/models/menu-principal/menu-publicacion.model';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
@@ -21,7 +21,6 @@ export class AddUpdatePublicacionComponent implements OnInit {
   isImageUpdate = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-               private _matDialog                 : MatDialog,
                private dialogRef                  : MatDialogRef<AddUpdatePublicacionComponent>,
                private _notification              : NotificationService,
                private _fb                        : FormBuilder,

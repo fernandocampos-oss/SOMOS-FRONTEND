@@ -14,7 +14,7 @@ import { ShowPublicacionComponent } from './components/show-publicacion/show-pub
 import { ConfirmRegisterEncuestaComponent } from './components/register-datos-encuesta/dialogs/confirm-register-encuesta/confirm-register-encuesta.component';
 import { AdmPublicaciones } from './components/adm-publicaciones/adm-publicaciones.component';
 import { AddUpdatePublicacionComponent } from './components/adm-publicaciones/add-update-publicacion/add-update-publicacion.component';
-import { DeletePublicacionComponent } from './components/adm-publicaciones/delete-publicacion/delete-publicacion.component';
+import { ShowPaymentCalendarComponent } from './components/show-payment-calendar/show-payment-calendar.component';
 
 
 @NgModule({
@@ -26,7 +26,7 @@ import { DeletePublicacionComponent } from './components/adm-publicaciones/delet
     ConfirmRegisterEncuestaComponent,
     AdmPublicaciones,
     AddUpdatePublicacionComponent,
-    DeletePublicacionComponent
+    ShowPaymentCalendarComponent
   ],
   imports: [
     CommonModule,

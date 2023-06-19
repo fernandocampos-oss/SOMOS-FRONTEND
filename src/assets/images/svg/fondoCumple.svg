@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 207.53 146.82" style="enable-background:new 0 0 207.53 146.82;" xml:space="preserve">
+<style type="text/css">
+	.st0{clip-path:url(#SVGID_2_);}
+	.st1{clip-path:url(#SVGID_4_);}
+	.st2{fill:#E6EFFA;}
+	.st3{fill:#226BB2;}
+	.st4{fill:#FFFFFF;}
+	.st5{fill:#EF7E19;}
+	.st6{fill:#4CB9B1;}
+	.st7{fill:#79CCF2;}
+	.st8{fill:none;stroke:#FFFFFF;stroke-width:0.6158;stroke-miterlimit:10;}
+	.st9{fill:none;stroke:#0A67AF;stroke-miterlimit:10;}
+	.st10{clip-path:url(#SVGID_6_);fill:none;}
+	.st11{clip-path:url(#SVGID_6_);fill:url(#SVGID_7_);}
+	.st12{fill:#FFFBF9;}
+	.st13{fill:#18222D;}
+	.st14{fill:none;stroke:#149BD7;stroke-width:0.9416;stroke-miterlimit:10;}
+	.st15{clip-path:url(#SVGID_9_);fill:#149BD7;}
+	.st16{clip-path:url(#SVGID_11_);fill:#149BD7;}
+	.st17{clip-path:url(#SVGID_13_);fill:#149BD7;}
+	.st18{clip-path:url(#SVGID_15_);fill:#149BD7;}
+	.st19{clip-path:url(#SVGID_17_);fill:#79CCF2;}
+	.st20{clip-path:url(#SVGID_17_);fill:url(#SVGID_18_);}
+	.st21{fill:#0A67AF;}
+	.st22{fill:#1067AE;}
+	.st23{fill:#706F6E;}
+	.st24{fill:#848585;}
+	.st25{fill:#0469B1;}
+	.st26{fill:#28ACE3;}
+	.st27{fill:#31529F;}
+	.st28{fill:#1196D4;}
+	.st29{fill-rule:evenodd;clip-rule:evenodd;fill:#0A67AF;}
+	.st30{fill:#1FB2AB;}
+	.st31{fill:#62C1CC;}
+	.st32{clip-path:url(#SVGID_20_);}
+</style>
+<g id="Capa_1">
+</g>
+<g id="Capa_2">
+	<g>
+		<defs>
+			<path id="SVGID_5_" d="M195.21,141.43l-179.96,1.14c-4.69,0.03-8.51-3.75-8.54-8.44L5.93,11.35c-0.03-4.69,3.75-8.51,8.44-8.54
+				l179.96-1.14c4.69-0.03,8.51,3.75,8.54,8.44l0.78,122.78C203.68,137.57,199.9,141.4,195.21,141.43z"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_5_"  style="overflow:visible;"/>
+		</clipPath>
+		
+			<rect x="-7.67" y="-2.31" transform="matrix(1 -6.334430e-03 6.334430e-03 1 -0.4671 0.6788)" style="clip-path:url(#SVGID_2_);fill:none;" width="229.18" height="152.78"/>
+		<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="114.8101" y1="147.4147" x2="118.4423" y2="26.3424">
+			<stop  offset="0" style="stop-color:#C7CDDD"/>
+			<stop  offset="0.8771" style="stop-color:#FFFFFF"/>
+		</linearGradient>
+		<path style="clip-path:url(#SVGID_2_);fill:url(#SVGID_4_);" d="M221.75,145.53H12.31c-5.59,0-10.13-4.54-10.13-10.13V11.31
+			c0-5.59,4.54-10.13,10.13-10.13h209.44c5.59,0,10.13,4.54,10.13,10.13V135.4C231.88,141,227.35,145.53,221.75,145.53z"/>
+	</g>
+	<path class="st9" d="M194.16,141.76H14.2c-4.69,0-8.49-3.8-8.49-8.49V10.49C5.71,5.8,9.51,2,14.2,2h179.96
+		c4.69,0,8.49,3.8,8.49,8.49v122.79C202.65,137.96,198.85,141.76,194.16,141.76z"/>
+</g>
+</svg>

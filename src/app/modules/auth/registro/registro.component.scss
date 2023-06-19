@@ -1,6 +1,6 @@
 .auth {
   max-width: 60em;
-  height: 720px;
+  height: 780px;
   &__subtitle {
     font-weight: 400;
   }
@@ -38,17 +38,12 @@
   height: 48px;
   width: 100%;
   margin-top: 25.5px;
-  border: 2px solid #009EAD;
-border-radius: 4px;
-}
-
-.btnColor{
-  background-color:  var(--color-MiEssalud);
-  color: white;
+  border: 2px solid var(--color-MiEssalud);
+  border-radius: 4px;
 }
 
 .image {
-  width: 12.7em;
+  width: 25.8em;
   margin-left: auto;
   margin-right: auto;
   display: block;

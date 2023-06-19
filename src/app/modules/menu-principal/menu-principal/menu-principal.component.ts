@@ -7,9 +7,10 @@ import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { OnomasticosResponse } from '@data/models/menu-principal/menu-principal.model';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ShowPublicacionComponent } from '../components/show-publicacion/show-publicacion.component';
-import { MenuPublicacion, PublicacionResponse } from '@data/models/menu-principal/menu-publicacion.model';
+import { PublicacionResponse } from '@data/models/menu-principal/menu-publicacion.model';
 import { AdmPublicaciones } from '../components/adm-publicaciones/adm-publicaciones.component';
 import { AuthService } from '@data/services';
+import { ShowPaymentCalendarComponent } from '../components/show-payment-calendar/show-payment-calendar.component';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -35,7 +36,7 @@ export class MenuPrincipalComponent implements OnInit {
     {descripcion:'No Hay Fecha',dia: new Date('12/21/2012 00:00:00')},
     {descripcion:'Prueba1',dia: new Date('12/25/2023 00:00:00')},
     {descripcion:'Prueba2',dia: new Date('11/25/2023 00:00:00')},
-    {descripcion:'Prueba3',dia: new Date('10/24/2023 00:00:00')},
+    {descripcion:'Día de la independencia',dia: new Date('07/28/2023 00:00:00')},
     {descripcion:'Día del Padre',dia: new Date('06/18/2023 00:00:00')},
     {descripcion:'Día de la Madre',dia: new Date('05/14/2023 00:00:00')},
     {descripcion:'Prueba7',dia: new Date('03/01/2023 00:00:00')},
@@ -134,6 +135,14 @@ export class MenuPrincipalComponent implements OnInit {
             this.publicaciones = data;
           }
           );
+        });
+          break;
+      case 4:
+      const dialogRef4: MatDialogRef<ShowPaymentCalendarComponent> = this.dialog.open(ShowPaymentCalendarComponent, {
+          disableClose: false,
+          minWidth: '350px',
+          maxWidth: '50%',
+          autoFocus: false,
         });
           break;
     }

@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MenuPublicacion } from '@data/models/menu-principal/menu-publicacion.model';
 
 @Component({
   selector: 'app-show-publicacion',

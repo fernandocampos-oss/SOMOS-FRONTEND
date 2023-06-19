@@ -14,7 +14,13 @@ span{
   text-align-last: left;
   width: 100%;
   font-style: normal;
+}
+span.birthDescrp{
+  text-align-last: left;
+  width: 100%;
+  font-style: normal;
   font-size: 1vw;
+  margin-left: 0.4vw;
 }
 }
 .column2 {
@@ -28,15 +34,30 @@ span{
   width: 100%;
   display: grid;
   .header{
-    margin: 0px 0.2vw 0px 0.2vw;
-    padding-top: 0.2vw;
-    .boxBorde{
-      margin:0px;
-      width: 3vw;
-      color: #37485f;
-      background: radial-gradient(circle, rgba(255,255,255,1) 6%, rgba(0,212,255,1) 100%);
+    color:#2e245c;
+    background-color: #79ccf2;
+    border-bottom: var(--color-bordes);
+    border-bottom-style: solid;
+    border-bottom-width: 2.5px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    // .boxBorde2{
+    //   margin:3px;
+    //   img{
+    //     width: 3vw;
+    //   }
+    // }
+    img{
+      cursor: pointer;
+      margin:3px 3px 3px 13px;
+      width: 2vw;
     }
-    top: 0;
+    // .boxBorde{
+    //   margin:3px;
+    //   width: 3vw;
+    //   color: #37485f;
+    //   background: radial-gradient(circle, rgba(255,255,255,1) 6%, rgba(0,212,255,1) 100%);
+    // }
   }
   .OnomasticosDia{
     min-height: 10vw;
@@ -44,10 +65,11 @@ span{
     top: 0;
     overflow-y: auto;
   }
-  background-image: url(~src/assets/images/fondoCumple.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(209,214,227,1) 100%);
+  // background-image: url(~src/assets/images/svg/fondoCumple.svg);
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: center;
   .contenido{
     display: flex;
     .num{
@@ -62,7 +84,7 @@ span{
     .body{
       display: block;
       padding-top: 2%;
-      color: black;
+      color: #422918;
       align-self: center;
       .nomBirth{
         font-weight: bold;
@@ -70,37 +92,41 @@ span{
     }
   }
 }
+.nomBirth{
+  font-family: 'Carnas_bold' !important;
+}
 .boxBorde{
   margin: 8px 0px 0px 0px;
-  border: #37485f;
+  border: var(--color-bordes);
   border-style:solid;
   border-radius: 11px;
+  border-width: 2.5px;
 }
 .boxSST, .boxEncuesta, .boxSST-2{
   cursor: pointer;
   font-weight: bold;
   align-content: center;
   display: flex;
-  color: #37485f;
+  color: #3c3c3b;
 }
 .boxSST {
   height: 140px;
   width: 100%;
   background-image: url(~src/assets/images/SST_logo.png);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
 }
 .boxEncuesta, .boxEncuestaRes{
+  font-weight: bold;
+  color: #3c3c3b;
   width: 100%;
   flex-wrap: wrap;
-  font-size: 3vw;
-  background-color: #8de4ff;
+  font-size: 1vw;
+  background-color: none;
 }
 .boxEncuestaRes{
   padding: 3% 0% 3% 0%;
-  font-weight: bold;
-  color: #37485f;
 }
 .boxSST-2{
   width: 100%;
@@ -108,7 +134,7 @@ span{
   font-size: 1.2vw;
   background-color: #8de4ff;
 }
-.boxSST-3{
+.boxSST-3, .boxPagos{
   float: left;
   padding: 2%;
   height: 100%;
@@ -117,15 +143,23 @@ span{
   display: grid;
   align-content: center;
   text-align: center;
-  color: #2f74eb;
-  background: white;
+  color: #3c3c3b;
   font-size: 0.9vw;
+}
+.boxPagos{
+  cursor: pointer;
+  // margin-left: 1%;
+  justify-items: center;
+  .imgPayment{
+    height: 3.5vw;
+    width: 3.5vw;
+  }
 }
 .info{
   margin: 2%;
   padding: 2%;
   cursor:auto;
-  border: #37485f;
+  border: var(--color-bordes);
   display: grid;
   border-style:solid;
   border-radius: 11px;
@@ -135,17 +169,26 @@ span{
   justify-content: center;
 }
 .box2 {
-  margin: 8px;
+  .header{
+    font-size: 1.3vw;
+    position: relative;
+    height: 40px;
+    span{
+      text-align-last: center;
+    }
+  }
   height: 100%;
   padding: 1% 2% 1% 2%;
-  background: #dff1f4;
-  border-radius: 11px;
+  // background: #dff1f4;
   display: grid;
-  border: #37485f;
-  border-style:solid;
-  color:#2b9ed8;
+  color: #575756;
   .body{
     display: contents;
+  }
+  .buttonAdmImg{
+    position: absolute;
+    right: 0;
+    background-color: var(--color-bordes);
   }
 }
 .boxPublicacion{
@@ -156,43 +199,49 @@ span{
   width: 100%;
   height: 97.5%;
   .descrPub{
-    font-size: 0.6vw;
-    font-weight: bold;
+    font-size: 0.7vw;
+    font-weight: 550;
     padding: 8px;
-    background: #a9bfdf;
-    border-bottom: #37485f;
-    border-bottom-style:solid;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    span{
-      color:#000000;
-    }
+    height: 34px;
+    color:white;
+    background: var(--color-subBordes);
+    // border-bottom: var(--color-bordes);
+    // border-bottom-style:solid;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
   }
-  .imgInfo{
-    height: 305px;
-    cursor: pointer;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+  .containerImg{
+    height: 100%;
+    .imgInfo{
+      height:338px;
+      cursor: pointer;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
   }
 }
 
 .boxCounter{
   display: flex;
   justify-content: center;
-}
-
-.boxTimer{
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-  border-radius: 8px;
-  padding: 1%;
-  margin: 0% 3% 0 3%;
-  width: 3.2vw;
-  // background: linear-gradient(0.25turn, #99e3fd 0%, #157cef 50%, #99e3fd );
-  background: linear-gradient(0.35turn, #1cbdb4,#0e7ef5, #60d0f6);
-  color: white;
-  span{
-    font-size: 1.8vw;
-    font-weight: bolder;
+  .boxTimer{
+    font-family:'Gotham-Ultra' !important;
+    // font-family:'Gotham-Ultra';
+    // box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    border: var(--color-subBordes);
+    border-style:solid;
+    border-radius: 11px;
+    border-width: 2.5px;
+    padding: 1%;
+    margin: 0% 3% 0 3%;
+    width: 4.199999999999999vw;
+    // background: linear-gradient(0.25turn, #99e3fd 0%, #157cef 50%, #99e3fd );
+    // background: linear-gradient(0.35turn, #1cbdb4,#0e7ef5, #60d0f6);
+    color: #226bb2;
+    span{
+      font-size: 1.75vw;
+      font-weight: bolder;
+    }
   }
 }
 
@@ -205,16 +254,16 @@ mat-grid-list {
 
 .image{
   margin: 4%;
-  width: 5vw;
-  height: 5vw;
+  width: 4.5vw;
+  height: 4.5vw;
   border-radius: 10%;
 }
 
 @media screen and (min-width: 1024px) {
-  // .boxSST-3{
-  //   width: 49%;
-  //   height: 6.5vw;
-  // }
+  .boxSST-3, .boxPagos{
+    width: 100%;
+    height: 6.5vw;
+  }
   .boxEncuesta, .boxEncuestaRes{
     font-size: 0.9vw;
   }
@@ -226,8 +275,12 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 840px) and (max-width: 1024px) {
+  .image{
+    width: 3.4vw;
+    height: 3.4vw;
+  }
   .boxEncuesta{
-    font-size: 1.5vw;
+    font-size: 0.8vw;
   }
   .nomBirth{
     font-size: 0.9vw; 
@@ -237,6 +290,14 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 500px) and (max-width: 840px) {
+  .box2{
+    .header{
+      font-size: 1.4vw !important;
+    }
+  }
+  .descrPub{
+    font-size: 1.4vw !important;
+  }
   .boxEncuesta{
     font-size: 2vw;
   }
@@ -252,6 +313,14 @@ mat-grid-list {
 }
 
 @media screen and (max-width: 500px) {
+  .box2{
+    .header{
+      font-size: 2.4vw !important;
+    }
+  }
+  .descrPub{
+    font-size: 2.4vw !important;
+  }
   .nomBirth{
     font-size: 2vw; 
   }

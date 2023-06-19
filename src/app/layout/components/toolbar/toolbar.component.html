@@ -3,8 +3,10 @@
     <mat-icon>menu</mat-icon>
     <!-- <mat-icon mat-list-icon class="chevron-button">chevron_right</mat-icon> -->
   </button>
-  <a [routerLink]="['/']"
-    ><img src="assets/images/Logo-MiEsSalud-ColorHorizontal-white.png" class="toolbar__image" alt="Logotipo" /></a>
+  <a [routerLink]="['/']">
+    <img class="toolbar__image" src="assets/images/svg/logoMenu.svg">
+    <!-- <img src="assets/images/Logo-MiEsSalud-ColorHorizontal-white.png" class="toolbar__image" alt="Logotipo"/> -->
+  </a>
    
   <span class="toolbar__spacer"></span>
   <p class="fecha" *ngIf="!hideDate">{{ fechaActual }}</p>
