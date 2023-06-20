@@ -25,7 +25,7 @@ interface fechas_Imp{ // Provisional: para tener las fechas importantes
 export class MenuPrincipalComponent implements OnInit {
   onomasticos: OnomasticosResponse[] = [];
   today = new Date();
-  publicacionLong: number = 1;
+  interfazCelular: boolean;
   daysLeft: number;
   hoursLeft: number;
   minutesLeft: number;
@@ -46,12 +46,11 @@ export class MenuPrincipalComponent implements OnInit {
   encuestaRespondida = false;
   encuestaNombre: string;
 
-  diaHoy = this.today.getDate();
-  mesHoy = this.today.getMonth()+1;
+  showPublicaciones = true;
+  showCumple = false;
+  showCountdown = false;
 
-  temp: any;
 
-  newdata: any;
   parametros = {
     mesConsulta: '',
     diaConsulta: '',
@@ -66,24 +65,21 @@ export class MenuPrincipalComponent implements OnInit {
     this.rol = this._authService.getRol();
     this.identificador = this.nearestDay(this.today);
     this.responsive.observe([
-      Breakpoints.HandsetLandscape,
-      Breakpoints.XSmall,   
-      Breakpoints.Small,   
-      Breakpoints.TabletLandscape,
+      Breakpoints.XSmall
       ])
       .subscribe(result => {
-        this.publicacionLong = 1; 
+        console.log(result);
+        this.interfazCelular = true;
         if (result.matches) {
-          this.publicacionLong = 2;
+          this.interfazCelular = false;
         }
       });
-    
     this._menuService.getPublicaciones()
     .subscribe( (data) => {
       this.publicaciones = data;
     }
     );
-    this.convertirDiaMes(this.diaHoy, this.mesHoy);
+    this.convertirDiaMes(this.today.getDate(), this.today.getMonth()+1);
     this.CargarOnomasticos();
     if(this.identificador != 0){
       this.getDateDiff(this.fechas[this.identificador].dia,this.today);// Provisional: para tener las fechas importantes
@@ -245,4 +241,23 @@ export class MenuPrincipalComponent implements OnInit {
     delta -= this.minutesLeft * 60;
   }
 
+  changeVisual(option: number){
+    switch (option) {
+      case 1:
+        this.showPublicaciones = true;
+        this.showCumple = false;
+        this.showCountdown = false;
+        break;
+      case 2:
+        this.showPublicaciones = false;
+        this.showCumple = true;
+        this.showCountdown = false;
+        break;
+      case 3:
+        this.showPublicaciones = false;
+        this.showCumple = false;
+        this.showCountdown = true;
+        break;
+    }
+  }
 }

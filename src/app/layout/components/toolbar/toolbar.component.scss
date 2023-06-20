@@ -25,3 +25,11 @@
 .info{
   font-weight: bold;
 }
+
+@media screen and (max-width: 400px) {
+  .toolbar {
+    &__image {
+      width: 11rem;
+    }
+  }
+}

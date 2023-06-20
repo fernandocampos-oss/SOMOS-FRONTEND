@@ -38,7 +38,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         }
       }
     });
-    this.mobileQuery = media.matchMedia('(max-width: 790px)');
+    this.mobileQuery = media.matchMedia('(max-width: 959px)');
     // FIXME: Review type error
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

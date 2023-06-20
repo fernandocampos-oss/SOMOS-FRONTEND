@@ -7,17 +7,16 @@
         <img src="assets/images/msg_example.png" class="imgCuadro_Msg" alt="Logotipo" />
       </div>
     </div> -->
-    <div class="box2" >
-      <div class="header">
-        <span>Informativo</span> 
-        <button *ngIf="rol == 4" mat-mini-fab class="buttonAdmImg" (click)="open(3)" matTooltip="Administrar publicaciones">
+    <div class="box2" *ngIf="showPublicaciones">
+      <div *ngIf="rol == 4" class="header">
+        <button mat-mini-fab class="buttonAdmImg" (click)="open(3)" matTooltip="Administrar publicaciones">
           <mat-icon>add_photo_alternate</mat-icon>
         </button>
       </div>   
       <div class="body">
-        <mat-grid-list cols="2" rowHeight="379px" gutterSize="35px">
-          <mat-grid-tile [colspan]="publicacionLong" *ngFor="let pub of publicaciones">
-            <div class="boxPublicacion">
+        <!-- <mat-grid-list cols="1" rowHeight="480px" gutterSize="35px">
+          <mat-grid-tile [colspan]="1" *ngFor="let pub of publicaciones"> -->
+            <div class="boxPublicacion" *ngFor="let pub of publicaciones">
               <div class="descrPub">
                 <span>{{pub.titulo}}</span>
                 <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
@@ -28,21 +27,45 @@
                 <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
               </div>
             </div>
-          </mat-grid-tile>
-        </mat-grid-list>
+          <!-- </mat-grid-tile>
+        </mat-grid-list> -->
       </div>
     </div>
-
-  </div>
-  <div class="column1">
-    <div class="boxBorde boxBirth">
-        <div class="header">
+    <div class="boxBorde boxBirth" *ngIf="showCumple">
+      <div class="header">
+            <img src="assets/images/cake.png">
+            <div class="changeBirth" (click)="picker.open()" matTooltip="Cambiar fecha de cumpleaños"><mat-icon >calendar_today</mat-icon>
               <mat-form-field style="width:0px; height:0px;visibility:hidden;">
                 <input #input matInput [(value)]=today [matDatepicker]="picker">
                 <mat-datepicker #picker (closed)="ActualizarOnomasticos(input.value)"></mat-datepicker>
               </mat-form-field>
-              <img src="assets/images/cake.png" (click)="picker.open()" matTooltip="Cambiar fecha de cumpleaños">
-              <!-- <button mat-button class="boxBorde" (click)="picker.open()" matTooltip="Cambiar fecha de cumpleaños"><mat-icon >cake</mat-icon></button> -->
+            </div>
+         
+            <span class="birthDescrp"><b>Cumpleaños el {{input.value}}</b></span>
+      </div>
+      <div class="OnomasticosDia">
+        <div *ngFor="let items of onomasticos">
+          <div class="contenido">
+            <div class="num"></div>
+            <div class="body">
+              <span class="nomBirth">{{items.nombres}}</span><br>
+              <span class="areaBirth">{{items.dependencia}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>   
+</div>
+<div class="column1" *ngIf="interfazCelular">
+    <div class="boxBorde boxBirth">
+        <div class="header">
+              <img src="assets/images/cake.png">
+              <div class="changeBirth" (click)="picker.open()" matTooltip="Cambiar fecha de cumpleaños"><mat-icon >calendar_today</mat-icon>
+                <mat-form-field style="width:0px; height:0px;visibility:hidden;">
+                  <input #input matInput [(value)]=today [matDatepicker]="picker">
+                  <mat-datepicker #picker (closed)="ActualizarOnomasticos(input.value)"></mat-datepicker>
+                </mat-form-field>
+              </div>
            
               <span class="birthDescrp"><b>Cumpleaños el {{input.value}}</b></span>
         </div>
@@ -108,4 +131,15 @@
         <img class="imgPayment" src="assets/images/payment_calendar.png">
       </div>
     </div>
+</div>
+<div class="column1" *ngIf="!interfazCelular">
+  <div class="opcionesAcortadas" (click)="changeVisual(1)">
+
+  </div>
+  <div class="opcionesAcortadas" (click)="changeVisual(2)">
+
+  </div>
+  <div class="opcionesAcortadas" (click)="changeVisual(3)">
+
+  </div>
 </div>

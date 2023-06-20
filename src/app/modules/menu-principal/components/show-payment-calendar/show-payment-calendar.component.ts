@@ -91,7 +91,7 @@ export class ShowPaymentCalendarComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.onValChange(1);
+    this.onValChange(2);
   }
   onValChange(value) {
     if (value == 1) {

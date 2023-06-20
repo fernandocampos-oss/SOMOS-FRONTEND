@@ -20,6 +20,12 @@ mat-grid-list{
     border-style:solid;
     border-width: thin;
 }
+.mat-button-toggle{
+    background: #eaf8fb;
+}
+.mat-button-toggle-checked{
+    background: #79ccf2;
+}
 mat-button-toggle-group, mat-button-toggle{
     font-weight: bold;
     font-family: "Nunito", sans-serif;

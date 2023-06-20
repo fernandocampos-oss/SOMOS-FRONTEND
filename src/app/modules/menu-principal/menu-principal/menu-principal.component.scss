@@ -1,6 +1,6 @@
 .column1 {
     float: left;
-    width: 32%;
+    width: 35%;
     padding: 4px;
     position: sticky;
     top: 0;
@@ -25,8 +25,8 @@ span.birthDescrp{
 }
 .column2 {
   float: left;
-  width: 68%;
-  padding: 4px;
+  width: 65%;
+  padding: 4px 2vw 4px 2vw;
 } 
 .boxBirth {
   min-height: 10vw;
@@ -34,6 +34,7 @@ span.birthDescrp{
   width: 100%;
   display: grid;
   .header{
+    position: relative;
     color:#2e245c;
     background-color: #79ccf2;
     border-bottom: var(--color-bordes);
@@ -48,7 +49,6 @@ span.birthDescrp{
     //   }
     // }
     img{
-      cursor: pointer;
       margin:3px 3px 3px 13px;
       width: 2vw;
     }
@@ -92,8 +92,13 @@ span.birthDescrp{
     }
   }
 }
-.nomBirth{
-  font-family: 'Carnas_bold' !important;
+.changeBirth{
+  cursor: pointer;
+  color: #3c3c3b;
+  display: flex;
+  position: absolute;
+  right: 0.5vw;
+  font-size: 1vw;
 }
 .boxBorde{
   margin: 8px 0px 0px 0px;
@@ -172,13 +177,13 @@ span.birthDescrp{
   .header{
     font-size: 1.3vw;
     position: relative;
-    height: 40px;
+    height: 60px;
     span{
       text-align-last: center;
     }
   }
   height: 100%;
-  padding: 1% 2% 1% 2%;
+  padding: 0 2% 1% 2%;
   // background: #dff1f4;
   display: grid;
   color: #575756;
@@ -188,16 +193,17 @@ span.birthDescrp{
   .buttonAdmImg{
     position: absolute;
     right: 0;
+    color: white;
     background-color: var(--color-bordes);
   }
 }
 .boxPublicacion{
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin:10px auto 10px auto;
   overflow: hidden;
   width: 100%;
-  height: 97.5%;
+  height: 520px;
+  // height: 97.5%;
   .descrPub{
     font-size: 0.7vw;
     font-weight: 550;
@@ -211,9 +217,10 @@ span.birthDescrp{
     border-top-right-radius: 12px;
   }
   .containerImg{
-    height: 100%;
+    // height: 100%;
     .imgInfo{
-      height:338px;
+      // height:338px;
+      height: 486px;
       cursor: pointer;
       border-bottom-left-radius: 12px;
       border-bottom-right-radius: 12px;
@@ -258,6 +265,13 @@ mat-grid-list {
   height: 4.5vw;
   border-radius: 10%;
 }
+.opcionesAcortadas{
+  cursor: pointer;
+  width: 13vw;
+  height: 13vw;
+  background: #226bb2;
+  margin: 10px auto 10px auto;
+}
 
 @media screen and (min-width: 1024px) {
   .boxSST-3, .boxPagos{
@@ -279,6 +293,9 @@ mat-grid-list {
     width: 3.4vw;
     height: 3.4vw;
   }
+  .descrPub{
+    font-size: 1.4vw !important;
+  }
   .boxEncuesta{
     font-size: 0.8vw;
   }
@@ -290,6 +307,14 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 500px) and (max-width: 840px) {
+  .boxPublicacion{
+    height: 380px;
+    .containerImg{
+      .imgInfo{
+        height: 346px;
+      }
+    }
+  }
   .box2{
     .header{
       font-size: 1.4vw !important;
@@ -301,18 +326,20 @@ mat-grid-list {
   .boxEncuesta{
     font-size: 2vw;
   }
-  .nomBirth{
-    font-size: 2vw; 
-  }
-  .areaBirth{
-    font-size: 1.6vw;
-  }
   icon{
     width:1px;
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 499px) {
+  .boxPublicacion{
+    height: 280px;
+    .containerImg{
+      .imgInfo{
+        height: 246px;
+      }
+    }
+  }
   .box2{
     .header{
       font-size: 2.4vw !important;
@@ -321,10 +348,88 @@ mat-grid-list {
   .descrPub{
     font-size: 2.4vw !important;
   }
+}
+@media screen and (min-width: 840px) and (max-width: 1279px) {
+  .boxSST{
+    height: 84px;
+  }
+  .boxPublicacion{
+    height: 380px;
+    .containerImg{
+      .imgInfo{
+        height: 346px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 600px) and (max-width: 890px) {
+  .boxSST{
+    height: 84px;
+  }
+  .changeBirth{
+    mat-icon{
+      display: contents;
+    }
+    .material-icons{
+      font-size: 2.3em;
+    }
+  }
+}
+@media screen and (max-width: 599px) {
+  .column1 {
+    width: 15%;
+  }
+  .column2 {
+    width: 85%;
+  } 
+  .header {
+  span.birthDescrp{
+    font-size: 3.5vw;
+  }
+  }
   .nomBirth{
-    font-size: 2vw; 
+    font-size: 3.2vw; 
   }
   .areaBirth{
-    font-size: 1.6vw;
+    font-size: 3.2vw; 
+  }
+  .boxBirth {
+    min-height: 476px;
+    width: 100%;
+    display: grid;
+    .header{
+      height: 35px !important;
+      img{
+        margin:3px 3px 3px 13px;
+        width: 2vw;
+      }
+    }
+    .OnomasticosDia{
+      min-height: 432px;
+      top: 0;
+      overflow-y: auto;
+    }
+    .contenido{
+      margin:2px 0 2px 0;
+      display: flex;
+      .num{
+        background-image: url(~src/assets/images/avatar.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        width: 3vw;
+        height: 3.25vw;
+        margin:1%;
+      }
+      .body{
+        display: block;
+        padding-top: 2%;
+        color: #422918;
+        align-self: center;
+        .nomBirth{
+          font-weight: bold;
+        }
+      }
+    }
   }
 }
