@@ -18,7 +18,8 @@ const data: MenuItem[] = [
   // },
   {
       path: AppRoute.MIS_MARCACIONES,
-      icon: 'how_to_reg',
+      icon: 'marcacion_icon',
+      svg : true,
       label: 'Mis Marcaciones',
   },
   // {

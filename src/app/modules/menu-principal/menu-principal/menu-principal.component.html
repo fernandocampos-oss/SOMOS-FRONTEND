@@ -16,15 +16,28 @@
       <div class="body">
         <!-- <mat-grid-list cols="1" rowHeight="480px" gutterSize="35px">
           <mat-grid-tile [colspan]="1" *ngFor="let pub of publicaciones"> -->
-            <div class="boxPublicacion" *ngFor="let pub of publicaciones">
-              <div class="descrPub">
-                <span>{{pub.titulo}}</span>
-                <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
+            <div *ngFor="let pub of publicaciones">
+              <div class="boxPublicacion" *ngIf="pub.idPublicacion != 30">
+                <div class="descrPub">
+                  <span>{{pub.titulo}}</span>
+                  <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
+                </div>
+                <div class="containerImg">
+                  <img class="imgInfo" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showPublicacion(pub)">
+                  <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
+                  <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
+                </div>
               </div>
-              <div class="containerImg">
-                <img class="imgInfo" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showPublicacion(pub)">
-                <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
-                <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
+              <div class="boxPublicacion" *ngIf="pub.idPublicacion == 30">
+                <div class="descrPub">
+                  <span>{{pub.titulo}}</span>
+                  <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
+                </div>
+                <div class="containerImg">
+                  <img class="imgInfo" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showEncuestaSimple(pub)">
+                  <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
+                  <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
+                </div>
               </div>
             </div>
           <!-- </mat-grid-tile>
@@ -54,7 +67,26 @@
           </div>
         </div>
       </div>
-  </div>   
+  </div>  
+  <div class="boxChange" *ngIf="showCountdown">
+    <div class="boxBorde boxSST-3" style="margin-right: 1%;">
+      <h4>{{fechas[identificador].descripcion}}</h4>
+      <div class="boxCounter">
+        <div class="boxTimer">
+          <span>{{daysLeft}}</span>
+          <h5>días</h5>
+        </div>
+        <div class="boxTimer">
+          <span>{{hoursLeft}}</span>
+          <h5>horas</h5>
+        </div>
+        <div class="boxTimer">
+          <span>{{minutesLeft}}</span>
+          <h5>minutos</h5>
+        </div>
+      </div>
+    </div>
+  </div> 
 </div>
 <div class="column1" *ngIf="interfazCelular">
     <div class="boxBorde boxBirth">
@@ -108,8 +140,7 @@
         <span>GDP</span>
       </div>
     </div> -->
-    <div class="boxChange">
-      <div class="boxBorde boxSST-3" style="margin-right: 1%;">
+    <div class="boxBorde boxSST-3" style="margin-right: 1%;">
         <h4>{{fechas[identificador].descripcion}}</h4>
         <div class="boxCounter">
           <div class="boxTimer">
@@ -126,20 +157,28 @@
           </div>
         </div>
       </div>
-      <div class="boxBorde boxPagos" (click)="open(4)">
+
+    <div class="boxBorde boxPagos2" (click)="open(4)">
+    </div>
+      <!-- <div class="boxBorde boxPagos" (click)="open(4)">
         <h4>Cronograma de Pagos 2023</h4>
         <img class="imgPayment" src="assets/images/payment_calendar.png">
-      </div>
-    </div>
+      </div> -->
 </div>
 <div class="column1" *ngIf="!interfazCelular">
   <div class="opcionesAcortadas" (click)="changeVisual(1)">
-
+    <mat-icon>home</mat-icon>
   </div>
   <div class="opcionesAcortadas" (click)="changeVisual(2)">
-
+    <img src="assets/images/cake.png">
+  </div>
+  <div class="opcionesAcortadas" (click)="open(1)">
+    <img src="assets/images/capacitacionesAzul.png">
   </div>
   <div class="opcionesAcortadas" (click)="changeVisual(3)">
-
+    <img src='assets/images/calendarioAzul.png'>
+  </div>
+  <div class="opcionesAcortadas" (click)="open(4)">
+    <img src="assets/images/monedasAzul.png">
   </div>
 </div>

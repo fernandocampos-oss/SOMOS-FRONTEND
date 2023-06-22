@@ -107,7 +107,7 @@ span.birthDescrp{
   border-radius: 11px;
   border-width: 2.5px;
 }
-.boxSST, .boxEncuesta, .boxSST-2{
+.boxSST, .boxEncuesta, .boxSST-2, .boxPagos2{
   cursor: pointer;
   font-weight: bold;
   align-content: center;
@@ -115,11 +115,19 @@ span.birthDescrp{
   color: #3c3c3b;
 }
 .boxSST {
-  height: 140px;
+  height: 7.5vw;
   width: 100%;
-  background-image: url(~src/assets/images/SST_logo.png);
+  background-image: url(~src/assets/images/svg/btnCapacitaciones.svg);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
+  background-position: center;
+}
+.boxPagos2{
+  height: 7.5vw;
+  width: 100%;
+  background-image: url(~src/assets/images/svg/btnCronogramaPagos.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
   background-position: center;
 }
 .boxEncuesta, .boxEncuestaRes{
@@ -140,6 +148,7 @@ span.birthDescrp{
   background-color: #8de4ff;
 }
 .boxSST-3, .boxPagos{
+  margin-bottom: 8px;
   float: left;
   padding: 2%;
   height: 100%;
@@ -267,10 +276,22 @@ mat-grid-list {
 }
 .opcionesAcortadas{
   cursor: pointer;
-  width: 13vw;
+  width: 12.5vw;
   height: 13vw;
-  background: #226bb2;
+  background: #FFFFFF;
+  border: #226bb2;
+  border-style:solid;
+  border-radius: 11px;
+  border-width: 2.5px;
   margin: 10px auto 10px auto;
+  mat-icon.material-icons{
+    font-size: 12vw;
+    color: #226bb2;
+  }
+  img{
+    padding: 7px;
+    height: 100%;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -350,7 +371,7 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 840px) and (max-width: 1279px) {
-  .boxSST{
+  .boxSST, .boxPagos2{
     height: 84px;
   }
   .boxPublicacion{
@@ -362,8 +383,16 @@ mat-grid-list {
     }
   }
 }
+@media screen and (min-width: 600px) and (max-width: 839px) {
+  .nomBirth{
+    font-size: 1.5vw;
+  }
+  .areaBirth{
+    font-size: 1.5vw;
+  }
+}
 @media screen and (min-width: 600px) and (max-width: 890px) {
-  .boxSST{
+  .boxSST, .boxPagos2{
     height: 84px;
   }
   .changeBirth{
@@ -376,6 +405,20 @@ mat-grid-list {
   }
 }
 @media screen and (max-width: 599px) {
+  .descrPub{
+    font-size: 2.4vw !important;
+  }
+  .boxCounter{
+    .boxTimer{
+      width: 15vw;
+      span{
+        font-size: 8.5vw;
+      }
+    }
+  }
+  .boxSST-3{
+    font-size: 3.5vw;
+  }
   .column1 {
     width: 15%;
   }

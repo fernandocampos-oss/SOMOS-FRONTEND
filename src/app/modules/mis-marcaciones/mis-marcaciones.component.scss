@@ -18,7 +18,9 @@ mat-grid-list {
       width: 100%;
     }
 }
-
+.matero-page-title {
+  padding: 20px 0px 20px 20px;
+}
 .matero-page-header {
   height: 100%;
 }
@@ -57,9 +59,17 @@ mat-grid-list {
   }
 }
 @media screen and (max-width: 445px) {
+  .buttonReturn{
+    font-size: 12px;
+  }
   .marcaciones{
     ::ng-deep .card{
       padding: 0px;
     }
+  }
+}
+@media screen and (max-width: 1279px) {
+  .search{
+    width: 100%;
   }
 }

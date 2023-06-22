@@ -22,3 +22,9 @@ mat-icon {
 .image {
   width: 180px;
 }
+
+mat-form-field.camposLogin{
+  ::ng-deep.mat-form-field-infix{
+    width:12px;
+  }
+}

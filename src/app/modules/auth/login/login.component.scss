@@ -28,3 +28,11 @@ mat-icon {
   border: 2px solid var(--color-MiEssalud);
   border-radius: 4px;
 }
+
+@media screen and (max-width: 370px) {
+  mat-form-field.camposLogin{
+    ::ng-deep.mat-form-field-infix{
+      width:12px;
+    }
+  }
+}

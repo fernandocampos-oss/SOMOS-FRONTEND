@@ -15,6 +15,8 @@ import { ConfirmRegisterEncuestaComponent } from './components/register-datos-en
 import { AdmPublicaciones } from './components/adm-publicaciones/adm-publicaciones.component';
 import { AddUpdatePublicacionComponent } from './components/adm-publicaciones/add-update-publicacion/add-update-publicacion.component';
 import { ShowPaymentCalendarComponent } from './components/show-payment-calendar/show-payment-calendar.component';
+import { EncuestaSimpleComponent } from './components/encuesta-simple/encuesta-simple.component';
+import { ConfirmEncuestaSimpleComponent } from './components/encuesta-simple/confirm-encuesta-simple/confirm-encuesta-simple.component';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { ShowPaymentCalendarComponent } from './components/show-payment-calendar
     ConfirmRegisterEncuestaComponent,
     AdmPublicaciones,
     AddUpdatePublicacionComponent,
-    ShowPaymentCalendarComponent
+    ShowPaymentCalendarComponent,
+    EncuestaSimpleComponent,
+    ConfirmEncuestaSimpleComponent
   ],
   imports: [
     CommonModule,

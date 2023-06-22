@@ -11,6 +11,7 @@ import { PublicacionResponse } from '@data/models/menu-principal/menu-publicacio
 import { AdmPublicaciones } from '../components/adm-publicaciones/adm-publicaciones.component';
 import { AuthService } from '@data/services';
 import { ShowPaymentCalendarComponent } from '../components/show-payment-calendar/show-payment-calendar.component';
+import { EncuestaSimpleComponent } from '../components/encuesta-simple/encuesta-simple.component';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -76,6 +77,7 @@ export class MenuPrincipalComponent implements OnInit {
       });
     this._menuService.getPublicaciones()
     .subscribe( (data) => {
+      console.log(data);
       this.publicaciones = data;
     }
     );
@@ -94,8 +96,10 @@ export class MenuPrincipalComponent implements OnInit {
       this.minutesLeft = 0;
     }
 
-    this._menuService.getEncuestaActiva().subscribe(data => {if (data == null){ this.encuestaRespondida= true }
-    else{ this.encuestaNombre = data.descripcion}});
+    // this._menuService.getEncuestaActiva().subscribe(data => {
+    //   console.log(data);
+    //   if (data == null){ this.encuestaRespondida= true }
+    // else{ this.encuestaNombre = data.descripcion}});
   }
 
   open(cuadro: number){
@@ -134,12 +138,12 @@ export class MenuPrincipalComponent implements OnInit {
         });
           break;
       case 4:
-      const dialogRef4: MatDialogRef<ShowPaymentCalendarComponent> = this.dialog.open(ShowPaymentCalendarComponent, {
-          disableClose: false,
-          minWidth: '350px',
-          maxWidth: '50%',
-          autoFocus: false,
-        });
+        const dialogRef4: MatDialogRef<ShowPaymentCalendarComponent> = this.dialog.open(ShowPaymentCalendarComponent, {
+            disableClose: false,
+            minWidth: '350px',
+            maxWidth: '50%',
+            autoFocus: false,
+          });
           break;
     }
   }
@@ -156,6 +160,18 @@ export class MenuPrincipalComponent implements OnInit {
       this.identificador = this.nearestDay(ahorasi);
       }
     );
+  }
+
+  showEncuestaSimple(element){
+    const dialogRef: MatDialogRef<EncuestaSimpleComponent> = this.dialog.open(EncuestaSimpleComponent, {
+      disableClose: true,
+      minWidth: '22em',
+      maxWidth:'40em',
+      autoFocus: false,
+      data:{
+        obj: element
+      }
+      });
   }
 
   showPublicacion(publicacionData){

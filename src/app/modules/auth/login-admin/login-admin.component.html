@@ -15,7 +15,7 @@
         [formGroup]="form"
         (ngSubmit)="login()"
       >
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="camposLogin">
           <mat-label>Usuario</mat-label>
           <input matInput formControlName="username" />
           <mat-icon matPrefix>person &nbsp;</mat-icon>
@@ -23,7 +23,7 @@
             >El usuario es obligatorio</mat-error
           >
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="camposLogin">
           <mat-label>Contraseña</mat-label>
           <input
             matInput

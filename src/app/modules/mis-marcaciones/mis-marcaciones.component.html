@@ -2,11 +2,12 @@
   <div class="matero-page-header">
     <div class="row">
       <div class="column1">
-        <h1 class="matero-page-title"><mat-icon >assignment</mat-icon> Mis Marcaciones<br>
-        <small class="mr-2">Podrás visualizar detalles de tus marcaciones</small><br>
-        <button mat-raised-button color="primary" class="search" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+        <h1 class="matero-page-title"><mat-icon >assignment</mat-icon> Mis Marcaciones</h1>
+        <!-- <h1 class="matero-page-title">Mis Marcaciones</h1> -->
+        <!-- <small class="mr-2">Podrás visualizar detalles de tus marcaciones</small><br> -->
+        <!-- <button mat-raised-button color="primary" class="search" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button> -->
         <!-- <span class="back" (click)="back()" > <mat-icon>reply</mat-icon> Regresar</span> -->
-        </h1>
+        
       </div>
     <div class="column2">
     <form [formGroup]="form" (ngSubmit)="Actualizar()" >
@@ -33,9 +34,14 @@
               <button mat-raised-button color="primary" class="search" type="submit">Buscar</button>
             </div>
           </mat-grid-tile>
+          <mat-grid-tile [colspan]="2">
+            <div class="mat-grid-tile-content" style="display:block">
+              <button mat-raised-button color="primary" class="search" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+            </div>
+          </mat-grid-tile>
         </mat-grid-list>
-        <mat-grid-list cols="1" rowHeight="60px" gutterSize="6px" *ngIf="form4Mobile">
-          <mat-grid-tile [colspan]="1">
+        <mat-grid-list cols="2" rowHeight="88px" gutterSize="6px" *ngIf="form4Mobile">
+          <mat-grid-tile [colspan]="2">
             <mat-form-field appearance="outline">
               <mat-label>Mes</mat-label>
               <mat-select [(value)]="mesElegido" formControlName="frmMesElegido">
@@ -43,13 +49,20 @@
               </mat-select>
             </mat-form-field>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="1">
+          <mat-grid-tile [colspan]="2">
             <mat-form-field appearance="outline">
               <mat-label>Año</mat-label>
               <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
                   <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
               </mat-select>
             </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list cols="2" rowHeight="60px" gutterSize="6px" *ngIf="form4Mobile">
+          <mat-grid-tile [colspan]="1">
+            <div class="mat-grid-tile-content" style="display:block">
+              <button mat-raised-button color="primary" class="search buttonReturn" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+            </div>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="1">
             <div class="mat-grid-tile-content" style="display:block">
