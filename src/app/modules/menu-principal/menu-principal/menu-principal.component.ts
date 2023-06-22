@@ -62,7 +62,6 @@ export class MenuPrincipalComponent implements OnInit {
               private _authService: AuthService) { }
 
   ngOnInit(): void {
-    //this.obtenerFecha();
     this.rol = this._authService.getRol();
     this.identificador = this.nearestDay(this.today);
     this.responsive.observe([
