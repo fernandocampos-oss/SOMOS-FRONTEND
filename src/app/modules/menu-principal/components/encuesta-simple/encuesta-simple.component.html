@@ -9,14 +9,14 @@
                     <div class="options">
                         <img src="assets/images/creditCard.png">
                         <!-- <img src="assets/images/creditCard.png"> -->
-                        <p>{{alternativas[0].descripcion}}</p>
+                        <p>Tarjetas para canje de alimentos y juguetes</p>
                     </div>
                 </div>
                 <div class="opcionesEncuestaSimple"
                 [ngClass]="{'confirm' : toggle2, 'option': !toggle2}">
                     <div class="options">
                         <img src="assets/images/moneyIcon.png">
-                        <p>{{alternativas[1].descripcion}}</p>
+                        <p>Abono en cuenta</p>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
     </div>
         <mat-dialog-actions>
                 <button mat-button mat-dialog-close>Cerrar</button>
-                <button mat-raised-button color="primary" (click)="sendConfirmation(seleccion)">Enviar</button>
+                <button mat-raised-button color="primary" (click)="sendConfirmation(seleccion)" [disabled]="seleccion == 0">Enviar</button>
         </mat-dialog-actions>
 </div>
 

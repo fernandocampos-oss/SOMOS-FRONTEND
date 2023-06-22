@@ -11,6 +11,8 @@ import { MenuPrincipalService } from '@data/services/menu-principal.service';
 })
 export class ConfirmEncuestaSimpleComponent implements OnInit {
 
+  votacion: string;
+
   constructor(private dialogRef: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private _snackbar: SnackbarService,
@@ -19,6 +21,12 @@ export class ConfirmEncuestaSimpleComponent implements OnInit {
               }
 
   ngOnInit(): void {
+    if(this.data.opcion == 1){
+      this.votacion = 'Tarjetas para canje de alimentos y juguetes';
+    }
+    if(this.data.opcion == 2){
+      this.votacion = 'Abono en cuenta';
+    }
   }
   closeAll(){
     this._menuService.sendEncuesta(1, this.getModelo()).subscribe((dataItem) => {});

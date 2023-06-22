@@ -1,58 +1,39 @@
-<div class="header"><b>Cronograma de Pagos - 2023</b></div>
-<!-- <span>Seleccione su tipo de Pago</span><br> -->
-<mat-button-toggle-group #group="matButtonToggleGroup" (change)="onValChange($event.value)" class="optPagos" value="2">
-    <mat-button-toggle value="1" aria-label="Text align left">
-      <span>Pensionistas D.L 20530</span>
-    </mat-button-toggle>
-    <mat-button-toggle value="2" aria-label="Text align center">
-      <span>D.LEG 276 - D.LEG 278</span>
-    </mat-button-toggle>
-    <mat-button-toggle value="3" aria-label="Text align right">
-      <span>D.LEG 1057 - CAS Regular</span>
-    </mat-button-toggle>
-</mat-button-toggle-group>
-
-
-<mat-grid-list cols="6" rowHeight="35px" gutterSize="0px" class="tablaContenidos">
-    <mat-grid-tile class="infoPago" [colspan]="2" [rowspan]="3">
-       <span>Mes</span>
-    </mat-grid-tile>
-    <mat-grid-tile class="infoPago" [colspan]="4">
-       <span>{{tipoContrato}}</span>
-    </mat-grid-tile>
-    <!-- <mat-grid-tile [colspan]="2">
-       <span class="txtCenter">Recepción máxima de información-GCGP</span>
-    </mat-grid-tile> -->
-    <mat-grid-tile class="infoPago" [colspan]="4">
-       <span>Fecha de Pago</span>
-    </mat-grid-tile>
-    <!-- <mat-grid class="infoPago"-tile [colspan]="1">
-       <span>Día</span>
-    </mat-grid>
-    <mat-grid-tile class="infoPago" [colspan]="1">
-       <span>Fecha</span>
-    </mat-grid-tile> -->
-    <mat-grid-tile class="infoPago" [colspan]="2">
-       <span>Día</span>
-    </mat-grid-tile>
-    <mat-grid-tile class="infoPago" [colspan]="2">
-       <span>Fecha</span>
-    </mat-grid-tile>
-    <div *ngFor="let items of data, index as i">
-        <mat-grid-tile [colspan]="2" class="periodosPago txtCenter">
-           <span>{{periodosPago[i]}}</span>
-        </mat-grid-tile>
-        <!-- <mat-grid-tile [colspan]="1">
-           <span>{{items.diaRec}}</span>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1">
-            <span>{{items.fecRec}}</span>
-        </mat-grid-tile> -->
-        <mat-grid-tile [colspan]="2" class="dataPago">
-            <span>{{items.diaPago}}</span>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="2" class="dataPago">
-            <span>{{items.fecPago}}</span>
-        </mat-grid-tile>
-    </div>
-</mat-grid-list>
+<div class="contenedor">
+   <div class="header"><b>Cronograma de Pagos - 2023</b></div>
+   <button mat-icon-button mat-dialog-close color="warn" class="closeButton" aria-label="Example icon button with a heart icon">
+     X
+   </button>
+   <!-- <span>Seleccione su tipo de Pago</span><br> -->
+   <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onValChange($event.value)" class="optPagos" value="2">
+       <mat-button-toggle value="1" aria-label="Text align left">
+         <span>Pensionistas D.L 20530</span>
+       </mat-button-toggle>
+       <mat-button-toggle value="2" aria-label="Text align center">
+         <span>D.LEG 276 - D.LEG 278</span>
+       </mat-button-toggle>
+       <mat-button-toggle value="3" aria-label="Text align right">
+         <span>D.LEG 1057 - CAS Regular</span>
+       </mat-button-toggle>
+   </mat-button-toggle-group>
+   
+   
+   <mat-grid-list cols="6" rowHeight="35px" gutterSize="0px" class="tablaContenidos">
+       <div *ngFor="let items of data, index as i">
+           <mat-grid-tile [colspan]="2" class="periodosPago txtCenter">
+              <span>{{periodosPago[i]}}</span>
+           </mat-grid-tile>
+           <!-- <mat-grid-tile [colspan]="1">
+              <span>{{items.diaRec}}</span>
+           </mat-grid-tile>
+           <mat-grid-tile [colspan]="1">
+               <span>{{items.fecRec}}</span>
+           </mat-grid-tile> -->
+           <mat-grid-tile [colspan]="4" class="dataPago">
+               <span>{{items.diaPago}} - {{items.fecPago.split('/')[0]}}</span>
+           </mat-grid-tile>
+           <!-- <mat-grid-tile [colspan]="2" class="dataPago">
+               <span>{{items.fecPago}}</span>
+           </mat-grid-tile> -->
+       </div>
+   </mat-grid-list>
+</div>

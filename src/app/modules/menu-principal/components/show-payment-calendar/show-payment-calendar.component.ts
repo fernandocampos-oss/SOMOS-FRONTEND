@@ -33,7 +33,7 @@ export class ShowPaymentCalendarComponent implements OnInit {
 
   tipoContrato: string ='Selecciona una opción';
 
-  periodosPago: string[] = ['Enero','Escolaridad','Febrero','Marzo','Abril','Mayo','Junio','Gratificación - Julio','Julio','Agosto',
+  periodosPago: string[] = ['Enero','Escolaridad - Febrero','Febrero','Marzo','Abril','Mayo','Junio','Gratificación - Julio','Julio','Agosto',
                             'Setiembre','Octubre','Noviembre','Gratificación - Diciembre','Diciembre'];
 
   pagosPensionistas: Calendario[] = [

@@ -2,6 +2,14 @@
     text-align: center;
     margin: 0 0 2% 0;
 }
+.contenedor{
+    position: relative;
+    .closeButton{
+        position: absolute;
+        right: -14px;
+        top: -28px;
+    }
+}
 .periodosPago{
     background: var(--color-subBordes);
     font-weight: 700;
