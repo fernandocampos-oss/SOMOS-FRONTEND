@@ -98,7 +98,6 @@ export class RegistroComponent implements OnInit {
         .subscribe((data) => this._openConfirmTokenDialog(data));
     }
     else {
-      this._notification.warning('Revisar los campos ingresados');
       this.form.markAllAsTouched();
     }
   }
@@ -123,7 +122,7 @@ export class RegistroComponent implements OnInit {
   private _createForm() {
     this.form = this._fb.group({
       numeroDocumento: [null, Validators.required],
-      codigoPlanilla: [null, Validators.required, Validators.minLength(8), Validators.maxLength(8)],
+      codigoPlanilla: [null, Validators.required],
       numeroCelular: [null, Validators.required],
       fechaNacimiento: [null, Validators.required],
       correo: [null, Validators.required],
