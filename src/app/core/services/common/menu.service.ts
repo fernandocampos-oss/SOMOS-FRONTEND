@@ -23,6 +23,11 @@ const data: MenuItem[] = [
       label: 'Mis Marcaciones',
   },
   // {
+  //     label: 'Calendario Pagos',
+  //     type: 2,
+  //     background: 'btnCronogramaPagos.png',
+  // },
+  // {
   //   path: AppRoute.ADMINISTRAR_USUARIOS,
   //   icon: 'settings',
   //   label: 'Administrar Usuarios',

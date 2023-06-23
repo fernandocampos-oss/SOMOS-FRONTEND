@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { AppRoute } from '../data/constants/app-route.constant';
-import { MarcacionTrabajadorModule } from '../modules/marcacion-trabajador/marcacion-trabajador.module';
-import { DjConflictoInteresComponent } from '../modules/dj-conflicto-interes/dj-conflicto-interes.component';
 import { MenuPrincipalAdminComponent } from '@modules/menu-principal-admin/menu-principal-admin/menu-principal-admin.component';
 
 export const ROUTES: Routes = [
@@ -89,13 +87,6 @@ export const ROUTES: Routes = [
       //       (m) => m.DdjjConflictosInteresModule
       //     ),
       // },
-      {
-        path: AppRoute.DDJJ_CONFLICTO_OTRO,
-        loadChildren: () =>
-          import('../modules/dj-conflicto-interes/dj-conflicto-interes.module').then(
-            (m) => m.DjConflictoInteresModule
-          ),
-      },
       // {
       //   path: AppRoute.ADJUNTAR_DOCUMENTOS,
       //   loadChildren: () =>

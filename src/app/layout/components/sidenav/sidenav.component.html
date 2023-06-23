@@ -14,16 +14,19 @@
     </div>  
     <mat-nav-list>
       <ng-container>
-        <mat-list-item
-          *ngFor="let item of menuItemList"
-          routerLinkActive="active"
-          [routerLink]="['/' + item.path]"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <mat-icon *ngIf ="!item.svg" mat-list-icon>{{ item.icon }}</mat-icon>
-          <mat-icon *ngIf ="item.svg" mat-list-icon svgIcon={{item.icon}} class="icon"></mat-icon>
-          <span class="option" matLine>{{ item.label }} </span>
-        </mat-list-item>
+        <div *ngFor="let item of menuItemList">
+          <mat-list-item *ngIf="item.type==undefined"
+            routerLinkActive="active"
+            [routerLink]="['/' + item.path]"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <mat-icon *ngIf ="!item.svg" mat-list-icon>{{ item.icon }}</mat-icon>
+            <mat-icon *ngIf ="item.svg" mat-list-icon svgIcon={{item.icon}} class="icon"></mat-icon>
+            <span class="option" matLine>{{ item.label }} </span>
+          </mat-list-item>
+          <!-- <mat-list-item *ngIf="item.type==2" class="listItemImage" [ngStyle]="{'background-image': 'url('+item.background+')'}" (click)="open(item.label)">
+          </mat-list-item> -->
+        </div>
       </ng-container>
     </mat-nav-list>
   </div>

@@ -68,9 +68,8 @@
         </div>
       </div>
   </div>  
-  <div class="boxChange" *ngIf="showCountdown">
-    <div class="boxBorde boxSST-3" style="margin-right: 1%;">
-      <h4>{{fechas[identificador].descripcion}}</h4>
+  <div class="boxBorde boxTemporizador" *ngIf="showCountdown">
+    <span>Próximos eventos</span>
       <div class="boxCounter">
         <div class="boxTimer">
           <span>{{daysLeft}}</span>
@@ -85,8 +84,8 @@
           <h5>minutos</h5>
         </div>
       </div>
+      <span>{{fechas[identificador].descripcion}}</span>
     </div>
-  </div> 
 </div>
 <div class="column1" *ngIf="interfazCelular">
     <div class="boxBorde boxBirth">
@@ -129,8 +128,9 @@
       </div>
     </div> -->
 
-    <div class="boxBorde boxSST-3" style="margin-right: 1%;">
-        <h4>{{fechas[identificador].descripcion}}</h4>
+    <div class="boxBorde boxTemporizador">
+    
+      <span>Próximos eventos</span>
         <div class="boxCounter">
           <div class="boxTimer">
             <span>{{daysLeft}}</span>
@@ -145,12 +145,13 @@
             <h5>minutos</h5>
           </div>
         </div>
+        <span>{{fechas[identificador].descripcion}}</span>
       </div>
 
     <div class="boxBorde boxPagos2" (click)="open(4)">
     </div>
     <div class="boxBorde boxSST-2">
-        <span>En caso de consulta, comunicarse con: sgrhs.bienestar@essalud.gob.pe</span>
+        <span>Consulta: sgrhs.bienestar@essalud.gob.pe</span>
     </div>
       <!-- <div class="boxBorde boxPagos" (click)="open(4)">
         <h4>Cronograma de Pagos 2023</h4>

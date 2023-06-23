@@ -10,6 +10,7 @@ import { UsuarioService } from '../../../data/services/usuario.service';
 import { ZonaService } from '@data/services';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ChangePasswComponent } from './change-passw/change-passw/change-passw.component';
+import { ShowPaymentCalendarComponent } from '@modules/menu-principal/components/show-payment-calendar/show-payment-calendar.component';
 
 @Component({
   selector: 'app-sidenav',
@@ -32,7 +33,7 @@ export class SidenavComponent implements OnInit {
               private _userService   : UsuarioService) {
     this.matIconRegistry.addSvgIcon("remote_menu",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/remote_menu.svg"));
     this.matIconRegistry.addSvgIcon("ddjj",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/ddjj.svg"));
-    this.matIconRegistry.addSvgIcon("marcacion_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/marcacionIcon.svg"));
+    this.matIconRegistry.addSvgIcon("marcacion_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/carneMarcacionIcon.svg"));
     this.matIconRegistry.addSvgIcon("check-access",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/check-access.svg"));
   }
 
@@ -80,4 +81,16 @@ export class SidenavComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => { });
   }
+  // open(option: string){
+  //   switch (option) {
+  //     case 'Calendario Pagos':
+  //       const dialogRef: MatDialogRef<ShowPaymentCalendarComponent> = this.dialog.open(ShowPaymentCalendarComponent, {
+  //         disableClose: false,
+  //         minWidth: '350px',
+  //         maxWidth: '50%',
+  //         autoFocus: false,
+  //       });
+  //       break;
+  //   }
+  // }
 }
