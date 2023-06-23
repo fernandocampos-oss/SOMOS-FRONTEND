@@ -17,6 +17,7 @@ import { AddUpdatePublicacionComponent } from './components/adm-publicaciones/ad
 import { ShowPaymentCalendarComponent } from './components/show-payment-calendar/show-payment-calendar.component';
 import { EncuestaSimpleComponent } from './components/encuesta-simple/encuesta-simple.component';
 import { ConfirmEncuestaSimpleComponent } from './components/encuesta-simple/confirm-encuesta-simple/confirm-encuesta-simple.component';
+import { DialogTempComponent } from './components/encuesta-simple/dialog-temp/dialog-temp.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { ConfirmEncuestaSimpleComponent } from './components/encuesta-simple/con
     AddUpdatePublicacionComponent,
     ShowPaymentCalendarComponent,
     EncuestaSimpleComponent,
-    ConfirmEncuestaSimpleComponent
+    ConfirmEncuestaSimpleComponent,
+    DialogTempComponent
   ],
   imports: [
     CommonModule,

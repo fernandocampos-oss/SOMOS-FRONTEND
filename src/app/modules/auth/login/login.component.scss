@@ -21,6 +21,7 @@ mat-icon {
 
 .image {
   width: 178px;
+  height: 187px;
   margin-bottom: 10px;
 }
 
@@ -29,6 +30,20 @@ mat-icon {
   border-radius: 4px;
 }
 
+.boxConsulta{
+  font-weight: bold;
+  align-content: center;
+  display: flex;
+  text-align: center;
+  padding: 10px 10px 0px;
+  width: 100%;
+  cursor: auto;
+  font-size: 12px;
+  color: #226bb2;
+  span{
+     width: 100%;
+  }
+}
 @media screen and (max-width: 370px) {
   mat-form-field.camposLogin{
     ::ng-deep.mat-form-field-infix{

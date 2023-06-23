@@ -68,7 +68,6 @@ export class MenuPrincipalComponent implements OnInit {
       Breakpoints.XSmall
       ])
       .subscribe(result => {
-        console.log(result);
         this.interfazCelular = true;
         if (result.matches) {
           this.interfazCelular = false;
@@ -76,7 +75,6 @@ export class MenuPrincipalComponent implements OnInit {
       });
     this._menuService.getPublicaciones()
     .subscribe( (data) => {
-      console.log(data);
       this.publicaciones = data;
     }
     );
@@ -110,18 +108,18 @@ export class MenuPrincipalComponent implements OnInit {
           autoFocus: false,
         });
           break;
-      case 2:
-        const dialogRef2: MatDialogRef<RegisterDatosEncuestaComponent> = this.dialog.open(RegisterDatosEncuestaComponent, {
-          disableClose: true,
-          minWidth: '22em',
-          maxWidth:'40em',
-          maxHeight:'50em',
-          autoFocus: false,
-        });
-        dialogRef2.afterClosed().subscribe(result => {
-          this._menuService.getEncuestaActiva().subscribe(data => {if (data == null) this.encuestaRespondida= true });
-        });
-          break;
+      // case 2:
+      //   const dialogRef2: MatDialogRef<RegisterDatosEncuestaComponent> = this.dialog.open(RegisterDatosEncuestaComponent, {
+      //     disableClose: true,
+      //     minWidth: '22em',
+      //     maxWidth:'40em',
+      //     maxHeight:'50em',
+      //     autoFocus: false,
+      //   });
+      //   dialogRef2.afterClosed().subscribe(result => {
+      //     this._menuService.getEncuestaActiva().subscribe(data => {if (data == null) this.encuestaRespondida= true });
+      //   });
+      //     break;
       case 3:
         const dialogRef3: MatDialogRef<AdmPublicaciones> = this.dialog.open(AdmPublicaciones, {
           disableClose: false,
@@ -145,20 +143,6 @@ export class MenuPrincipalComponent implements OnInit {
           });
           break;
     }
-  }
-
-  obtenerFecha(){
-    var ahorasi
-    var str = ajax.getJSON('http://worldtimeapi.org/api/timezone/America/Lima');
-    fetch("http://worldtimeapi.org/api/timezone/America/Lima",{method: "GET",mode: "cors"})
-    .then((resp) => resp.json())
-    .then((resultado)=> {
-      var fecha = resultado.datetime.toString().split('-')[1] + '-' + resultado.datetime.toString().split('-')[2].split('T')[0] + '-' + resultado.datetime.toString().split('-')[0]
-      var hora = resultado.datetime.split('T')[1].split('.')[0];
-      ahorasi = new Date(`${fecha}-${hora}`);
-      this.identificador = this.nearestDay(ahorasi);
-      }
-    );
   }
 
   showEncuestaSimple(element){

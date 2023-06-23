@@ -9,24 +9,24 @@
                     <div class="options">
                         <img src="assets/images/creditCard.png">
                         <!-- <img src="assets/images/creditCard.png"> -->
-                        <p>Tarjetas para canje de alimentos y juguetes</p>
+                        <p>{{alternativas[0].descripcion}}</p>
                     </div>
                 </div>
                 <div class="opcionesEncuestaSimple"
                 [ngClass]="{'confirm' : toggle2, 'option': !toggle2}">
                     <div class="options">
                         <img src="assets/images/moneyIcon.png">
-                        <p>Abono en cuenta</p>
+                        <p>{{alternativas[1].descripcion}}</p>
                     </div>
                 </div>
             </div>
             <mat-grid-list cols="2" rowHeight="48px" gutterSize="6px">
                 <mat-grid-tile [colspan]="1">
-                    <button mat-raised-button color="primary"
+                    <button class="selector" mat-raised-button color="primary"
                     (click)="enableDisableRule(1)">Elegir</button>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="1">
-                    <button mat-raised-button color="primary"
+                    <button class="selector" mat-raised-button color="primary"
                     (click)="enableDisableRule(2)">Elegir</button>
                 </mat-grid-tile>
             </mat-grid-list>
@@ -34,7 +34,7 @@
     </div>
         <mat-dialog-actions>
                 <button mat-button mat-dialog-close>Cerrar</button>
-                <button mat-raised-button color="primary" (click)="sendConfirmation(seleccion)" [disabled]="seleccion == 0">Enviar</button>
+                <button mat-raised-button color="primary" (click)="sendConfirmation(seleccion)">Enviar</button>
         </mat-dialog-actions>
 </div>
 

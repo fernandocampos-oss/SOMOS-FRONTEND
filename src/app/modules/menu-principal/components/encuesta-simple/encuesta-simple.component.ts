@@ -33,6 +33,7 @@ export class EncuestaSimpleComponent implements OnInit {
         this.mostrar = false;
       }
       else{
+        console.log(data);
         const dataObj = Object(data);
         this.datosEncuesta = data;
         this.alternativas = dataObj.preguntas[0].alternativas;

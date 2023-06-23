@@ -12,10 +12,6 @@ export class MenuPrincipalService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  getDiaAhora(): any{
-    return fetch("http://worldtimeapi.org/api/timezone/America/Lima",{method: "GET",mode: "cors"}).then((resp) => resp.json()).then((resultado)=> (console.log(resultado)));
-  }
-
   newPublicacion(model: PublicacionRequest){
     const url = `${URL_BASE}/publicaciones`;
     return this._httpClient.post(url,model);

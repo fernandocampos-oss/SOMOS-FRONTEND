@@ -17,7 +17,7 @@
       (ngSubmit)="login()"
     >
       <mat-form-field appearance="outline" class="camposLogin">
-        <mat-label>Usuario</mat-label>
+        <mat-label>Número de documento</mat-label>
         <input matInput formControlName="username" />
         <mat-icon matPrefix>person &nbsp;</mat-icon>
         <mat-error *ngIf="usuarioField.hasError('required')"
@@ -67,5 +67,8 @@
 
 
     </form>
+  </div>
+  <div class="boxConsulta">
+      <span>En caso de consulta, comunicarse con: sgrhs.bienestar@essalud.gob.pe</span>
   </div>
 </div>
