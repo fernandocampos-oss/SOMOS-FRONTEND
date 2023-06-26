@@ -62,8 +62,10 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Celular</mat-label>
-          <input matInput required formControlName="numeroCelular" />
+          <input matInput maxlength="9" required formControlName="numeroCelular"/>
           <mat-error *ngIf="celularField.hasError('required')">El campo es obligatorio</mat-error>
+          <mat-error *ngIf="celularField.hasError('minlength')">El número de celular debe tener 9 digitos</mat-error>
+          <mat-error *ngIf="celularField.hasError('pattern')">El número de celular debe tener solo números</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Contraseña</mat-label>
