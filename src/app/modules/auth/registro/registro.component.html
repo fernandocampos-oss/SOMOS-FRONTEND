@@ -15,7 +15,11 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Código Planilla SAP</mat-label>
-          <input matInput required formControlName="codigoPlanilla" />
+          <input matInput maxlength="8" required formControlName="codigoPlanilla"
+          (focus)="showHelpCPlanilla = true"
+          (focusout)="showHelpCPlanilla = false"/>
+          <p *ngIf="showHelpCPlanilla" class="descriptor">El código de planilla debe contener 8 caracteres, de tener 7, agregarle un "1" al principio</p>
+          <button type="button" mat-icon-button matSuffix matTooltip="Ayuda con código de planilla"><mat-icon>info</mat-icon></button>
           <mat-error *ngIf="codigoPlanillaSapField.hasError('required')">El campo es obligatorio</mat-error>
         </mat-form-field>
 

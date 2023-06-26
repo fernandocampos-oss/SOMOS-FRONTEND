@@ -26,6 +26,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class RegistroComponent implements OnInit {
   form: FormGroup;
+  showHelpCPlanilla = false;
   form4Mobile = false;
   routeLogin = `/${AppRoute.AUTH}/${AppRoute.LOGIN}`;
   sedes: Sede[] = [];
@@ -91,13 +92,19 @@ export class RegistroComponent implements OnInit {
   //     .subscribe((params) => (this.sedes = params[KeyParam.SEDES]));
   // }
   onSave() {
+    console.log(this.form.value.codigoPlanilla);
+    console.log(this.form.value.codigoPlanilla.length);
     if (this.form.valid && this._validatePasswordMatch()) {
       this._authService
         .register(this.form.value)
         .pipe(untilDestroyed(this))
         .subscribe((data) => this._openConfirmTokenDialog(data));
     }
+    else if(this.form.value.codigoPlanilla.length != 8){
+      this._notification.warning('Codigo de planilla incorrecto, de tener 7 dígitos, agregarle un "1" al inicio');
+    }
     else {
+      this._notification.warning('Revisar los campos ingresados');
       this.form.markAllAsTouched();
     }
   }
@@ -122,7 +129,7 @@ export class RegistroComponent implements OnInit {
   private _createForm() {
     this.form = this._fb.group({
       numeroDocumento: [null, Validators.required],
-      codigoPlanilla: [null, Validators.required],
+      codigoPlanilla: [null, [Validators.required, Validators.minLength(8)]],
       numeroCelular: [null, Validators.required],
       fechaNacimiento: [null, Validators.required],
       correo: [null, Validators.required],

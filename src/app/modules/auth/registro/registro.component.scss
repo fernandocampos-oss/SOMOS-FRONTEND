@@ -13,6 +13,25 @@
   }
 }
 
+.descriptor {
+  width: 100%;
+  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  background: #70d4ff;
+  font-weight: 600;
+  text-align: justify;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 5px 5px 11px -9px black;
+  top: 2.5rem;
+  left: -1rem;
+}
+
+mat-icon {
+  color: #a4a4a4;
+  margin-right: 10px;
+}
 .column1 {
   float: left;
   width: 50%;
