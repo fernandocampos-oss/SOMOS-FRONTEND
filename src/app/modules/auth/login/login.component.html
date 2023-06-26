@@ -17,7 +17,7 @@
       (ngSubmit)="login()"
     >
       <mat-form-field appearance="outline" class="camposLogin">
-        <mat-label>Número de documento</mat-label>
+        <mat-label>Documento de identidad</mat-label>
         <input matInput formControlName="username" />
         <mat-icon matPrefix>person &nbsp;</mat-icon>
         <mat-error *ngIf="usuarioField.hasError('required')"
