@@ -31,6 +31,8 @@ export class RegistroComponent implements OnInit {
   routeLogin = `/${AppRoute.AUTH}/${AppRoute.LOGIN}`;
   sedes: Sede[] = [];
   maxFechaNacimiento = AppConfig.MAX_FECHA_NACIMIENTO;
+  hidePassword = true;
+  hidePasswordConfirmation = true;
 
   get numeroDocumentoField() {
     return this.form.get('numeroDocumento');
@@ -93,6 +95,7 @@ export class RegistroComponent implements OnInit {
   // }
   onSave() {
     console.log(this.form.value.numeroCelular[0]);
+    console.log(this.celularField.value);
     console.log(this.form.value.codigoPlanilla);
     console.log(this.form.value.codigoPlanilla.length);
     if (this.form.valid && this._validatePasswordMatch()) {
@@ -103,9 +106,6 @@ export class RegistroComponent implements OnInit {
     }
     else if(this.form.value.codigoPlanilla.length != 8){
       this._notification.warning('Codigo de planilla incorrecto, de tener 7 dígitos, agregarle un "1" al inicio');
-    }
-    else if(this.form.value.numeroCelular.length != 9 || this.form.value.numeroCelular[0] != '9'){
-      this._notification.warning('Número de celular no valido');
     }
     else {
       this._notification.warning('Revisar los campos ingresados');
@@ -134,12 +134,12 @@ export class RegistroComponent implements OnInit {
     this.form = this._fb.group({
       numeroDocumento: [null, Validators.required],
       codigoPlanilla: [null, [Validators.required, Validators.minLength(8)]],
-      numeroCelular: [null, [Validators.required, Validators.minLength(9), Validators.pattern("^[0-9]*$")]],
+      numeroCelular: [null, [Validators.required, Validators.pattern("^9([0-9]){8}$")]],
       fechaNacimiento: [null, Validators.required],
       correo: [null, Validators.required],
      // idSede: [null, Validators.required],
       password: [null, Validators.required],
-      // password: [null, [Validators.required, Validators.pattern("^[0-9]*[a-z]+[0-9]+$")]],
+      // password: [null, [Validators.required, Validators.pattern("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z])$")]],
       confirmarPassword: [null, Validators.required],
     });
   }

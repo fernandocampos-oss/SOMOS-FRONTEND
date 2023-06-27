@@ -15,12 +15,12 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Código Planilla SAP</mat-label>
-          <input matInput maxlength="8" required formControlName="codigoPlanilla"
-          (focus)="showHelpCPlanilla = true"
-          (focusout)="showHelpCPlanilla = false"/>
-          <p *ngIf="showHelpCPlanilla" class="descriptor">El código de planilla debe contener 8 caracteres, de tener 7, agregarle un "1" al principio</p>
-          <button type="button" mat-icon-button matSuffix matTooltip="Ayuda con código de planilla"><mat-icon>info</mat-icon></button>
+          <input matInput maxlength="8" required formControlName="codigoPlanilla"/>
+          <img *ngIf="showHelpCPlanilla" class="descriptor" src="assets/images/codigoPlanilla.png" alt="Ayuda codigoPlanilla"/>
+          <!-- <p *ngIf="showHelpCPlanilla" class="descriptor">El código de planilla debe contener 8 caracteres, de tener 7, agregarle un "1" al principio</p> -->
+          <button type="button" mat-icon-button matSuffix matTooltip="Ayuda con código de planilla" (click)="showHelpCPlanilla = !showHelpCPlanilla"><mat-icon>info</mat-icon></button>
           <mat-error *ngIf="codigoPlanillaSapField.hasError('required')">El campo es obligatorio</mat-error>
+          <mat-error *ngIf="codigoPlanillaSapField.hasError('minlength')">El código de planilla debe tener un "1" al principio y ser de 8 caracteres</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -64,17 +64,22 @@
           <mat-label>Celular</mat-label>
           <input matInput maxlength="9" required formControlName="numeroCelular"/>
           <mat-error *ngIf="celularField.hasError('required')">El campo es obligatorio</mat-error>
-          <mat-error *ngIf="celularField.hasError('minlength')">El número de celular debe tener 9 digitos</mat-error>
-          <mat-error *ngIf="celularField.hasError('pattern')">El número de celular debe tener solo números</mat-error>
+          <mat-error *ngIf="celularField.hasError('pattern')">El número de celular no es válido</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Contraseña</mat-label>
-          <input matInput type="password" required formControlName="password" />
+          <input matInput [type]="hidePassword ? 'password' : 'text'" required formControlName="password" />
+          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" matTooltip="Mostrar contraseña">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
           <mat-error *ngIf="claveField.hasError('required')">El campo es obligatorio</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Confirmar Contraseña</mat-label>
-          <input matInput type="password" required formControlName="confirmarPassword" />
+          <input matInput [type]="hidePasswordConfirmation ? 'password' : 'text'" required formControlName="confirmarPassword" />
+          <button type="button" mat-icon-button matSuffix (click)="hidePasswordConfirmation = !hidePasswordConfirmation" matTooltip="Mostrar contraseña">
+            <mat-icon>{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
           <mat-error *ngIf="confirmarClaveField.hasError('required')">El campo es obligatorio</mat-error>
         </mat-form-field>
       </div>
