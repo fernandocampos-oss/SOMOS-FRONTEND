@@ -10,18 +10,20 @@
         <h2 class="auth__subtitle">Datos Generales</h2>
         <mat-form-field appearance="outline">
           <mat-label>Documento de identidad</mat-label>
-          <input matInput required formControlName="numeroDocumento" />
+          <input matInput required formControlName="numeroDocumento"/>
           <mat-error *ngIf="numeroDocumentoField.hasError('required')">El campo es obligatorio</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Código Planilla SAP</mat-label>
-          <input matInput maxlength="8" required formControlName="codigoPlanilla"/>
+          <input matInput maxlength="8" required formControlName="codigoPlanilla" (focus)="showHelpCPlanilla = true" (focusout)="showHelpCPlanilla = false"/>
+          <mat-icon matSuffix style="cursor: pointer">info</mat-icon>
           <img *ngIf="showHelpCPlanilla" class="descriptor" src="assets/images/codigoPlanilla.png" alt="Ayuda codigoPlanilla"/>
           <!-- <p *ngIf="showHelpCPlanilla" class="descriptor">El código de planilla debe contener 8 caracteres, de tener 7, agregarle un "1" al principio</p> -->
-          <button type="button" mat-icon-button matSuffix matTooltip="Ayuda con código de planilla" (click)="showHelpCPlanilla = !showHelpCPlanilla"><mat-icon>info</mat-icon></button>
+          <!-- <button type="button" mat-icon-button matSuffix matTooltip="Ayuda con código de planilla" (click)="showHelpCPlanilla = !showHelpCPlanilla"><mat-icon>info</mat-icon></button> -->
           <mat-error *ngIf="codigoPlanillaSapField.hasError('required')">El campo es obligatorio</mat-error>
-          <mat-error *ngIf="codigoPlanillaSapField.hasError('minlength')">El código de planilla debe tener un "1" al principio y ser de 8 caracteres</mat-error>
+          <mat-error *ngIf="codigoPlanillaSapField.hasError('minlength') && form4Mobile == false">El código de planilla debe ser de 8 dígitos, con un "1" al inicio</mat-error>
         </mat-form-field>
+        <mat-error class="mensajeEmergente" *ngIf="codigoPlanillaSapField.hasError('minlength') && form4Mobile == true">El código de planilla debe ser de 8 dígitos, con un "1" al inicio</mat-error>
 
         <mat-form-field appearance="outline">
           <mat-label>Fecha Nacimiento</mat-label>
