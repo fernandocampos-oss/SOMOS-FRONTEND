@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogService, NotificationService } from '@core/services';
-import { AppRoute } from '@data/constants';
+import { ConstantesGr } from '@data/constants/constantes-gr.constant';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
@@ -39,11 +39,11 @@ export class MoveRequirementComponent implements OnInit {
     this.data.obj.gerenciaReceptor = this.form_cambio.value.frmArea;
     console.log(this.data.moreData);
 
-    this.services.derivarRequerimiento(AppRoute.ESTADO_REQUERIMIENTO_DERIVADO, this.data.obj.motivo, this.data.obj.gerenciaReceptor, this.data.obj.idRequerimiento).subscribe(data => {
+    this.services.derivarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_DERIVADO, this.data.obj.motivo, this.data.obj.gerenciaReceptor, this.data.obj.idRequerimiento).subscribe(data => {
       if (data) {
-        this._notification.success("Requerimiento derivado");        
+        this._notification.success("El Requerimiento fue derivado correctamente");        
       } else {
-        this._notification.error("Error al derivar requerimento")
+        this._notification.error("Error al derivar Requerimento")
       }
 
     });

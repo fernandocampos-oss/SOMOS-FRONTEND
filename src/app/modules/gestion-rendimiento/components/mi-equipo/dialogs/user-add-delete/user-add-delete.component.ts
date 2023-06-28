@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 import { Personal } from '@data/models/gestion-rendimiento/personal';
 import { Cargo } from '@data/models/gestion-rendimiento/cargo';
 import { Dependencia } from '@data/models/gestion-rendimiento/dependencia';
-import { AppRoute } from '@data/constants';
+import { ConstantesGr } from '@data/constants/constantes-gr.constant';
 
 @Component({
   selector: 'app-user-add-delete',
@@ -76,7 +76,6 @@ export class UserAddDeleteComponent implements OnInit {
   }
 
   // loadIntegrantes() {
-  //   console.log("sadas");
   //   this.services.ListarIntegrantes().subscribe((dataItem) => {
   //     if (dataItem.codigo == 1) {
   //       this.integrantes = dataItem.data
@@ -89,10 +88,9 @@ export class UserAddDeleteComponent implements OnInit {
 
   loadIntegrantes() {
     console.log("memoria dependencia=2");
-
     let idDependencia = 2;
 
-    this.services.listarPersonalPorDependenciaAsignado(idDependencia, AppRoute.ESTADO_PERSONAL_ASIGNADO).subscribe((data) => {
+    this.services.listarPersonalPorDependenciaAsignado(idDependencia, ConstantesGr.ESTADO_PERSONAL_ASIGNADO).subscribe((data) => {
       if (data) {
         this.integrantes = data
       } else {
@@ -165,10 +163,10 @@ export class UserAddDeleteComponent implements OnInit {
           p.nombres = i.nombres;
           p.apellidoPaterno = i.apellidoPaterno;
           p.apellidoMaterno = i.apellidoMaterno;
-          p.estado = AppRoute.ESTADO_PERSONAL_ASIGNADO;
+          p.estado = ConstantesGr.ESTADO_PERSONAL_ASIGNADO;
 
           let cargo = new Cargo();
-          cargo.idCargo = i.cargo.idCargo;;
+          cargo.idCargo = i.cargo.idCargo;
       
           let dependencia = new Dependencia();
           dependencia.idDependencia = i.dependencia.idDependencia;

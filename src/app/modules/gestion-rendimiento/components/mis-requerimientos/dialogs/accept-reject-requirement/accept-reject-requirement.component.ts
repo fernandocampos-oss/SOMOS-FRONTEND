@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
-import { AppRoute } from '@data/constants';
+import { ConstantesGr } from '@data/constants/constantes-gr.constant';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
@@ -23,7 +23,8 @@ export class AcceptRejectRequirementComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.requerimiento = this.data.obj.nombreRequerimiento;
+    console.log(this.data.obj);
+    this.requerimiento = this.data.obj.nombre;
     this.reject = this.data.rechazar;
     if (this.reject == true) {
       this.createForm();
@@ -38,7 +39,7 @@ export class AcceptRejectRequirementComponent implements OnInit {
 
   aprobarReq() {
     // this.data.obj.estado = 'APROBADO'; Descomentar cuando se quiera ver el flujo en local
-    this.services.aprobarRequerimiento(AppRoute.ESTADO_REQUERIMIENTO_APROBADO, this.data.obj.idRequerimiento).subscribe(data => {
+    this.services.aprobarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_APROBADO, this.data.obj.idRequerimiento).subscribe(data => {
       if (data) {
         this._notification.success("Requerimiento aprobado");        
       } else {
@@ -52,7 +53,7 @@ export class AcceptRejectRequirementComponent implements OnInit {
     // this.data.obj.estado = 'RECHAZADO'; Descomentar cuando se quiera ver el flujo en local
     this.data.obj.motivo = this.form.value.frmMotivo;
 
-    this.services.rechazarRequerimiento(AppRoute.ESTADO_REQUERIMIENTO_RECHAZADO, this.data.obj.motivo, this.data.obj.idRequerimiento).subscribe(data => {
+    this.services.rechazarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_RECHAZADO, this.data.obj.motivo, this.data.obj.idRequerimiento).subscribe(data => {
       if (data) {
         this._notification.success("Requerimiento rechazado");        
       } else {

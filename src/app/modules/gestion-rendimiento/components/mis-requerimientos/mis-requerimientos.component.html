@@ -7,12 +7,12 @@
 
     <ng-container matColumnDef="nombreRequerimiento">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="200px"> Nombre del Requerimiento </th>
-        <td mat-cell *matCellDef="let element"> {{element.nombreRequerimiento}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
     </ng-container>
 
     <ng-container matColumnDef="gerenciaSolicitante">
         <th mat-header-cell *matHeaderCellDef width="100px"> Gerencia Solicitante </th>
-        <td mat-cell *matCellDef="let element"> {{element.gerenciaSolicitante}}</td>
+        <td mat-cell *matCellDef="let element"> {{element.areaSolicitante.abreviatura}}</td>
     </ng-container>
 
     <ng-container matColumnDef="estado">
@@ -26,20 +26,7 @@
             <button mat-icon-button color="primary" matTooltip="Ver Requerimiento" (click)="showDialogReadRequirement(element)">
                 <mat-icon>remove_red_eye</mat-icon>
             </button>
-            <button mat-icon-button class="has-success" [disabled]="(element.estado == 'PENDIENTE' || element.estado == 'DERIVADO')? false:true" matTooltip="Aprobar" (click)="showDialogAcceptRejectRequirement(element,false)">
-                <mat-icon>check</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" [disabled]="(element.estado == 'PENDIENTE' || element.estado == 'DERIVADO')? false:true" matTooltip="Rechazar" (click)="showDialogAcceptRejectRequirement(element,true)">
-                <mat-icon>cancel</mat-icon>
-            </button>
-            <button mat-icon-button color="primary" [disabled]="(element.estado == 'PENDIENTE' || element.estado == 'DERIVADO')? false:true" matTooltip="Derivar a otra área" (click)="showDialogMoveRequirement(element)">
-                <mat-icon>subdirectory_arrow_right</mat-icon>
-            </button>
-            <button mat-icon-button color="primary" [disabled]="element.estado != 'APROBADO'" matTooltip="Gestión" (click)="showDialogSolicitud(element)">
-                <mat-icon>settings</mat-icon>
-            </button>
-        <!-- Cambio hecho a lo que estaba -->
-        <!-- <button mat-icon-button class="has-success" [disabled]="(element.estadoRequerimiento.descripcion == 'PENDIENTE' || element.estadoRequerimiento.descripcion == 'DERIVADO')? false:true" matTooltip="Aprobar" (click)="showDialogAcceptRejectRequirement(element,false)">
+            <button mat-icon-button class="has-success" [disabled]="(element.estadoRequerimiento.descripcion == 'PENDIENTE' || element.estadoRequerimiento.descripcion == 'DERIVADO')? false:true" matTooltip="Aprobar" (click)="showDialogAcceptRejectRequirement(element,false)">
                 <mat-icon>check</mat-icon>
             </button>
             <button mat-icon-button color="warn" [disabled]="(element.estadoRequerimiento.descripcion == 'PENDIENTE' || element.estadoRequerimiento.descripcion == 'DERIVADO')? false:true" matTooltip="Rechazar" (click)="showDialogAcceptRejectRequirement(element,true)">
@@ -50,7 +37,7 @@
             </button>
             <button mat-icon-button color="primary" [disabled]="element.estadoRequerimiento.descripcion != 'APROBADO'" matTooltip="Gestión" (click)="showDialogSolicitud(element)">
                 <mat-icon>settings</mat-icon>
-            </button> -->
+            </button>        
         </td>
     </ng-container>
   

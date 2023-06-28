@@ -34,13 +34,13 @@ export class UserTaskComponent implements OnInit {
   idUsuario: number;
   nombreUsuario: string;
 
-  tareas: Tarea[] = [
-    { item: 1, tarea: 'Nombre Tarea 1', estado: 'FINALIZADO', porcentaje: '100' },
-    { item: 2, tarea: 'Nombre Tarea 2', estado: 'PENDIENTE', porcentaje: '50' },
-    { item: 3, tarea: 'Nombre Tarea 3', estado: 'FINALIZADO', porcentaje: '100' },
-  ];
+  // tareas: Tarea[] = [
+  //   { item: 1, tarea: 'Nombre Tarea 1', estado: 'FINALIZADO', porcentaje: '100' },
+  //   { item: 2, tarea: 'Nombre Tarea 2', estado: 'PENDIENTE', porcentaje: '50' },
+  //   { item: 3, tarea: 'Nombre Tarea 3', estado: 'FINALIZADO', porcentaje: '100' },
+  // ];
 
-  datosAsignados: Requerimiento_Integrante[] = [];
+  // datosAsignados: Requerimiento_Integrante[] = [];
 
   reqAsignados = new Array;
 
@@ -55,14 +55,14 @@ export class UserTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data.obj);
+    console.log(this.data.obj);
     // this.idUsuario = this.data.obj.id;
     // this.nombreUsuario = this.data.obj.colaborador;
     // this.cargarRequerimientos();
     // this.loadTable();
     // var workbook = XLSX.utils.book_new();
     // var worksheet = XLSX.utils.aoa_to_sheet([]);
-  
+
     // for (let i = 0; i < this.datosAsignados.length; i++) {
     //   XLSX.utils.sheet_add_aoa(worksheet,[[this.datosAsignados[i].idReq,this.datosAsignados[i].nombreTarea,this.datosAsignados[i].avance]], { origin: `B${i+1}` })
     // }
@@ -70,20 +70,21 @@ export class UserTaskComponent implements OnInit {
     // console.log(worksheet);
     // console.log(workbook);
     // XLSX.writeFile(workbook, "out.xlsx");
+    this.loadTableReq(this.data.obj.idPersonal);
   }
 
-  cargarRequerimientos(){
-    // this.datosAsignados = this.services.getFauxTablaRequeAsignados(this.data.obj.id);
-    // for (let i = 0; i < this.datosAsignados.length; i++) {
-    //   var requerimiento = this.services.getFauxRequerimiento(this.datosAsignados[i].idReq);
-    //   this.reqAsignados.push({"idReq":requerimiento.id,
-    //     "idColaborador": this.data.obj.id,
-    //     "requerimiento":requerimiento.nombreRequerimiento,
-    //     "estado":this.datosAsignados[i].estado,
-    //     "porcentaje": this.datosAsignados[i].avance  
-    // });
-    // }
-  }
+  // cargarRequerimientos(){
+  // this.datosAsignados = this.services.getFauxTablaRequeAsignados(this.data.obj.id);
+  // for (let i = 0; i < this.datosAsignados.length; i++) {
+  //   var requerimiento = this.services.getFauxRequerimiento(this.datosAsignados[i].idReq);
+  //   this.reqAsignados.push({"idReq":requerimiento.id,
+  //     "idColaborador": this.data.obj.id,
+  //     "requerimiento":requerimiento.nombreRequerimiento,
+  //     "estado":this.datosAsignados[i].estado,
+  //     "porcentaje": this.datosAsignados[i].avance  
+  // });
+  // }
+  // }
 
   loadTable() {
     this.services.ListarTareas(this.idUsuario).subscribe((dataItem) => {
@@ -119,7 +120,7 @@ export class UserTaskComponent implements OnInit {
     });
   }
 
-  showDialogDownloadTask(element, id:number) {
+  showDialogDownloadTask(element, id: number) {
     const dialogRef: MatDialogRef<UserDownloadTaskComponent> = this.dialog.open(UserDownloadTaskComponent, {
       disableClose: false,
       width: '70%',
@@ -127,7 +128,7 @@ export class UserTaskComponent implements OnInit {
       autoFocus: false,
       data: {
         // obj: this.services.getFauxRequerimiento(this.datosAsignados[id].idReq),
-        objAsignacion:this.datosAsignados[id],
+        objAsignacion: element
       }
     });
 
@@ -146,6 +147,28 @@ export class UserTaskComponent implements OnInit {
   }
 
   onSave() {
+
+  }
+
+  loadTableReq(idPersonal: Number) {
+    this.services.listarRequerimientosPorPersonal(idPersonal).subscribe((data: any) => {
+      if (data) {
+        this.reqAsignados = data;
+        this.dataSource = new MatTableDataSource(this.reqAsignados);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      } else {
+        this.dataSource = null;
+        if (this.dataSource = null) {
+          this._notification.warning("LISTA VACIA");
+        }
+        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+        //   this._notification.warning(dataItem.msj)
+        // } else {
+        //   this._notification.error(dataItem.msj)
+        // }
+      }
+    });
 
   }
 

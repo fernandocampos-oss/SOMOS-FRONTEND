@@ -44,45 +44,67 @@ export class UserDownloadTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data.obj);
-    console.log(this.data.objAsignacion);
-    this.idEstado=this.data.obj.idEstado;
-    this.idTarea=this.data.obj.id;
-    this.flgJefe=this.data.flg;
-    this.objElement=this.data.obj;
-    this.msj=this.data.obj.msj
-    this.numerador=this.data.obj.numerador;
+    // this.idEstado=this.data.obj.idEstado;
+    // this.idTarea=this.data.obj.id;
+    // this.flgJefe=this.data.flg;
+    // this.objElement=this.data.obj;
+    // this.msj=this.data.obj.msj
+    // this.numerador=this.data.obj.numerador;
     this.createForm();
-    this.loadTable();
+    this.loadTable(this.data.objAsignacion.idRequerimientoPersonal);
     this.showMsj();
   }
 
   createForm(){
-    this.form = this._fb.group({
-      frmDescripcion: [this.data.objAsignacion.nombreTarea],
-      frmFecFin: [[new Date(this.data.objAsignacion.plazo.split('/')[2],this.data.objAsignacion.plazo.split('/')[1]-1,this.data.objAsignacion.plazo.split('/')[0]).toLocaleDateString()]],
-      frmEstado: [this.data.objAsignacion.estado],
-      frmCodigo: [this.objElement.codigo],
-      frmReferencia: [this.objElement.referencia],
-      frmMotivo: [this.objElement.motivo]
+    this.form = this._fb.group({      
+      // frmDescripcion: [this.data.objAsignacion.nombreTarea],
+      // frmFecFin: [[new Date(this.data.objAsignacion.plazo.split('/')[2],this.data.objAsignacion.plazo.split('/')[1]-1,this.data.objAsignacion.plazo.split('/')[0]).toLocaleDateString()]],
+      // frmEstado: [this.data.objAsignacion.estado],
+      frmDescripcion: [this.data.objAsignacion.requerimiento.descripcion],
+      frmFecFin: [[new Date(this.data.objAsignacion.requerimiento.fechaCreacion)]],
+      frmEstado: [this.data.objAsignacion.requerimiento.estadoRequerimiento.descripcion],
+      // frmCodigo: [this.objElement.codigo],
+      // frmReferencia: [this.objElement.referencia],
+      // frmMotivo: [this.objElement.motivo]
     });
   }
 
-  loadTable(){
-    this.services.ListarInformes(this.idTarea).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.dataSource = new MatTableDataSource(dataItem.data);
+  // loadTable(){
+  //   this.services.ListarInformes(this.idTarea).subscribe((dataItem) => {
+  //     if (dataItem.codigo == 1) {
+  //       this.dataSource = new MatTableDataSource(dataItem.data);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //     } else {
+  //       this.dataSource=null;
+  //       if(dataItem.msj=="LISTA VACIA"){
+  //         this._notification.warning(dataItem.msj)
+  //       } else {
+  //         this._notification.error(dataItem.msj)
+  //       }
+  //     }
+  //   });
+  // }
+
+  loadTable(idRequerimientoPersonal: Number) {
+    this.services.listarTareaPorRequermientoPersonal(idRequerimientoPersonal).subscribe((data: any) => {
+      if (data) {
+        this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this.dataSource=null;
-        if(dataItem.msj=="LISTA VACIA"){
-          this._notification.warning(dataItem.msj)
-        } else {
-          this._notification.error(dataItem.msj)
+        this.dataSource = null;
+        if (this.dataSource = null) {
+          this._notification.warning("LISTA VACIA");
         }
+        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+        //   this._notification.warning(dataItem.msj)
+        // } else {
+        //   this._notification.error(dataItem.msj)
+        // }
       }
     });
+
   }
 
   showMsj(){

@@ -4,16 +4,17 @@
         <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Tipo de Requerimiento</mat-label>
-                    <input matInput formControlName="frmTipo" readonly>
+                    <mat-label>Descripción del Requerimiento</mat-label>
+                    <!-- <input matInput formControlName="frmDescripcion" readonly> -->
+                    <textarea matInput formControlName="frmDescripcion" readonly></textarea>
                 </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Descripción del Requerimiento</mat-label>
-                    <input matInput formControlName="frmDescripcion" readonly>
+                    <mat-label>Identificador</mat-label>
+                    <input matInput formControlName="frmIdentificador" readonly>
                 </mat-form-field>
-            </mat-grid-tile>
+            </mat-grid-tile>            
             <mat-grid-tile [colspan]="3">
                 <mat-form-field appearance="outline">
                     <mat-label>Área solicitante</mat-label>

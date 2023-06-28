@@ -79,7 +79,6 @@ export class MisRequerimientosComponent implements OnInit {
     // });
 
     this.services.listarRequerimiento().subscribe((data) => {
-      console.log(">", data);
       if (data) {
         this.dataSorteada = data;
         this.dataSource = new MatTableDataSource(this.dataSorteada);

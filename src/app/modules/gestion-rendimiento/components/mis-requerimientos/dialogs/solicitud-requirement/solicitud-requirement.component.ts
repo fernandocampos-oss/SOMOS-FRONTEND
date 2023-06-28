@@ -9,14 +9,17 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmRequerimientoComponent } from './dialog/confirm-requerimiento/confirm-requerimiento.component';
 import { AppConfig } from '@core/configs';
-import { TareaDTO } from '@data/models/gestion-rendimiento/tareaDTO';
+import { Equipo, Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
+import { Poi } from '@data/models/gestion-rendimiento/poi';
+import { ConstantesGr } from '@data/constants/constantes-gr.constant';
+import { Personal } from '@data/models/gestion-rendimiento/personal';
+import { TareaValidacionTransaccionalDTO } from '@data/models/gestion-rendimiento/tareaValidacionTransaccionalDTO';
+import { TareaValidacionDTO } from '@data/models/gestion-rendimiento/tareaValidacionDTO';
 
 import * as moment from 'moment';
-import { Equipo, Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
-
-interface Fonafe {
-  descripcion: string;
-}
+// interface Fonafe {
+//   descripcion: string;
+// }
 
 interface Tarea1 {
   tarea: string;
@@ -33,17 +36,20 @@ export class SolicitudRequirementComponent implements OnInit {
   minFechaTarea = AppConfig.MAX_FECHA_NACIMIENTO;
   selectedIndex = 0;
 
-  fonafeAct: Fonafe[] = [
-    { descripcion: 'Implementar los sistemas administrativos' },
-    { descripcion: 'Desarrollar y mantener los sistemas administrativos' },
-    { descripcion: 'Realizar actividades de soporte operativo y administrativo para garantizar la ejecución presupuestal de la GCTIC' },
-  ];
-  
-  equipoArea: Equipo[]
+  // fonafeAct: Fonafe[] = [
+  //   { descripcion: 'Implementar los sistemas administrativos' },
+  //   { descripcion: 'Desarrollar y mantener los sistemas administrativos' },
+  //   { descripcion: 'Realizar actividades de soporte operativo y administrativo para garantizar la ejecución presupuestal de la GCTIC' },
+  // ];
+
+  fonafeAct: Poi[];
+  listPersonal: Personal[];
+
+  // equipoArea: Equipo[];
   // poiList: Array<{ descripcionPoi: string }> = [];
   // dataSource = this.poiList;
 
-  equipoList = new Array;
+  tmpEquipoList = new Array;
 
   metaList: Array<{ descripcionMeta: string }> = [];
   dataSource_2 = this.metaList;
@@ -57,11 +63,11 @@ export class SolicitudRequirementComponent implements OnInit {
 
   descripcionTarea: string;
   plazoMaxTarea: Date;
-  tareaList: Array<{nombreTarea: string, plazo: String}> = [];
+  tareaList: Array<{ nombreTarea: string, plazo: String }> = [];
 
   //dataSource_3 = this.tareaList;
-  dataSource_3 = this.equipoList;
-  displayedColumns_3: string[] = ['id','nombrePersona','plazo','Quitar'];
+  dataSource_3 = this.tmpEquipoList;
+  displayedColumns_3: string[] = ['id', 'nombrePersona', 'tarea', 'plazo', 'Quitar'];
 
   //mat-stteper
   formActividadSelect = this._formBuilder.group({
@@ -86,6 +92,7 @@ export class SolicitudRequirementComponent implements OnInit {
 
   ngOnInit(): void {
     // this.equipoArea = this.services.FauxTablaEquipo();
+    this.loadListPersonal();
     console.log(this.data.obj);
     this.listarPoi();
   }
@@ -140,12 +147,11 @@ export class SolicitudRequirementComponent implements OnInit {
   //     });
   //   }
   // }
-  ValidarAsignacion(){
-    if(this.equipoList.length == 0)
-      {
-        this._notification.error("Se debe asignar almenos 1 tarea al requerimiento");
-      }
-    else{
+
+  ValidarAsignacion() {
+    if (this.tmpEquipoList.length == 0) {
+      this._notification.warning("Se debe asignar almenos 1 tarea al requerimiento");
+    } else {
       const dialogRef: MatDialogRef<ConfirmRequerimientoComponent> = this.dialogRef.open(ConfirmRequerimientoComponent, {
         disableClose: false,
         autoFocus: false,
@@ -158,89 +164,109 @@ export class SolicitudRequirementComponent implements OnInit {
   }
 
   onIntegranteCreate() {
-    console.log(this.equipoList);
+    console.log(this.tmpEquipoList);
     console.log(this.formIntegranteAsignacion.value);
-    if(this.formIntegranteAsignacion.value.frmIntegrante == null
-      || this.formIntegranteAsignacion.value.frmTarea == null
-      || this.formIntegranteAsignacion.value.frmPlazo == null){
-      this._notification.error("Se deben ingresar los datos para continuar");
+    if (this.formIntegranteAsignacion.value.frmIntegrante == null || this.formIntegranteAsignacion.value.frmTarea == null || this.formIntegranteAsignacion.value.frmPlazo == null) {
+      this._notification.warning("Se deben ingresar los datos para continuar");
       return;
     }
-    else{
-      if (this.equipoList.find(x => x.nombrePersona ===this.equipoArea[this.formIntegranteAsignacion.value.frmIntegrante-1].nombrePersona) != undefined) {
-        console.log(this.equipoList);
-        this._notification.error("Este trabajador ya esta en lista");
+    else {
+      if (this.tmpEquipoList.find(x => x.nombrePersona === this.formIntegranteAsignacion.value.frmIntegrante) != undefined) {
+        console.log(this.tmpEquipoList);
+        this._notification.warning("Este trabajador ya esta en lista");
         return;
       }
-      else{
-        this.equipoList.push({"idPersona":this.equipoArea[this.formIntegranteAsignacion.value.frmIntegrante-1].id,
-                              "nombrePersona":this.equipoArea[this.formIntegranteAsignacion.value.frmIntegrante-1].nombrePersona,
-                              "nombreTarea": this.formIntegranteAsignacion.value.frmTarea,
-                              "plazo": this.formIntegranteAsignacion.value.frmPlazo._d.toLocaleDateString()});
+      else {
+        this.tmpEquipoList.push({
+          "idPersona": this.formIntegranteAsignacion.value.frmIntegrante,
+          "nombrePersona": this.formIntegranteAsignacion.value.frmIntegrante,
+          "nombreTarea": this.formIntegranteAsignacion.value.frmTarea,
+          "plazo": this.formIntegranteAsignacion.value.frmPlazo._d.toLocaleDateString()
+        });
         this.table.renderRows();
       }
     }
   }
-  deleteIntegrante(index){
-    this.equipoList.splice(index,1);
+
+  deleteIntegrante(index) {
+    this.tmpEquipoList.splice(index, 1);
     this.table.renderRows();
   }
 
-  onTareaCreate(fecha: Date) {    
+  onTareaCreate(fecha: Date) {
     if (this.formTareasListadas.value.frmDescTarea == undefined || this.formTareasListadas.value.frmDateTarea == undefined ||
       this.formTareasListadas.value.frmDescTarea == '' || this.formTareasListadas.value.frmDateTarea == '') {
-      this._notification.error("Se deben ingresar los datos para continuar");
+      this._notification.warning("Se deben ingresar los datos para continuar");
     }
     else {
-      this.tareaList.push({ nombreTarea: this.formTareasListadas.value.frmDescTarea, plazo: fecha.toString()}); 
+      this.tareaList.push({ nombreTarea: this.formTareasListadas.value.frmDescTarea, plazo: fecha.toString() });
       this.table.renderRows();
     }
   }
+
   deleteTarea(index) {
     this.tareaList.splice(index, 1);
     this.table.renderRows();
   }
 
-  private _getModel(): Requerimiento_Integrante[]{
-    var asignaciones: Requerimiento_Integrante[];
-    asignaciones = [];
-    for (let i = 0; i < this.equipoList.length; i++) {
-      asignaciones.push({"idReq": this.data.obj.id, 
-                        "idIntegrante": this.equipoList[i].idPersona,
-                        "nombreTarea": this.equipoList[i].nombreTarea,
-                        "plazo": this.equipoList[i].plazo,
-                        "estado": 'PENDIENTE',
-                        "avance": 0,});    
-    }
-    return asignaciones;/*{
-      id: this.data.obj.id,
-      actividad: this.formActividadSelect.value.frmActividad,
-      idIntegrante:,
-      nombreTarea:,
-      plazos: ,
-    };*/
-  }
-  // private _getModel(): TareaDTO {
-
-  //   let tareas: Tarea[] = [];
-    
-  //   for (let t of this.tareaList) {
-  //     let tarea = new Tarea();
-  //     tarea.idTarea = 0;
-  //     tarea.nombreTarea =t.nombreTarea
-  //     tarea.plazo = t.plazo;
-  //     tarea.requerimiento = this.data.obj;
-      
-  //     tareas.push(tarea);
+  // private _getModel(): Requerimiento_Integrante[] {
+  //   var asignaciones: Requerimiento_Integrante[];
+  //   asignaciones = [];
+  //   for (let i = 0; i < this.tmpEquipoList.length; i++) {
+  //     asignaciones.push({
+  //       "idReq": this.data.obj.id,
+  //       "idIntegrante": this.tmpEquipoList[i].idPersona,
+  //       "nombreTarea": this.tmpEquipoList[i].nombreTarea,
+  //       "plazo": this.tmpEquipoList[i].plazo,
+  //       "estado": 'PENDIENTE',
+  //       "avance": 0,
+  //     });
   //   }
-    
-  //   return {
-  //     idRequerimiento: this.data.obj.idRequerimiento,
-  //     // actividad: this.formActividadSelect.value.frmActividad,
-  //     // tareas: this.tareaList,
-  //     listTareas: tareas,
-  //   };
+  //   return asignaciones;
+  //   /*{
+  //     id: this.data.obj.id,
+  //     actividad: this.formActividadSelect.value.frmActividad,
+  //     idIntegrante:,
+  //     nombreTarea:,
+  //     plazos: ,
+  //   };*/
   // }
+
+  private _getModel(): TareaValidacionTransaccionalDTO {
+    var tareaDTOs: TareaValidacionDTO[] = [];
+
+    let requerimientoObj = new Requerimiento();
+    requerimientoObj.idRequerimiento = this.data.obj.idRequerimiento;
+
+    for (let i of this.tmpEquipoList) {
+      let tarea = new Tarea();
+
+      let personalObj = new Personal();
+      personalObj.idPersonal = i.idPersona;
+
+      tarea.nombreTarea = i.nombreTarea;
+      tarea.plazo = i.plazo;
+      tarea.estado = true;
+      tarea.estadoAvance = ConstantesGr.ESTADO_TAREA_PENDIENTE;
+      tarea.porcentajeAvance = 0;
+      tarea.fechaCreacion = new Date();
+      
+      let tareas: Tarea[] = [];
+      tareas.push(tarea);
+
+      var tareaDTO = new TareaValidacionDTO();
+      tareaDTO.personal = personalObj;
+      tareaDTO.listTarea = tareas;
+      tareaDTOs.push(tareaDTO);
+    }
+
+    return {
+      requerimiento: requerimientoObj,
+      listTareaDTO: tareaDTOs,      
+      // actividad: this.formActividadSelect.value.frmActividad,
+      // tareas: this.tareaList,      
+    };
+  }
 
   listarPoi() {
     this.services.listarPoi().subscribe((data) => {
@@ -248,15 +274,29 @@ export class SolicitudRequirementComponent implements OnInit {
         this.fonafeAct = data;
       } else {
         this.fonafeAct = null;
-        // if (dataItem.msj == "LISTA VACIA") {
-        //   this._notification.warning(dataItem.msj)
-        // } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+        this._notification.warning("LISTA VACIA");
+      }
+    });
+  }
+
+  loadListPersonal() {
+    let idDependencia = 2;
+    this.services.listarPersonalPorDependenciaAsignado(idDependencia, ConstantesGr.ESTADO_PERSONAL_ASIGNADO).subscribe((data: any) => {
+      if (data) {
+        this.listPersonal = data;
+      } else {
+        this.listPersonal = null;
+        if (this.listPersonal = null) {
+          this._notification.warning("LISTA VACIA");
+        }
+        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
         //   this._notification.warning(dataItem.msj)
         // } else {
         //   this._notification.error(dataItem.msj)
         // }
       }
     });
+
   }
 
 }

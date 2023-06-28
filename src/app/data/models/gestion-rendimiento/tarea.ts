@@ -4,5 +4,9 @@ export class Tarea {
     idTarea: number;
     nombreTarea: string;
     plazo: String;
-    requerimiento: Requerimiento;
+    estado: boolean;
+    estadoAvance: String;
+    porcentajeAvance: number;
+    fechaCreacion: Date;
+    // requerimientoPersonal: RequerimientoPersonal;
 }

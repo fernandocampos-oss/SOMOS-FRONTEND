@@ -15,9 +15,9 @@ import { UserDownloadFileComponent } from './dialogs/user-download-file/user-dow
 import { UserDownloadTaskComponent } from './dialogs/user-download-task/user-download-task.component';
 import { AssignTaskUserComponent } from './dialogs/assign-task-user/assign-task-user.component';
 import { Personal } from '@data/models/gestion-rendimiento/personal';
-import { AppRoute } from '@data/constants';
 import { Equipo } from '@data/models/requerimiento/requerimiento.model';
 import { EditUserSelectedComponent } from './dialogs/edit-user-selected/edit-user-selected.component';
+import { ConstantesGr } from '@data/constants/constantes-gr.constant';
 
 // interface Equipo {
 //   item: number;
@@ -137,7 +137,7 @@ export class MiEquipoComponent implements OnInit {
 
   loadTable() {
     let idDependencia = 2;
-    this.services.listarPersonalPorDependenciaAsignado(idDependencia, AppRoute.ESTADO_PERSONAL_ASIGNADO).subscribe((data: any) => {
+    this.services.listarPersonalPorDependenciaAsignado(idDependencia, ConstantesGr.ESTADO_PERSONAL_ASIGNADO).subscribe((data: any) => {
       if (data) {      
         this.dataSorteada=data;  
         this.dataSource = new MatTableDataSource(this.dataSorteada);
@@ -145,9 +145,10 @@ export class MiEquipoComponent implements OnInit {
         this.dataSource.sort = this.sort;
       } else {
         this.dataSource = null;
-        // if (dataItem.msj == "LISTA VACIA") {
-        //   this._notification.warning(dataItem.msj)
-        // } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+        if (this.dataSource = null) {
+          this._notification.warning("LISTA VACIA");
+        } 
+        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
         //   this._notification.warning(dataItem.msj)
         // } else {
         //   this._notification.error(dataItem.msj)
@@ -155,22 +156,6 @@ export class MiEquipoComponent implements OnInit {
       }
     });
 
-    // this.services.ListarIntegrantes().subscribe((dataItem) => {
-    //   if (dataItem.codigo == 0) { // cambiar el codigo a 1 luego de hacer el servicio
-    //     this.dataSource = new MatTableDataSource(this.services.FauxTablaEquipo());
-    //     this.dataSource.paginator = this.paginator;
-    //     this.dataSource.sort = this.sort;
-    //   } else {
-    //     this.dataSource = null;
-    //     // if (dataItem.msj == "LISTA VACIA") {
-    //     //   this._notification.warning(dataItem.msj)
-    //     // } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-    //     //   this._notification.warning(dataItem.msj)
-    //     // } else {
-    //     //   this._notification.error(dataItem.msj)
-    //     // }
-    //   }
-    // });
   }
 
   filter(value: string) {

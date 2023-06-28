@@ -5,12 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
 // import { Requerimiento, RequerimientoAsignado} from '@data/models/requerimiento/requerimiento.model';
-// import { Equipo, Requerimiento, Requerimiento_Integrante} from '@data/models/requerimiento/requerimiento.model';
+import { Equipo, Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
 import { Poi } from '@data/models/gestion-rendimiento/poi';
-import { TareaDTO } from '@data/models/gestion-rendimiento/tareaDTO';
 import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
 import { Persona } from '@modules/gestion-rendimiento/components/mi-equipo/dialogs/user-add-delete/user-add-delete.component';
 import { Personal } from '@data/models/gestion-rendimiento/personal';
+import { RequerimientoPersonal } from '@data/models/gestion-rendimiento/requerimientoPersonal';
+import { TareaValidacionTransaccionalDTO } from '@data/models/gestion-rendimiento/tareaValidacionTransaccionalDTO';
 
 const URL_BASE = `${environment.apiUrlLocal}`;
 
@@ -18,13 +19,13 @@ const URL_BASE = `${environment.apiUrlLocal}`;
 export class GestionRendimientoService {
   constructor(private http: HttpClient) { }
 
-  // equipo: Equipo[] = [//Tabla Provisional
-  //   { id: 1, nombrePersona: 'Luis Lopez Gutierrez', cargo: 'Analista de costos' },
-  //   { id: 2, nombrePersona: 'Leandro Zarsosa Manuel', cargo: 'Analista de procesos' },
-  //   { id: 3, nombrePersona: 'Celia Requena Egas', cargo: 'Administrador de BD' },
-  //   { id: 4, nombrePersona: 'Elder Lizana Rodriguez', cargo: 'Tester QA' },
-  //   { id: 5, nombrePersona: 'Maria Lopez Uribe', cargo: 'Analista funcional' },
-  // ];
+  equipo: Equipo[] = [//Tabla Provisional
+    { id: 1, nombrePersona: 'Luis Lopez Gutierrez', cargo: 'Analista de costos' },
+    { id: 2, nombrePersona: 'Leandro Zarsosa Manuel', cargo: 'Analista de procesos' },
+    { id: 3, nombrePersona: 'Celia Requena Egas', cargo: 'Administrador de BD' },
+    { id: 4, nombrePersona: 'Elder Lizana Rodriguez', cargo: 'Tester QA' },
+    { id: 5, nombrePersona: 'Maria Lopez Uribe', cargo: 'Analista funcional' },
+  ];
 
   // requesAsociados: Requerimiento_Integrante[] = [
   //   { idReq: 8, idIntegrante: 1, nombreTarea: 'Prueba de tarea 1', plazo: '27/5/2023', estado: 'PENDIENTE', avance: 0 },
@@ -126,9 +127,9 @@ export class GestionRendimientoService {
   //   return this.reques.find((x) => x.id == idReq);
   // }
 
-  // FauxTablaEquipo(): Equipo[] {
-  //   return this.equipo;
-  // }
+  FauxTablaEquipo(): Equipo[] {
+    return this.equipo;
+  }
 
   // insertFauxRequerimientos(model: Requerimiento) {
   //   this.reques.push(model);
@@ -224,42 +225,48 @@ export class GestionRendimientoService {
   }
 
   //Requerimientos
+  registrarRequerimiento(requerimiento): Observable<any> {
+    const url = `${URL_BASE}/requerimientos/registrar`;
+    console.log(url, requerimiento);
+    return this.http.post(`${URL_BASE}/requerimientos/registrar`, requerimiento);
+  }
+
   listarRequerimiento() {
-    const url = `${URL_BASE}/requerimientos`;
+    const url = `${URL_BASE}/requerimientos/listar`;
     console.log(url);
     return this.http.get<Requerimiento[]>(url);
   }
 
-  aprobarRequerimiento(estado: number, idrequerimiento: number) {
-    const url = `${URL_BASE}/requerimientos/aprobar?estado=${estado}&idrequerimiento=${idrequerimiento}`;
+  aprobarRequerimiento(estado: number, idRequerimiento: number) {
+    const url = `${URL_BASE}/requerimientos/aprobar?estado=${estado}&idRequerimiento=${idRequerimiento}`;
     console.log(url);
     return this.http.get<any[]>(url);
   }
 
-  rechazarRequerimiento(estado: number, motivo: string, idrequerimiento: number) {
-    const url = `${URL_BASE}/requerimientos/rechazar?estado=${estado}&motivo=${motivo}&idrequerimiento=${idrequerimiento}`;
+  rechazarRequerimiento(estado: number, motivo: string, idRequerimiento: number) {
+    const url = `${URL_BASE}/requerimientos/rechazar?estado=${estado}&motivo=${motivo}&idRequerimiento=${idRequerimiento}`;
     console.log(url);
     return this.http.get<any[]>(url);
   }
 
-  derivarRequerimiento(estado: number, motivo: string, gerenciareceptor: string, idrequerimiento: number) {
-    const url = `${URL_BASE}/requerimientos/derivar?estado=${estado}&motivo=${motivo}&gerenciareceptor=${gerenciareceptor}&idrequerimiento=${idrequerimiento}`;
+  derivarRequerimiento(estado: number, motivo: string, idAreaReceptor: string, idRequerimiento: number) {
+    const url = `${URL_BASE}/requerimientos/derivar?estado=${estado}&motivo=${motivo}&idAreaReceptor=${idAreaReceptor}&idRequerimiento=${idRequerimiento}`;
     console.log(url);
     return this.http.get<any[]>(url);
   }
 
   //pois
   listarPoi() {
-    const url = `${URL_BASE}/pois`;
+    const url = `${URL_BASE}/pois/listar`;
     console.log(url);
     return this.http.get<Poi[]>(url);
   }
 
   //tareas
-  registrarTareas(tareaDTO: TareaDTO) {
-    const url = `${URL_BASE}/tareas/registrar/transaccion`;
-    console.log(url, tareaDTO);
-    return this.http.post(url, tareaDTO);
+  registrarTareas(tareaReqPer: any) {
+    const url = `${URL_BASE}/requerimientosPersonal/tareas/registrar/transaccion`;
+    console.log(url, tareaReqPer);
+    return this.http.post(url, tareaReqPer);
   }
 
   //Equipos
@@ -279,6 +286,31 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/personal/registrar`;
     console.log(url, persona);
     return this.http.post(`${URL_BASE}/personal/registrar`, persona);
+  }
+
+  //Tareas
+  listarRequerimientosPorPersonal(idPersonal) { 
+    const url = `${URL_BASE}/requerimientosPersonal/listar/requerimientos/${idPersonal}/personal`;
+    console.log(url);
+    return this.http.get<Personal[]>(url);
+  }
+
+  listarTareaPorRequermientoPersonal(idRequerimientoPersonal) {
+    const url = `${URL_BASE}/tareas/listar/requerimientoPersonal/${idRequerimientoPersonal}`;
+    console.log(url);
+    return this.http.get<Personal[]>(url);
+  }
+
+  validarDuplicadoRequerimientoPersonal(idRequerimiento, idPersonal) {
+    const url = `${URL_BASE}/requerimientosPersonal/validar/duplicado/requerimiento/${idRequerimiento}/personal/${idPersonal}`;
+    console.log(url);
+    return this.http.get<RequerimientoPersonal[]>(url);
+  }
+
+  registrarTareaNoDuplicado(tareaValidacionTransaccionalDTO: TareaValidacionTransaccionalDTO) {
+    const url = `${URL_BASE}/tareas/registrar/noDuplicado`;
+    console.log(url, tareaValidacionTransaccionalDTO);
+    return this.http.post(url, tareaValidacionTransaccionalDTO);
   }
 
 }

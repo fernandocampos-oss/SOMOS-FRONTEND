@@ -4,5 +4,5 @@ export class Poi {
     idPoi: number;
     descripcion: string;
     indicador: Indicador;
-    
+    estado: boolean;
 }

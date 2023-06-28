@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit  } from '@angular/core';
-import { FormBuilder, FormGroup  } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GestionRendimientoService  } from '@data/services/gestion-rendimiento.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-read-requirement',
@@ -19,20 +19,20 @@ export class ReadRequirementComponent implements OnInit {
     private services: GestionRendimientoService,
   ) { }
 
-  ngOnInit(): void {    
-    this.objElement=this.data.obj;
-    this.estadoReq = this.data.obj.estado;
-    // this.estadoReq = this.data.obj.estadoRequerimiento.descripcion;
-    this.requerimiento = this.objElement.nombreRequerimiento;
+  ngOnInit(): void {
+    this.objElement = this.data.obj;
+    this.estadoReq = this.data.obj.estadoRequerimiento.descripcion;
+    this.requerimiento = this.objElement.nombre;
     this.createForm();
   }
-  createForm(){
+  createForm() {
+    console.log(this.estadoReq);
     this.form = this._fb.group({
-      frmTipo: [this.objElement.tipoRequerimiento],
+      frmIdentificador: [this.objElement.identificador],
       frmDescripcion: [this.objElement.descripcion],
-      frmAreaSolicitante:[this.objElement.gerenciaSolicitante],
-      frmAreaDestinatario:[this.objElement.gerenciaReceptor],
-      frmMotivo:[this.objElement.motivo],
+      frmAreaSolicitante: [this.objElement.areaSolicitante.abreviatura],
+      frmAreaDestinatario: [this.objElement.areaReceptor.abreviatura],
+      frmMotivo: [this.objElement.motivo],
       frmEstado: [this.objElement.estado]
     });
   }
@@ -47,5 +47,5 @@ export class ReadRequirementComponent implements OnInit {
   //   this.poiList.splice(index,1);
   //   this.table.renderRows();
   // }
-  
+
 }
