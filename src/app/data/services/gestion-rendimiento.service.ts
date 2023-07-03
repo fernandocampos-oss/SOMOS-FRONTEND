@@ -12,6 +12,7 @@ import { Persona } from '@modules/gestion-rendimiento/components/mi-equipo/dialo
 import { Personal } from '@data/models/gestion-rendimiento/personal';
 import { RequerimientoPersonal } from '@data/models/gestion-rendimiento/requerimientoPersonal';
 import { TareaValidacionTransaccionalDTO } from '@data/models/gestion-rendimiento/tareaValidacionTransaccionalDTO';
+import { PersonalEliminarDTO } from '@data/models/gestion-rendimiento/PersonalEliminarDTO';
 
 const URL_BASE = `${environment.apiUrlLocal}`;
 
@@ -255,14 +256,12 @@ export class GestionRendimientoService {
     return this.http.get<any[]>(url);
   }
 
-  //pois
   listarPoi() {
     const url = `${URL_BASE}/pois/listar`;
     console.log(url);
     return this.http.get<Poi[]>(url);
   }
 
-  //tareas
   registrarTareas(tareaReqPer: any) {
     const url = `${URL_BASE}/requerimientosPersonal/tareas/registrar/transaccion`;
     console.log(url, tareaReqPer);
@@ -270,8 +269,8 @@ export class GestionRendimientoService {
   }
 
   //Equipos
-  listarPersonalPorDependenciaAsignado(idDependencia, estadoAsignado) {
-    const url = `${URL_BASE}/personal/listar/dependencia/${idDependencia}/estadoAsignado/${estadoAsignado}`;
+  listarPersonalPorDependenciaAsignado(idDependencia, idEstadoPersonal) {
+    const url = `${URL_BASE}/personal/listar/dependencia/${idDependencia}/estadoAsignado/${idEstadoPersonal}`;
     console.log(url);
     return this.http.get<Personal[]>(url);
   }
@@ -288,7 +287,6 @@ export class GestionRendimientoService {
     return this.http.post(`${URL_BASE}/personal/registrar`, persona);
   }
 
-  //Tareas
   listarRequerimientosPorPersonal(idPersonal) { 
     const url = `${URL_BASE}/requerimientosPersonal/listar/requerimientos/${idPersonal}/personal`;
     console.log(url);
@@ -311,6 +309,19 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/tareas/registrar/noDuplicado`;
     console.log(url, tareaValidacionTransaccionalDTO);
     return this.http.post(url, tareaValidacionTransaccionalDTO);
+  }
+
+  eliminarPersonalMotivo(personalEliminarDTO: PersonalEliminarDTO) {
+    const url = `${URL_BASE}/personal/eliminar`;
+    console.log(url, personalEliminarDTO);
+    return this.http.post(url, personalEliminarDTO);
+  }
+
+  //Mis tareas
+  listarTareaPorPersonal(idPersonal) {
+    const url = `${URL_BASE}/tareas/listar/personal/${idPersonal}`;
+    console.log(url);
+    return this.http.get<Tarea[]>(url);
   }
 
 }

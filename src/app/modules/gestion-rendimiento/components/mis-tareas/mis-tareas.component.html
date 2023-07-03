@@ -2,7 +2,7 @@
     <button mat-raised-button class="nuevo-button" matTooltip="Agregar Tarea" (click)="showDialogAddTask()">
       <mat-icon>add_circle</mat-icon>&nbsp; Agregar Tarea</button>
 </div>
-<table mat-table [dataSource]="datosAsignados" style="width:100%" matSort>
+<table mat-table [dataSource]="dataSource" style="width:100%" matSort>
             
     <ng-container matColumnDef="item">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px"> Item </th>
@@ -16,7 +16,7 @@
 
     <ng-container matColumnDef="avance">
         <th mat-header-cell *matHeaderCellDef width="100px"> % de avance </th>
-        <td mat-cell *matCellDef="let element"> {{element.avance}} %</td>
+        <td mat-cell *matCellDef="let element"> {{element.porcentajeAvance}} %</td>
     </ng-container>
 
     <ng-container matColumnDef="fechaFin">
@@ -27,7 +27,7 @@
 
     <ng-container matColumnDef="estado">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px"> Estado </th>
-        <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.estadoTarea.descripcion}} </td>
     </ng-container>
 
     <ng-container matColumnDef="acciones">

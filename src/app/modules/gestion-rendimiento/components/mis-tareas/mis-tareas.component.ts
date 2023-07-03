@@ -20,47 +20,69 @@ export class MisTareasComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item','descripcion','avance', 'fechaFin','estado','acciones'];
+  displayedColumns: string[] = ['item', 'descripcion', 'avance', 'fechaFin', 'estado', 'acciones'];
 
-  datosAsignados: Requerimiento_Integrante[] = [];
+  // datosAsignados: Requerimiento_Integrante[] = [];
 
-  data =[];
+  data = [];
 
   constructor(
     private dialog: MatDialog,
     private services: GestionRendimientoService,
     private _notification: NotificationService,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.loadTable();
     this.cargarRequerimientos();
   }
 
-  loadTable(){
-    this.services.ListarTareas(0).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.dataSource = new MatTableDataSource(dataItem.data);
+  // loadTable(){
+  //   this.services.ListarTareas(0).subscribe((dataItem) => {
+  //     if (dataItem.codigo == 1) {
+  //       this.dataSource = new MatTableDataSource(dataItem.data);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //     } else {
+  //       this.dataSource=null;
+  //       if(dataItem.msj=="LISTA VACIA"){
+  //         this._notification.warning(dataItem.msj)
+  //       } if(dataItem.msj=="USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO"){
+  //         this._notification.warning(dataItem.msj)
+  //       } else {
+  //         this._notification.error(dataItem.msj)
+  //       }
+  //     }
+  //   });
+  // }
+
+  // loadTable(idPersonal: Number) { 
+  loadTable() { //tmp
+    let idPersonal = 1;
+    this.services.listarTareaPorPersonal(idPersonal).subscribe((data: any) => {
+      if (data) {        
+        this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this.dataSource=null;
-        if(dataItem.msj=="LISTA VACIA"){
-          this._notification.warning(dataItem.msj)
-        } if(dataItem.msj=="USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO"){
-          this._notification.warning(dataItem.msj)
-        } else {
-          this._notification.error(dataItem.msj)
+        this.dataSource = null;
+        if (this.dataSource = null) {
+          this._notification.warning("LISTA VACIA");
         }
+        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
+        //   this._notification.warning(dataItem.msj)
+        // } else {
+        //   this._notification.error(dataItem.msj)
+        // }
       }
     });
   }
 
-  cargarRequerimientos(){
+  cargarRequerimientos() {
     // this.datosAsignados = this.services.getFauxTablaRequeAsignados(1);
   }
-  
-  showDialogDownloadTask(element, i: number){
+
+  showDialogDownloadTask(element, i: number) {
     const dialogRef: MatDialogRef<UserDownloadTaskComponent> = this.dialog.open(UserDownloadTaskComponent, {
       disableClose: false,
       width: '70%',
@@ -68,7 +90,7 @@ export class MisTareasComponent implements OnInit {
       autoFocus: false,
       data: {
         // obj: this.services.getFauxRequerimiento(this.datosAsignados[i].idReq),
-        objAsignacion:this.datosAsignados[i],
+        // objAsignacion: this.datosAsignados[i],
       }
     });
 
@@ -85,7 +107,7 @@ export class MisTareasComponent implements OnInit {
       autoFocus: false,
       data: {
         auto: true,
-        id : 0
+        id: 0
       }
     });
 
@@ -101,7 +123,7 @@ export class MisTareasComponent implements OnInit {
       //height: '780px',
       autoFocus: false,
       data: {
-        obj : element
+        obj: element
       }
     });
 

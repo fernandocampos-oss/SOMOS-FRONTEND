@@ -17,6 +17,7 @@ import { TareaValidacionTransaccionalDTO } from '@data/models/gestion-rendimient
 import { TareaValidacionDTO } from '@data/models/gestion-rendimiento/tareaValidacionDTO';
 
 import * as moment from 'moment';
+import { EstadoTarea } from '@data/models/gestion-rendimiento/estadoTarea';
 // interface Fonafe {
 //   descripcion: string;
 // }
@@ -238,6 +239,9 @@ export class SolicitudRequirementComponent implements OnInit {
     let requerimientoObj = new Requerimiento();
     requerimientoObj.idRequerimiento = this.data.obj.idRequerimiento;
 
+    let estadoTareaObj = new EstadoTarea();
+    estadoTareaObj.idEstadoTarea = ConstantesGr.ESTADO_TAREA_PENDIENTE;
+
     for (let i of this.tmpEquipoList) {
       let tarea = new Tarea();
 
@@ -247,7 +251,7 @@ export class SolicitudRequirementComponent implements OnInit {
       tarea.nombreTarea = i.nombreTarea;
       tarea.plazo = i.plazo;
       tarea.estado = true;
-      tarea.estadoAvance = ConstantesGr.ESTADO_TAREA_PENDIENTE;
+      tarea.estadoTarea = estadoTareaObj;
       tarea.porcentajeAvance = 0;
       tarea.fechaCreacion = new Date();
       

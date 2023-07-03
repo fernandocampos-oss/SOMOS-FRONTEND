@@ -10,6 +10,7 @@ import { Tarea } from '@data/models/gestion-rendimiento/tarea';
 import { ConstantesGr } from '@data/constants/constantes-gr.constant';
 import { TareaValidacionTransaccionalDTO } from '@data/models/gestion-rendimiento/tareaValidacionTransaccionalDTO';
 import { TareaValidacionDTO } from '@data/models/gestion-rendimiento/tareaValidacionDTO';
+import { EstadoTarea } from '@data/models/gestion-rendimiento/estadoTarea';
 
 @Component({
   selector: 'app-confirm-requerimiento',
@@ -40,16 +41,17 @@ export class ConfirmRequerimientoComponent implements OnInit {
   // }
 
   registrarTareas() {
-
     let req = new Requerimiento();
     req.idRequerimiento = this.data.obj.requerimiento.idRequerimiento;
+
+    let estadoTareaObj = new EstadoTarea();
+    estadoTareaObj.idEstadoTarea = ConstantesGr.ESTADO_TAREA_PENDIENTE;
 
     for (let x of this.data.obj.listTareaDTO) {
       console.log(x.personal.idPersonal);
       this._service.validarDuplicadoRequerimientoPersonal(this.data.obj.requerimiento.idRequerimiento, x.personal.idPersonal).subscribe(dataValidacion => {
         console.log(dataValidacion);
         if (dataValidacion.length == 0) {
-          //reg. nuevos
           var tareaTmp = new TareaRegistrarNuevoTMP();
 
           let tareas: Tarea[] = [];
@@ -58,7 +60,7 @@ export class ConfirmRequerimientoComponent implements OnInit {
             tarea.nombreTarea = i.nombreTarea;
             tarea.plazo = i.plazo;
             tarea.estado = true;
-            tarea.estadoAvance = ConstantesGr.ESTADO_TAREA_PENDIENTE;
+            tarea.estadoTarea = estadoTareaObj;
             tarea.porcentajeAvance = 0;
             tarea.fechaCreacion = new Date();
 
@@ -81,7 +83,6 @@ export class ConfirmRequerimientoComponent implements OnInit {
           tareas = [];
         }
         else {
-          //re. duplicados
           let reqPer = new RequerimientoPersonal();
           reqPer.idRequerimientoPersonal = dataValidacion[0].idRequerimientoPersonal;
 
@@ -93,7 +94,7 @@ export class ConfirmRequerimientoComponent implements OnInit {
             tarea.nombreTarea = i.nombreTarea;
             tarea.plazo = i.plazo;
             tarea.estado = true;
-            tarea.estadoAvance = ConstantesGr.ESTADO_TAREA_PENDIENTE;
+            tarea.estadoTarea = estadoTareaObj;
             tarea.porcentajeAvance = 0;
             tarea.fechaCreacion = new Date();
 

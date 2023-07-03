@@ -1,3 +1,4 @@
+import { EstadoTarea } from "./estadoTarea";
 import { Requerimiento } from "./requerimiento";
 
 export class Tarea {
@@ -5,7 +6,7 @@ export class Tarea {
     nombreTarea: string;
     plazo: String;
     estado: boolean;
-    estadoAvance: String;
+    estadoTarea: EstadoTarea;
     porcentajeAvance: number;
     fechaCreacion: Date;
     // requerimientoPersonal: RequerimientoPersonal;

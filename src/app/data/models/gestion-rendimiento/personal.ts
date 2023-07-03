@@ -1,3 +1,4 @@
+import { EstadoPersonal } from './estadoPersonal';
 import { Cargo } from "./cargo";
 import { Dependencia } from "./dependencia";
 
@@ -9,5 +10,7 @@ export class Personal {
     apellidoMaterno: string;
     cargo: Cargo;
     dependencia: Dependencia;
-    estado: string;
+    // estado: string;
+    motivoEliminado: string;
+    estadoPersonal: EstadoPersonal;
 }

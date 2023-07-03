@@ -14,6 +14,8 @@ import { Personal } from '@data/models/gestion-rendimiento/personal';
 import { Cargo } from '@data/models/gestion-rendimiento/cargo';
 import { Dependencia } from '@data/models/gestion-rendimiento/dependencia';
 import { ConstantesGr } from '@data/constants/constantes-gr.constant';
+import { EstadoPersonal } from '@data/models/gestion-rendimiento/estadoPersonal';
+import { PersonalEliminarDTO } from '@data/models/gestion-rendimiento/PersonalEliminarDTO';
 
 @Component({
   selector: 'app-user-add-delete',
@@ -57,8 +59,8 @@ export class UserAddDeleteComponent implements OnInit {
 
   searchIntegrante() {
     let dtoFiltro = new PersonalFiltroNombreDTO(this.form.value.integrante);
-    dtoFiltro.nombres =  dtoFiltro.nombres.toLowerCase();
-      
+    dtoFiltro.nombres = dtoFiltro.nombres.toLowerCase();
+
     if (!this.form.valid) {
       this._notification.warning("Se deben ingresar los campos requeridos")
     } else {
@@ -87,7 +89,7 @@ export class UserAddDeleteComponent implements OnInit {
   // }
 
   loadIntegrantes() {
-    console.log("memoria dependencia=2");
+    console.log("tmp dependencia=2");
     let idDependencia = 2;
 
     this.services.listarPersonalPorDependenciaAsignado(idDependencia, ConstantesGr.ESTADO_PERSONAL_ASIGNADO).subscribe((data) => {
@@ -142,7 +144,14 @@ export class UserAddDeleteComponent implements OnInit {
   onSave() {
     if (this.borrar) {
       if (this.form.valid) {
-        this.services.EliminarIntegrante(this.form.value.frmIntegrantes, this.form.value.frmMotivo).subscribe({
+        console.log(this.form.valid);
+        let dto = new PersonalEliminarDTO();
+        dto.idEstadoPersonal = ConstantesGr.ESTADO_PERSONAL_ELIMINADO;
+        dto.motivo = this.form.value.frmMotivo;
+        dto.idPersonal = this.form.value.frmIntegrantes
+
+        // this.services.EliminarIntegrante(this.form.value.frmIntegrantes, this.form.value.frmMotivo).subscribe({
+        this.services.eliminarPersonalMotivo(dto).subscribe({
           next: data => {
             this.loadIntegrantes();
             this.dialogRef.close();
@@ -157,25 +166,28 @@ export class UserAddDeleteComponent implements OnInit {
       }
     } else {
       if (this.selection.selected.length > 0) {
+        let estado = new EstadoPersonal();
+        estado.idEstadoPersonal = ConstantesGr.ESTADO_PERSONAL_ASIGNADO;
+
         for (let i of this.selection.selected) {
           let p = new Personal();
           p.numeroDni = i.numeroDni;
           p.nombres = i.nombres;
           p.apellidoPaterno = i.apellidoPaterno;
           p.apellidoMaterno = i.apellidoMaterno;
-          p.estado = ConstantesGr.ESTADO_PERSONAL_ASIGNADO;
+          p.estadoPersonal = estado;
 
           let cargo = new Cargo();
           cargo.idCargo = i.cargo.idCargo;
-      
+
           let dependencia = new Dependencia();
           dependencia.idDependencia = i.dependencia.idDependencia;
 
           p.cargo = cargo;
           p.dependencia = dependencia;
-       
+
           this.services.registrarPersonal(p).subscribe((data) => {
-            if (data=1) {
+            if (data = 1) {
               this.dialogRef.close();
               this._notification.success("Se registró colaborador")
             } else {
