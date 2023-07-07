@@ -5,28 +5,28 @@
             <mat-form-field appearance="outline">
                 <mat-label>Evidencia Solicitada</mat-label>
                 <input matInput formControlName="frmDescripcion" readonly>
-              </mat-form-field>
+            </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="3">
             <mat-form-field appearance="outline">
                 <mat-label>Plazo Máximo</mat-label>
                 <input matInput formControlName="frmFecFin" readonly>
-              </mat-form-field>
+            </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="3">
             <mat-form-field appearance="outline">
                 <mat-label>Estado</mat-label>
                 <input matInput formControlName="frmEstado" readonly>
-              </mat-form-field>
+            </mat-form-field>
         </mat-grid-tile>
     </mat-grid-list>
     <table mat-table [dataSource]="dataSource" style="width:100%">
-            
+
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef width="100px"> Item </th>
             <td mat-cell *matCellDef="let element"> {{element.idTarea}} </td>
         </ng-container>
-    
+
         <ng-container matColumnDef="descripcion">
             <th mat-header-cell *matHeaderCellDef> Descripción del informe</th>
             <td mat-cell *matCellDef="let element"> {{element.nombreTarea}} </td>
@@ -34,7 +34,12 @@
 
         <ng-container matColumnDef="porcentaje">
             <th mat-header-cell *matHeaderCellDef width="100px"> % de avance</th>
-            <td mat-cell *matCellDef="let element"> {{element.avance}} %</td>
+            <td mat-cell *matCellDef="let element">
+                <div style="text-align: center; width: 85%">
+                    {{element.porcentajeAvance}}%
+                    <mat-progress-bar mode="determinate" [value]="element.porcentajeAvance"></mat-progress-bar>
+                </div>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="fecha">
@@ -42,28 +47,27 @@
             <!-- <td mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd-MM-yyyy HH:mm'}} </td> -->
             <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
         </ng-container>
-    
+
         <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef width="100px"> Archivos </th>
-            <td mat-cell *matCellDef="let element"> 
-                <button mat-icon-button color="primary"
-                matTooltip="Ver Evidencias" (click)="showDialogFiles(element)">
-                <mat-icon>list</mat-icon></button>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" matTooltip="Ver Evidencias" (click)="showDialogFiles(element)">
+                    <mat-icon>list</mat-icon></button>
             </td>
         </ng-container>
-      
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="empty-row" *matNoDataRow>
-          <td class="empty-cell">Sin registros por mostrar</td>
+            <td class="empty-cell">Sin registros por mostrar</td>
         </tr>
-      </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cerrar</button>
-  <button mat-raised-button color="primary" *ngIf="flgJefe && idEstado==2" (click)="confirmAprobar()">
-    <mat-icon>check</mat-icon>Aprobar</button>
-  <button mat-raised-button color="warn" *ngIf="flgJefe && idEstado==2" (click)="showDialogRejectTasks()">
-    <mat-icon>close</mat-icon>Rechazar</button>
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-raised-button color="primary" *ngIf="flgJefe && idEstado==2" (click)="confirmAprobar()">
+        <mat-icon>check</mat-icon>Aprobar</button>
+    <button mat-raised-button color="warn" *ngIf="flgJefe && idEstado==2" (click)="showDialogRejectTasks()">
+        <mat-icon>close</mat-icon>Rechazar</button>
 </mat-dialog-actions>

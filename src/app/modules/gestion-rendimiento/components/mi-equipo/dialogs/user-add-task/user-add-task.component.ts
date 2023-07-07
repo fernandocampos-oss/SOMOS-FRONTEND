@@ -43,7 +43,7 @@ export class UserAddTaskComponent implements OnInit {
 
   onSave(){
     if(!this.form.valid){
-      this._notification.error("Se deben ingresar los campos requeridos")
+      this._notification.warning("Se deben ingresar los campos requeridos")
     } else {
       let t = new Tarea1();
       t.idEquipoIntegrante=this.idUsuario;

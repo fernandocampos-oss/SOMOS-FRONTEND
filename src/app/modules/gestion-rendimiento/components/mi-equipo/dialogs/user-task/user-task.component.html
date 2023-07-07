@@ -19,7 +19,12 @@
 
         <ng-container matColumnDef="porcentaje">
             <th mat-header-cell *matHeaderCellDef width="100px"> % de avance </th>
-            <td mat-cell *matCellDef="let element"> {{element.requerimiento.porcentajeAvance}} %</td>
+            <td mat-cell *matCellDef="let element">
+                <div style="text-align: center; width: 85%">
+                    {{element.requerimiento.porcentajeAvance}}%
+                    <mat-progress-bar mode="determinate" [value]="element.requerimiento.porcentajeAvance"></mat-progress-bar>
+                </div>
+            </td>
         </ng-container>
 
         <!-- <ng-container matColumnDef="fecFin">
@@ -47,7 +52,8 @@
                 <button mat-icon-button color="primary" (click)="showDialogDownloadTask(element, i)"
                     matTooltip="Visualizar tarea">
                     <mat-icon>remove_red_eye</mat-icon></button>
-                <button mat-icon-button color="primary" (click)="finalizarTarea(element)" [disabled]="element.porcentaje!=100" matTooltip="Aprobar tarea">
+                <button mat-icon-button color="primary" (click)="finalizarTarea(element)"
+                    [disabled]="element.porcentaje!=100" matTooltip="Aprobar tarea">
                     <mat-icon>check</mat-icon></button>
             </td>
         </ng-container>
@@ -61,5 +67,5 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close >Cerrar</button>
+    <button mat-button mat-dialog-close>Cerrar</button>
 </mat-dialog-actions>

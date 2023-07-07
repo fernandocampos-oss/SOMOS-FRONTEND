@@ -13,6 +13,9 @@ import { Personal } from '@data/models/gestion-rendimiento/personal';
 import { RequerimientoPersonal } from '@data/models/gestion-rendimiento/requerimientoPersonal';
 import { TareaValidacionTransaccionalDTO } from '@data/models/gestion-rendimiento/tareaValidacionTransaccionalDTO';
 import { PersonalEliminarDTO } from '@data/models/gestion-rendimiento/PersonalEliminarDTO';
+import { Evidencia } from '@data/models/gestion-rendimiento/evidencia';
+import { EvidenciaArchivo } from '@data/models/gestion-rendimiento/evidenciaArchivo';
+import { Archivo } from '@data/models/gestion-rendimiento/Archivo';
 
 const URL_BASE = `${environment.apiUrlLocal}`;
 
@@ -281,10 +284,10 @@ export class GestionRendimientoService {
     return this.http.post<Personal[]>(url, filtroConsulta);
   }
 
-  registrarPersonal(persona): Observable<any> {
+  registrarPersonal(personal: Personal): Observable<any> {
     const url = `${URL_BASE}/personal/registrar`;
-    console.log(url, persona);
-    return this.http.post(`${URL_BASE}/personal/registrar`, persona);
+    console.log(url, personal);
+    return this.http.post(`${URL_BASE}/personal/registrar`, personal);
   }
 
   listarRequerimientosPorPersonal(idPersonal) { 
@@ -318,10 +321,39 @@ export class GestionRendimientoService {
   }
 
   //Mis tareas
-  listarTareaPorPersonal(idPersonal) {
+  listarTareaPorPersonal(idPersonal: number) {
     const url = `${URL_BASE}/tareas/listar/personal/${idPersonal}`;
     console.log(url);
     return this.http.get<Tarea[]>(url);
   }
+
+  registrarEvidencia(evidencia: Evidencia): Observable<any> {
+    const url = `${URL_BASE}/evidencias/registrar`;
+    console.log(url, evidencia);
+    return this.http.post(`${URL_BASE}/evidencias/registrar`, evidencia);
+  }
+
+  registrarArchivo(archivo: Archivo): Observable<any> {
+    const url = `${URL_BASE}/archivos/registrar`;
+    console.log(url, archivo);
+    return this.http.post(`${URL_BASE}/archivos/registrar`, archivo);
+  }
+
+  registrarEvidenciaArchivo(evidenciaArchivo: EvidenciaArchivo): Observable<any> {
+    const url = `${URL_BASE}/evidenciasArchivos/registrar`;
+    console.log(url, evidenciaArchivo);
+    return this.http.post(`${URL_BASE}/evidenciasArchivos/registrar`, evidenciaArchivo);
+  }
+
+  listarArchivoPorEstadoActivo(idEvidenciaArchivo: number): Observable<any> {
+    const url = `${URL_BASE}/evidenciasArchivos/listar/${idEvidenciaArchivo}/estado`;
+    console.log(url);
+    return this.http.get<EvidenciaArchivo>(url);
+  }
+
+  eliminarArchivo(estado: boolean, idEvidenciaArchivo: number) {
+    return this.http.get(`${URL_BASE}/evidenciasArchivos/eliminar/estado/${estado}/id/${idEvidenciaArchivo}`);
+  }
+
 
 }

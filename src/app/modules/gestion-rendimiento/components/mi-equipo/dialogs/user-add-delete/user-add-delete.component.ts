@@ -89,7 +89,7 @@ export class UserAddDeleteComponent implements OnInit {
   // }
 
   loadIntegrantes() {
-    console.log("tmp dependencia=2");
+    console.log("tmp, 2");
     let idDependencia = 2;
 
     this.services.listarPersonalPorDependenciaAsignado(idDependencia, ConstantesGr.ESTADO_PERSONAL_ASIGNADO).subscribe((data) => {

@@ -6,7 +6,7 @@
           <mat-form-field appearance="outline">
             <mat-label>Integrante</mat-label>
             <mat-select formControlName="frmIntegrantes" required>
-              <mat-option *ngFor="let integrante of integrantes" [value]="integrante.id">
+              <mat-option *ngFor="let integrante of integrantes" [value]="integrante.idPersonal">
                 {{integrante.numeroDni}} - {{integrante.nombres}} {{integrante.apellidoPaterno}} {{integrante.apellidoMaterno}}
               </mat-option>
             </mat-select>
@@ -99,7 +99,7 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>Cerrar</button>
-      <button mat-raised-button color="primary" (click)="onSave()">Grabar</button>
+      <button mat-raised-button color="primary" (click)="onSave()">Aceptar</button>
     </mat-dialog-actions>
   </form>
   
