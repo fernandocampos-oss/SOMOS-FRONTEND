@@ -1,0 +1,17 @@
+<h3>Links de Sistemas Corporativos</h3>
+<mat-grid-list cols="4" rowHeight="200px" gutterSize="16px">
+        <mat-grid-tile *ngFor="let sistema of sistemas" [colspan]="1">
+            <div class="cuadro">
+                <div class="headerEnlace">
+                    <h5>{{sistema.nombre}}</h5>
+                </div>
+                <div class="cuerpoEnlace">
+                    <a href='{{sistema.direccion}}' target="_blank">
+                        <img src='{{sistema.imgRuta}}'>
+                        <!-- <div [ngStyle]="{'background-image': 'url('+sistema.imgRuta+')'}">
+                        </div> -->
+                    </a>
+                </div>
+            </div>
+        </mat-grid-tile>
+</mat-grid-list>

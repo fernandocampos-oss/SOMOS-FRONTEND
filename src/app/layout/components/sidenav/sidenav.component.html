@@ -24,8 +24,26 @@
             <mat-icon *ngIf ="item.svg" mat-list-icon svgIcon={{item.icon}} class="icon"></mat-icon>
             <span class="option" matLine>{{ item.label }} </span>
           </mat-list-item>
-          <!-- <mat-list-item *ngIf="item.type==2" class="listItemImage" [ngStyle]="{'background-image': 'url('+item.background+')'}" (click)="open(item.label)">
-          </mat-list-item> -->
+          <mat-list-item *ngIf="item.type==2" class="listItemImage" (click)="open(item.label)">
+            <mat-icon *ngIf ="!item.svg" mat-list-icon>{{ item.icon }}</mat-icon>
+            <mat-icon *ngIf ="item.svg" mat-list-icon svgIcon={{item.icon}} class="icon iconPopUp"></mat-icon>
+            <span class="option" matLine>{{ item.label }} </span>
+          </mat-list-item>
+          <mat-expansion-panel *ngIf="item.type==3" [class.mat-elevation-z0]="true" class="subMenu">
+            <mat-expansion-panel-header>
+              <mat-icon *ngIf ="!item.svg" mat-list-icon>{{ item.icon }}</mat-icon>
+              <mat-icon *ngIf ="item.svg" mat-list-icon svgIcon={{item.icon}} class="icon"></mat-icon>
+              <span class="option" matLine>{{ item.label }} </span>
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+              <ng-container>
+              <mat-list-item *ngFor="let subItem of item.children" routerLinkActive="active" [routerLink]="['/' + subItem.path]" [routerLinkActiveOptions]="{ exact: true }">
+                <mat-icon *ngIf ="!subItem.svg" mat-list-icon>{{ subItem.icon }}</mat-icon>
+                <mat-icon *ngIf ="subItem.svg" mat-list-icon svgIcon={{subItem.icon}} class="icon"></mat-icon>
+                <span class="option" matLine>{{ subItem.label }} </span>
+              </mat-list-item></ng-container>
+            </mat-nav-list>
+          </mat-expansion-panel>
         </div>
       </ng-container>
     </mat-nav-list>

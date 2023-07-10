@@ -5,6 +5,7 @@ export interface MenuItem {
   svg ?:boolean;
   label: string;
   roles?: Role[];
-  type?:number;
+  children?: MenuItem[];
+  type?:number; //type "2" = Boton para abrir en un PopUp ; type "3" = Sub Menu 
   background?:string;
 }

@@ -34,6 +34,7 @@ export class SidenavComponent implements OnInit {
     this.matIconRegistry.addSvgIcon("remote_menu",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/remote_menu.svg"));
     this.matIconRegistry.addSvgIcon("ddjj",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/ddjj.svg"));
     this.matIconRegistry.addSvgIcon("marcacion_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/carneMarcacionIcon.svg"));
+    this.matIconRegistry.addSvgIcon("payment_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/mon_azul_icon.svg"));
     this.matIconRegistry.addSvgIcon("check-access",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/check-access.svg"));
   }
 
@@ -81,16 +82,16 @@ export class SidenavComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => { });
   }
-  // open(option: string){
-  //   switch (option) {
-  //     case 'Calendario Pagos':
-  //       const dialogRef: MatDialogRef<ShowPaymentCalendarComponent> = this.dialog.open(ShowPaymentCalendarComponent, {
-  //         disableClose: false,
-  //         minWidth: '350px',
-  //         maxWidth: '50%',
-  //         autoFocus: false,
-  //       });
-  //       break;
-  //   }
-  // }
+  open(option: string){
+    switch (option) {
+      case 'Cronograma de Pagos':
+        const dialogRef: MatDialogRef<ShowPaymentCalendarComponent> = this.dialog.open(ShowPaymentCalendarComponent, {
+          disableClose: false,
+          minWidth: '350px',
+          maxWidth: '50%',
+          autoFocus: false,
+        });
+        break;
+    }
+  }
 }

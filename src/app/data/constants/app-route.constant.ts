@@ -21,6 +21,6 @@ export class AppRoute {
   static readonly DDJJ_CONFLICTO_OTRO = 'dj-conflicto-interes';
   static readonly ADJUNTAR_DOCUMENTOS = 'adjuntar-documentos';
   static readonly MIS_REQUERIMIENTOS = 'mis-requerimientos';
-  static readonly ADMINISTRAR_ENCUESTA = 'administracion';
+  static readonly ADMINISTRAR_ENCUESTA = 'administracion-encuesta';
   static readonly ADMINISTRAR_USUARIOS = 'administrar-usuarios';
 }

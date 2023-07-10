@@ -87,7 +87,7 @@
       <span>{{fechas[identificador].descripcion}}</span>
     </div>
 </div>
-<div class="column1" *ngIf="interfazCelular">
+<div class="column1" *ngIf="!interfazCelular">
     <div class="boxBorde boxBirth">
         <div class="header">
               <img src="assets/images/cake.png">
@@ -148,8 +148,11 @@
         <span>{{fechas[identificador].descripcion}}</span>
       </div>
 
-    <div class="boxBorde boxPagos2" (click)="open(4)">
-    </div>
+    <!-- <div class="boxBorde boxSistemas" (click)="open(4)">
+      <div class="contenido">
+        <span>Links de Sistemas Corporativos</span>
+      </div>
+    </div> -->
     <div class="boxBorde boxSST-2">
         <span>Consulta: sgrhs.bienestar@essalud.gob.pe</span>
     </div>
@@ -158,7 +161,7 @@
         <img class="imgPayment" src="assets/images/payment_calendar.png">
       </div> -->
 </div>
-<div class="column1" *ngIf="!interfazCelular">
+<div class="column1" *ngIf="interfazCelular">
   <div class="opcionesAcortadas" (click)="changeVisual(1)">
     <mat-icon>home</mat-icon>
   </div>
@@ -171,7 +174,7 @@
   <div class="opcionesAcortadas" (click)="changeVisual(3)">
     <img src='assets/images/calendarioAzul.png'>
   </div>
-  <div class="opcionesAcortadas" (click)="open(4)">
+  <!-- <div class="opcionesAcortadas" (click)="open(4)">
     <img src="assets/images/monedasAzul.png">
-  </div>
+  </div> -->
 </div>

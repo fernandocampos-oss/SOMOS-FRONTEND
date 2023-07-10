@@ -108,20 +108,20 @@ export const ROUTES: Routes = [
       //       (m) => m.ConfiguracionesModule
       //     ),
       // },
-      // {
-      //   path: AppRoute.ADMINISTRAR_ENCUESTA,
-      //   loadChildren: () =>
-      //     import('../modules/administracion/administracion.module').then(
-      //       (m) => m.AdministracionModule
-      //     ),
-      // },
-      // {
-      //   path: AppRoute.ADMINISTRAR_USUARIOS,
-      //   loadChildren: () =>
-      //     import('../modules/administrar-usuarios/administrar-usuarios.module').then(
-      //       (m) => m.AdministrarUsuariosModule
-      //     ),
-      // },
+      {
+        path: AppRoute.ADMINISTRAR_ENCUESTA,
+        loadChildren: () =>
+          import('../modules/administracion/administracion.module').then(
+            (m) => m.AdministracionModule
+          ),
+      },
+      {
+        path: AppRoute.ADMINISTRAR_USUARIOS,
+        loadChildren: () =>
+          import('../modules/administrar-usuarios/administrar-usuarios.module').then(
+            (m) => m.AdministrarUsuariosModule
+          ),
+      },
       // {
       //   path: AppRoute.MIS_REQUERIMIENTOS,
       //   loadChildren: () => 

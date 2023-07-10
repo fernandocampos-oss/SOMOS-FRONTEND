@@ -107,7 +107,7 @@ span.birthDescrp{
   border-radius: 11px;
   border-width: 2.5px;
 }
-.boxSST, .boxEncuesta, .boxSST-2, .boxPagos2{
+.boxSST, .boxEncuesta, .boxSST-2, .boxSistemas{
   cursor: pointer;
   font-weight: bold;
   align-content: center;
@@ -122,13 +122,20 @@ span.birthDescrp{
   background-size: cover;
   background-position: center;
 }
-.boxPagos2{
+.boxSistemas{
+  padding-left: 5vw;
   height: 7.5vw;
   width: 100%;
-  background-image: url(~src/assets/images/btnCronogramaPagos.png);
+  background-image: url(~src/assets/images/btnBackground.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  color: white;
+  .contenido{
+    margin-top: 18px;
+    text-align: center;
+    width: 100%;
+  }
 }
 .boxEncuesta, .boxEncuestaRes{
   font-weight: bold;
@@ -388,7 +395,7 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 840px) and (max-width: 1279px) {
-  .boxSST, .boxPagos2{
+  .boxSST, .boxSistemas{
     height: 84px;
   }
   .boxPublicacion{
@@ -409,7 +416,7 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 600px) and (max-width: 890px) {
-  .boxSST, .boxPagos2{
+  .boxSST, .boxSistemas{
     height: 84px;
   }
   .changeBirth{

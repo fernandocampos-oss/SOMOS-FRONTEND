@@ -1,3 +1,19 @@
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+  height: 53px;
+}
+.column1 {
+  float: left;
+  width: 50%;
+  padding: 4px;
+} 
+.column2 {
+  float: left;
+  width: 50%;
+  padding: 20px 20px 20px 0px;
+} 
 .matero-page-header {
     height: 100%;
 }
@@ -6,4 +22,53 @@ mat-grid-list {
     mat-form-field {
       width: 100%;
     }
+}
+.headerInforme{
+  background: #abe7e3;
+}
+.headerAlternativas{
+  background: #e6effa;
+}
+img{
+  width: 133.75px;
+  margin-bottom: 10px;
+}
+.cuenta{
+  font-size: 48px;
+}
+.cuadroInforme{
+  .resultados{
+    border: #37485f;
+    background: white;
+    border-style: solid;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: 10px;
+    justify-content: flex-end;
+  }
+  .headerInforme, .headerAlternativas{
+    text-align: center;
+    width: 100%;
+    h3, h4{
+      margin-top: 8px;
+    }
+    border-bottom: #37485f;
+    border-bottom-style: solid;
+  }
+  background: rgb(220, 220, 220);
+  border: #37485f;
+  border-style:solid;
+  border-radius: 11px;
+  ::ng-deep .mat-grid-tile-content{
+      flex-direction: column;
+      justify-content: space-between;
+  }
+  .datosAlternativas{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+  }
 }

@@ -11,6 +11,12 @@ const data: MenuItem[] = [
   //     icon: 'record_voice_over',
   //     label: 'Actualización de datos',
   // },
+  {
+    icon: 'payment_icon',
+    svg : true,
+    label: 'Cronograma de Pagos',
+    type: 2,
+  },
   // {
   //   path: AppRoute.CAMBIAR_CONTRA,
   //   icon: 'https',
@@ -23,21 +29,31 @@ const data: MenuItem[] = [
       label: 'Mis Marcaciones',
   },
   // {
-  //     label: 'Calendario Pagos',
-  //     type: 2,
-  //     background: 'btnCronogramaPagos.png',
-  // },
-  // {
   //   path: AppRoute.ADMINISTRAR_USUARIOS,
   //   icon: 'settings',
   //   label: 'Administrar Usuarios',
   //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   // },
   // {
-  //     path: AppRoute.ADMINISTRAR_ENCUESTA,
-  //     icon: 'settings',
-  //     label: 'Administrar Resultados Encuesta',
+  //   icon: 'settings',
+  //   label:'Administracion',
+  //   type: 3,
+  //   roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+  //   children:[
+  //     {
+  //       path: AppRoute.ADMINISTRAR_ENCUESTA,
+  //       icon: 'settings',
+  //       label: 'Resultados encuesta',
+  //       roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+  //     },
+  //   ]
   // },
+  // // // {
+  // // //     path: AppRoute.ADMINISTRAR_ENCUESTA,
+  // // //     icon: 'settings',
+  // // //     label: 'Administrar Resultados Encuesta',
+  // // //     roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+  // // // },
   // {
   //     path: AppRoute.MARCACION_TRABAJADOR,
   //     icon: 'airplanemode_active',

@@ -1,0 +1,48 @@
+.boxBorde{
+    margin: 8px 0px 0px 0px;
+    border: var(--color-bordes);
+    border-style:solid;
+    border-radius: 11px;
+    border-width: 2.5px;
+}
+.cuerpoEnlace{
+    // width: 100%;
+    height: 100%;
+    background: blanchedalmond;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+
+    a{
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+    img{
+        // width: 65%;
+        width: 154px;
+    }
+}
+.cuadro{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;  
+    border: #37485f;
+    border-style: solid;
+    border-radius: 11px;
+}
+
+.headerEnlace{
+    background: #79ccf2;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    padding: 1% 0;
+    text-align: center;
+    width: 100%;
+    h5{
+      margin: 0;
+    }
+    border-bottom: #37485f;
+    border-bottom-style: solid;
+}

@@ -33,9 +33,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this._router.events.subscribe((ev) => {
       if(ev instanceof NavigationEnd){
         this.rol = this._authService.getRol();
-        if (this.rol != 4 && ev.url.includes('/admin')){
-          this._router.navigate(['/']);
-        }
       }
     });
     this.mobileQuery = media.matchMedia('(max-width: 959px)');

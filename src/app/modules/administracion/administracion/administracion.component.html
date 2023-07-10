@@ -1,13 +1,71 @@
-<div class="page">
+<div class="page" *ngIf="rol == 3">
     <div class="matero-page-header">
-        <h1 class="matero-page-title"><mat-icon >settings</mat-icon> Administrar resultados de la encuesta<br>
-            <small class="mr-2">Obtén los reportes que necesitas según la información ingresada.</small><br>
-            <span class="back" (click)="back()" > <mat-icon>reply</mat-icon> Regresar</span>
-        </h1>
+        <div class="row">
+          <div class="column1">
+            <h1 class="matero-page-title"><mat-icon >settings</mat-icon> Administrar resultados de la encuesta<br>
+                <!-- <small class="mr-2">Obtén los reportes que necesitas según la información ingresada.</small><br> -->
+            </h1>
+          </div>
+          <div class="column2">
+            <button mat-raised-button color="primary" class="search buttonReturn" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+          </div>
+        </div>
     </div>
     <div class="page__body">
       <div class="card shadow">
-        <div style="height: 80px;">
+        
+        <mat-grid-list cols="1" rowHeight="50px" gutterSize="6px">
+            <mat-grid-tile [colspan]="1">
+                <h2>{{respuestas.descripcion}}</h2>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <br>
+        <mat-grid-list cols="2" rowHeight="150px" gutterSize="6px">
+            <mat-grid-tile [colspan]="1" class="cuadroInforme">
+                <div class="headerInforme">
+                    <h3>Usuarios Registrados</h3>
+                </div>
+                <h2 class="cuenta">{{respuestas.usuariosActivos}}</h2>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" class="cuadroInforme">
+                <div class="headerInforme">
+                    <h3>Total Votos</h3>
+                </div>
+                <h2 class="cuenta">{{respuestas.votos}}</h2>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <br>
+        <mat-grid-list cols="2" rowHeight="200px" gutterSize="6px">
+            <div *ngFor="let votaciones of respuestas.encuestaVotaciones">
+                <mat-grid-tile [colspan]="1" *ngIf="votaciones.idAlternativa == 1" class="cuadroInforme">
+                    <div class="headerAlternativas">
+                        <h4>{{votaciones.descripcion}}</h4>
+                    </div>
+                    <div class="datosAlternativas">
+                        <img src="assets/images/creditCard.png">
+                        <div class="resultados">
+                            <h2 class="cuenta">{{votaciones.votos}}</h2>
+                            <h2>Votaciones</h2>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            </div>
+            <div *ngFor="let votaciones of respuestas.encuestaVotaciones">
+                <mat-grid-tile [colspan]="1" *ngIf="votaciones.idAlternativa == 2" class="cuadroInforme">
+                    <div class="headerAlternativas">
+                        <h4>{{votaciones.descripcion}}</h4>
+                    </div>
+                    <div class="datosAlternativas">
+                        <img src="assets/images/moneyIcon.png">
+                        <div class="resultados">
+                            <h2 class="cuenta">{{votaciones.votos}}</h2>
+                            <h2>Votaciones</h2>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            </div>
+        </mat-grid-list>
+        <!-- <div style="height: 80px;">
             <div style="float: left; display: grid; width: 75.5%; height: 100%;">
                 <h4>Total de Registros: 484</h4>
                 <section class="example-section">
@@ -56,7 +114,7 @@
                 </mat-form-field>
             </mat-grid-tile>
         </mat-grid-list>
-      </div>
+      </div> -->
     </div>
   </div>
-  
+</div>

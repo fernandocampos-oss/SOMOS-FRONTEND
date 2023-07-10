@@ -12,6 +12,7 @@ import { AdmPublicaciones } from '../components/adm-publicaciones/adm-publicacio
 import { AuthService } from '@data/services';
 import { ShowPaymentCalendarComponent } from '../components/show-payment-calendar/show-payment-calendar.component';
 import { EncuestaSimpleComponent } from '../components/encuesta-simple/encuesta-simple.component';
+import { ShowSistemasComponent } from '../components/show-sistemas/show-sistemas.component';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -68,9 +69,9 @@ export class MenuPrincipalComponent implements OnInit {
       Breakpoints.XSmall
       ])
       .subscribe(result => {
-        this.interfazCelular = true;
+        this.interfazCelular = false;
         if (result.matches) {
-          this.interfazCelular = false;
+          this.interfazCelular = true;
         }
       });
     this._menuService.getPublicaciones()
@@ -135,10 +136,9 @@ export class MenuPrincipalComponent implements OnInit {
         });
           break;
       case 4:
-        const dialogRef4: MatDialogRef<ShowPaymentCalendarComponent> = this.dialog.open(ShowPaymentCalendarComponent, {
+        const dialogRef4: MatDialogRef<ShowSistemasComponent> = this.dialog.open(ShowSistemasComponent, {
             disableClose: false,
-            minWidth: '350px',
-            maxWidth: '50%',
+            width: '70%',
             autoFocus: false,
           });
           break;
