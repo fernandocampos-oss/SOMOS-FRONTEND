@@ -10,7 +10,7 @@
         <h2 class="auth__subtitle">Datos Generales</h2>
         <mat-form-field appearance="outline">
           <mat-label>Documento de identidad</mat-label>
-          <input matInput required formControlName="numeroDocumento"/>
+          <input matInput required formControlName="numeroDocumento" name="doc"/>
           <mat-error *ngIf="numeroDocumentoField.hasError('required')">El campo es obligatorio</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -28,7 +28,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Fecha Nacimiento</mat-label>
           <input matInput required formControlName="fechaNacimiento" [max]="maxFechaNacimiento"
-            [matDatepicker]="picker" />
+            [matDatepicker]="picker" name="fechanacimiento"/>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker startView="multi-year"></mat-datepicker>
           <mat-error *ngIf="fechaNacimientoField.hasError('required')">El campo es obligatorio</mat-error>
@@ -59,12 +59,12 @@
         <h2 class="auth__subtitle">Datos de la Cuenta</h2>
         <mat-form-field appearance="outline">
           <mat-label>Correo Personal</mat-label>
-          <input matInput required formControlName="correo" />
+          <input matInput required formControlName="correo" name="email"/>
           <mat-error *ngIf="correoField.hasError('required')">El campo es obligatorio</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Celular</mat-label>
-          <input matInput maxlength="9" required formControlName="numeroCelular"/>
+          <input matInput maxlength="9" required formControlName="numeroCelular" name="celular"/>
           <mat-error *ngIf="celularField.hasError('required')">El campo es obligatorio</mat-error>
           <mat-error *ngIf="celularField.hasError('pattern')">El número de celular no es válido</mat-error>
         </mat-form-field>

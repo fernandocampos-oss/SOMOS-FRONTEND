@@ -18,7 +18,7 @@
     >
       <mat-form-field appearance="outline" class="camposLogin">
         <mat-label>Documento de identidad</mat-label>
-        <input matInput formControlName="username" />
+        <input matInput formControlName="username" name="doc"/>
         <mat-icon matPrefix>person &nbsp;</mat-icon>
         <mat-error *ngIf="usuarioField.hasError('required')"
           >El usuario es obligatorio</mat-error

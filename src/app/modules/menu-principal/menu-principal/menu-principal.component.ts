@@ -37,12 +37,21 @@ export class MenuPrincipalComponent implements OnInit {
   identificador: number;
   fechas: fechas_Imp[] = [
     {descripcion:'No Hay Fecha',dia: new Date('12/21/2012 00:00:00')},
-    {descripcion:'Prueba1',dia: new Date('12/25/2023 00:00:00')},
-    {descripcion:'Prueba2',dia: new Date('11/25/2023 00:00:00')},
+    {descripcion:'Día no laborable para el sector público',dia: new Date('01/02/2024 00:00:00')},
+    {descripcion:'Año Nuevo',dia: new Date('01/01/2024 00:00:00')},
+    {descripcion:'Día no laborable para el sector público',dia: new Date('12/26/2023 00:00:00')},
+    {descripcion:'Batalla de Ayacucho',dia: new Date('12/09/2023 00:00:00')},
+    {descripcion:'Día de la Inmaculada Concepción',dia: new Date('12/08/2023 00:00:00')},
+    {descripcion:'Día no laborable para el sector público',dia: new Date('12/07/2023 00:00:00')},
+    {descripcion:'Día de Todos los Santos',dia: new Date('11/01/2023 00:00:00')},
+    {descripcion:'Día no laborable para el sector público',dia: new Date('10/09/2023 00:00:00')},
+    {descripcion:'Combate de Angamos',dia: new Date('10/08/2023 00:00:00')},
+    {descripcion:'Santa Rosa de Lima',dia: new Date('08/30/2023 00:00:00')},
+    {descripcion:'Batalla de Junín',dia: new Date('08/06/2023 00:00:00')},
     {descripcion:'Día de la independencia',dia: new Date('07/28/2023 00:00:00')},
     {descripcion:'Día del Padre',dia: new Date('06/18/2023 00:00:00')},
     {descripcion:'Día de la Madre',dia: new Date('05/14/2023 00:00:00')},
-    {descripcion:'Prueba7',dia: new Date('03/01/2023 00:00:00')},
+    {descripcion:'Prueba 4',dia: new Date('01/01/2022 00:00:00')},
   ]
 
   publicaciones: PublicacionResponse[] = [];
@@ -179,7 +188,7 @@ export class MenuPrincipalComponent implements OnInit {
     var winner = -1;
     this.fechas.forEach(function(diaDate, index){
       if((diaDate.dia.getMonth() >= hoy.getMonth() && diaDate.dia.getDate() > hoy.getDate()
-      && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getMonth() > hoy.getMonth() && diaDate.dia.getFullYear() >= hoy.getFullYear())){
+      && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getMonth() > hoy.getMonth() && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getFullYear() > hoy.getFullYear())){
         var diaD:number;
         if (diaDate.dia instanceof Date) {
           diaD = diaDate.dia.getTime();   
