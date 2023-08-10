@@ -8,8 +8,11 @@
       </div>
     </div> -->
     <div class="box2" *ngIf="showPublicaciones">
-      <div *ngIf="rol == 4" class="header">
-        <button mat-mini-fab class="buttonAdmImg" (click)="open(3)" matTooltip="Administrar publicaciones">
+      <div class="header">
+        <button mat-mini-fab *ngIf="rol == 4" [routerLink]="['/' + path]" class="button-rol" matTooltip="Administración de roles">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button mat-mini-fab *ngIf="rol == 3 || rol == 4" class="buttonAdmImg" (click)="open(3)" matTooltip="Administrar publicaciones">
           <mat-icon>add_photo_alternate</mat-icon>
         </button>
       </div>   

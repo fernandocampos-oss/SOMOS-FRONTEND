@@ -23,4 +23,6 @@ export class AppRoute {
   static readonly MIS_REQUERIMIENTOS = 'mis-requerimientos';
   static readonly ADMINISTRAR_ENCUESTA = 'administracion-encuesta';
   static readonly ADMINISTRAR_USUARIOS = 'administrar-usuarios';
+
+  static readonly ADMINISTRAR_ROL_RED = 'administrar-rol-red';
 }

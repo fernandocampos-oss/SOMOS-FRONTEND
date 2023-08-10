@@ -36,6 +36,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 export const DateFormats = {
   parse: {
@@ -79,7 +80,8 @@ export const DateFormats = {
     MatButtonToggleModule,
     MatChipsModule,
     MatRadioModule,
-    CdkAccordionModule
+    CdkAccordionModule,
+    MatSlideToggleModule,
   ],
   providers: [
     {
@@ -90,4 +92,4 @@ export const DateFormats = {
     { provide: MAT_DATE_FORMATS, useValue: DateFormats },
   ],
 })
-export class MaterialModule {}
+export class MaterialModule { }

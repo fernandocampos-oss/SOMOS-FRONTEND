@@ -1,0 +1,19 @@
+mat-grid-list {
+    mat-grid-tile {
+      width: 100%;
+      top: 2%;
+    }
+}
+.boton{
+    width: 100%;
+    background-color: var(--color-MiEssalud);
+    color: white;
+}
+
+.btnCancel {
+  width: 100%;
+  background: #ffffff;
+  border: 2px solid var(--color-MiEssalud);
+  box-sizing: border-box;
+  border-radius: 4px;
+}

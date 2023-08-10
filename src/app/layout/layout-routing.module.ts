@@ -129,6 +129,13 @@ export const ROUTES: Routes = [
       //       (m) => m.MisRequerimientosModule
       //     ),
       // },
+      {
+        path: AppRoute.ADMINISTRAR_ROL_RED,
+        loadChildren: () => 
+          import('../modules/administrar-rol-red/administrar-rol-red.module').then(
+            (m) => m.AdministrarRolRedModule
+          ),
+      },
     ],
   },
 ];

@@ -13,6 +13,7 @@ import { AuthService } from '@data/services';
 import { ShowPaymentCalendarComponent } from '../components/show-payment-calendar/show-payment-calendar.component';
 import { EncuestaSimpleComponent } from '../components/encuesta-simple/encuesta-simple.component';
 import { ShowSistemasComponent } from '../components/show-sistemas/show-sistemas.component';
+import { AppRoute } from '@data/constants';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -52,11 +53,13 @@ export class MenuPrincipalComponent implements OnInit {
   showCumple = false;
   showCountdown = false;
 
-
   parametros = {
     mesConsulta: '',
     diaConsulta: '',
   }
+
+  path = AppRoute.ADMINISTRAR_ROL_RED;
+
   constructor(private dialog: MatDialog,
               private _menuService:MenuPrincipalService,
               private responsive  : BreakpointObserver,
