@@ -292,6 +292,9 @@ export class AdministrarRolRedComponent implements OnInit {
     this.listPersonalTemporal.push({ red: this.redSeleccionadoTmp.descripcion, persona: this.personalSeleccionadoTmp.nombre });
 
     this.guardarAsignacionRed();
+    this.myControl.reset('');
+    this.myControlPersonal.reset('');
+
     this.redSeleccionadoTmp = null;
     this.personalSeleccionadoTmp = null;
     
