@@ -506,7 +506,16 @@ mat-grid-list {
   }
 }
 
-.button-rol{
+.button-color{
   color: white;
   background-color: var(--color-bordes);
+}
+
+.example-button-row {
+  display: table-cell;
+  text-align: right;
+  width: 690px;
+}
+.example-button-row .mat-button-base {
+  margin: 8px 8px 8px 0;
 }

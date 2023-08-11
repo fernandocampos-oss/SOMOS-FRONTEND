@@ -1,17 +1,87 @@
+:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: #8aa4d4;
+}
+
+:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: var(--color-bordes);
+}
+
 .example-form {
-    min-width: 150px;
-    max-width: 500px;
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 95%;
+}
+
+table {
+  width: 100%;
+}
+
+.button-rol {
+  color: white;
+  background-color: var(--color-bordes);
+}
+
+.mobile-label {
+  display: none;
+}
+
+.title{
+  text-align: left;
+  margin-top: 0;
+}
+
+/***/
+.column1 {
+  float: left;
+  width: 50%;
+  padding: 2%;
+  top: 0;
+}
+
+.column2 {
+  float: left;
+  width: 50%;
+  padding: 2% 2% 2% 2%;
+} 
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.mobile-label {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .column1 {
+    float: none;
     width: 100%;
+    padding: 0%;
+    top: 0;
+  }
+  .column2 {
+    float: none;
+    width: 100%;
+    padding: 0%;
+  }
+
+  .mobile-label {
+    width: 80px;
+    display: inline-block;
+    font-weight: bold;
+  }
+  .mat-header-row {
+    display: none;
+  }
+  .mat-row {
+    flex-direction: column;
+    align-items: start;
+    padding: 8px 24px;
   }
   
-  .example-full-width {
-    width: 100%;
-  }
-  
-  table {
-    width: 100%;
-  }
-  
-  mat-chip-list{
-    width: 100%;
-  }
+}

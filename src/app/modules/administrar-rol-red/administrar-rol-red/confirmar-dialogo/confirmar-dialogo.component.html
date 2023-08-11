@@ -1,7 +1,7 @@
-
 <div class="alert">
-    <h2>¿ Estás seguro desactivar el usuario asignado ?</h2>
-    <!-- <span style="justify-self: center;">Una vez enviado no se podrá deshacer</span><br> -->
+    <h3 *ngIf="estado">{{titleHabilitar}}</h3>
+    <h3 *ngIf="!estado">{{titleDeshabilitar}}</h3>
+    <span style="justify-self: center;">{{personal}}</span><br>
 </div>
 <br>
 <mat-grid-list cols="2" rowHeight="40px" gutterSize="6px">
@@ -9,6 +9,6 @@
         <button mat-button matDialogClose class="btnCancel">No</button>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1" class="grid">
-        <button mat-raised-button (click)="asignar()" class="boton">Si</button>
-    </mat-grid-tile> 
+        <button mat-raised-button (click)="modificarHabilitarDeshabilitar()" class="boton">Si</button>
+    </mat-grid-tile>
 </mat-grid-list>

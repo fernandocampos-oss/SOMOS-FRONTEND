@@ -1,4 +1,12 @@
 <div class="column2">
+      <div class="example-button-row">
+        <button mat-mini-fab *ngIf="rol == 4" [routerLink]="['/' + path]" class="button-color" matTooltip="Administración de roles">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button mat-mini-fab *ngIf="rol == 3 || rol == 4" class="button-color" (click)="open(3)" matTooltip="Administrar publicaciones">
+          <mat-icon>add_photo_alternate</mat-icon>
+        </button>   
+      </div>
     <!-- <div class="box2" >
       <div class="header">
         <span>Mensaje del día</span>    
@@ -8,14 +16,14 @@
       </div>
     </div> -->
     <div class="box2" *ngIf="showPublicaciones">
-      <div class="header">
+      <!-- <div class="header">
         <button mat-mini-fab *ngIf="rol == 4" [routerLink]="['/' + path]" class="button-rol" matTooltip="Administración de roles">
           <mat-icon>settings</mat-icon>
         </button>
         <button mat-mini-fab *ngIf="rol == 3 || rol == 4" class="buttonAdmImg" (click)="open(3)" matTooltip="Administrar publicaciones">
           <mat-icon>add_photo_alternate</mat-icon>
         </button>
-      </div>   
+      </div>    -->
       <div class="body">
         <!-- <mat-grid-list cols="1" rowHeight="480px" gutterSize="35px">
           <mat-grid-tile [colspan]="1" *ngFor="let pub of publicaciones"> -->

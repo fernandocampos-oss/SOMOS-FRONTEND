@@ -1,19 +1,16 @@
 <div class="page">
   <div class="matero-page-header">
-    <h1 class="matero-page-title"><mat-icon>settings</mat-icon>Administración de roles por Redes Asistenciales<br>
-      <small class="mr-2">Administra y asigna roles de usuario para redes asistenciales, Podras asignar permisos de
-        publicación a
-        jefes de Red.</small><br>
+    <h1 class="matero-page-title"><mat-icon>settings</mat-icon>Asignación de redes<br>
+      <small class="mr-2">Administra y asigna roles de usuario para administrar las publicaciones de red.</small><br>
       <span class="back" (click)="back()"> <mat-icon>reply</mat-icon> Regresar</span>
     </h1>
   </div>
   <div class="page__body">
     <div class="card shadow">
 
-      <h3>Asignar nuevo rol</h3>
-      <br>
-      <mat-grid-list cols="3" rowHeight="6em" gutterSize="15px">
-        <mat-grid-tile [colspan]="1" class="grid">
+      <h3>Asignar red a personal</h3>
+      <div class="column1">
+        <div class="auth__group">
           <form class="example-form">
             <mat-form-field class="example-full-width">
               <mat-label>Personal</mat-label>
@@ -22,19 +19,22 @@
               <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFnPersonal"
                 (optionSelected)="onSelectionChangePersonal($event)">
                 <mat-option *ngFor="let persona of filteredOptionsPersonal | async" [value]="persona">
-                  {{persona.nombre}}
+                  {{persona.nombresCompletos}}
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
           </form>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" class="grid">
+        </div>
+      </div>
+
+      <div class="column2">
+        <div class="auth__group">
           <form class="example-form">
             <mat-form-field class="example-full-width">
-              <mat-label>Red</mat-label>
+              <mat-label>Red Asistencial</mat-label>
               <input type="text" placeholder="Escriba un nombre de red" matInput [formControl]="myControl"
-                [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnRed"
+                [matAutocomplete]="autoRed">
+              <mat-autocomplete #autoRed="matAutocomplete" [displayWith]="displayFnRed"
                 (optionSelected)="onSelectionChangeRed($event)">
                 <mat-option *ngFor="let red of filteredOptions | async" [value]="red">
                   {{red.descripcion}}
@@ -42,73 +42,19 @@
               </mat-autocomplete>
             </mat-form-field>
           </form>
-
-          <!-- ggg -->
-          <!-- <mat-chip-list #chipList>
-        <mat-chip *ngFor="let item of selectedItems" [selectable]="selectable" [removable]="removable" (removed)="remove(item)">
-          {{ item.item }}
-        </mat-chip>
-        <input type="text" #inputTrigger placeholder="Red Asisencial" matInput [matAutocomplete]="autoComplete" [formControl]="itemControl"
-          [matChipInputFor]="chipList">
-      </mat-chip-list> -->
-
-          <!-- <input type="text" #inputTrigger placeholder="Red Asisencial" matInput [matAutocomplete]="autoComplete"
-            [formControl]="itemControl">
-
-          <mat-autocomplete #autoComplete="matAutocomplete">
-            <mat-option>
-              <mat-checkbox [checked]="isAllSelected" (change)="toggleSelectAll()" (click)="$event.stopPropagation()">
-                --TODOS--
-              </mat-checkbox>
-            </mat-option>
-            <mat-option *ngFor="let item of filteredItems" [value]="selectedItems">
-              <div (click)="optionClicked($event, item);">
-                <mat-checkbox [checked]="item.selected" (change)="toggleSelection(item)"
-                  (click)="$event.stopPropagation()">
-                  {{ item.item }}
-                </mat-checkbox>
-              </div>
-            </mat-option>
-          </mat-autocomplete> -->
-          <!-- yyy -->
-
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" class="grid">
-          <mat-form-field class="example-full-width">
-            <mat-label>Fecha de Asiganción</mat-label>
-            <input type="text" matInput [disabled]="true" [ngModel]="fechaActual" />
-          </mat-form-field>
-        </mat-grid-tile>
-      </mat-grid-list>
-
+        </div>
+      </div>
 
       <div style="text-align: center">
-        <button mat-raised-button color="primary" (click)="addListaTemporal()"
+        <button mat-raised-button class="button-rol" (click)="registrarAsignacion()"
           [disabled]="!(this.redSeleccionadoTmp && this.personalSeleccionadoTmp)">
           Asignar
         </button>
       </div>
+
+
       <br>
-
-
-      <mat-list>
-        <mat-list-item *ngFor="let d of listPersonalTemporal; let i=index">
-          <h4 mat-line>{{d.persona}}</h4>
-          <h4 mat-line>{{d.red}}</h4>
-          <button mat-icon-button matTooltip="Remover" color="primary" (click)="removerItem(i)">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-list>
-
-      <div *ngIf="listPersonalTemporal.length > 0" style="text-align: center">
-        <button mat-raised-button color="primary" (click)="guardarAsignacionRed()">
-          Registrar
-        </button>
-      </div>
-      <br>
-
-      <h3>Roles asignados</h3>
+      <h3>Redes asignadas</h3>
       <div style="text-align: right">
         <mat-form-field *ngIf="showFilter" appearance="outline">
           <mat-label>Filtro de búsqueda</mat-label>
@@ -117,45 +63,41 @@
       </div>
       <div class="actions__separator"></div>
 
-      <table mat-table [dataSource]="dataSource" matSort>
-        <ng-container matColumnDef="personal">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres y Apellidos</th>
-          <td mat-cell *matCellDef="let element">{{element.personal}}</td>
-        </ng-container>
-        <ng-container matColumnDef="red">
-          <th mat-header-cell *matHeaderCellDef>Red Asistencial</th>
-          <td mat-cell *matCellDef="let element">{{element.red}}</td>
-        </ng-container>
-        <ng-container matColumnDef="fechaAsignacion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Asignación</th>
-          <td mat-cell *matCellDef="let element">10/08/2023</td>
-        </ng-container>
-        <!-- <ng-container matColumnDef="editar">
-          <th mat-header-cell *matHeaderCellDef> Editar </th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-icon-button color="primary" matTooltip="Editar asignación" (click)="showDialogEdit(element)">
-              <mat-icon>edit</mat-icon></button>
-            
-          </td>
-        </ng-container> -->
-        <!-- <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Activar/Desactivar</th>
-          <td mat-cell *matCellDef="let element">
-            <mat-slide-toggle  (click)="modalActivarDesactivar(element)">
-
-            </mat-slide-toggle>
-            
-          </td>
-        </ng-container> -->
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        <tr class="empty-row" *matNoDataRow>
-          <td class="empty-cell">Sin registros por mostrar</td>
-        </tr>
-      </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
+      <div>
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="personal">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres y Apellidos</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.usuario.nombresCompletos}} 
+            </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="red">
+            <th mat-header-cell *matHeaderCellDef>Red Asistencial</th>
+            <td mat-cell *matCellDef="let element"> 
+              {{element.red.descripcion}}
+            </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="fechaAsignacion">
+            <th mat-header-cell *matHeaderCellDef>Fecha de Asignación</th>
+            <td mat-cell *matCellDef="let element"> 
+              {{element.fechaAsignacion | date: 'dd/MM/y'}}
+            </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef>Habilitar/Deshabilitar</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-slide-toggle [checked]="element.habilitado" (click)="operarHabilitarDeshabilitar(element)">
+              </mat-slide-toggle>
+            </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
 
     </div>
   </div>

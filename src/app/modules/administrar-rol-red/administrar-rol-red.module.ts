@@ -10,7 +10,6 @@ import { ConfirmarDialogoComponent } from './administrar-rol-red/confirmar-dialo
 import { EditarRedComponent } from './components/editar-red/editar-red.component';
 
 
-
 @NgModule({
   declarations: [
     AdministrarRolRedComponent,
