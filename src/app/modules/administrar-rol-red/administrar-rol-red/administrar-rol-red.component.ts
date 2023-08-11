@@ -140,13 +140,9 @@ export class AdministrarRolRedComponent implements OnInit {
     asignacion.redes = redes;
     console.log(asignacion);
 
-    let registrar = await this._sectorizacionService.registrarAsignacion(asignacion).then((data) => {
-      if (data) {
-        // this.loadTable();
-      } else {
-        this._notification.warning('Lista de personal vacia');
-      }
+    let registrar = await this._sectorizacionService.registrarAsignacion(asignacion).then((data) => { 
     });
+    
     this.spinner.hide();
     this.loadTable();
 
