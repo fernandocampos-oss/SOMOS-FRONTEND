@@ -12,7 +12,6 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmarDialogoComponent } from './confirmar-dialogo/confirmar-dialogo.component';
-import { EditarRedComponent } from '../components/editar-red/editar-red.component';
 import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol-sectorizacion.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Asignacion } from '@data/models/asignacion-rol-red/asignacion';
@@ -26,7 +25,6 @@ import { Red } from '@data/models/asignacion-rol-red/red';
 })
 export class AdministrarRolRedComponent implements OnInit {
   showFilter = true;
-  fechaActual: any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,11 +42,6 @@ export class AdministrarRolRedComponent implements OnInit {
   //registrar
   redSeleccionadoTmp: any;
   personalSeleccionadoTmp: any;
-  asignados = [
-    { personal: "ELENA YVONNE DEL CASTILLO GABRIEL", red: "SEDE CENTRAL LIMA-Fondo Salud", estado: true },
-    { personal: "LAURA AMPARO MERCADO YUPANQUI", red: "RED PRESTACIONAL SABOGAL", estado: false },
-    { personal: "LUCIO EDUARDO	GAMARRA BALBUENA", red: "RED PRESTACIONAL ALMENARA", estado: false }
-  ];
 
   constructor(
     private _notification: NotificationService,
@@ -91,7 +84,7 @@ export class AdministrarRolRedComponent implements OnInit {
     return this.listRedes;
   }
   displayFnRed(selectedoption) {
-    console.log(selectedoption)
+    // console.log(selectedoption)
     return selectedoption ? selectedoption.descripcion : undefined;
   }
   onSelectionChangeRed(event: any) {
@@ -103,33 +96,18 @@ export class AdministrarRolRedComponent implements OnInit {
     return this.listPersonal.filter(persona => persona.nombresCompletos.toLowerCase().includes(value.toLowerCase()));
   }
   displayFnPersonal(selectedpersona) {
-    console.log(selectedpersona)
+    // console.log(selectedpersona)
     return selectedpersona ? selectedpersona.nombresCompletos : undefined;
   }
   onSelectionChangePersonal(event: any) {
     this.personalSeleccionadoTmp = event.option.value;
   }
 
-  async loadTable() {
-    let listRed = await this._sectorizacionService.getListUsuariosRedesTable().then((data) => {
-      if (data) {
-        this.listRedes = data;
-        this.dataSource = new MatTableDataSource(this.listRedes);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      } else {
-        // this._notification.warning('Lista de roles asignados vacia');
-      }
-    });
-  }
-
   //btn asignar
   async registrarAsignacion() {
     this.spinner.show();
-    console.log("red", this.redSeleccionadoTmp)
-    console.log("personal", this.personalSeleccionadoTmp)
-
-    this.asignados.push({ red: this.redSeleccionadoTmp.descripcion, personal: this.personalSeleccionadoTmp.nombresCompletos, estado: true });
+    // console.log(this.redSeleccionadoTmp)
+    // console.log(this.personalSeleccionadoTmp)
 
     let asignacion = new Asignacion();
     asignacion.idUsuario = this.personalSeleccionadoTmp.idUsuario;
@@ -138,11 +116,10 @@ export class AdministrarRolRedComponent implements OnInit {
     redes.push(this.redSeleccionadoTmp.codRed);
 
     asignacion.redes = redes;
-    console.log(asignacion);
 
-    let registrar = await this._sectorizacionService.registrarAsignacion(asignacion).then((data) => { 
+    let registrar = await this._sectorizacionService.registrarAsignacion(asignacion).then((data) => {
     });
-    
+
     this.spinner.hide();
     this.loadTable();
 
@@ -154,13 +131,6 @@ export class AdministrarRolRedComponent implements OnInit {
     this.redSeleccionadoTmp = null;
     this.personalSeleccionadoTmp = null;
   }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-
 
   back() {
     this._router.navigate([''], { relativeTo: this.route });
@@ -182,6 +152,18 @@ export class AdministrarRolRedComponent implements OnInit {
 
   }
 
+  async loadTable() {
+    let listAsignados = await this._sectorizacionService.getListRolesAsignados().then((data) => {
+      if (data.length > 0) {
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      } else {
+        this._notification.warning('Lista vacia.');
+      }
+    });
+  }
+
   async getListPersonal() {
     let listPersonal = await this._sectorizacionService.getListPersonal().then((data) => {
       if (data) {
@@ -201,22 +183,6 @@ export class AdministrarRolRedComponent implements OnInit {
       }
     });
   }
-
-
-
-  // showDialogEdit(element) {
-  //   const dialogRef: MatDialogRef<EditarRedComponent> = this._dialogRef.open(EditarRedComponent, {
-  //     disableClose: false,
-  //     autoFocus: false,
-  //     width: '40%',
-  //     //height: '780px',
-  //     data: element,
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // this.loadTable()
-  //   });
-  // }
 
 }
 

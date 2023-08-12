@@ -511,11 +511,9 @@ mat-grid-list {
   background-color: var(--color-bordes);
 }
 
-.example-button-row {
-  display: table-cell;
+.boxRowButtons{
+  display: block;
+  margin:10px auto 10px auto;
+  color:white;
   text-align: right;
-  width: 690px;
-}
-.example-button-row .mat-button-base {
-  margin: 8px 8px 8px 0;
 }

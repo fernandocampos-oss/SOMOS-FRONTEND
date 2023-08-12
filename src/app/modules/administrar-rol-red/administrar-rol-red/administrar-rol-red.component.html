@@ -11,7 +11,7 @@
       <h3>Asignar red a personal</h3>
       <div class="column1">
         <div class="auth__group">
-          <form class="example-form">
+          <form>
             <mat-form-field class="example-full-width">
               <mat-label>Personal</mat-label>
               <input type="text" placeholder="Escriba un nombre del personal" matInput [formControl]="myControlPersonal"
@@ -29,7 +29,7 @@
 
       <div class="column2">
         <div class="auth__group">
-          <form class="example-form">
+          <form>
             <mat-form-field class="example-full-width">
               <mat-label>Red Asistencial</mat-label>
               <input type="text" placeholder="Escriba un nombre de red" matInput [formControl]="myControl"
@@ -51,53 +51,44 @@
           Asignar
         </button>
       </div>
-
-
       <br>
       <h3>Redes asignadas</h3>
-      <div style="text-align: right">
-        <mat-form-field *ngIf="showFilter" appearance="outline">
-          <mat-label>Filtro de búsqueda</mat-label>
-          <input matInput (keyup)="applyFilter($event)" #input>
-        </mat-form-field>
-      </div>
-      <div class="actions__separator"></div>
-
+      <br>
       <div>
         <table mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="personal">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres y Apellidos</th>
             <td mat-cell *matCellDef="let element">
-              {{element.usuario.nombresCompletos}} 
+              {{element.usuario.nombresCompletos}}
             </td>
           </ng-container>
-        
+
           <ng-container matColumnDef="red">
-            <th mat-header-cell *matHeaderCellDef>Red Asistencial</th>
-            <td mat-cell *matCellDef="let element"> 
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Red Asistencial</th>
+            <td mat-cell *matCellDef="let element">
               {{element.red.descripcion}}
             </td>
           </ng-container>
-        
+
           <ng-container matColumnDef="fechaAsignacion">
-            <th mat-header-cell *matHeaderCellDef>Fecha de Asignación</th>
-            <td mat-cell *matCellDef="let element"> 
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Asignación</th>
+            <td mat-cell *matCellDef="let element">
               {{element.fechaAsignacion | date: 'dd/MM/y'}}
             </td>
           </ng-container>
-        
+
           <ng-container matColumnDef="estado">
-            <th mat-header-cell *matHeaderCellDef>Habilitar/Deshabilitar</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Habilitar/Deshabilitar</th>
             <td mat-cell *matCellDef="let element">
               <mat-slide-toggle [checked]="element.habilitado" (click)="operarHabilitarDeshabilitar(element)">
               </mat-slide-toggle>
             </td>
           </ng-container>
-        
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
 
       </div>
 

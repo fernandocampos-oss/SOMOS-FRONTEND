@@ -7,14 +7,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmarDialogoComponent } from './administrar-rol-red/confirmar-dialogo/confirmar-dialogo.component';
-import { EditarRedComponent } from './components/editar-red/editar-red.component';
-
 
 @NgModule({
   declarations: [
     AdministrarRolRedComponent,
-    ConfirmarDialogoComponent,
-    EditarRedComponent
+    ConfirmarDialogoComponent
   ],
   imports: [
     CommonModule,

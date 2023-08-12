@@ -6,12 +6,6 @@
   background-color: var(--color-bordes);
 }
 
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-}
-
 .example-full-width {
   width: 95%;
 }
@@ -36,7 +30,7 @@ table {
 
 /***/
 .column1 {
-  float: left;
+  float: right;
   width: 50%;
   padding: 2%;
   top: 0;

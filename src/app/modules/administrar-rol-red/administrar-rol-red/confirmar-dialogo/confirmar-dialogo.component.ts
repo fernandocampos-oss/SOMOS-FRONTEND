@@ -26,7 +26,6 @@ export class ConfirmarDialogoComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(this.data);
-
     this.personal = this.data.personal.nombresCompletos;
     this.estado = this.data.estado;
   }
@@ -37,10 +36,9 @@ export class ConfirmarDialogoComponent implements OnInit {
       habilitado = 1;
     }
 
-    let modificar = await this._sectorizacionService
-      .modificarHabilitarDeshabilitar(this.data.personal.idUsuario, this.data.red.codRed, habilitado)
-      .then((data) => {
+    let modificar = await this._sectorizacionService.modificarHabilitarDeshabilitar(this.data.personal.idUsuario, this.data.red.codRed, habilitado).then((data) => {
       });
+      
     if (this.estado) {
       this._notification.success("Usuario Habilitado");
     } else {

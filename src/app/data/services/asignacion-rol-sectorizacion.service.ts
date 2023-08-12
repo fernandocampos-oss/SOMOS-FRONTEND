@@ -23,7 +23,7 @@ export class AsignacionRolSectorizacionService {
     return await this._httpClient.get<any[]>(url).toPromise();
   }
 
-  async getListUsuariosRedesTable() {
+  async getListRolesAsignados() {
     const url = `${URL_BASE}`;
     return await this._httpClient.get<any[]>(url).toPromise();
   }
