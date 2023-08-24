@@ -22,6 +22,11 @@ export class MenuPrincipalService {
     return this._httpClient.get<PublicacionResponse[]>(url);
   }
 
+  getPublicacionesTable(){
+    const url = `${URL_BASE}/publicaciones/administrador`;
+    return this._httpClient.get<object[]>(url);
+  }
+
   updatePublicacion(idPublicacion: number, model: PublicacionRequest){
     const url = `${URL_BASE}/publicaciones/${idPublicacion}`;
     return this._httpClient.put(url,model);
@@ -45,4 +50,16 @@ export class MenuPrincipalService {
   searchOnomasticos(model: OnomasticosRequest){
     return this._httpClient.get<OnomasticosResponse[]>(`${URL_BASE}/onomasticos/mes/${model.mesConsulta}/dia/${model.diaConsulta}`);
   }
+
+  async getListRed() {
+    const url = `${URL_BASE}/usuarios-redes/redes`;
+    return await this._httpClient.get<any[]>(url).toPromise();
+  }
+
+  //pendiente EDICION
+  async getListRedesAsignadas() {
+    const url = `${URL_BASE}/usuarios-redes/redes-asignadas`;
+    return await this._httpClient.get<any[]>(url).toPromise();
+  }
+
 }

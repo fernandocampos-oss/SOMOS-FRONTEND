@@ -14,7 +14,7 @@ import { MenuPrincipalService } from '@data/services/menu-principal.service';
 })
 export class AdmPublicaciones implements OnInit {
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item','titulo','acciones'];
+  displayedColumns: string[] = ['item', 'titulo', 'acciones'];
 
   // publication: MenuPublicacion[] = [
   //   {id: 1, nom_largo:'Simulacro Nacional Multipeligro - 31 de mayo ' ,nom_corto: 'Simulacro Nacional Multipeligro - 31 de mayo ', fechaPub: '16/05/2023 - 11:53', imgRuta: 'assets/images/p_Simulacro.jpg'},
@@ -61,21 +61,21 @@ export class AdmPublicaciones implements OnInit {
   // ]
 
   publicaciones: PublicacionResponse[] = [];
+  publicacionesTable: Object[] = [];
 
-  constructor(private _notification: NotificationService,
-              private _fb: FormBuilder,
-              private dialog: MatDialog,
-              private _menuService: MenuPrincipalService) { }
+  constructor(
+    private _notification: NotificationService,
+    private _fb: FormBuilder,
+    private dialog: MatDialog,
+    private _menuService: MenuPrincipalService
+    ) { }
 
   ngOnInit(): void {
-    this._menuService.getPublicaciones()
-    .subscribe( (data) => {
-      this.publicaciones = data;
-    }
-    );
+    this.loadImagenesRegistradas();
+    this.getLoadTable();
   }
-  
-  AddPublicacion(){
+
+  AddPublicacion() {
     const dialogRef: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
       disableClose: false,
       width: '55%',
@@ -86,46 +86,55 @@ export class AdmPublicaciones implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this._menuService.getPublicaciones()
-      .subscribe( (data) => {
-        this.publicaciones = data;
-      });
+      this.loadImagenesRegistradas();
+      this.getLoadTable();
     });
   }
-  UpdatePublicacion(element){
+
+  UpdatePublicacion(element) {
     const dialogRef: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
       disableClose: false,
       width: '55%',
       autoFocus: false,
       data: {
         funcion: 2,
-        obj : element
+        obj: element
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this._menuService.getPublicaciones()
-      .subscribe( (data) => {
-        this.publicaciones = data;
-      });
+      this.loadImagenesRegistradas();
+      this.getLoadTable();
     });
   }
-  DeletePublicacion(element){
+  DeletePublicacion(element) {
     const dialogRef: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
       disableClose: false,
       width: '30%',
       autoFocus: false,
       data: {
         funcion: 3,
-        obj : element
+        obj: element
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this._menuService.getPublicaciones()
-      .subscribe( (data) => {
-        this.publicaciones = data;
-      });
+      this.loadImagenesRegistradas();
+      this.getLoadTable();
     });
   }
+
+  loadImagenesRegistradas() {
+    this._menuService.getPublicaciones().subscribe((data) => {
+      this.publicaciones = data;
+    });
+  }
+
+  getLoadTable() {
+    this._menuService.getPublicacionesTable().subscribe((data) => {
+      this.publicacionesTable = data;
+    }
+    );
+  }
+
 }

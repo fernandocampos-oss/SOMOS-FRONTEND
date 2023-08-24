@@ -38,9 +38,10 @@ export class AsignacionRolSectorizacionService {
     return await this._httpClient.post(url, dto).toPromise();
   }
 
-  async modificarHabilitarDeshabilitar(idUsuario: number, codRed:any, habilitado: any) {
-    const url = `${URL_BASE}/usuario/${idUsuario}/red/${codRed}/habilitado/${habilitado}`;
-    return await this._httpClient.put(url, '').toPromise();
+  async removerAsignacion(idUsuario: number, codRed: string) {
+    const url = `${URL_BASE}/usuario/${idUsuario}/red/${codRed}`;
+    console.log(url)
+    return await this._httpClient.delete(url).toPromise();
   }
 
 }

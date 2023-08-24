@@ -3,7 +3,7 @@
     <button mat-mini-fab *ngIf="rol == 4" [routerLink]="['/' + path]" class="button-color" matTooltip="Administración de roles">
       <mat-icon>settings</mat-icon>
     </button>&nbsp;
-    <button mat-mini-fab *ngIf="rol == 3 || rol == 4" class="button-color" (click)="open(3)" matTooltip="Administrar publicaciones">
+    <button mat-mini-fab *ngIf="rolRed == rolTemporal_3  || rolCentral == rolTemporal_4" class="button-color" (click)="open(3)" matTooltip="Administrar publicaciones">
       <mat-icon>add_photo_alternate</mat-icon>
     </button>   
   </div>  

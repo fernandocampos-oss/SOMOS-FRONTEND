@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MenuPrincipalRoutingModule } from './menu-principal-routing.module';
 import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
 import { MaterialModule } from '@material';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@core/core.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { SharedModule } from '@shared/shared.module';
@@ -40,6 +40,7 @@ import { ShowSistemasComponent } from './components/show-sistemas/show-sistemas.
     CommonModule,
     MenuPrincipalRoutingModule,
     MaterialModule,
+    FormsModule,
     ReactiveFormsModule,
     CoreModule,
     SharedModule,

@@ -12,6 +12,8 @@ export class PublicacionRequest{
     descripcion: string;
     imagenBase64: string;
     urlRedireccion: string;
+    alcance: number;
+    redes: string[];
 }
 
 export class PublicacionResponse{

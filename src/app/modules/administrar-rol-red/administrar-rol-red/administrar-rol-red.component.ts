@@ -118,13 +118,12 @@ export class AdministrarRolRedComponent implements OnInit {
     asignacion.redes = redes;
 
     let registrar = await this._sectorizacionService.registrarAsignacion(asignacion).then((data) => {
+      this._notification.success("Usuario asignado correctamente");
     });
 
     this.spinner.hide();
     this.loadTable();
-
-    this._notification.success("Se asignó correctamente");
-
+    
     this.myControl.reset('');
     this.myControlPersonal.reset('');
 
@@ -138,12 +137,12 @@ export class AdministrarRolRedComponent implements OnInit {
 
   operarHabilitarDeshabilitar(element) {
     const dialogRef: MatDialogRef<ConfirmarDialogoComponent> = this._dialogRef.open(ConfirmarDialogoComponent, {
-      disableClose: false,
+      disableClose: true,
       autoFocus: false,
+      width: '30%',
       data: {
         red: element.red,
         personal: element.usuario,
-        estado: !element.habilitado,
       }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -159,7 +158,7 @@ export class AdministrarRolRedComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this._notification.warning('Lista vacia.');
+        this._notification.warning('Lista vacia');
       }
     });
   }
@@ -168,9 +167,7 @@ export class AdministrarRolRedComponent implements OnInit {
     let listPersonal = await this._sectorizacionService.getListPersonal().then((data) => {
       if (data) {
         this.listPersonal = data;
-      } else {
-        // this._notification.warning('Lista de personal vacia');
-      }
+      } 
     });
   }
 
@@ -178,9 +175,7 @@ export class AdministrarRolRedComponent implements OnInit {
     let listRed = await this._sectorizacionService.getListRed().then((data) => {
       if (data) {
         this.listRedes = data;
-      } else {
-        // this._notification.warning('Lista de redes asistenciales vacia');
-      }
+      } 
     });
   }
 

@@ -10,10 +10,8 @@ import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol
   styleUrls: ['./confirmar-dialogo.component.scss']
 })
 export class ConfirmarDialogoComponent implements OnInit {
-  personal: any;
-  estado: any;
-  titleHabilitar: string = "¿Estás seguro de habilitar el usuario?";
-  titleDeshabilitar: string = "¿Estás seguro de deshabilitar el usuario?";
+  titleNombre: any;
+  titleRemover: string = "¿Estás seguro de eliminar el usuario?";
 
   constructor(
     private _fb: FormBuilder,
@@ -25,26 +23,14 @@ export class ConfirmarDialogoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data);
-    this.personal = this.data.personal.nombresCompletos;
-    this.estado = this.data.estado;
+    console.log(this.data);
+    this.titleNombre = this.data.personal.nombresCompletos;
   }
 
-  async modificarHabilitarDeshabilitar() {
-    let habilitado = 0;
-    if (this.estado) {
-      habilitado = 1;
-    }
-
-    let modificar = await this._sectorizacionService.modificarHabilitarDeshabilitar(this.data.personal.idUsuario, this.data.red.codRed, habilitado).then((data) => {
-      });
-      
-    if (this.estado) {
-      this._notification.success("Usuario Habilitado");
-    } else {
-      this._notification.success("Usuario Desabilitado");
-    }
-
+  async removerAsignacion() {
+    let modificar = await this._sectorizacionService.removerAsignacion(this.data.personal.idUsuario, this.data.red.codRed).then((data) => {
+      this._notification.success("Usuario eliminado");
+    });
     this._dialogRef.close(1);
   }
 }

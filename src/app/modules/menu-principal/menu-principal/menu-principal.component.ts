@@ -14,6 +14,7 @@ import { ShowPaymentCalendarComponent } from '../components/show-payment-calenda
 import { EncuestaSimpleComponent } from '../components/encuesta-simple/encuesta-simple.component';
 import { ShowSistemasComponent } from '../components/show-sistemas/show-sistemas.component';
 import { AppRoute } from '@data/constants';
+import { Role } from '@data/enums';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -69,6 +70,13 @@ export class MenuPrincipalComponent implements OnInit {
 
   path = AppRoute.ADMINISTRAR_ROL_RED;
 
+  //roles
+  rolCentral = Role.ADMIN_CENTRAL;
+  rolRed = Role.ADMIN_SEDE;
+  rolTemporal_3: any;
+  rolTemporal_4: any;
+  roles: any;
+
   constructor(private dialog: MatDialog,
               private _menuService:MenuPrincipalService,
               private responsive  : BreakpointObserver,
@@ -105,6 +113,7 @@ export class MenuPrincipalComponent implements OnInit {
       this.hoursLeft = 0;
       this.minutesLeft = 0;
     }
+    this.getRoles();
 
     // this._menuService.getEncuestaActiva().subscribe(data => {
     //   console.log(data);
@@ -271,4 +280,26 @@ export class MenuPrincipalComponent implements OnInit {
         break;
     }
   }
+
+  getRoles() {
+    let temporal = sessionStorage.getItem('_roles');
+    this.roles = temporal ? `${temporal}` : '';
+    this.roles = JSON.parse(temporal);
+    if (this.roles.length == 1) {
+      if (this.roles[0] === 'ROLE_3') {
+        this.rolTemporal_3 = 3;
+      }
+      if (this.roles[0] === 'ROLE_4') {
+        this.rolTemporal_4 = 4;
+      }
+    } else {
+      if (this.roles[0] === 'ROLE_3') {
+        this.rolTemporal_3 = 3;
+      }
+      if (this.roles[1] === 'ROLE_4') {
+        this.rolTemporal_4 = 4;
+      }
+    }
+  }
+
 }

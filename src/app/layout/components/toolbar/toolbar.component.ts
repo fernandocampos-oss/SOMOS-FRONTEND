@@ -47,6 +47,7 @@ export class ToolbarComponent implements OnInit {
 
   logout() {
     this._authService.logout();
+    sessionStorage.removeItem("_roles");
   }
 
   setFechaActual(){
