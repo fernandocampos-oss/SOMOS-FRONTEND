@@ -51,10 +51,10 @@ export class MenuPrincipalService {
     return this._httpClient.get<OnomasticosResponse[]>(`${URL_BASE}/onomasticos/mes/${model.mesConsulta}/dia/${model.diaConsulta}`);
   }
 
-  async getListRed() {
-    const url = `${URL_BASE}/usuarios-redes/redes`;
-    return await this._httpClient.get<any[]>(url).toPromise();
-  }
+  // async getListRed() {
+  //   const url = `${URL_BASE}/usuarios-redes/redes`;
+  //   return await this._httpClient.get<any[]>(url).toPromise();
+  // }
 
   async getListRedesAsignadas() {
     const url = `${URL_BASE}/usuarios-redes/redes-asignadas`;

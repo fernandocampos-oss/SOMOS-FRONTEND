@@ -33,7 +33,42 @@ export class AddUpdatePublicacionComponent implements OnInit {
   selectedSave = 1;
 
   //check
-  listRedes = [];
+  listRedes : any[] = [
+    { codRed: '0221', descripcion: 'RED ASISTENCIAL HUÁNUCO' },
+    { codRed: '0213', descripcion: 'RED ASISTENCIAL ICA' },
+    { codRed: '0225', descripcion: 'RED ASISTENCIAL HUANCAVELICA' },
+    { codRed: '0206', descripcion: 'RED PRESTACIONAL REBAGLIATI' },
+    { codRed: '0204', descripcion: 'RED PRESTACIONAL ALMENARA' },
+    { codRed: '0100', descripcion: 'SEDE CENTRAL LIMA-AFESSALUD' },
+    { codRed: '0222', descripcion: 'RED ASISTENCIAL PASCO' },
+    { codRed: '0231', descripcion: 'RED ASISTENCIAL UCAYALI' },
+    { codRed: '0200', descripcion: 'SEDE CENTRAL LIMA-Fondo Salud' },
+    { codRed: '0208', descripcion: 'RED PRESTACIONAL SABOGAL' },
+    { codRed: '0216', descripcion: 'RED ASISTENCIAL PIURA' },
+    { codRed: '0226', descripcion: 'RED ASISTENCIAL PUNO' },
+    { codRed: '0236', descripcion: 'RED PRESTACIONAL LAMBAYEQUE' },
+    { codRed: '0233', descripcion: 'RED ASISTENCIAL AMAZONAS' },
+    { codRed: '0201', descripcion: 'CENTRO NACIONAL DE SALUD RENAL' },
+    { codRed: '0202', descripcion: 'INST. NACIONAL CARDIOVASCULAR' },
+    { codRed: '0212', descripcion: 'RED ASISTENCIAL JUNIN' },
+    { codRed: '0219', descripcion: 'RED ASISTENCIAL AREQUIPA' },
+    { codRed: '0215', descripcion: 'RED ASISTENCIAL CUSCO' },
+    { codRed: '0211', descripcion: 'RED ASISTENCIAL MADRE DE DIOS' },
+    { codRed: '0229', descripcion: 'RED ASISTENCIAL LORETO' },
+    { codRed: '0232', descripcion: 'RED ASISTENCIAL LA LIBERTAD' },
+    { codRed: '0214', descripcion: 'RED ASISTENCIAL APURIMAC' },
+    { codRed: '0220', descripcion: 'RED ASISTENCIAL CAJAMARCA' },
+    { codRed: '0228', descripcion: 'RED ASISTENCIAL TACNA' },
+    { codRed: '0217', descripcion: 'RED ASISTENCIAL JULIACA' },
+    { codRed: '0235', descripcion: 'RED ASISTENCIAL JAEN' },
+    { codRed: '0218', descripcion: 'RED ASISTENCIAL TARAPOTO' },
+    { codRed: '0230', descripcion: 'RED ASISTENCIAL TUMBES' },
+    { codRed: '0227', descripcion: 'RED ASISTENCIAL ANCASH' },
+    { codRed: '0224', descripcion: 'RED ASISTENCIAL AYACUCHO' },
+    { codRed: '0234', descripcion: 'RED ASISTENCIAL MOYOBAMBA' },
+    { codRed: '0210', descripcion: 'RED ASISTENCIAL HUARAZ' },
+    { codRed: '0209', descripcion: 'RED ASISTENCIAL MOQUEGUA' },
+  ];
   selectedItems: any[] = []
   listRedesAsignadas = [];
 
@@ -53,28 +88,28 @@ export class AddUpdatePublicacionComponent implements OnInit {
     this._createForm();
     // console.log(this.selected);
     this.getRoles();
-    if(this.data.funcion == 2){
-      this.getListRed();
-    }else{
-      this.selected ='opcion_2';    
-    }
+    // if(this.data.funcion == 2){
+    //   this.getListRed();
+    // }else{
+    //   this.selected ='opcion_2';    
+    // }
     this.getListRedesAsignadas();
   }
 
-  async getListRed() {
-    let listRed = await this._menuService.getListRed().then((data) => {
-      if (data) {
-        this.listRedes = data;
-        //2
-        // this.listRedes2 = data;
-        // let redesDescripcion = data.map((data) => data.descripcion);
-        // console.log(redesDescripcion);
-        // this.listRedes = redesDescripcion;
-      } else {
-        this._notification.warning('Lista de redes asistenciales vacia');
-      }
-    });
-  }
+  // async getListRed() {
+  //   let listRed = await this._menuService.getListRed().then((data) => {
+  //     if (data) {
+  //       this.listRedes = data;
+  //       //2
+  //       // this.listRedes2 = data;
+  //       // let redesDescripcion = data.map((data) => data.descripcion);
+  //       // console.log(redesDescripcion);
+  //       // this.listRedes = redesDescripcion;
+  //     } else {
+  //       this._notification.warning('Lista de redes asistenciales vacia');
+  //     }
+  //   });
+  // }
 
   async getListRedesAsignadas() {
     let listRed = await this._menuService.getListRedesAsignadas().then((data) => {
