@@ -1,8 +1,7 @@
 <div *ngIf="data.funcion != 3" [formGroup]="form">
     <mat-grid-list cols="6" rowHeight="20px">
         <mat-grid-tile [colspan]="6" [rowspan]="2">
-            <h3 *ngIf="data.funcion == 1">Añadir Publicación</h3>
-            <h3 *ngIf="data.funcion == 2">Editar Publicación</h3>
+            <h3>Editar Publicación</h3>
         </mat-grid-tile>
         <mat-grid-tile class="cargaImg" [colspan]="2" gutterSize="2px" [rowspan]="25">
             <div class="imageBox">
@@ -50,36 +49,16 @@
 
             <div *ngIf="data.funcion == 2">
                 <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
-                    <mat-list role="list">
-                        <mat-list-item *ngFor="let r of listRedesAsignadas">
-                            {{ r.descripcion }}
-                          </mat-list-item>
-                    </mat-list>
-                </mat-grid-tile>
-            </div>
-
-            <div *ngIf="selected ==='opcion_2'">
-                <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
 
                     <mat-form-field appearance="outline">
-                        <mat-label>Seleccione red asistencial</mat-label>
-                        <mat-select [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}" multiple>
-                            <mat-option *ngFor="let red of listRedes" [value]="red.codRed">
-                                {{red.descripcion}}
+                        <mat-label>Redes Asignadas</mat-label>
+                        <mat-select>
+                            <mat-option *ngFor="let r of listRedesAsignadas" disabled="true">
+                                {{ r.descripcion }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                     
-                    <!-- <p>
-                        Options selected: {{redes.selectedOptions.selected.length}}
-                        {{selectedItems2|json}}
-                      </p>                      
-                    <mat-selection-list #redes [(ngModel)]="selectedItems2" [ngModelOptions]="{standalone: true}">
-                        <mat-list-option *ngFor="let red of listRedes" [value]="red" >
-                          {{red}}
-                        </mat-list-option>
-                      </mat-selection-list> -->
-
                 </mat-grid-tile>
             </div>
         </div>
@@ -87,10 +66,10 @@
     </mat-grid-list>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button">Cancelar</button>
-        <button mat-raised-button class="btnColor" (click)="NewPublicacion()"
-            *ngIf="data.funcion == 1"><mat-icon>add</mat-icon> Guardar</button>
-        <button mat-raised-button class="btnColor" (click)="UpdatePublicacion()"
-            *ngIf="data.funcion == 2"><mat-icon>add</mat-icon> Guardar</button>
+        <button mat-raised-button class="btnColor" (click)="UpdatePublicacion()">
+            <mat-icon>add</mat-icon>
+            Guardar
+        </button>
     </mat-dialog-actions>
 </div>
 <div *ngIf="data.funcion == 3">

@@ -6,6 +6,7 @@ import { MenuPublicacion, PublicacionResponse } from '@data/models/menu-principa
 import { AddUpdatePublicacionComponent } from './add-update-publicacion/add-update-publicacion.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
+import { CrearPublicacionComponent } from './crear-publicacion/crear-publicacion.component';
 
 @Component({
   selector: 'app-adm-publicaciones',
@@ -75,14 +76,30 @@ export class AdmPublicaciones implements OnInit {
     this.getLoadTable();
   }
 
+  // AddPublicacion() {
+  //   const dialogRef: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
+  //     disableClose: false,
+  //     width: '55%',
+  //     autoFocus: false,
+  //     data: {
+  //       funcion: 1,
+  //     }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadImagenesRegistradas();
+  //     this.getLoadTable();
+  //   });
+  // }
+
   AddPublicacion() {
-    const dialogRef: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
+    const dialogRef: MatDialogRef<CrearPublicacionComponent> = this.dialog.open(CrearPublicacionComponent, {
       disableClose: false,
       width: '55%',
       autoFocus: false,
-      data: {
-        funcion: 1,
-      }
+      // data: {
+      //   funcion: 1,
+      // }
     });
 
     dialogRef.afterClosed().subscribe(result => {

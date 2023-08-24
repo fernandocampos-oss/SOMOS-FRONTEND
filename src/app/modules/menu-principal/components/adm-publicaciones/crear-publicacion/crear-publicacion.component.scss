@@ -1,0 +1,57 @@
+.preview {
+    &__img {
+        border: #37485f;
+        border-style:solid;
+        border-radius: 11px;
+        width: 100%;
+        height: 13em;
+    }
+    &__button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+.btnColor{    
+  background-color: var(--color-MiEssalud);
+  color: white;
+}
+.boxBorde{
+    border: #37485f;
+    border-style:solid;
+    border-radius: 11px;
+  }
+.imageBox{
+    width: 100%;
+    padding-right: 4px;
+}
+mat-form-field {
+    width: 100%;
+}
+textarea {
+    overflow: hidden;
+    resize: none;
+}
+.cargaImg{
+    ::ng-deep .mat-grid-tile-content {
+        align-items: flex-start;
+    }
+}
+.boxEspaciado{
+    ::ng-deep .mat-form-field-infix {
+        top: 1.8px;
+    }
+}
+.alert{
+    display: grid;
+    h2{
+        justify-self: center;
+        text-align: center;
+    }
+    span{
+        justify-self: center;
+        text-align: center;
+    }
+}
+.boton{
+    width: 100%;
+}

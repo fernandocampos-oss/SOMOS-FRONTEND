@@ -33,7 +33,7 @@ export class AddUpdatePublicacionComponent implements OnInit {
   selectedSave = 1;
 
   //check
-  listRedes : any[] = [
+  listRedes: any[] = [
     { codRed: '0221', descripcion: 'RED ASISTENCIAL HUÁNUCO' },
     { codRed: '0213', descripcion: 'RED ASISTENCIAL ICA' },
     { codRed: '0225', descripcion: 'RED ASISTENCIAL HUANCAVELICA' },
@@ -72,17 +72,15 @@ export class AddUpdatePublicacionComponent implements OnInit {
   selectedItems: any[] = []
   listRedesAsignadas = [];
 
-  //2
-  // listRedes2 = [];
-  // selectedItems2: any[] = []
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddUpdatePublicacionComponent>,
     private _notification: NotificationService,
     private _fb: FormBuilder,
     private _menuService: MenuPrincipalService
-  ) { }
+  ) { 
+    console.log(this.data);
+  }
 
   ngOnInit(): void {
     this._createForm();
@@ -95,21 +93,6 @@ export class AddUpdatePublicacionComponent implements OnInit {
     // }
     this.getListRedesAsignadas();
   }
-
-  // async getListRed() {
-  //   let listRed = await this._menuService.getListRed().then((data) => {
-  //     if (data) {
-  //       this.listRedes = data;
-  //       //2
-  //       // this.listRedes2 = data;
-  //       // let redesDescripcion = data.map((data) => data.descripcion);
-  //       // console.log(redesDescripcion);
-  //       // this.listRedes = redesDescripcion;
-  //     } else {
-  //       this._notification.warning('Lista de redes asistenciales vacia');
-  //     }
-  //   });
-  // }
 
   async getListRedesAsignadas() {
     let listRed = await this._menuService.getListRedesAsignadas().then((data) => {
@@ -155,46 +138,24 @@ export class AddUpdatePublicacionComponent implements OnInit {
   }
 
   private _createForm() {
-    if (this.data.funcion == 1) {
-      this.form = this._fb.group({
-        frmTitulo: [null, [Validators.required]],
-        frmDescripcion: [null, [Validators.required]],
-        frmEnlace: [''],
-      });
-    }
-    if (this.data.funcion == 2) {
-      this.form = this._fb.group({
-        frmTitulo: [this.data.obj.titulo, [Validators.required]],
-        frmDescripcion: [this.data.obj.descripcion, [Validators.required]],
-        frmEnlace: [this.data.obj.urlRedireccion],
-      });
-      this.retrievedImage = `data:image/jpeg;base64,${this.data.obj.imagenBase64}`;
-    }
+    this.form = this._fb.group({
+      frmTitulo: [null, [Validators.required]],
+      frmDescripcion: [null, [Validators.required]],
+      frmEnlace: [''],
+    });
+
+    this.form = this._fb.group({
+      frmTitulo: [this.data.obj.titulo, [Validators.required]],
+      frmDescripcion: [this.data.obj.descripcion, [Validators.required]],
+      frmEnlace: [this.data.obj.urlRedireccion],
+    });
+    this.retrievedImage = `data:image/jpeg;base64,${this.data.obj.imagenBase64}`;
   }
+
   removeImage() {
     this.retrievedImage = null;
     this.applicationFile = null;
     this.isImageUpdate = true;
-  }
-
-  NewPublicacion() {
-    // console.log(this.selectedItems)
-    if (this.retrievedImage == undefined || !this.form.valid) {
-      this._notification.warning(
-        'Por favor complete todos los campos obligatorios e ingrese una imagen'
-      );
-      this.form.markAllAsTouched();
-      return;
-    }
-    else {
-      const model = this._getModel();
-      this._menuService
-        .newPublicacion(model)
-        .subscribe(() => {
-          this._notification.success('Publicación registrada correctamente');
-        });
-      this.dialogRef.close();
-    }
   }
 
   UpdatePublicacion() {
@@ -237,16 +198,6 @@ export class AddUpdatePublicacionComponent implements OnInit {
       redes = [];
     }
 
-    // //2
-    // let redes2: string[] = [];
-    // for (let i of this.selectedItems2) {
-    //   console.log('i',i);
-    //   const resultado = this.listRedes2.find((red) => red.descripcion === i);
-    //   console.log(resultado);
-    //   redes2.push(resultado.codRed);
-    // }
-    // console.log(redes2);
-
     return {
       titulo: this.form.value.frmTitulo,
       descripcion: this.form.value.frmDescripcion,
@@ -257,7 +208,6 @@ export class AddUpdatePublicacionComponent implements OnInit {
     };
   }
 
-  //select
   capturaValorGlobal(event: any) {
     // console.log(event.source.value);
     if (this.selected === 'opcion_1') {
