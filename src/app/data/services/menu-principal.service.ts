@@ -56,7 +56,6 @@ export class MenuPrincipalService {
     return await this._httpClient.get<any[]>(url).toPromise();
   }
 
-  //pendiente EDICION
   async getListRedesAsignadas() {
     const url = `${URL_BASE}/usuarios-redes/redes-asignadas`;
     return await this._httpClient.get<any[]>(url).toPromise();

@@ -53,7 +53,11 @@ export class AddUpdatePublicacionComponent implements OnInit {
     this._createForm();
     // console.log(this.selected);
     this.getRoles();
-    this.getListRed();
+    if(this.data.funcion == 2){
+      this.getListRed();
+    }else{
+      this.selected ='opcion_2';    
+    }
     this.getListRedesAsignadas();
   }
 
