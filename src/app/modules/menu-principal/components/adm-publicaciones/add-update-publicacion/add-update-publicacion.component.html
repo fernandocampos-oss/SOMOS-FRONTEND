@@ -37,7 +37,7 @@
         </mat-grid-tile>
 
         <div *ngIf="rolRed == rolTemporal_3 || rolCentral == rolTemporal_4">
-            <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
+            <!-- <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
                 <mat-form-field appearance="outline">
                     <mat-label>Seleccione alcance</mat-label>
                     <mat-select [(value)]="selected" (selectionChange)="capturaValorGlobal($event)">
@@ -45,7 +45,7 @@
                         <mat-option value="opcion_2">Alcance de red asistencial</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </mat-grid-tile>
+            </mat-grid-tile> -->
 
             <div *ngIf="data.funcion == 2">
                 <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
@@ -58,7 +58,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    
+
                 </mat-grid-tile>
             </div>
         </div>
