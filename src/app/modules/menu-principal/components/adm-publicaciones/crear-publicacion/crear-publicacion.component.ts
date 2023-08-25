@@ -160,7 +160,7 @@ export class CrearPublicacionComponent implements OnInit {
     }
     else {
       const model = this._getModel_rol_3();
-      
+
       this._menuService.newPublicacion(model).subscribe(() => {
         this._notification.success('Publicación registrada correctamente');
       });
@@ -194,11 +194,10 @@ export class CrearPublicacionComponent implements OnInit {
     }
     else {
       const model = this._getModel_rol_4_3();
-     console.log(model)
-      // this._menuService.newPublicacion(model).subscribe(() => {
-      //   this._notification.success('Publicación registrada correctamente');
-      // });
-      // this.dialogRef.close();
+      this._menuService.newPublicacion(model).subscribe(() => {
+        this._notification.success('Publicación registrada correctamente');
+      });
+      this.dialogRef.close();
     }
   }
   private _getModel_rol_4_3(): PublicacionRequest {
@@ -213,7 +212,9 @@ export class CrearPublicacionComponent implements OnInit {
 
     let redes: string[] = [];
     if (this.redItemSeleccionadoRol_3_4) {
-      redes.push(this.redItemSeleccionadoRol_3_4);
+      for (let a of this.redItemSeleccionadoRol_3_4) {
+        redes.push(a);
+      }
     }
 
     if (this.selectedSave == 1) {
