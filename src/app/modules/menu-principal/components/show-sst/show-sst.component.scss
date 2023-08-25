@@ -2,8 +2,21 @@
     color: white;
     background: #009EAD;
 }
+.contenedor{
+    text-align: center;
+}
 @media screen and (max-width: 550px) {
     .ingresa{
         font-size: 3vw;
+    }
+}
+@media screen and (min-width: 850px) and (max-width: 959px) {
+    .image{
+        width: 90%;
+    }
+}
+@media screen and (max-width: 750px) {
+    .contenedor{
+        margin:-20px
     }
 }

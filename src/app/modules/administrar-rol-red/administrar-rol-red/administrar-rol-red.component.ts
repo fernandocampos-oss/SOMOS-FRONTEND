@@ -93,6 +93,7 @@ export class AdministrarRolRedComponent implements OnInit {
 
   //personal
   private _filterPersonal(value: string) {
+    console.log(value)
     return this.listPersonal.filter(persona => persona.nombresCompletos.toLowerCase().includes(value.toLowerCase()));
   }
   displayFnPersonal(selectedpersona) {
@@ -166,6 +167,7 @@ export class AdministrarRolRedComponent implements OnInit {
   async getListPersonal() {
     let listPersonal = await this._sectorizacionService.getListPersonal().then((data) => {
       if (data) {
+        console.log(data)
         this.listPersonal = data;
       } 
     });

@@ -107,20 +107,24 @@ span.birthDescrp{
   border-radius: 11px;
   border-width: 2.5px;
 }
-.boxSST, .boxEncuesta, .boxSST-2, .boxSistemas{
+.boxSST, .boxEncuesta, .boxSST-2, .boxSistemas, .boxRenueva{
   cursor: pointer;
   font-weight: bold;
   align-content: center;
   display: flex;
   color: #3c3c3b;
 }
-.boxSST {
+.boxSST, .boxRenueva{
   height: 7.5vw;
   width: 100%;
   background-image: url(~src/assets/images/btnCapacitaciones.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+.boxRenueva{
+  background-image: url(~src/assets/images/renuevaLogo.png);
+  background-size: auto;
 }
 .boxSistemas{
   padding-left: 5vw;
@@ -395,7 +399,7 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 840px) and (max-width: 1279px) {
-  .boxSST, .boxSistemas{
+  .boxSST, .boxSistemas, .boxRenueva{
     height: 84px;
   }
   .boxPublicacion{

@@ -94,10 +94,6 @@ export class RegistroComponent implements OnInit {
   //     .subscribe((params) => (this.sedes = params[KeyParam.SEDES]));
   // }
   onSave() {
-    console.log(this.form.value.numeroCelular[0]);
-    console.log(this.celularField.value);
-    console.log(this.form.value.codigoPlanilla);
-    console.log(this.form.value.codigoPlanilla.length);
     if (this.form.valid && this._validatePasswordMatch()) {
       this._authService
         .register(this.form.value)
