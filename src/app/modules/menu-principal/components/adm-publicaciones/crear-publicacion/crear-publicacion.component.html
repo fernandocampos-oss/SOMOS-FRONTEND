@@ -3,7 +3,7 @@
         <mat-grid-tile [colspan]="6" [rowspan]="2">
             <h3>Añadir Publicación</h3>
         </mat-grid-tile>
-        <mat-grid-tile class="cargaImg" [colspan]="2" gutterSize="2px" [rowspan]="25">
+        <mat-grid-tile class="cargaImg" [colspan]="2" gutterSize="2px" [rowspan]="18">
             <div class="imageBox">
                 <button type="button" class="preview__button btnColor" mat-raised-button MatPrefix
                     (click)="file.click()" color="primary" *ngIf="!retrievedImage">
@@ -36,8 +36,9 @@
             </mat-form-field>
         </mat-grid-tile>
 
-        <div *ngIf="rolRed == rolTemporal_3 || rolCentral == rolTemporal_4">
-            <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
+        <!-- rol 3 y 4 -->
+        <div *ngIf="rolRed == rolTemporal_3 && rolCentral == rolTemporal_4">
+            <!-- <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
                 <mat-form-field appearance="outline">
                     <mat-label>Seleccione alcance</mat-label>
                     <mat-select [(value)]="selected" (selectionChange)="capturaValorGlobal($event)">
@@ -49,7 +50,6 @@
 
             <div *ngIf="selected ==='opcion_2'">
                 <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
-
                     <mat-form-field appearance="outline">
                         <mat-label>Seleccione red asistencial</mat-label>
                         <mat-select [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}" multiple>
@@ -58,15 +58,44 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-
                 </mat-grid-tile>
-            </div>
+            </div> -->
+            <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Redes Asignadas</mat-label>
+                    <mat-select [(ngModel)]="redItemSeleccionadoRol_3_4" [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let r of listRedesAsignadas" [value]="r.codRed">
+                            {{ r.descripcion }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+        </div>
+
+        <!-- rol 3 -->
+        <div *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == null">
+            <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Redes Asignadas</mat-label>
+                    <mat-select [(ngModel)]="redItemSeleccionadoRol_3" [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let r of listRedesAsignadas" [value]="r.codRed">
+                            {{ r.descripcion }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
         </div>
 
     </mat-grid-list>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button">Cancelar</button>
-        <button mat-raised-button class="btnColor" (click)="NewPublicacion()">
+        <!-- rol 3 -->
+        <button mat-raised-button class="btnColor" *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == null" (click)="registrarPublicacion_rol_3()">
+            <mat-icon>add</mat-icon>
+            Guardar
+        </button>
+        <!-- rol 3 y 4  -->
+        <button mat-raised-button class="btnColor" *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == 4" (click)="registrarPublicacion_rol_4_3()">
             <mat-icon>add</mat-icon>
             Guardar
         </button>

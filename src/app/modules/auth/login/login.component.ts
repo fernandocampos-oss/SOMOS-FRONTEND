@@ -76,7 +76,6 @@ export class LoginComponent implements OnInit {
             for (let a of rta.user.authorities) {
               listRol.push(a.authority);
             }
-            console.log(listRol);
             sessionStorage.setItem('_roles', JSON.stringify(listRol));
           }
    

@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { Role } from '@data/enums';
@@ -7,12 +7,11 @@ import { PublicacionRequest } from '@data/models/menu-principal/menu-publicacion
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 
 @Component({
-  selector: 'app-add-update-publicacion',
-  templateUrl: './add-update-publicacion.component.html',
-  styleUrls: ['./add-update-publicacion.component.scss']
+  selector: 'app-editar-publicacion',
+  templateUrl: './editar-publicacion.component.html',
+  styleUrls: ['./editar-publicacion.component.scss']
 })
-export class AddUpdatePublicacionComponent implements OnInit {
-
+export class EditarPublicacionComponent implements OnInit {
   width: number;
   height: number;
 
@@ -21,18 +20,15 @@ export class AddUpdatePublicacionComponent implements OnInit {
   form: FormGroup;
   isImageUpdate = false;
 
-  //roles
   rolCentral = Role.ADMIN_CENTRAL;
   rolRed = Role.ADMIN_SEDE;
   rolTemporal_3: any;
   rolTemporal_4: any;
   roles: any;
 
-  //select global
   selected = 'opcion_1';
   selectedSave = 1;
 
-  //check
   listRedes: any[] = [
     { codRed: '0221', descripcion: 'RED ASISTENCIAL HUÁNUCO' },
     { codRed: '0213', descripcion: 'RED ASISTENCIAL ICA' },
@@ -69,18 +65,18 @@ export class AddUpdatePublicacionComponent implements OnInit {
     { codRed: '0210', descripcion: 'RED ASISTENCIAL HUARAZ' },
     { codRed: '0209', descripcion: 'RED ASISTENCIAL MOQUEGUA' },
   ];
-  selectedItems: any[] = []
+  // selectedItems: any[] = [];
   listRedesAsignadas = [];
+  redItemSeleccionadoRol_3: any;
+  redItemSeleccionadoRol_3_4: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<AddUpdatePublicacionComponent>,
+    private dialogRef: MatDialogRef<EditarPublicacionComponent>,
     private _notification: NotificationService,
     private _fb: FormBuilder,
     private _menuService: MenuPrincipalService
-  ) { 
-    console.log(this.data);
-  }
+  ) { }
 
   ngOnInit(): void {
     this._createForm();
@@ -158,44 +154,28 @@ export class AddUpdatePublicacionComponent implements OnInit {
     this.isImageUpdate = true;
   }
 
-  UpdatePublicacion() {
+  UpdatePublicacion_rol_3() {
     if (this.retrievedImage == undefined || !this.form.valid) {
-      this._notification.warning(
-        'Por favor complete todos los campos obligatorios e ingrese una imagen'
-      );
+      this._notification.warning('Por favor complete todos los campos obligatorios e ingrese una imagen');
       this.form.markAllAsTouched();
       return;
     }
     else {
-      const model = this._getModel();
+      const model = this._getModel_rol_3();
+
       const idPublicacion = this.data.obj.idPublicacion;
-      this._menuService
-        .updatePublicacion(idPublicacion, model)
-        .subscribe(() => {
-          this._notification.success('Publicación actualizada correctamente');
-        });
+      this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
+        this._notification.success('Publicación actualizada correctamente');
+      });
       this.dialogRef.close();
     }
   }
-
-  DeletePublicacion() {
-    const idPublicacion = this.data.obj.idPublicacion;
-    this._menuService
-      .deletePublicacion(idPublicacion)
-      .subscribe(() => {
-        this._notification.success('Publicación eliminada');
-      });
-    this.dialogRef.close();
-  }
-
-  private _getModel(): PublicacionRequest {
-
+  private _getModel_rol_3(): PublicacionRequest {
     let redes: string[] = [];
-    for (let a of this.selectedItems) {
-      redes.push(a);
-    }
-    if (this.selectedSave == 1) {
-      redes = [];
+    if (this.redItemSeleccionadoRol_3) {
+      redes.push(this.redItemSeleccionadoRol_3);
+    } else {
+      this._notification.warning('Seleccione una Red Asistencial');
     }
 
     return {
@@ -203,13 +183,66 @@ export class AddUpdatePublicacionComponent implements OnInit {
       descripcion: this.form.value.frmDescripcion,
       imagenBase64: this.retrievedImage.split(',')[1],
       urlRedireccion: this.form.value.frmEnlace,
-      alcance: this.selectedSave,
+      alcance: 2,
       redes: redes,
     };
   }
 
+  UpdatePublicacion_rol_4_3() {
+    if (this.retrievedImage == undefined || !this.form.valid) {
+      this._notification.warning('Por favor complete todos los campos obligatorios e ingrese una imagen');
+      this.form.markAllAsTouched();
+      return;
+    }
+    else {
+      const model = this._getModel_rol_4_3();
+      const idPublicacion = this.data.obj.idPublicacion;
+      
+      this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
+          this._notification.success('Publicación actualizada correctamente');
+        });
+      this.dialogRef.close();
+    }
+  }
+  private _getModel_rol_4_3(): PublicacionRequest {
+    // let redes: string[] = [];
+    // if (this.selectedItems) {
+    //   for (let a of this.selectedItems) {
+    //     redes.push(a);
+    //   }
+    // } else {
+    //   this._notification.warning('Seleccione Red Asistencial');
+    // }
+
+    // if (this.selectedSave == 1) {
+    //   redes = [];
+    // }
+    let redes: string[] = [];
+    if (this.redItemSeleccionadoRol_3_4) {
+      redes.push(this.redItemSeleccionadoRol_3_4);
+    } else {
+      this._notification.warning('Seleccione una Red Asistencial');
+    }
+
+    return {
+      titulo: this.form.value.frmTitulo,
+      descripcion: this.form.value.frmDescripcion,
+      imagenBase64: this.retrievedImage.split(',')[1],
+      urlRedireccion: this.form.value.frmEnlace,
+      alcance: 2, //this.selectedSave,
+      redes: redes,
+    };
+  }
+
+  DeletePublicacion() {
+    const idPublicacion = this.data.obj.idPublicacion;
+    this._menuService.deletePublicacion(idPublicacion).subscribe(() => {
+      this._notification.success('Publicación eliminada');
+    });
+    this.dialogRef.close();
+  }
+
   capturaValorGlobal(event: any) {
-    // console.log(event.source.value);
     if (this.selected === 'opcion_1') {
       this.selectedSave = 1;
     } else {

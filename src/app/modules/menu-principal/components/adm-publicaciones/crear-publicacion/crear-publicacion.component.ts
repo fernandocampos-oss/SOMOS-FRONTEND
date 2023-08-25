@@ -21,18 +21,15 @@ export class CrearPublicacionComponent implements OnInit {
   form: FormGroup;
   isImageUpdate = false;
 
-  //roles
   rolCentral = Role.ADMIN_CENTRAL;
   rolRed = Role.ADMIN_SEDE;
   rolTemporal_3: any;
   rolTemporal_4: any;
   roles: any;
 
-  //select global
   selected = 'opcion_1';
   selectedSave = 1;
 
-  //check
   listRedes: any[] = [
     { codRed: '0221', descripcion: 'RED ASISTENCIAL HUÁNUCO' },
     { codRed: '0213', descripcion: 'RED ASISTENCIAL ICA' },
@@ -69,11 +66,12 @@ export class CrearPublicacionComponent implements OnInit {
     { codRed: '0210', descripcion: 'RED ASISTENCIAL HUARAZ' },
     { codRed: '0209', descripcion: 'RED ASISTENCIAL MOQUEGUA' },
   ];
-  selectedItems: any[] = []
+  // selectedItems: any[] = [];
   listRedesAsignadas = [];
+  redItemSeleccionadoRol_3: any;
+  redItemSeleccionadoRol_3_4: any;
 
   constructor(
-    // @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CrearPublicacionComponent>,
     private _notification: NotificationService,
     private _fb: FormBuilder,
@@ -82,19 +80,29 @@ export class CrearPublicacionComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm();
-    // console.log(this.selected);
     this.getRoles();
+    this.getListRedesAsignadas();
   }
 
   // async getListRed() {
   //   let listRed = await this._menuService.getListRed().then((data) => {
   //     if (data) {
-  //       this.listRedes = data;  //       
+  //       this.listRedes = data;       
   //     } else {
   //       this._notification.warning('Lista de redes asistenciales vacia');
   //     }
   //   });
   // }
+
+  async getListRedesAsignadas() {
+    let listRed = await this._menuService.getListRedesAsignadas().then((data) => {
+      if (data) {
+        this.listRedesAsignadas = data;
+      } else {
+        this._notification.warning('Lista de redes asistenciales vacia');
+      }
+    });
+  }
 
   onChangeImage(files) {
     if (files.length === 0) {
@@ -142,8 +150,7 @@ export class CrearPublicacionComponent implements OnInit {
     this.isImageUpdate = true;
   }
 
-  NewPublicacion() {
-    // console.log(this.selectedItems)
+  registrarPublicacion_rol_3() {
     if (this.retrievedImage == undefined || !this.form.valid) {
       this._notification.warning(
         'Por favor complete todos los campos obligatorios e ingrese una imagen'
@@ -152,24 +159,20 @@ export class CrearPublicacionComponent implements OnInit {
       return;
     }
     else {
-      const model = this._getModel();
-      this._menuService
-        .newPublicacion(model)
-        .subscribe(() => {
-          this._notification.success('Publicación registrada correctamente');
-        });
+      const model = this._getModel_rol_3();
+      
+      this._menuService.newPublicacion(model).subscribe(() => {
+        this._notification.success('Publicación registrada correctamente');
+      });
       this.dialogRef.close();
     }
   }
-
-  private _getModel(): PublicacionRequest {
-
+  private _getModel_rol_3(): PublicacionRequest {
     let redes: string[] = [];
-    for (let a of this.selectedItems) {
-      redes.push(a);
-    }
-    if (this.selectedSave == 1) {
-      redes = [];
+    if (this.redItemSeleccionadoRol_3) {
+      redes.push(this.redItemSeleccionadoRol_3);
+    } else {
+      this._notification.warning('Seleccione una Red Asistencial');
     }
 
     return {
@@ -177,13 +180,58 @@ export class CrearPublicacionComponent implements OnInit {
       descripcion: this.form.value.frmDescripcion,
       imagenBase64: this.retrievedImage.split(',')[1],
       urlRedireccion: this.form.value.frmEnlace,
-      alcance: this.selectedSave,
+      alcance: 2,
+      redes: redes,
+    };
+  }
+
+  registrarPublicacion_rol_4_3() {
+    // console.log(this.selectedItems)
+    if (this.retrievedImage == undefined || !this.form.valid) {
+      this._notification.warning('Por favor complete todos los campos obligatorios e ingrese una imagen');
+      this.form.markAllAsTouched();
+      return;
+    }
+    else {
+      const model = this._getModel_rol_4_3();
+     
+      this._menuService.newPublicacion(model).subscribe(() => {
+        this._notification.success('Publicación registrada correctamente');
+      });
+      this.dialogRef.close();
+    }
+  }
+  private _getModel_rol_4_3(): PublicacionRequest {
+    // let redes: string[] = [];
+    // if (this.selectedItems) {
+    //   for (let a of this.selectedItems) {
+    //     redes.push(a);
+    //   }
+    // }else {
+    //   this._notification.warning('Seleccione Red Asistencial');
+    // }
+
+    // if (this.selectedSave == 1) {
+    //   redes = [];
+    // }
+    let redes: string[] = [];
+    if (this.redItemSeleccionadoRol_3_4) {
+      redes.push(this.redItemSeleccionadoRol_3_4);
+    } else {
+      this._notification.warning('Seleccione una Red Asistencial');
+    }
+
+    return {
+      titulo: this.form.value.frmTitulo,
+      descripcion: this.form.value.frmDescripcion,
+      imagenBase64: this.retrievedImage.split(',')[1],
+      urlRedireccion: this.form.value.frmEnlace,
+      alcance: 2, //this.selectedSave,
       redes: redes,
     };
   }
 
   capturaValorGlobal(event: any) {
-    // console.log(event.source.value);
     if (this.selected === 'opcion_1') {
       this.selectedSave = 1;
     } else {

@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
 import { MenuPublicacion, PublicacionResponse } from '@data/models/menu-principal/menu-publicacion.model';
-import { AddUpdatePublicacionComponent } from './add-update-publicacion/add-update-publicacion.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { CrearPublicacionComponent } from './crear-publicacion/crear-publicacion.component';
+import { EditarPublicacionComponent } from './editar-publicacion/editar-publicacion.component';
 
 @Component({
   selector: 'app-adm-publicaciones',
@@ -76,22 +76,6 @@ export class AdmPublicaciones implements OnInit {
     this.getLoadTable();
   }
 
-  // AddPublicacion() {
-  //   const dialogRef: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
-  //     disableClose: false,
-  //     width: '55%',
-  //     autoFocus: false,
-  //     data: {
-  //       funcion: 1,
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadImagenesRegistradas();
-  //     this.getLoadTable();
-  //   });
-  // }
-
   AddPublicacion() {
     const dialogRef: MatDialogRef<CrearPublicacionComponent> = this.dialog.open(CrearPublicacionComponent, {
       disableClose: false,
@@ -109,7 +93,7 @@ export class AdmPublicaciones implements OnInit {
   }
 
   UpdatePublicacion(element) {
-    const dialogRef: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
+    const dialogRef: MatDialogRef<EditarPublicacionComponent> = this.dialog.open(EditarPublicacionComponent, {
       disableClose: false,
       width: '55%',
       autoFocus: false,
@@ -125,7 +109,7 @@ export class AdmPublicaciones implements OnInit {
     });
   }
   DeletePublicacion(element) {
-    const dialogRef: MatDialogRef<AddUpdatePublicacionComponent> = this.dialog.open(AddUpdatePublicacionComponent, {
+    const dialogRef: MatDialogRef<EditarPublicacionComponent> = this.dialog.open(EditarPublicacionComponent, {
       disableClose: false,
       width: '30%',
       autoFocus: false,
