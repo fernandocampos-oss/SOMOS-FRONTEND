@@ -66,7 +66,7 @@ export class CrearPublicacionComponent implements OnInit {
     { codRed: '0210', descripcion: 'RED ASISTENCIAL HUARAZ' },
     { codRed: '0209', descripcion: 'RED ASISTENCIAL MOQUEGUA' },
   ];
-  // selectedItems: any[] = [];
+  selectedItems: any[] = [];
   listRedesAsignadas = [];
   redItemSeleccionadoRol_3: any;
   redItemSeleccionadoRol_3_4: any;
@@ -194,11 +194,11 @@ export class CrearPublicacionComponent implements OnInit {
     }
     else {
       const model = this._getModel_rol_4_3();
-     
-      this._menuService.newPublicacion(model).subscribe(() => {
-        this._notification.success('Publicación registrada correctamente');
-      });
-      this.dialogRef.close();
+     console.log(model)
+      // this._menuService.newPublicacion(model).subscribe(() => {
+      //   this._notification.success('Publicación registrada correctamente');
+      // });
+      // this.dialogRef.close();
     }
   }
   private _getModel_rol_4_3(): PublicacionRequest {
@@ -211,22 +211,28 @@ export class CrearPublicacionComponent implements OnInit {
     //   this._notification.warning('Seleccione Red Asistencial');
     // }
 
-    // if (this.selectedSave == 1) {
-    //   redes = [];
-    // }
     let redes: string[] = [];
     if (this.redItemSeleccionadoRol_3_4) {
       redes.push(this.redItemSeleccionadoRol_3_4);
-    } else {
-      this._notification.warning('Seleccione una Red Asistencial');
     }
+
+    if (this.selectedSave == 1) {
+      redes = [];
+    }
+
+    // let redes: string[] = [];
+    // if (this.redItemSeleccionadoRol_3_4) {
+    //   redes.push(this.redItemSeleccionadoRol_3_4);
+    // } else {
+    //   this._notification.warning('Seleccione una Red Asistencial');
+    // }
 
     return {
       titulo: this.form.value.frmTitulo,
       descripcion: this.form.value.frmDescripcion,
       imagenBase64: this.retrievedImage.split(',')[1],
       urlRedireccion: this.form.value.frmEnlace,
-      alcance: 2, //this.selectedSave,
+      alcance: this.selectedSave,
       redes: redes,
     };
   }
