@@ -13,9 +13,9 @@ export class RenuevaEssaludService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  async getProyecto(){
+  getProyecto(){
     const url = `${URL_BASE}`;
-    return await this._httpClient.get<any>(url).toPromise();
+    return this._httpClient.get<any>(url);
   }
 
   guardarDatosGrupos(model: DatosGrupo){

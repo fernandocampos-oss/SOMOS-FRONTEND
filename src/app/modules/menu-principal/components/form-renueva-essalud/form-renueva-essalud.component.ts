@@ -41,8 +41,12 @@ export class FormRenuevaEssaludComponent implements OnInit {
   selectedValueL: number;
   selectedValueN: number;
   selectedValueO: number;
+
+  hayDatos = false;
+  idProyecto: number;
   
   //<!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
+  idProyectoGrupo: number;
 
   formDatosGenerales = this._formBuilder.group({
     ctrlCategoria: ['', Validators.required],
@@ -69,7 +73,8 @@ export class FormRenuevaEssaludComponent implements OnInit {
   isImageUpdate = false;
   
   //<!----------------------------------------------------------- Segundo paso: Describir los datos del proyecto ----------------------------------------------------------->
-  
+  idProyectoDescripcion: number;
+
   formDatosProyecto = this._formBuilder.group({
     ctrlFechaImplementacion: [null, Validators.required],
     ctrlMotivacion: [null, [Validators.required, Validators.maxLength(600)]],
@@ -80,6 +85,8 @@ export class FormRenuevaEssaludComponent implements OnInit {
   });
 
   //<!------------------------------------------------------- Tercer paso: Datos sobre como se implementó el proyecto ------------------------------------------------------>
+  idProyectoImplementacion: number;
+
   opcionesMultiples = [
     {value: 'Enfoque de género (promueve desde su concepción e implementación la participación y la mejora de acceso a oportunidades y beneficios para las mujeres)', activado: false},
     {value: 'Discapacidad (promueve desde su concepción e implementación la participación y la mejora de acceso a oportunidades y beneficios para las personas con discapacidad)', activado: false},
@@ -118,8 +125,24 @@ export class FormRenuevaEssaludComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.renuevaService.getProyecto().then((data)=>{
+    this.renuevaService.getProyecto().subscribe((data)=>{
+      const dataObj = Object(data[0]);
       console.log(data);
+      if(data[0]){
+        this.hayDatos = true
+        this.idProyecto = dataObj.idProyecto;
+        this.idProyectoDescripcion = dataObj.descripcion.idProyectoDescripcion
+        this.idProyectoGrupo = dataObj.grupo.idProyectoGrupo
+        this.idProyectoImplementacion = dataObj.implementacion.idProyectoImplementacion
+        console.log(this.idProyecto)
+        console.log(this.idProyectoDescripcion)
+        console.log(this.idProyectoGrupo)
+        console.log(this.idProyectoImplementacion)
+        console.log('Hay datos de proyecto');
+      }
+      else{
+        console.log('No hay datos');
+      }
     })
     this.cargarLider();
     this.cargarUsuariosRed();
@@ -277,6 +300,12 @@ export class FormRenuevaEssaludComponent implements OnInit {
   }
 
   getPrimerPaso(): DatosGrupo{
+    let integrantesGrupo = [];
+    for (let i = 0; i < this.listaIntegrantes.length; i++) {
+      if(i != 0){
+        integrantesGrupo.push(this.listaIntegrantes[i])
+      }      
+    }
     let datosImagen = this.retrievedImage
     if(datosImagen){
       datosImagen = datosImagen.split(',')[1]
@@ -287,12 +316,11 @@ export class FormRenuevaEssaludComponent implements OnInit {
       jefe: this.formDatosGenerales.controls['ctrlJefeNombre'].value,
       categoria: this.formDatosGenerales.controls['ctrlCategoria'].value,
       imagenBase64:datosImagen,
-      miembros: this.listaIntegrantes
+      miembros: integrantesGrupo
     }
   }
 
   guardaCambios1ro(){
-    console.log(this.getInscripcion());
     this.renuevaService.saveProyecto(this.getInscripcion()).subscribe(() => {
       this._notification.info('Se guardaron los cambios hechos en los datos del grupo');
     });
@@ -319,7 +347,9 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   guardaCambios2do(){
     console.log(this.getSegundoPaso())
-    this._notification.info('Se guardaron los cambios hechos en los datos del proyecto');
+    this.renuevaService.saveProyecto(this.getInscripcion()).subscribe(() => {
+      this._notification.info('Se guardaron los cambios hechos en los datos del proyecto');
+    });
   }
 
   //<!------------------------------------------------------- Tercer paso: Datos sobre como se implementó el proyecto ------------------------------------------------------>
@@ -396,12 +426,9 @@ export class FormRenuevaEssaludComponent implements OnInit {
   }
 
   guardaCambios3ro(){
-    console.log(this.opcionesMultiples.filter(function (a) {
-      return a.activado == true;
-    }).map(item=>{
-      return item.value
-    }));
-    this._notification.info('Se guardaron los cambios hechos sobre la implementación del proyecto');
+    this.renuevaService.saveProyecto(this.getInscripcion()).subscribe(() => {
+      this._notification.info('Se guardaron los cambios hechos sobre la implementación del proyecto');
+    });
   }
   enviarDatos(){
     if (this.listaIntegrantes.length < 2) {
