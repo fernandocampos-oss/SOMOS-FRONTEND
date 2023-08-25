@@ -20,6 +20,8 @@ import { ConfirmEncuestaSimpleComponent } from './components/encuesta-simple/con
 import { DialogTempComponent } from './components/encuesta-simple/dialog-temp/dialog-temp.component';
 import { ShowSistemasComponent } from './components/show-sistemas/show-sistemas.component';
 import { CrearPublicacionComponent } from './components/adm-publicaciones/crear-publicacion/crear-publicacion.component';
+import { FormRenuevaEssaludComponent } from './components/form-renueva-essalud/form-renueva-essalud.component';
+import { DatosIntegranteComponent } from './components/form-renueva-essalud/datos-integrante/datos-integrante.component';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { CrearPublicacionComponent } from './components/adm-publicaciones/crear-
     ConfirmEncuestaSimpleComponent,
     DialogTempComponent,
     ShowSistemasComponent,
-    CrearPublicacionComponent
+    CrearPublicacionComponent,
+    FormRenuevaEssaludComponent,
+    DatosIntegranteComponent
   ],
   imports: [
     CommonModule,

@@ -10,6 +10,8 @@ export class Usuario {
   numeroCelular: string;
   correo: string;
   idSede: number;
+  cargo: string;
+  red: string;
   idZonaControl: number;
   idRol: Role;
 }

@@ -69,6 +69,7 @@ export class MenuPrincipalComponent implements OnInit {
   }
 
   path = AppRoute.ADMINISTRAR_ROL_RED;
+  pathRenueva = AppRoute.RENUEVA_ESSALUD;
 
   //roles
   rolCentral = Role.ADMIN_CENTRAL;

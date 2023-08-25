@@ -1,0 +1,99 @@
+.search{
+    margin-top: 10px;
+    width: 9em;
+    background-color: var(--color-MiEssalud);
+}
+.pdfContainer{
+    width: fit-content;
+    img{
+        width: 80px;
+        height: 80px;
+    }
+    .datosPdf{
+        text-align: center;
+    }
+}
+::ng-deep.card{
+    element{
+        font-family: "Nunito"!important;   
+    }
+}
+.radioGroup{
+    display: grid !important;
+    ::ng-deep.mat-radio-label-content{
+        white-space: normal;
+    }
+}
+.grid-cols-3{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+.inputBtn{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    mat-form-field{
+        width: 100%;
+    }
+}
+.col-span-2{
+    grid-column: span 2 / span 2;
+}
+.btnForm{
+    margin-top: 4px !important;
+    margin-left: 0.5rem;
+    vertical-align: top;
+    height: 59px;
+}
+.todo{
+    width: 100%;
+    mat-form-field{
+        width: 100%;
+    }
+}
+::ng-deep.mat-checkbox-layout {
+  white-space: normal !important;
+  text-align: justify;
+
+}
+::ng-deep .mat-checkbox-inner-container {
+  margin-top: 4px !important;
+}
+.subPregunta{
+    margin-left: 2rem;
+}
+.btnOptionsActive{
+    background-color: var(--color-MiEssalud);
+}
+.imageBox{
+    height: 345px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    button{
+        width: 100%;
+    }
+}
+img{
+    height: 16rem;
+}
+.navOptions{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    button{
+        width: 100%;
+    }
+    gap: 1rem;
+}
+@media screen and (max-width: 800px) {
+    .navOptions{
+        flex-direction: column;
+    }
+    .grid-cols-3{
+        grid-template-columns: repeat(1, minmax(0, 1fr));  
+        grid-gap: 0;
+        gap: 0;  
+    }
+}
