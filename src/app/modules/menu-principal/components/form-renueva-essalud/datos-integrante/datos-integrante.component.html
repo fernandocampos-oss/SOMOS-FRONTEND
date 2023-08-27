@@ -52,6 +52,6 @@
     </mat-grid-list>
     <div class="mat-button-container" style="display: flex; justify-content: flex-end;">
         <button mat-raised-button (click)='cerrar()'><mat-icon>close</mat-icon> Cerrar</button>
-        <button mat-raised-button color="primary" (click)='guardar()' style="margin-left: 1rem;"><mat-icon>save</mat-icon> Guardar</button>
+        <button mat-raised-button color="primary" (click)='guardar()' [disabled]='data.enviado' style="margin-left: 1rem;"><mat-icon>save</mat-icon> Guardar</button>
     </div>
 </div>
