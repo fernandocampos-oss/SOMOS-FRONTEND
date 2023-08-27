@@ -8,13 +8,14 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@core/services';
 import { AuthService, UsuarioService } from '@data/services';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { map, startWith } from 'rxjs/operators';
 import { DatosIntegranteComponent } from './datos-integrante/datos-integrante.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RenuevaEssaludService } from '@data/services/renueva-essalud.service';
 import { DatosGrupo, DescripcionProyecto, Implementacion, InscripcionRenueva } from '@data/models/proyecto/proyecto.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-form-renueva-essalud',
@@ -24,7 +25,7 @@ import { DatosGrupo, DescripcionProyecto, Implementacion, InscripcionRenueva } f
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false},
-    },{ provide: MatFormFieldControl, useExisting: FormRenuevaEssaludComponent }
+    }, { provide: MatFormFieldControl, useExisting: FormRenuevaEssaludComponent }
   ],
 })
 export class FormRenuevaEssaludComponent implements OnInit {
@@ -34,18 +35,18 @@ export class FormRenuevaEssaludComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['nombresApellidos', 'dni', 'accion'];
   estadoInscripcion = false;
-  
+
   equipoList = new Array;
   dataSource_3 = this.equipoList;
 
-  selectedValueL: number;
-  selectedValueN: number;
-  selectedValueO: number;
+  selectedValueL: string;
+  selectedValueN: string;
+  selectedValueO: string;
 
   hayDatos = false;
   idProyecto: number;
-  
-  //<!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
+
+  // <!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
   idProyectoGrupo: number;
 
   formDatosGenerales = this._formBuilder.group({
@@ -71,8 +72,8 @@ export class FormRenuevaEssaludComponent implements OnInit {
   width: number;
   height: number;
   isImageUpdate = false;
-  
-  //<!----------------------------------------------------------- Segundo paso: Describir los datos del proyecto ----------------------------------------------------------->
+
+  // <!----------------------------------------------------------- Segundo paso: Describir los datos del proyecto ----------------------------------------------------------->
   idProyectoDescripcion: number;
 
   formDatosProyecto = this._formBuilder.group({
@@ -84,17 +85,17 @@ export class FormRenuevaEssaludComponent implements OnInit {
     ctrlIndicadores: [null, Validators.required],
   });
 
-  //<!------------------------------------------------------- Tercer paso: Datos sobre como se implementó el proyecto ------------------------------------------------------>
+  // <!------------------------------------------------------- Tercer paso: Datos sobre como se implementó el proyecto ------------------------------------------------------>
   idProyectoImplementacion: number;
 
   opcionesMultiples = [
     {value: 'Enfoque de género (promueve desde su concepción e implementación la participación y la mejora de acceso a oportunidades y beneficios para las mujeres)', activado: false},
     {value: 'Discapacidad (promueve desde su concepción e implementación la participación y la mejora de acceso a oportunidades y beneficios para las personas con discapacidad)', activado: false},
     {value: 'Interculturalidad (promueve desde su concepción e implementación la participación y la mejora de acceso a oportunidades y beneficios para grupos excluidos cultural o socialmente y/o revalorar sus conocimientos o identidad cultural)', activado: false}
-  ]
+  ];
 
   retrievedPdf: any;
-  nombrePdf: string = '';
+  nombrePdf = '';
   isPdfUpdate = false;
 
   formImplementacion = this._formBuilder.group({
@@ -113,47 +114,39 @@ export class FormRenuevaEssaludComponent implements OnInit {
     private dialogRef: MatDialog,
     private _router: Router,
     private route: ActivatedRoute,
-    private _notification              : NotificationService,
+    private _notification: NotificationService,
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
     private userService: UsuarioService,
     private renuevaService: RenuevaEssaludService,
-    private _formBuilder: FormBuilder) { 
+    private _formBuilder: FormBuilder) {
       this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
     }
 
   ngOnInit(): void {
-    this.renuevaService.getProyecto().subscribe((data)=>{
-      const dataObj = Object(data[0]);
-      console.log(data);
-      if(data[0]){
-        this.hayDatos = true
-        this.idProyecto = dataObj.idProyecto;
-        this.idProyectoDescripcion = dataObj.descripcion.idProyectoDescripcion
-        this.idProyectoGrupo = dataObj.grupo.idProyectoGrupo
-        this.idProyectoImplementacion = dataObj.implementacion.idProyectoImplementacion
-        console.log(this.idProyecto)
-        console.log(this.idProyectoDescripcion)
-        console.log(this.idProyectoGrupo)
-        console.log(this.idProyectoImplementacion)
-        console.log('Hay datos de proyecto');
-      }
-      else{
-        console.log('No hay datos');
-      }
-    })
-    this.cargarLider();
     this.cargarUsuariosRed();
-    //red
+    this.cargarLider();
+    this.renuevaService.getProyecto().subscribe((data) => {
+      const dataObj = Object(data[0]);
+      if (data[0]){
+        this.hayDatos = true;
+        this.idProyecto = dataObj.idProyecto;
+        this.idProyectoDescripcion = dataObj.descripcion.idProyectoDescripcion;
+        this.idProyectoGrupo = dataObj.grupo.idProyectoGrupo;
+        this.idProyectoImplementacion = dataObj.implementacion.idProyectoImplementacion;
+        this.cargarDataProyecto(dataObj);
+      }
+    });
+    // red
     this.filteredOptions = this.integranteControl.valueChanges
       .pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
         map(nombresCompletos => nombresCompletos ? this._filterPersonal(nombresCompletos) : this.listaUsuariosRed.slice())
       );
-    //jefe
+    // jefe
     this.filteredOptionsJefe = this.jefeControl.valueChanges
       .pipe(
         startWith(''),
@@ -166,35 +159,101 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this._router.navigate([''], { relativeTo: this.route });
   }
 
-  //<!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
+  cargarDataProyecto(data: any) {
+    this.estadoInscripcion = data.enviado;
+
+    // Data grupo
+    this.formDatosGenerales.controls.ctrlNomGrupo.setValue(data.grupo.nombre);
+    this.formDatosGenerales.controls.ctrlRed.setValue(data.grupo.sede);
+    this.formDatosGenerales.controls.ctrlJefeNombre.setValue(data.grupo.jefe);
+    this.formDatosGenerales.controls.ctrlCategoria.setValue(data.grupo.categoria);
+    const jefesFiltrados: any[] = this._filterJefe(data.grupo.jefe);
+    if (jefesFiltrados.length > 0) {
+      this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
+    }
+    data.grupo.miembros.forEach(m => {
+      this.listaIntegrantes.push(m);
+    });
+    this.table.renderRows();
+    if (data.grupo.imagenBase64) {
+      this.retrievedImage = `data:image/png;base64,${data.grupo.imagenBase64}`;
+    }
+
+    // Data descripcion
+    if (data.descripcion.fecha) {
+      this.formDatosProyecto.controls.ctrlFechaImplementacion.setValue(moment(data.descripcion.fecha, 'YYYY-MM-DD'));
+    }
+    this.formDatosProyecto.controls.ctrlMotivacion.setValue(data.descripcion.motivo);
+    this.formDatosProyecto.controls.ctrlAccionInnovadora.setValue(data.descripcion.descripcion);
+    this.formDatosProyecto.controls.ctrlContextoInicial.setValue(data.descripcion.contexto);
+    this.formDatosProyecto.controls.ctrlInnovador.setValue(data.descripcion.innovacion);
+    this.formDatosProyecto.controls.ctrlIndicadores.setValue(data.descripcion.indicador);
+
+    // Data implementacion
+    this.formImplementacion.controls.ctrlResultado.setValue(data.implementacion.resultado);
+    this.formImplementacion.controls.ctrlSostenible.setValue(data.implementacion.sostenible);
+    this.formImplementacion.controls.ctrlSostenibleFundamento.setValue(data.implementacion.sostenibleFundamento);
+    this.formImplementacion.controls.ctrlReplicable.setValue(data.implementacion.replicable);
+    this.formImplementacion.controls.ctrlReplicableFundamento.setValue(data.implementacion.replicableFundamento);
+    this.formImplementacion.controls.ctrlTecnologia.setValue(data.implementacion.tecnologia);
+    this.formImplementacion.controls.ctrlTecnologiaFundamento.setValue(data.implementacion.tecnologiaFundamento);
+    this.formImplementacion.controls.ctrlBeneficio.setValue(data.implementacion.beneficio);
+    this.formImplementacion.controls.ctrlArchivoBase64.setValue(data.implementacion.archivoBase64);
+    this.selectedValueN = data.implementacion.replicable;
+    this.selectedValueL = data.implementacion.sostenible;
+    this.selectedValueO = data.implementacion.tecnologia;
+    this.opcionesMultiples = this.opcionesMultiples.map(item => {
+      if (data.implementacion.enfoques.includes(item.value)) {
+        item.activado = true;
+      }
+      return item;
+    });
+    if (data.implementacion.archivoBase64) {
+      this.retrievedPdf = `data:application/pdf;base64,${data.implementacion.archivoBase64}`;
+    }
+
+    if (data.enviado) {
+      this.deshabilitarFormulario();
+    }
+  }
+
+  deshabilitarFormulario() {
+    this.formDatosGenerales.disable();
+    this.formDatosProyecto.disable();
+    this.formImplementacion.disable();
+    this.jefeControl.disable();
+    this.integranteControl.disable();
+  }
+
+  // <!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
   cargarLider(){
-    this.userService.get(this.authService.getUserSession().id).subscribe((data)=>{
-      this.formDatosGenerales.controls["ctrlRed"].setValue(data.red);
-      this.formDatosGenerales.controls["ctrlRed"].disable();
+    this.userService.get(this.authService.getUserSession().id).subscribe((data) => {
+      this.formDatosGenerales.controls.ctrlRed.setValue(data.red);
+      this.formDatosGenerales.controls.ctrlRed.disable();
       this.listaIntegrantes.push({
-        "apellidos": data.apellidos,
-        "cargo": data.cargo,
-        "codigoPlanilla": data.codigoPlanilla,
-        "correo": data.correo,
-        "fechaNacimiento": data.fechaNacimiento,
-        "idUsuario": data.idUsuario,
-        "nombres":data.nombres,
-        "numeroCelular": data.numeroCelular,
-        "numeroDocumento": data.numeroDocumento,
-        "red": data.red
+        apellidos: data.apellidos,
+        cargo: data.cargo,
+        codigoPlanilla: data.codigoPlanilla,
+        correo: data.correo,
+        fechaNacimiento: data.fechaNacimiento,
+        idUsuario: data.idUsuario,
+        nombres: data.nombres,
+        numeroCelular: data.numeroCelular,
+        numeroDocumento: data.numeroDocumento,
+        red: data.red
       });
       this.table.renderRows();
-    })
+    });
   }
   async cargarUsuariosRed() {
-    let listPersonal = await this.renuevaService.getUsuariosMismaRed().then((data) => {
+    const listPersonal = await this.renuevaService.getUsuariosMismaRed().then((data) => {
       if (data) {
         this.listaUsuariosRed = data;
         this.listaPosiblesJefes = data;
-      } 
+      }
     });
   }
-  //personal
+  // personal
   private _filterPersonal(value: string) {
     return this.listaUsuariosRed.filter(persona => (persona.nombres + ' ' + persona.apellidos).toLowerCase().includes(value.toLowerCase()));
   }
@@ -205,7 +264,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this.personalSeleccionadoTmp = event.option.value;
   }
 
-  //Jefe
+  // Jefe
   private _filterJefe(value: string) {
     return this.listaPosiblesJefes.filter(persona => (persona.nombres + ' ' + persona.apellidos).toLowerCase().includes(value.toLowerCase()));
   }
@@ -214,19 +273,19 @@ export class FormRenuevaEssaludComponent implements OnInit {
   }
   onSelectionChangeJefe(event: any) {
     this.jefeSeleccionadoTmp = event.option.value;
-    this.formDatosGenerales.controls['ctrlJefeNombre'].setValue((event.option.value.nombres + ' ' + event.option.value.apellidos))
+    this.formDatosGenerales.controls.ctrlJefeNombre.setValue((event.option.value.nombres + ' ' + event.option.value.apellidos));
   }
 
-  aniadirIntegrante(){ //Añade integrantes al listado visual del equipo
-    if(this.personalSeleccionadoTmp != undefined){
-      if(this.listaIntegrantes.length == 5){
+  aniadirIntegrante(){ // Añade integrantes al listado visual del equipo
+    if (this.personalSeleccionadoTmp != undefined){
+      if (this.listaIntegrantes.length == 5){
         this._notification.warning('El grupo debe ser de máximo 5 personas (incluyendo al líder)');
       }
       else{
-        if(this.listaIntegrantes.includes(this.personalSeleccionadoTmp)){
+        if (this.listaIntegrantes.includes(this.personalSeleccionadoTmp)){
           this._notification.warning('Ya registró a esta persona');
         }
-        else if(this.personalSeleccionadoTmp.idUsuario == this.authService.getUserSession().id){
+        else if (this.personalSeleccionadoTmp.idUsuario == this.authService.getUserSession().id){
           this._notification.warning('No puede registrarse a si mismo');
         }
         else{
@@ -234,13 +293,12 @@ export class FormRenuevaEssaludComponent implements OnInit {
           this.table.renderRows();
         }
       }
-      this.integranteControl.reset('')
+      this.integranteControl.reset('');
       this.personalSeleccionadoTmp = undefined;
     }
     else{
       this._notification.warning('Por favor busque un nombre');
     }
-    console.log(this.listaIntegrantes)
   }
 
   deleteMiembro(miembroIndex: number) {
@@ -249,7 +307,6 @@ export class FormRenuevaEssaludComponent implements OnInit {
   }
 
   onChangeImage(files) {
-    console.log(files)
     if (files.length === 0) {
       return;
     }
@@ -263,18 +320,17 @@ export class FormRenuevaEssaludComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onload = _event => {
-      var imgLoad = new Image();
+      const imgLoad = new Image();
       this.applicationFile = files[0];
-      if(this.applicationFile.size >= 2097152){
+      if (this.applicationFile.size >= 2097152){
         this._notification.warning('Tamaño de imagen excedido, máximo 2MB');
         return;
       }
       else{
-        imgLoad.src = <string>reader.result;
-        imgLoad.onload = () =>{
+        imgLoad.src = (reader.result as string);
+        imgLoad.onload = () => {
           this.width = imgLoad.width;
           this.height = imgLoad.height;
-          console.log(this.width,'||',this.height);
         };
         this.retrievedImage = reader.result;
         this.isImageUpdate = true;
@@ -286,73 +342,84 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this.applicationFile = null;
     this.isImageUpdate = true;
   }
-  
-  infoIntegrante(idPersona: number){
-    
+
+  infoIntegrante(usuario: any){
+
     const dialogRef: MatDialogRef<DatosIntegranteComponent> = this.dialogRef.open(DatosIntegranteComponent, {
-      disableClose: false,
+      disableClose: true,
       autoFocus: false,
-      width:'60%',
+      width: '60%',
       data: {
-        idPer: idPersona
+        integrante: usuario,
+        enviado: this.estadoInscripcion
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.listaIntegrantes = this.listaIntegrantes.map(m => {
+          if (usuario.idUsuario === m.idUsuario) {
+            m.correo = result.correo;
+            m.numeroCelular = result.celular;
+          }
+          return m;
+        });
       }
     });
   }
 
   getPrimerPaso(): DatosGrupo{
-    let integrantesGrupo = [];
+    const integrantesGrupo = [];
     for (let i = 0; i < this.listaIntegrantes.length; i++) {
-      if(i != 0){
-        integrantesGrupo.push(this.listaIntegrantes[i])
-      }      
+      if (i != 0){
+        integrantesGrupo.push(this.listaIntegrantes[i]);
+      }
     }
-    let datosImagen = this.retrievedImage
-    if(datosImagen){
-      datosImagen = datosImagen.split(',')[1]
+    let datosImagen = this.retrievedImage;
+    if (datosImagen){
+      datosImagen = datosImagen.split(',')[1];
     }
     return {
-      nombre: this.formDatosGenerales.controls['ctrlNomGrupo'].value,
-      sede: this.formDatosGenerales.controls['ctrlRed'].value,
-      jefe: this.formDatosGenerales.controls['ctrlJefeNombre'].value,
-      categoria: this.formDatosGenerales.controls['ctrlCategoria'].value,
-      imagenBase64:datosImagen,
+      nombre: this.formDatosGenerales.controls.ctrlNomGrupo.value,
+      sede: this.formDatosGenerales.controls.ctrlRed.value,
+      jefe: this.formDatosGenerales.controls.ctrlJefeNombre.value,
+      categoria: this.formDatosGenerales.controls.ctrlCategoria.value,
+      imagenBase64: datosImagen,
       miembros: integrantesGrupo
-    }
+    };
   }
 
   guardaCambios1ro(){
-    this.renuevaService.saveProyecto(this.getInscripcion()).subscribe(() => {
+    this.renuevaService.saveProyecto(this.getInscripcion()).subscribe((proyecto: any) => {
       this._notification.info('Se guardaron los cambios hechos en los datos del grupo');
+      this.idProyecto = proyecto.idProyecto;
     });
   }
-  //<!----------------------------------------------------------- Segundo paso: Describir los datos del proyecto ----------------------------------------------------------->
+  // <!----------------------------------------------------------- Segundo paso: Describir los datos del proyecto ----------------------------------------------------------->
 
   getSegundoPaso(): DescripcionProyecto{
-    console.log(this.formDatosProyecto.controls['ctrlFechaImplementacion'].value)
     let fechaDato: string = null;
-    if(this.formDatosProyecto.controls['ctrlFechaImplementacion'].value){
-      fechaDato = this.formDatosProyecto.controls['ctrlFechaImplementacion'].value._i.year 
-      + '-' + this.formDatosProyecto.controls['ctrlFechaImplementacion'].value._i.month 
-      + '-' + this.formDatosProyecto.controls['ctrlFechaImplementacion'].value._i.date;
+    if (this.formDatosProyecto.controls.ctrlFechaImplementacion.value) {
+      fechaDato = this.formDatosProyecto.controls.ctrlFechaImplementacion.value.format('YYYY-MM-DD');
     }
     return {
       fecha: fechaDato,
-      motivo: this.formDatosProyecto.controls['ctrlMotivacion'].value,
-      descripcion: this.formDatosProyecto.controls['ctrlAccionInnovadora'].value,
-      contexto: this.formDatosProyecto.controls['ctrlContextoInicial'].value,
-      innovacion: this.formDatosProyecto.controls['ctrlInnovador'].value,
-      indicador: this.formDatosProyecto.controls['ctrlIndicadores'].value
-    }
+      motivo: this.formDatosProyecto.controls.ctrlMotivacion.value,
+      descripcion: this.formDatosProyecto.controls.ctrlAccionInnovadora.value,
+      contexto: this.formDatosProyecto.controls.ctrlContextoInicial.value,
+      innovacion: this.formDatosProyecto.controls.ctrlInnovador.value,
+      indicador: this.formDatosProyecto.controls.ctrlIndicadores.value
+    };
   }
 
   guardaCambios2do(){
-    console.log(this.getSegundoPaso())
-    this.renuevaService.saveProyecto(this.getInscripcion()).subscribe(() => {
+    this.renuevaService.saveProyecto(this.getInscripcion()).subscribe((proyecto: any) => {
       this._notification.info('Se guardaron los cambios hechos en los datos del proyecto');
+      this.idProyecto = proyecto.idProyecto;
     });
   }
 
-  //<!------------------------------------------------------- Tercer paso: Datos sobre como se implementó el proyecto ------------------------------------------------------>
+  // <!------------------------------------------------------- Tercer paso: Datos sobre como se implementó el proyecto ------------------------------------------------------>
 
   onChangeL(event: MatRadioChange) {
     this.selectedValueL = event.value;
@@ -367,7 +434,6 @@ export class FormRenuevaEssaludComponent implements OnInit {
   }
 
   onChangeFile(files) {
-    console.log(files)
     if (files.length === 0) {
       return;
     }
@@ -382,52 +448,86 @@ export class FormRenuevaEssaludComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onload = _event => {
-      let fileApp = files[0];
-      if(fileApp.size >= 2097152){
+      const fileApp = files[0];
+      if (fileApp.size >= 2097152){
         this._notification.warning('Tamaño de imagen excedido, máximo 2MB');
         return;
       }
       else{
-        };
-        this.retrievedPdf = reader.result;
-        this.formImplementacion.controls['ctrlArchivoBase64'].setValue(this.retrievedPdf.split(',')[1])
-        this.isPdfUpdate = true;
-      }
+        }
+      this.retrievedPdf = reader.result;
+      this.formImplementacion.controls.ctrlArchivoBase64.setValue(this.retrievedPdf.split(',')[1]);
+      this.isPdfUpdate = true;
+      };
   }
+
   removePdf() {
     this.retrievedPdf = null;
-    this.formImplementacion.controls['ctrlArchivoBase64'].reset();
+    this.formImplementacion.controls.ctrlArchivoBase64.reset();
     this.isPdfUpdate = true;
+  }
+
+  downloadPdf() {
+    const blob = this.base64ToBlob(this.retrievedPdf.split(',')[1], 'application/pdf');
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'archivo.pdf';
+    link.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  base64ToBlob(base64: string, mimeType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: mimeType });
   }
 
   getTercerPaso(): Implementacion{
     return {
-      resultado: this.formImplementacion.controls['ctrlResultado'].value,
-      sostenible: this.formImplementacion.controls['ctrlSostenible'].value,
-      sostenibleFundamento: this.formImplementacion.controls['ctrlSostenibleFundamento'].value,
-      replicable: this.formImplementacion.controls['ctrlReplicable'].value,
-      replicableFundamento: this.formImplementacion.controls['ctrlReplicableFundamento'].value,
-      tecnologia: this.formImplementacion.controls['ctrlTecnologia'].value,
-      tecnologiaFundamento: this.formImplementacion.controls['ctrlTecnologiaFundamento'].value,
-      beneficio: this.formImplementacion.controls['ctrlBeneficio'].value,
-      archivoBase64: this.formImplementacion.controls['ctrlArchivoBase64'].value,
-      enfoques: this.opcionesMultiples.filter(function (a) { return a.activado == true;}).map(item=>{
-        return item.value})
-    }
+      resultado: this.formImplementacion.controls.ctrlResultado.value,
+      sostenible: this.formImplementacion.controls.ctrlSostenible.value,
+      sostenibleFundamento: this.formImplementacion.controls.ctrlSostenibleFundamento.value,
+      replicable: this.formImplementacion.controls.ctrlReplicable.value,
+      replicableFundamento: this.formImplementacion.controls.ctrlReplicableFundamento.value,
+      tecnologia: this.formImplementacion.controls.ctrlTecnologia.value,
+      tecnologiaFundamento: this.formImplementacion.controls.ctrlTecnologiaFundamento.value,
+      beneficio: this.formImplementacion.controls.ctrlBeneficio.value,
+      archivoBase64: this.formImplementacion.controls.ctrlArchivoBase64.value,
+      enfoques: this.opcionesMultiples.filter(function(a) { return a.activado == true; }).map(item => {
+        return item.value; })
+    };
   }
 
   getInscripcion(): InscripcionRenueva{
     return{
+      idProyecto: this.idProyecto,
       enviado: this.estadoInscripcion,
       grupo: this.getPrimerPaso(),
       descripcion: this.getSegundoPaso(),
       implementacion: this.getTercerPaso()
-    }
+    };
   }
 
   guardaCambios3ro(){
-    this.renuevaService.saveProyecto(this.getInscripcion()).subscribe(() => {
+    this.renuevaService.saveProyecto(this.getInscripcion()).subscribe((proyecto: any) => {
       this._notification.info('Se guardaron los cambios hechos sobre la implementación del proyecto');
+      this.idProyecto = proyecto.idProyecto;
     });
   }
   enviarDatos(){
@@ -435,7 +535,12 @@ export class FormRenuevaEssaludComponent implements OnInit {
       this._notification.error('El grupo debe tener almenos 2 miembros');
     }
     else{
-    this._notification.success('Se enviaron los datos de la inscripción');
+      this.estadoInscripcion = true;
+      this.renuevaService.saveProyecto(this.getInscripcion()).subscribe((proyecto: any) => {
+        this._notification.success('Se enviaron los datos de la inscripción');
+        this.idProyecto = proyecto.idProyecto;
+        this.deshabilitarFormulario();
+      });
     }
   }
 }

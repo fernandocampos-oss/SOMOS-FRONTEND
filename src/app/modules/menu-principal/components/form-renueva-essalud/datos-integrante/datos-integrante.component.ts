@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { UsuarioService } from '@data/services';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-datos-integrante',
@@ -22,29 +21,40 @@ export class DatosIntegranteComponent implements OnInit {
   });
 
   constructor(
-    private dialogRef: MatDialog,
+    private dialogRef: MatDialogRef<DatosIntegranteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private userService: UsuarioService,
     private _formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.formIntegrante.controls["frmNroDoc"].setValue(this.data.integrante.numeroDocumento);
+    this.formIntegrante.controls["frmNroDoc"].disable();
+    this.formIntegrante.controls["frmCodPlanilla"].setValue(this.data.integrante.codigoPlanilla);
+    this.formIntegrante.controls["frmCodPlanilla"].disable();
+    this.formIntegrante.controls["frmNombres"].setValue(this.data.integrante.nombres);
+    this.formIntegrante.controls["frmNombres"].disable();
+    this.formIntegrante.controls["frmApellidos"].setValue(this.data.integrante.apellidos);
+    this.formIntegrante.controls["frmApellidos"].disable();
+    this.formIntegrante.controls["frmCorreo"].setValue(this.data.integrante.correo);
+    this.formIntegrante.controls["frmCelular"].setValue(this.data.integrante.numeroCelular);
+    this.formIntegrante.controls["frmFecNac"].setValue(this.data.integrante.fechaNacimiento);
+    this.formIntegrante.controls["frmFecNac"].disable();
+    this.formIntegrante.controls["frmCargo"].setValue(this.data.integrante.cargo);
+    this.formIntegrante.controls["frmCargo"].disable();
+    if (this.data.enviado) {
+      this.formIntegrante.disable();
+    }
+  }
 
-    this.userService.get(this.data.idPer).subscribe((data)=>{
-      this.formIntegrante.controls["frmNroDoc"].setValue(data.numeroDocumento);
-      this.formIntegrante.controls["frmNroDoc"].disable();
-      this.formIntegrante.controls["frmCodPlanilla"].setValue(data.codigoPlanilla);
-      this.formIntegrante.controls["frmCodPlanilla"].disable();
-      this.formIntegrante.controls["frmNombres"].setValue(data.nombres);
-      this.formIntegrante.controls["frmNombres"].disable();
-      this.formIntegrante.controls["frmApellidos"].setValue(data.apellidos);
-      this.formIntegrante.controls["frmApellidos"].disable();
-      this.formIntegrante.controls["frmCorreo"].setValue(data.correo);
-      this.formIntegrante.controls["frmCelular"].setValue(data.numeroCelular);
-      this.formIntegrante.controls["frmFecNac"].setValue(data.fechaNacimiento);
-      this.formIntegrante.controls["frmFecNac"].disable();
-      this.formIntegrante.controls["frmCargo"].setValue(data.cargo);
-      this.formIntegrante.controls["frmCargo"].disable();
-    })
+  guardar() {
+    const resultData = {
+      correo: this.formIntegrante.controls["frmCorreo"].value,
+      celular: this.formIntegrante.controls["frmCelular"].value
+    };
+    this.dialogRef.close(resultData);
+  }
+
+  cerrar() {
+    this.dialogRef.close();
   }
 
 }

@@ -68,7 +68,6 @@ export class LoginComponent implements OnInit {
           })
         )
         .subscribe((rta) => {
-          console.log("rta from login...", rta);
           this._router.navigate(['/']);
 
           if(rta.user.authorities.length > 0){
@@ -78,7 +77,7 @@ export class LoginComponent implements OnInit {
             }
             sessionStorage.setItem('_roles', JSON.stringify(listRol));
           }
-   
+
         });
 
     } else {
