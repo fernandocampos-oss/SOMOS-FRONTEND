@@ -38,7 +38,7 @@
 
         <!-- rol 3 y 4 -->
         <div *ngIf="rolRed == rolTemporal_3 && rolCentral == rolTemporal_4">
-            <!-- <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
+            <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
                 <mat-form-field appearance="outline">
                     <mat-label>Seleccione alcance</mat-label>
                     <mat-select [(value)]="selected" (selectionChange)="capturaValorGlobal($event)">
@@ -51,16 +51,16 @@
             <div *ngIf="selected ==='opcion_2'">
                 <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
                     <mat-form-field appearance="outline">
-                        <mat-label>Seleccione red asistencial</mat-label>
-                        <mat-select [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}" multiple>
-                            <mat-option *ngFor="let red of listRedes" [value]="red.codRed">
-                                {{red.descripcion}}
+                        <mat-label>Redes Asignadas</mat-label>
+                        <mat-select [(ngModel)]="redItemSeleccionadoRol_3_4" [ngModelOptions]="{standalone: true}" multiple>
+                            <mat-option *ngFor="let r of listRedesAsignadas" [value]="r.codRed">
+                                {{r.descripcion}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
-            </div> -->
-            <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
+            </div>
+            <!--<mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
                 <mat-form-field appearance="outline">
                     <mat-label>Redes Asignadas</mat-label>
                     <mat-select [(ngModel)]="redItemSeleccionadoRol_3_4" [ngModelOptions]="{standalone: true}">
@@ -69,7 +69,7 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-            </mat-grid-tile>
+            </mat-grid-tile>-->
         </div>
 
         <!-- rol 3 -->
@@ -78,7 +78,7 @@
                 <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
                     <mat-form-field appearance="outline">
                         <mat-label>Redes Asignadas</mat-label>
-                        <mat-select [(ngModel)]="redItemSeleccionadoRol_3" [ngModelOptions]="{standalone: true}">
+                        <mat-select [(ngModel)]="redItemSeleccionadoRol_3" [ngModelOptions]="{standalone: true}" multiple>
                             <mat-option *ngFor="let r of listRedesAsignadas" [value]="r.codRed">
                                 {{ r.descripcion }}
                             </mat-option>

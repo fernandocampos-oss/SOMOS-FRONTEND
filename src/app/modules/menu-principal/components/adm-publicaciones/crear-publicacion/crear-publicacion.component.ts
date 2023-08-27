@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { PublicacionRequest } from '@data/models/menu-principal/menu-publicacion.model';
+import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol-sectorizacion.service';
 
 @Component({
   selector: 'app-crear-publicacion',
@@ -75,7 +76,8 @@ export class CrearPublicacionComponent implements OnInit {
     private dialogRef: MatDialogRef<CrearPublicacionComponent>,
     private _notification: NotificationService,
     private _fb: FormBuilder,
-    private _menuService: MenuPrincipalService
+    private _menuService: MenuPrincipalService,
+    private _sectorizacionService: AsignacionRolSectorizacionService,
   ) { }
 
   ngOnInit(): void {
@@ -87,7 +89,7 @@ export class CrearPublicacionComponent implements OnInit {
   // async getListRed() {
   //   let listRed = await this._menuService.getListRed().then((data) => {
   //     if (data) {
-  //       this.listRedes = data;       
+  //       this.listRedes = data;
   //     } else {
   //       this._notification.warning('Lista de redes asistenciales vacia');
   //     }
@@ -95,13 +97,21 @@ export class CrearPublicacionComponent implements OnInit {
   // }
 
   async getListRedesAsignadas() {
-    let listRed = await this._menuService.getListRedesAsignadas().then((data) => {
-      if (data) {
-        this.listRedesAsignadas = data;
-      } else {
-        this._notification.warning('Lista de redes asistenciales vacia');
-      }
-    });
+    if (this.rolTemporal_3 === 3 && this.rolTemporal_4 === 4) {
+      let listRed = await this._sectorizacionService.getListRed().then((data) => {
+        if (data) {
+          this.listRedesAsignadas = data;
+        }
+      });
+    } else {
+      let listRed = await this._menuService.getListRedesAsignadas().then((data) => {
+        if (data) {
+          this.listRedesAsignadas = data;
+        } else {
+          this._notification.warning('Lista de redes asistenciales vacia');
+        }
+      });
+    }
   }
 
   onChangeImage(files) {
@@ -170,7 +180,9 @@ export class CrearPublicacionComponent implements OnInit {
   private _getModel_rol_3(): PublicacionRequest {
     let redes: string[] = [];
     if (this.redItemSeleccionadoRol_3) {
-      redes.push(this.redItemSeleccionadoRol_3);
+      for (let a of this.redItemSeleccionadoRol_3) {
+        redes.push(a);
+      }
     } else {
       this._notification.warning('Seleccione una Red Asistencial');
     }
@@ -255,6 +267,7 @@ export class CrearPublicacionComponent implements OnInit {
         this.rolTemporal_3 = 3;
       }
       if (this.roles[0] === 'ROLE_4') {
+        this.rolTemporal_3 = 3;
         this.rolTemporal_4 = 4;
       }
     } else {

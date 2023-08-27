@@ -5,6 +5,7 @@ import { NotificationService } from '@core/services';
 import { Role } from '@data/enums';
 import { PublicacionRequest } from '@data/models/menu-principal/menu-publicacion.model';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
+import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol-sectorizacion.service';
 
 @Component({
   selector: 'app-editar-publicacion',
@@ -67,15 +68,16 @@ export class EditarPublicacionComponent implements OnInit {
   ];
   // selectedItems: any[] = [];
   listRedesAsignadas = [];
-  redItemSeleccionadoRol_3: any;
-  redItemSeleccionadoRol_3_4: any;
+  redItemSeleccionadoRol_3: any = [];
+  redItemSeleccionadoRol_3_4: any = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<EditarPublicacionComponent>,
     private _notification: NotificationService,
     private _fb: FormBuilder,
-    private _menuService: MenuPrincipalService
+    private _menuService: MenuPrincipalService,
+    private _sectorizacionService: AsignacionRolSectorizacionService
   ) { }
 
   ngOnInit(): void {
@@ -85,19 +87,27 @@ export class EditarPublicacionComponent implements OnInit {
     // if(this.data.funcion == 2){
     //   this.getListRed();
     // }else{
-    //   this.selected ='opcion_2';    
+    //   this.selected ='opcion_2';
     // }
     this.getListRedesAsignadas();
   }
 
   async getListRedesAsignadas() {
-    let listRed = await this._menuService.getListRedesAsignadas().then((data) => {
-      if (data) {
-        this.listRedesAsignadas = data;
-      } else {
-        this._notification.warning('Lista de redes asistenciales vacia');
-      }
-    });
+    if (this.rolTemporal_3 === 3 && this.rolTemporal_4 === 4) {
+      let listRed = await this._sectorizacionService.getListRed().then((data) => {
+        if (data) {
+          this.listRedesAsignadas = data;
+        }
+      });
+    } else {
+      let listRed = await this._menuService.getListRedesAsignadas().then((data) => {
+        if (data) {
+          this.listRedesAsignadas = data;
+        } else {
+          this._notification.warning('Lista de redes asistenciales vacia');
+        }
+      });
+    }
   }
 
   onChangeImage(files) {
@@ -146,6 +156,22 @@ export class EditarPublicacionComponent implements OnInit {
       frmEnlace: [this.data.obj.urlRedireccion],
     });
     this.retrievedImage = `data:image/jpeg;base64,${this.data.obj.imagenBase64}`;
+
+    if (this.data.obj.tipoAlcance === 1) {
+      this.selected = 'opcion_1';
+      this.selectedSave = 1;
+    } else {
+      this.selected = 'opcion_2';
+      this.selectedSave = 2;
+    }
+
+    if (this.data.obj.redes) {
+      for (let i = 0; i < this.data.obj.redes.length; i++) {
+        this.redItemSeleccionadoRol_3.push(this.data.obj.redes[i]);
+        this.redItemSeleccionadoRol_3_4.push(this.data.obj.redes[i]);
+      }
+    }
+
   }
 
   removeImage() {
@@ -173,7 +199,9 @@ export class EditarPublicacionComponent implements OnInit {
   private _getModel_rol_3(): PublicacionRequest {
     let redes: string[] = [];
     if (this.redItemSeleccionadoRol_3) {
-      redes.push(this.redItemSeleccionadoRol_3);
+      for (let a of this.redItemSeleccionadoRol_3) {
+        redes.push(a);
+      }
     } else {
       this._notification.warning('Seleccione una Red Asistencial');
     }
@@ -197,7 +225,7 @@ export class EditarPublicacionComponent implements OnInit {
     else {
       const model = this._getModel_rol_4_3();
       const idPublicacion = this.data.obj.idPublicacion;
-      
+
       this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
           this._notification.success('Publicación actualizada correctamente');
         });
@@ -205,23 +233,15 @@ export class EditarPublicacionComponent implements OnInit {
     }
   }
   private _getModel_rol_4_3(): PublicacionRequest {
-    // let redes: string[] = [];
-    // if (this.selectedItems) {
-    //   for (let a of this.selectedItems) {
-    //     redes.push(a);
-    //   }
-    // } else {
-    //   this._notification.warning('Seleccione Red Asistencial');
-    // }
-
-    // if (this.selectedSave == 1) {
-    //   redes = [];
-    // }
     let redes: string[] = [];
     if (this.redItemSeleccionadoRol_3_4) {
-      redes.push(this.redItemSeleccionadoRol_3_4);
-    } else {
-      this._notification.warning('Seleccione una Red Asistencial');
+      for (let a of this.redItemSeleccionadoRol_3_4) {
+        redes.push(a);
+      }
+    }
+
+    if (this.selectedSave == 1) {
+      redes = [];
     }
 
     return {
@@ -259,6 +279,7 @@ export class EditarPublicacionComponent implements OnInit {
         this.rolTemporal_3 = 3;
       }
       if (this.roles[0] === 'ROLE_4') {
+        this.rolTemporal_3 = 3;
         this.rolTemporal_4 = 4;
       }
     } else {
