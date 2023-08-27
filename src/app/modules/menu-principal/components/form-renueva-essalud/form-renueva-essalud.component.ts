@@ -172,7 +172,11 @@ export class FormRenuevaEssaludComponent implements OnInit {
       this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
     }
     data.grupo.miembros.forEach(m => {
-      this.listaIntegrantes.push(m);
+      if (m.idUsuario === this.authService.getUserSession().id) {
+        this.listaIntegrantes[0] = m;
+      } else {
+        this.listaIntegrantes.push(m);
+      }
     });
     this.table.renderRows();
     if (data.grupo.imagenBase64) {
@@ -282,13 +286,14 @@ export class FormRenuevaEssaludComponent implements OnInit {
         this._notification.warning('El grupo debe ser de máximo 5 personas (incluyendo al líder)');
       }
       else{
-        if (this.listaIntegrantes.includes(this.personalSeleccionadoTmp)){
-          this._notification.warning('Ya registró a esta persona');
-        }
-        else if (this.personalSeleccionadoTmp.idUsuario == this.authService.getUserSession().id){
-          this._notification.warning('No puede registrarse a si mismo');
-        }
-        else{
+        let registrado = false;
+        this.listaIntegrantes.forEach(i => {
+          if (i.idUsuario === this.personalSeleccionadoTmp.idUsuario) {
+            this._notification.warning('Ya es miembro del grupo');
+            registrado = true;
+          }
+        });
+        if (!registrado) {
           this.listaIntegrantes.push(this.personalSeleccionadoTmp);
           this.table.renderRows();
         }
@@ -368,13 +373,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
     });
   }
 
-  getPrimerPaso(): DatosGrupo{
-    const integrantesGrupo = [];
-    for (let i = 0; i < this.listaIntegrantes.length; i++) {
-      if (i != 0){
-        integrantesGrupo.push(this.listaIntegrantes[i]);
-      }
-    }
+  getPrimerPaso(): DatosGrupo {
     let datosImagen = this.retrievedImage;
     if (datosImagen){
       datosImagen = datosImagen.split(',')[1];
@@ -385,7 +384,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
       jefe: this.formDatosGenerales.controls.ctrlJefeNombre.value,
       categoria: this.formDatosGenerales.controls.ctrlCategoria.value,
       imagenBase64: datosImagen,
-      miembros: integrantesGrupo
+      miembros: this.listaIntegrantes
     };
   }
 
