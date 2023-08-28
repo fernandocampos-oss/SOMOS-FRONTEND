@@ -22,6 +22,7 @@ import { CrearPublicacionComponent } from './components/adm-publicaciones/crear-
 import { EditarPublicacionComponent } from './components/adm-publicaciones/editar-publicacion/editar-publicacion.component';
 import { FormRenuevaEssaludComponent } from './components/form-renueva-essalud/form-renueva-essalud.component';
 import { DatosIntegranteComponent } from './components/form-renueva-essalud/datos-integrante/datos-integrante.component';
+import { ConfirmInscripcionComponent } from './components/form-renueva-essalud/confirm-inscripcion/confirm-inscripcion.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { DatosIntegranteComponent } from './components/form-renueva-essalud/dato
     EditarPublicacionComponent,
     FormRenuevaEssaludComponent,
     DatosIntegranteComponent,
+    ConfirmInscripcionComponent,
 
   ],
   imports: [

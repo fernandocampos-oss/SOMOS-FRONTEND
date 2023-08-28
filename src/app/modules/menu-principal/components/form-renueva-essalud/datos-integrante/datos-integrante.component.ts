@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -8,6 +9,9 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
   styleUrls: ['./datos-integrante.component.scss']
 })
 export class DatosIntegranteComponent implements OnInit {
+
+  distribucionTotal: number = 3;
+  distribucionCorreo: number = 2;
 
   formIntegrante = this._formBuilder.group({
     frmNroDoc: [''],
@@ -22,10 +26,24 @@ export class DatosIntegranteComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<DatosIntegranteComponent>,
+    private responsive  : BreakpointObserver,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.responsive.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small
+      ])
+      .subscribe(result => {
+        this.distribucionTotal = 3;
+        this.distribucionCorreo = 2;
+
+        if (result.matches) {
+          this.distribucionTotal = 1;
+          this.distribucionCorreo = 1;
+        }
+      });
     this.formIntegrante.controls["frmNroDoc"].setValue(this.data.integrante.numeroDocumento);
     this.formIntegrante.controls["frmNroDoc"].disable();
     this.formIntegrante.controls["frmCodPlanilla"].setValue(this.data.integrante.codigoPlanilla);
@@ -35,6 +53,7 @@ export class DatosIntegranteComponent implements OnInit {
     this.formIntegrante.controls["frmApellidos"].setValue(this.data.integrante.apellidos);
     this.formIntegrante.controls["frmApellidos"].disable();
     this.formIntegrante.controls["frmCorreo"].setValue(this.data.integrante.correo);
+    this.formIntegrante.controls["frmCorreo"].disable();
     this.formIntegrante.controls["frmCelular"].setValue(this.data.integrante.numeroCelular);
     this.formIntegrante.controls["frmFecNac"].setValue(this.data.integrante.fechaNacimiento);
     this.formIntegrante.controls["frmFecNac"].disable();

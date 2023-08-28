@@ -1,6 +1,6 @@
 <h4>Datos del Integrante</h4>
 <div [formGroup]="formIntegrante" class="datos">
-    <mat-grid-list cols="3" rowHeight="90px" gutterSize="6px">
+    <mat-grid-list [cols]="this.distribucionTotal" rowHeight="90px" gutterSize="6px" class="contenedorDatos">
         <mat-grid-tile>
             <mat-form-field appearance="outline">
                 <mat-label>Nombre del miembro</mat-label>
@@ -37,7 +37,7 @@
                 <input matInput formControlName="frmFecNac">
             </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="2">
+        <mat-grid-tile [colspan]="this.distribucionCorreo">
             <mat-form-field appearance="outline">
                 <mat-label>Correo</mat-label>
                 <input matInput formControlName="frmCorreo">

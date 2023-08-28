@@ -17,6 +17,7 @@
                             <div class="imageBox">
                                 <div>
                                     <h4>Imagen representativa del grupo</h4>
+                                    <!-- <mat-error *ngIf="msgErrores && imagenGrupoField.hasError('required')">Debe añadir una imagen del grupo</mat-error> -->
                                     <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix (click)="file.click()"
                                             color="primary" *ngIf="!retrievedImage" [disabled]='estadoInscripcion'>
                                       <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
@@ -64,7 +65,7 @@
                             </mat-form-field>
                             <h4>Nombre completo del Jefe de Red Prestacional, Asistencial, IPRESS, Establecimiento de Salud o Área administrativa a la que pertenece</h4>
                             <mat-form-field appearance="outline">
-                              <input type="text" required matInput [formControl]="jefeControl" [matAutocomplete]="autoJefe">
+                              <input type="text" required matInput [formControl]="jefeControl" name="nombreJefe" [matAutocomplete]="autoJefe">
                               <mat-autocomplete #autoJefe="matAutocomplete" [displayWith]="displayFnJefe"
                                 (optionSelected)="onSelectionChangeJefe($event)">
                                 <mat-option *ngFor="let persona of filteredOptionsJefe | async" [value]="persona">
@@ -269,9 +270,10 @@
                     </ul>
                     <div class="pdfContainer">
                       <h4>Evidencia de la Implementación</h4>
+                      <mat-error *ngIf="msgErrores && archivoPdfField.hasError('required')">Debe adjuntar un archivo de evidencia</mat-error>
                       <div class="datosPdf">
                         <h5 *ngIf="retrievedPdf">Archivo: {{nombrePdf}}</h5>
-                        <img class="preview__img" src="assets/images/pdfSelected.png" *ngIf="retrievedPdf" (click)='downloadPdf()' style='cursor: pointer;'/>
+                        <img class="preview__img" src="assets/images/pdfSelected.png" *ngIf="retrievedPdf" (click)='downloadPdf()' matTooltip="Descargar PDF" matTooltipPosition="right" style='cursor: pointer;'/>
                         <img class="preview__img" src="assets/images/pdfPlaceholder.png" *ngIf="!retrievedPdf"/>
                       </div>
                       <div class="datosPdf">

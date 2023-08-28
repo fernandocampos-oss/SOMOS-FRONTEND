@@ -16,6 +16,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RenuevaEssaludService } from '@data/services/renueva-essalud.service';
 import { DatosGrupo, DescripcionProyecto, Implementacion, InscripcionRenueva } from '@data/models/proyecto/proyecto.model';
 import * as moment from 'moment';
+import { ConfirmInscripcionComponent } from './confirm-inscripcion/confirm-inscripcion.component';
 
 @Component({
   selector: 'app-form-renueva-essalud',
@@ -46,6 +47,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   hayDatos = false;
   idProyecto: number;
 
+  msgErrores = false;
   // <!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
   idProyectoGrupo: number;
 
@@ -54,8 +56,13 @@ export class FormRenuevaEssaludComponent implements OnInit {
     ctrlNomGrupo: ['', Validators.required],
     ctrlJefeNombre: ['', Validators.required],
     ctrlRed: [''],
+    // ctrlImgGrupo64: ['', Validators.required],
   });
 
+  // get imagenGrupoField() {
+  //   return this.formDatosGenerales.get('ctrlImgGrupo64');
+  // }
+  
   integranteControl = new FormControl('');
   jefeControl = new FormControl('');
   filteredOptions: Observable<any[]>;
@@ -100,15 +107,19 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   formImplementacion = this._formBuilder.group({
     ctrlResultado: ['', [Validators.required, Validators.maxLength(900)]],
-    ctrlSostenible: [null],
+    ctrlSostenible: [null, Validators.required],
     ctrlSostenibleFundamento: [null],
-    ctrlReplicable: [null],
-    ctrlReplicableFundamento: [null, [Validators.required, Validators.maxLength(900)]],
-    ctrlTecnologia: [null],
-    ctrlTecnologiaFundamento: [null, [Validators.required, Validators.maxLength(600)]],
-    ctrlBeneficio: [null],
+    ctrlReplicable: [null, Validators.required],
+    ctrlReplicableFundamento: [null],
+    ctrlTecnologia: [null, Validators.required],
+    ctrlTecnologiaFundamento: [null],
+    ctrlBeneficio: [null, Validators.required],
     ctrlArchivoBase64: [null, Validators.required],
   });
+
+  get archivoPdfField() {
+    return this.formImplementacion.get('ctrlArchivoBase64');
+  }
 
   constructor(
     private dialogRef: MatDialog,
@@ -129,7 +140,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this.cargarUsuariosRed();
     this.cargarLider();
     this.renuevaService.getProyecto().subscribe((data) => {
-      const dataObj = Object(data[0]);
+      const dataObj = Object(data[0]);console.log(data)
       if (data[0]){
         this.hayDatos = true;
         this.idProyecto = dataObj.idProyecto;
@@ -147,6 +158,11 @@ export class FormRenuevaEssaludComponent implements OnInit {
         map(nombresCompletos => nombresCompletos ? this._filterPersonal(nombresCompletos) : this.listaUsuariosRed.slice())
       );
     // jefe
+    this.jefeControl.valueChanges.subscribe((data)=>{
+      if(typeof data === 'string' && data.trim().length == 0){
+        this.formDatosGenerales.controls.ctrlJefeNombre.reset()
+      }
+    })
     this.filteredOptionsJefe = this.jefeControl.valueChanges
       .pipe(
         startWith(''),
@@ -161,12 +177,14 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   cargarDataProyecto(data: any) {
     this.estadoInscripcion = data.enviado;
+    console.log(data)
 
     // Data grupo
     this.formDatosGenerales.controls.ctrlNomGrupo.setValue(data.grupo.nombre);
     this.formDatosGenerales.controls.ctrlRed.setValue(data.grupo.sede);
     this.formDatosGenerales.controls.ctrlJefeNombre.setValue(data.grupo.jefe);
     this.formDatosGenerales.controls.ctrlCategoria.setValue(data.grupo.categoria);
+    // this.formDatosGenerales.controls.ctrlImgGrupo64.setValue(data.grupo.imagenBase64);
     const jefesFiltrados: any[] = this._filterJefe(data.grupo.jefe);
     if (jefesFiltrados.length > 0) {
       this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
@@ -214,6 +232,21 @@ export class FormRenuevaEssaludComponent implements OnInit {
     });
     if (data.implementacion.archivoBase64) {
       this.retrievedPdf = `data:application/pdf;base64,${data.implementacion.archivoBase64}`;
+    }
+      
+    if(this.selectedValueL === 'Si'){
+      this.formImplementacion.controls.ctrlSostenibleFundamento.setValidators([Validators.required]);
+      this.formImplementacion.controls['ctrlSostenibleFundamento'].updateValueAndValidity();
+    }
+
+    if(this.selectedValueN === 'Si'){
+      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, Validators.maxLength(900)]);
+      this.formImplementacion.controls['ctrlReplicableFundamento'].updateValueAndValidity();
+    }
+
+    if(this.selectedValueO === 'Si'){
+      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, Validators.maxLength(600)]);
+      this.formImplementacion.controls['ctrlTecnologiaFundamento'].updateValueAndValidity();
     }
 
     if (data.enviado) {
@@ -324,6 +357,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
     }
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
+    console.log(files)
     reader.onload = _event => {
       const imgLoad = new Image();
       this.applicationFile = files[0];
@@ -338,12 +372,14 @@ export class FormRenuevaEssaludComponent implements OnInit {
           this.height = imgLoad.height;
         };
         this.retrievedImage = reader.result;
+        // this.formDatosGenerales.controls.ctrlImgGrupo64.setValue(this.retrievedImage.split(',')[1]);
         this.isImageUpdate = true;
       }
     };
   }
   removeImage() {
     this.retrievedImage = null;
+    // this.formDatosGenerales.controls.ctrlImgGrupo64.reset();
     this.applicationFile = null;
     this.isImageUpdate = true;
   }
@@ -422,14 +458,38 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   onChangeL(event: MatRadioChange) {
     this.selectedValueL = event.value;
+    if(event.value === 'Si'){
+      this.formImplementacion.controls.ctrlSostenibleFundamento.setValidators([Validators.required]);
+    }
+    else{
+      this.formImplementacion.controls.ctrlSostenibleFundamento.setValidators([]);
+      this.formImplementacion.controls.ctrlSostenibleFundamento.reset();
+    }
+    this.formImplementacion.controls['ctrlSostenibleFundamento'].updateValueAndValidity();
   }
 
   onChangeN(event: MatRadioChange) {
     this.selectedValueN = event.value;
+    if(event.value === 'Si'){
+      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, Validators.maxLength(900)]);
+    }
+    else{
+      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([]);
+      this.formImplementacion.controls.ctrlReplicableFundamento.reset();
+    }
+    this.formImplementacion.controls['ctrlReplicableFundamento'].updateValueAndValidity();
   }
 
   onChangeO(event: MatRadioChange) {
     this.selectedValueO = event.value;
+    if(event.value === 'Si'){
+      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, Validators.maxLength(600)]);
+    }
+    else{
+      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([]);
+      this.formImplementacion.controls.ctrlTecnologiaFundamento.reset();
+    }
+    this.formImplementacion.controls['ctrlTecnologiaFundamento'].updateValueAndValidity();
   }
 
   onChangeFile(files) {
@@ -449,7 +509,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
     reader.onload = _event => {
       const fileApp = files[0];
       if (fileApp.size >= 2097152){
-        this._notification.warning('Tamaño de imagen excedido, máximo 2MB');
+        this._notification.warning('Tamaño de archivo excedido, máximo 2MB');
         return;
       }
       else{
@@ -463,14 +523,17 @@ export class FormRenuevaEssaludComponent implements OnInit {
   removePdf() {
     this.retrievedPdf = null;
     this.formImplementacion.controls.ctrlArchivoBase64.reset();
-    this.isPdfUpdate = true;
+    this.isPdfUpdate = false;
   }
 
   downloadPdf() {
     const blob = this.base64ToBlob(this.retrievedPdf.split(',')[1], 'application/pdf');
+    console.log(blob)
     const url = URL.createObjectURL(blob);
+    console.log(url)
 
     const link = document.createElement('a');
+    console.log(link)
     link.href = url;
     link.download = 'archivo.pdf';
     link.click();
@@ -530,16 +593,36 @@ export class FormRenuevaEssaludComponent implements OnInit {
     });
   }
   enviarDatos(){
+    this.msgErrores = true;
     if (this.listaIntegrantes.length < 2) {
       this._notification.error('El grupo debe tener almenos 2 miembros');
     }
     else{
-      this.estadoInscripcion = true;
-      this.renuevaService.saveProyecto(this.getInscripcion()).subscribe((proyecto: any) => {
-        this._notification.success('Se enviaron los datos de la inscripción');
-        this.idProyecto = proyecto.idProyecto;
-        this.deshabilitarFormulario();
-      });
+      if(this.formDatosGenerales.valid && this.formDatosProyecto.valid && this.formImplementacion.valid && this.getTercerPaso().enfoques.length>0){
+
+        const dialogRef: MatDialogRef<ConfirmInscripcionComponent> = this.dialogRef.open(ConfirmInscripcionComponent, {
+          disableClose: true,
+          autoFocus: false,
+          data: {
+            inscripcion: this.getInscripcion(),
+            enviado: this.estadoInscripcion
+          }
+        });
+    
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+              this._notification.success('Se enviaron los datos de la inscripción');
+              this.estadoInscripcion = result.confirmacion;
+              this.deshabilitarFormulario();
+          }
+        });
+      }
+      else{
+        this._notification.error('Faltan completar datos');
+        this.formDatosGenerales.markAllAsTouched();
+        this.formDatosProyecto.markAllAsTouched();
+        this.formImplementacion.markAllAsTouched();
+      }
     }
   }
 }
