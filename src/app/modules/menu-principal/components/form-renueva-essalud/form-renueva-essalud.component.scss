@@ -3,6 +3,13 @@
     width: 9em;
     background-color: var(--color-MiEssalud);
 }
+.btnBases{
+    margin-left: 1rem;
+    margin-top: 10px;
+    button{
+        background-color: var(--color-MiEssalud);
+    }
+}
 .pdfContainer{
     width: fit-content;
     img{
@@ -95,5 +102,12 @@ img{
         grid-template-columns: repeat(1, minmax(0, 1fr));  
         grid-gap: 0;
         gap: 0;  
+    }
+}
+@media screen and (max-width: 445px) {
+    .inputBtn{
+        mat-form-field{
+            width: 74%;
+        }
     }
 }

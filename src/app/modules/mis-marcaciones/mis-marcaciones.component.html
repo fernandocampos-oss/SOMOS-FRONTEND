@@ -2,7 +2,8 @@
   <div class="matero-page-header">
     <div class="row">
       <div class="column1">
-        <h1 class="matero-page-title"><mat-icon >assignment</mat-icon> Mis Marcaciones</h1>
+        <h1 class="matero-page-title"><mat-icon >assignment</mat-icon> Mis Marcaciones
+          <button *ngIf="!form4Mobile" mat-raised-button color="primary" class="back buttonReturn" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button></h1>
         <!-- <h1 class="matero-page-title">Mis Marcaciones</h1> -->
         <!-- <small class="mr-2">Podrás visualizar detalles de tus marcaciones</small><br> -->
         <!-- <button mat-raised-button color="primary" class="search" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button> -->
@@ -34,11 +35,11 @@
               <button mat-raised-button color="primary" class="search" type="submit">Buscar</button>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="2">
+          <!-- <mat-grid-tile [colspan]="2">
             <div class="mat-grid-tile-content" style="display:block">
               <button mat-raised-button color="primary" class="search" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
             </div>
-          </mat-grid-tile>
+          </mat-grid-tile> -->
         </mat-grid-list>
         <mat-grid-list cols="2" rowHeight="88px" gutterSize="6px" *ngIf="form4Mobile">
           <mat-grid-tile [colspan]="2">
