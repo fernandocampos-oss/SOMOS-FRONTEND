@@ -76,6 +76,12 @@ export class RegistroComponent implements OnInit {
   ngOnInit(): void {
     this._createForm();
     // this._loadParams();
+    this.form.controls.numeroDocumento.valueChanges.subscribe(val => {
+      this.form.controls.numeroDocumento.setValue(val.trim(), { emitEvent: false })
+    })
+    this.form.controls.codigoPlanilla.valueChanges.subscribe(val => {
+      this.form.controls.codigoPlanilla.setValue(val.trim(), { emitEvent: false })
+    })
     
     this.responsive.observe([
       Breakpoints.XSmall,
