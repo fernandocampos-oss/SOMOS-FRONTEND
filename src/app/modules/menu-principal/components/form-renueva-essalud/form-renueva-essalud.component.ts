@@ -33,6 +33,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   stepperOrientation: Observable<StepperOrientation>;
 
+  vistaCelular = false;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['nombresApellidos', 'dni', 'accion'];
   estadoInscripcion = false;
@@ -134,6 +135,11 @@ export class FormRenuevaEssaludComponent implements OnInit {
       this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
+      breakpointObserver
+      .observe('(min-width: 600px)')
+      .pipe(map(({matches})=> (matches ? true : false))).subscribe((data)=>{
+        this.vistaCelular = data;
+      });
     }
 
   ngOnInit(): void {

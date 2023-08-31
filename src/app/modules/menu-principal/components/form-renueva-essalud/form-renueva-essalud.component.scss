@@ -81,9 +81,9 @@
     button{
         width: 100%;
     }
-}
-img{
-    height: 16rem;
+    img{
+        height: 16rem;
+    }
 }
 .navOptions{
     margin-top: 1rem;
@@ -108,6 +108,32 @@ img{
     .inputBtn{
         mat-form-field{
             width: 74%;
+        }
+    }
+}
+@media screen and (max-width: 600px) {
+    .conteImg{
+        text-align: center;
+        .preview__img{
+            width: 242px;
+        }
+    }
+}
+@media screen and (min-width: 500px) {
+    h1{
+        position: relative;
+        .preview__img{
+            bottom: 45px;
+            right: 20px;
+            position: absolute;
+            width: 242px;
+        }
+    }
+}
+@media screen and (max-width: 662px) {
+    h1{
+        .preview__img{
+            bottom: 20px;
         }
     }
 }

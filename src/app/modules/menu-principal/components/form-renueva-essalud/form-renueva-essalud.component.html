@@ -4,10 +4,14 @@
         <small class="mr-2">Inscribe a tu equipo como líder.</small><br>
         <button mat-raised-button color="primary" class="search" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
         <a class="btnBases" href="http://www.essalud.gob.pe/mailing/RS_1079_GG_ESSALUD_2023_BASES_PROG_RENUEVA_ESSALUD_V_EDICION.pdf" target="_blank"><button mat-raised-button color="primary">Ver las bases <mat-icon>navigate_next</mat-icon></button></a>
+        <img class="preview__img" src="assets/images/renuevaBoton.png" *ngIf="vistaCelular"/>
       </h1>
     </div>
     <div class="page__body">
       <div class="card shadow">
+        <div class="conteImg" *ngIf="!vistaCelular">
+          <img class="preview__img" src="assets/images/renuevaBoton.png"/>
+        </div>
         <mat-stepper [linear]="false" [orientation]="(stepperOrientation | async)!">
 
             <!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
