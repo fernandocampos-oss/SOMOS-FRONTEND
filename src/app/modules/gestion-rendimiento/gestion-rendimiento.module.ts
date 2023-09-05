@@ -25,8 +25,10 @@ import { AcceptRejectRequirementComponent } from './components/mis-requerimiento
 import { MoveRequirementComponent } from './components/mis-requerimientos/dialogs/move-requirement/move-requirement.component';
 import { SolicitudRequirementComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/solicitud-requirement.component';
 import { ConfirmRequerimientoComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/dialog/confirm-requerimiento/confirm-requerimiento.component';
-import { AssignTaskUserComponent } from './components/mi-equipo/dialogs/assign-task-user/assign-task-user.component';
 import { EditUserSelectedComponent } from './components/mi-equipo/dialogs/edit-user-selected/edit-user-selected.component';
+import { UpdateTareaComponent } from './components/mis-requerimientos/dialogs/read-requirement/update-tarea/update-tarea.component';
+import { VerEvidenciaComponent } from './components/mis-requerimientos/dialogs/read-requirement/ver-evidencia/ver-evidencia.component';
+import { DeleteDialogComponent } from './components/mi-equipo/dialogs/delete-dialog/delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -48,8 +50,10 @@ import { EditUserSelectedComponent } from './components/mi-equipo/dialogs/edit-u
     MoveRequirementComponent,
     SolicitudRequirementComponent,
     ConfirmRequerimientoComponent,
-    AssignTaskUserComponent,
-    EditUserSelectedComponent
+    EditUserSelectedComponent,
+    UpdateTareaComponent,
+    VerEvidenciaComponent,
+    DeleteDialogComponent
   ],
   imports: [
     CommonModule,

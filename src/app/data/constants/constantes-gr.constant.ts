@@ -9,5 +9,5 @@ export class ConstantesGr {
     static readonly ESTADO_PERSONAL_ASIGNADO = 1;
     static readonly ESTADO_PERSONAL_ELIMINADO = 2;
 
-    static readonly ESTADO_TAREA_PENDIENTE = 1;
+    // static readonly ESTADO_TAREA_PENDIENTE = 1;
 }

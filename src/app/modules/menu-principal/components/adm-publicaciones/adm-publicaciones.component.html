@@ -1,0 +1,55 @@
+<div class="preview form__field--full">
+    <mat-grid-list cols="8" rowHeight="45px" gutterSize="6px">
+        <mat-grid-tile [colspan]="4">
+            <h2>Administrar publicaciones</h2>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3">
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1">
+            <button mat-raised-button class="btnColor" (click)="AddPublicacion()"><mat-icon>add</mat-icon> Añadir</button>
+        </mat-grid-tile>
+        <mat-grid-tile class="boxPublicacionesAdm" [colspan]="4" [rowspan]="9">
+            <div *ngFor="let pub of publicacionesTable; index as i" [ngStyle]="{'background-image': 'url(data:image/jpeg;base64,'+pub.imagenBase64+')'}" class="boxBorde">
+                <div><span>{{i+1}}</span></div>
+            </div>
+            <!-- <div *ngFor="let pub of publication; index as i" [ngStyle]="{'background-image': 'url('+pub.imgRuta+')'}" class="boxBorde">
+                <div><span>{{i+1}}</span></div>
+            </div> -->
+        </mat-grid-tile>
+        <mat-grid-tile class="boxListaPub" [colspan]="4" [rowspan]="9">
+            <table mat-table [dataSource]="publicacionesTable" style="width:100%">
+
+                <ng-container matColumnDef="item">
+                    <th mat-header-cell *matHeaderCellDef width="100px"> Item </th>
+                    <td mat-cell *matCellDef="let element; index as i"> {{i+1}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="titulo">
+                    <th mat-header-cell *matHeaderCellDef width="200px"> Titulo de la publicación </th>
+                    <td mat-cell *matCellDef="let element"> {{element.titulo}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef width="100px" > Acciones </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button color="primary" matTooltip="Editar Publicación" (click)="UpdatePublicacion(element)">
+                            <mat-icon>mode_edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" matTooltip="Eliminar Publicación" (click)="DeletePublicacion(element)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr class="empty-row" *matNoDataRow>
+                  <td class="empty-cell">Sin registros por mostrar</td>
+                </tr>
+              </table>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cerrar</button>
+    </mat-dialog-actions>
+</div>

@@ -6,7 +6,9 @@ form {
         resize: none;
     }
 }
-
+.Descrip{
+    text-align: justify;
+}
 .mat-dialog-content{
     margin:0px;
     width: 100%;
@@ -16,6 +18,9 @@ form {
     padding: 0 !important;
 }
 
+mat-dialog-actions{
+    justify-content: space-between;
+}
 
 @media screen and (max-width: 550px) {
     .Descrip{

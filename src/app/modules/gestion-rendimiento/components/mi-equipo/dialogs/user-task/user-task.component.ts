@@ -9,15 +9,7 @@ import { UserAddTaskComponent } from '../user-add-task/user-add-task.component';
 import { UserDownloadTaskComponent } from '../user-download-task/user-download-task.component';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { DialogService, NotificationService } from '@core/services';
-import { Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
 //import * as XLSX from 'xlsx';
-
-interface Tarea {
-  item: number;
-  tarea: string;
-  estado: string;
-  porcentaje: string;
-}
 
 @Component({
   selector: 'app-user-task',
@@ -29,20 +21,9 @@ export class UserTaskComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  // displayedColumns: string[] = ['item', 'descripcion','porcentaje','fecIni', 'fecFin','estado','acciones'];
   displayedColumns: string[] = ['item', 'requerimiento', 'estado', 'porcentaje', 'acciones'];
   idUsuario: number;
   nombreUsuario: string;
-
-  // tareas: Tarea[] = [
-  //   { item: 1, tarea: 'Nombre Tarea 1', estado: 'FINALIZADO', porcentaje: '100' },
-  //   { item: 2, tarea: 'Nombre Tarea 2', estado: 'PENDIENTE', porcentaje: '50' },
-  //   { item: 3, tarea: 'Nombre Tarea 3', estado: 'FINALIZADO', porcentaje: '100' },
-  // ];
-
-  // datosAsignados: Requerimiento_Integrante[] = [];
-
-  reqAsignados = new Array;
 
   constructor(
     private _fb: FormBuilder,
@@ -55,7 +36,7 @@ export class UserTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data.obj);
+    console.log(this.data);
     // this.idUsuario = this.data.obj.id;
     // this.nombreUsuario = this.data.obj.colaborador;
     // this.cargarRequerimientos();
@@ -70,7 +51,7 @@ export class UserTaskComponent implements OnInit {
     // console.log(worksheet);
     // console.log(workbook);
     // XLSX.writeFile(workbook, "out.xlsx");
-    this.loadTableReq(this.data.obj.idPersonal);
+    this.loadTableRequerimiento(this.data.model.idUsuario);
   }
 
   // cargarRequerimientos(){
@@ -89,7 +70,7 @@ export class UserTaskComponent implements OnInit {
   loadTable() {
     this.services.ListarTareas(this.idUsuario).subscribe((dataItem) => {
       if (dataItem.codigo == 0) {
-        this.dataSource = new MatTableDataSource(this.reqAsignados);
+        this.dataSource = new MatTableDataSource(dataItem);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
@@ -127,8 +108,7 @@ export class UserTaskComponent implements OnInit {
       //height: '780px',
       autoFocus: false,
       data: {
-        // obj: this.services.getFauxRequerimiento(this.datosAsignados[id].idReq),
-        objAsignacion: element
+        model: element
       }
     });
 
@@ -150,26 +130,17 @@ export class UserTaskComponent implements OnInit {
 
   }
 
-  loadTableReq(idPersonal: Number) {
-    this.services.listarRequerimientosPorPersonal(idPersonal).subscribe((data: any) => {
+  async loadTableRequerimiento(idUsuario: Number) {
+    let load = await  this.services.listarRequerimientosPorPersonal(idUsuario).then((data: any) => {
       if (data) {
-        this.reqAsignados = data;
-        this.dataSource = new MatTableDataSource(this.reqAsignados);
+        this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
         this.dataSource = null;
-        if (this.dataSource = null) {
-          this._notification.warning("LISTA VACIA");
-        }
-        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-        //   this._notification.warning(dataItem.msj)
-        // } else {
-        //   this._notification.error(dataItem.msj)
-        // }
+        this._notification.warning("Lista de requerimientos vacios");
       }
     });
-
   }
 
 }

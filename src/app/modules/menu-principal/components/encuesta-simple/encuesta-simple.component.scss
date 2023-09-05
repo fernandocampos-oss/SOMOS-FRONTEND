@@ -1,0 +1,60 @@
+mat-dialog-actions{
+    justify-content: space-between;
+}
+
+.options{
+    display: flex;
+    border: var(--color-bordes);
+    flex-direction: column;
+    align-items: center;
+    p{
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center !important;
+    }
+}
+.encuestaHecha{
+    text-align: center;
+}
+h3{
+    text-align: center;
+}
+img{
+    width:45%;
+    margin-bottom: 15px;
+}
+.confirm {
+    background-color: rgb(72, 210, 72);
+}
+
+.option {
+    background-color: #e6effa;
+}
+.dialogEncuesta{
+    padding: 12px;
+    background: #d1eeed;
+    border-radius: 12px;
+    p{
+        text-align: justify;
+    }
+}
+mat-grid-tile.opcionesEncuestaSimple {
+    ::ng-deep.mat-grid-tile-content{
+        align-items: flex-start;
+    }
+}
+.opcionesEncuestaSimple{
+    margin: 0 4px 0 4px;
+    padding: 4px;
+    border: var(--color-bordes);
+    border-style:solid;
+    border-radius: 11px;
+    border-width: 2.5px;
+}
+.containerOpciones{
+    display: flex;
+    padding: 12px 0 12px 0;
+}
+.selector{
+    width: 70%;
+}

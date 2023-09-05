@@ -1,14 +1,15 @@
 <form [formGroup]="form">
-    <h2 mat-dialog-title>Encuesta de Clima Laboral Essalud</h2>
-      <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChanged($event)">
-        <mat-tab label="Datos Demográficos" class="Stik">
-          <mat-dialog-content>
+    <h2 mat-dialog-title>{{encuestaDescripcion}}</h2>
+    <span>Selecciona tu conformidad entre 1 (En Desacuerdo) a 5 (De Acuerdo)</span>
+      <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChanged($event)" mat-align-tabs="center" mat-stretch-tabs="true">
+        <mat-tab label="Datos Demográficos">
+          <mat-dialog-content><br>
           <mat-grid-list cols="2" rowHeight="90px" gutterSize="6px">
             <mat-grid-tile [colspan]="1" class="grid">
                 <mat-form-field appearance="outline">
                     <mat-label>Sede</mat-label>
                     <mat-select formControlName="frmSede">
-                        <mat-option *ngFor="let sede of  sedes" [value]="sede.descripcion">{{sede.descripcion}}</mat-option>
+                        <mat-option *ngFor="let sede of datosSedes" [value]="sede.idSede">{{sede.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -16,15 +17,15 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Grupo de Personal</mat-label>
                     <mat-select formControlName="frmGrupoPersonal">
-                        <mat-option *ngFor="let grupo of  gruposPers" [value]="grupo.descripcion">{{grupo.descripcion}}</mat-option>
+                        <mat-option *ngFor="let grupo of  datosGrupoPersonal" [value]="grupo.idGrupoPersonal">{{grupo.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile [colspan]="2" class="grid">
                 <mat-form-field appearance="outline">
-                    <mat-label>Area de Personal</mat-label>
+                    <mat-label>Cargo de Personal</mat-label>
                     <mat-select formControlName="frmAreaPersonal">
-                        <mat-option *ngFor="let area of  areasP" [value]="area.descripcion">{{area.descripcion}}</mat-option>
+                        <mat-option *ngFor="let area of  datosCargoPersonal" [value]="area.idAreaPersonal">{{area.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -32,7 +33,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Tiempo de servicio</mat-label>
                     <mat-select formControlName="frmTiempoServicio">
-                        <mat-option *ngFor="let tiempo of  tiemposServ" [value]="tiempo.descripcion">{{tiempo.descripcion}}</mat-option>
+                        <mat-option *ngFor="let tiempo of  datosTiempoServicio" [value]="tiempo.idTiempoServicio">{{tiempo.descripcion}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
@@ -41,14 +42,11 @@
         </mat-tab>
         <mat-tab label="Encuesta">
           <mat-dialog-content>
-            <div *ngFor="let pregunta of preguntas; index as i">
-                <br><h4 class="Descrip">{{pregunta.num}}. {{pregunta.descripcion}}</h4><br>
-                <mat-radio-group formArrayName="frmRespuestas">
-                    <mat-radio-button value="1" (click)="changeSelection(i,1)">1</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="2" (click)="changeSelection(i,2)">2</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="3" (click)="changeSelection(i,3)">3</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="4" (click)="changeSelection(i,4)">4</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <mat-radio-button value="5" (click)="changeSelection(i,5)">5</mat-radio-button>
+            <div *ngFor="let pregunta of preguntasEncuesta; index as i">
+                <br><mat-divider *ngIf="i != 0"></mat-divider><br>
+                <h4 class="Descrip" [ngStyle]="{color: changeColor[i]}">{{pregunta.idPregunta}}. {{pregunta.descripcion}}</h4><br>
+                <mat-radio-group formArrayName="frmRespuestas" (change)="changeSelection(i,$event)">
+                    <mat-radio-button *ngFor="let answer of preguntasEncuesta[i].alternativas" [value]="answer.valor" style="margin-right: 3.5vw;">{{answer.valor}}</mat-radio-button>
                 </mat-radio-group>
             </div>
             <!-- <mat-expansion-panel [expanded]="true" *ngFor="let pregunta of preguntas; index as i">
@@ -67,11 +65,16 @@
         </mat-tab>
       </mat-tab-group>
     
-    <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>Cerrar</button>
-        <button mat-raised-button color="primary" 
+    <mat-dialog-actions>
+        <div>
+            <span *ngIf="selectedIndex == 1" >Restantes: {{restantes}}</span>
+        </div>
+        <div>
+            <button mat-button mat-dialog-close>Cerrar</button>
+            <button mat-raised-button color="primary" 
             *ngIf="selectedIndex == 0" [disabled]="form.valid == false" (click)="next()">Siguiente</button>
-        <button mat-raised-button color="primary" 
-            *ngIf="selectedIndex == 1" [disabled]="validarEncuesta() == false" (click)="sendInfo()">Enviar</button>
+            <button mat-raised-button color="primary" 
+            *ngIf="selectedIndex == 1" (click)="sendInfo()">Enviar</button>
+        </div>
     </mat-dialog-actions>
 </form>

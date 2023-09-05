@@ -26,8 +26,7 @@ export class ToolbarComponent implements OnInit {
   ngOnInit() {
     this.responsive.observe([
       Breakpoints.HandsetLandscape,
-      Breakpoints.XSmall,      
-      Breakpoints.TabletLandscape,
+      Breakpoints.XSmall,
       ])
       .subscribe(result => {
 
@@ -48,6 +47,7 @@ export class ToolbarComponent implements OnInit {
 
   logout() {
     this._authService.logout();
+    sessionStorage.removeItem("_roles");
   }
 
   setFechaActual(){

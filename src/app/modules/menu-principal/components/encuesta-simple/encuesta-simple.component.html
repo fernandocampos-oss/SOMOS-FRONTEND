@@ -1,0 +1,47 @@
+<div *ngIf="mostrar">
+    <div class="dialogEncuesta">
+        <h3>Navidad EsSalud 2023</h3>
+        <p>Estás de acuerdo que la entrega sea:</p>
+        <mat-radio-group aria-label="Select an option">
+            <div class="containerOpciones">
+                <div class="opcionesEncuestaSimple"
+                [ngClass]="{'confirm' : toggle, 'option': !toggle}">
+                    <div class="options">
+                        <img src="assets/images/creditCard.png">
+                        <!-- <img src="assets/images/creditCard.png"> -->
+                        <p>{{alternativas[0].descripcion}}</p>
+                    </div>
+                </div>
+                <div class="opcionesEncuestaSimple"
+                [ngClass]="{'confirm' : toggle2, 'option': !toggle2}">
+                    <div class="options">
+                        <img src="assets/images/moneyIcon.png">
+                        <p>{{alternativas[1].descripcion}}</p>
+                    </div>
+                </div>
+            </div>
+            <mat-grid-list cols="2" rowHeight="48px" gutterSize="6px">
+                <mat-grid-tile [colspan]="1">
+                    <button class="selector" mat-raised-button color="primary"
+                    (click)="enableDisableRule(1)">Elegir</button>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1">
+                    <button class="selector" mat-raised-button color="primary"
+                    (click)="enableDisableRule(2)">Elegir</button>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-radio-group>
+    </div>
+        <mat-dialog-actions>
+                <button mat-button mat-dialog-close>Cerrar</button>
+                <button mat-raised-button color="primary" (click)="sendConfirmation(seleccion)">Enviar</button>
+        </mat-dialog-actions>
+</div>
+
+<div class="dialogEncuesta encuestaHecha" *ngIf="!mostrar">
+    <img src="assets/images/surveyCheck.png">
+    <h3>¡Gracias por participar de la encuesta!</h3>
+    <mat-dialog-actions align="center">
+            <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
+    </mat-dialog-actions>
+</div>

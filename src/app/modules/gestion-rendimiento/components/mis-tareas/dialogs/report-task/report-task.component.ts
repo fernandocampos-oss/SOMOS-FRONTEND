@@ -6,10 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Evidencia } from '@data/models/gestion-rendimiento/evidencia';
-import { Tarea } from '@data/models/gestion-rendimiento/tarea';
-import { Archivo } from '@data/models/gestion-rendimiento/Archivo';
-import { EvidenciaArchivo } from '@data/models/gestion-rendimiento/evidenciaArchivo';
+import { Archivo, ArchivoNew } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 @Component({
   selector: 'app-report-task',
@@ -70,11 +67,11 @@ export class ReportTaskComponent implements OnInit {
     if (!this.form.valid) {
       this._notification.warning("Se deben ingresar los campos requeridos")
     } else {
-      let e = new Evidencia();
+      let e //= new Evidencia();
       e.descripcion = this.form.value.frmDescripcion;
       e.avance = this.form.value.frmAvance;
       e.estado = true;
-      let t = new Tarea();
+      let t// = new Tarea();
       t.idTarea = this.data.obj.idTarea;
       e.tarea = t;
       this.services.registrarEvidencia(e).subscribe((dataItem) => {
@@ -96,7 +93,7 @@ export class ReportTaskComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       // this.objArchivo = new Archivo();
-      let archivo = new Archivo();
+      let archivo = new ArchivoNew();
       // a.base64 = reader.result;
       let completo = file.name;
       const nombreFile = completo.lastIndexOf('.');
@@ -147,8 +144,8 @@ export class ReportTaskComponent implements OnInit {
   }
 
   private registrarEvidenciaArchivo() {
-    let evidenciaArchivo = new EvidenciaArchivo();
-    let e = new Evidencia();
+    let evidenciaArchivo// = new EvidenciaArchivo();
+    let e //= new Evidencia();
     e.idEvidencia = this.idEvidencia;
     let a = new Archivo();
     a.idArchivo = this.idArchivo;

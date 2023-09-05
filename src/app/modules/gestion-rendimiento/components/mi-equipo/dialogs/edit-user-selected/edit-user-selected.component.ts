@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppConfig } from '@core/configs';
-import { Requerimiento1, Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
+import { Requerimiento1, Requerimiento_Integrante } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
@@ -43,7 +43,7 @@ export class EditUserSelectedComponent implements OnInit {
   get tareas() {
     return this.formEditar.controls["tareas"] as FormArray;
   }
-  addTareas(tarea: Requerimiento_Integrante) {
+  addTareas(tarea: Requerimiento_Integrante) { 
       const tareasForm = this._fb.group({
           frmTarea: [tarea.nombreTarea, Validators.required],
           frmPlazo: [new Date(+tarea.plazo.split('/')[2],+tarea.plazo.split('/')[1]-1,+tarea.plazo.split('/')[0]), Validators.required]

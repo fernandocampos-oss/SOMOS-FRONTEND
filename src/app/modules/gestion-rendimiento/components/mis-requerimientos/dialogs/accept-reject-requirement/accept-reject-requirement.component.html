@@ -1,18 +1,21 @@
-<h3 *ngIf="reject == false">¿ Está seguro de aprobar el requerimiento ?</h3>
-<h3 *ngIf="reject == true">¿ Está seguro de rechazar el requerimiento ?</h3>
+<h3 *ngIf="reject == false">¿Estás seguro de aprobar este requerimiento?</h3>
+<h3 *ngIf="reject == true">¿Estás seguro de rechazar este requerimiento?</h3>
 <br>
-<h4>Requerimiento elegido: </h4><p>{{requerimiento}}</p><br>
-    <form *ngIf="reject == true" [formGroup]="form">
-            <mat-form-field appearance="outline">
-            <mat-label>Motivo</mat-label>
-            <textarea matInput maxlength="300" required formControlName="frmMotivo"></textarea>
-            </mat-form-field>
-    </form>
+<h4>Requerimiento elegido: </h4>
+<p>{{requerimiento}}</p><br>
+<form *ngIf="reject == true" [formGroup]="form">
+    <mat-form-field appearance="outline">
+        <mat-label>Motivo</mat-label>
+        <textarea matInput maxlength="300" required formControlName="frmMotivo"></textarea>
+    </mat-form-field>
+</form>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cerrar</button>
     <!--Poner este atributo cuando se haga el formulario
     [disabled]="form.valid == false"
     -->
-    <button mat-raised-button color="primary" *ngIf="reject == false" mat-dialog-close (click)="aprobarReq()">Aprobar</button>
-    <button mat-raised-button color="warn" *ngIf="reject == true" [disabled]="!form.valid" mat-dialog-close (click)="rechazarReq()">Rechazar</button>
+    <button mat-raised-button color="primary" *ngIf="reject == false" mat-dialog-close
+        (click)="aprobarRequerimiento()">Aprobar</button>
+    <button mat-raised-button color="warn" *ngIf="reject == true" [disabled]="!form.valid" mat-dialog-close
+        (click)="rechazarRequerimiento()">Rechazar</button>
 </mat-dialog-actions>

@@ -14,12 +14,11 @@ import { PdfComponent } from '../pdf/pdf.component';
 })
 export class UserDownloadFileComponent implements OnInit {
 
-
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['item', 'descripcion', 'acciones'];
-  idtarea=0;
+  idtarea = 0;
 
   constructor(
     private services: GestionRendimientoService,
@@ -30,19 +29,20 @@ export class UserDownloadFileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.idtarea=this.data.id;
+    console.log(this.data)
+    this.idtarea = this.data.idTarea;
     this.loadTable();
   }
 
-  loadTable(){
+  loadTable() {
     this.services.ListarArchivos(this.idtarea).subscribe((dataItem) => {
       if (dataItem.codigo == 1) {
         this.dataSource = new MatTableDataSource(dataItem.data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this.dataSource=null;
-        if(dataItem.msj=="LISTA VACIA"){
+        this.dataSource = null;
+        if (dataItem.msj == "LISTA VACIA") {
           this._notification.warning(dataItem.msj)
         } else {
           this._notification.error(dataItem.msj)
@@ -51,7 +51,7 @@ export class UserDownloadFileComponent implements OnInit {
     });
   }
 
-  downloadFile(element){
+  downloadFile(element) {
     this.services.DescargarArchivo(element.idArchivo).subscribe((dataItem) => {
       if (dataItem.codigo == 1) {
         const byteString = window.atob(dataItem.data.base64);
@@ -66,7 +66,7 @@ export class UserDownloadFileComponent implements OnInit {
         document.body.appendChild(a);
         a.setAttribute('style', 'display: none');
         a.href = url;
-        a.download =element.nombre+"."+element.ext;
+        a.download = element.nombre + "." + element.ext;
         a.click();
         window.URL.revokeObjectURL(url);
         a.remove();
@@ -76,7 +76,7 @@ export class UserDownloadFileComponent implements OnInit {
     });
   }
 
-  showDialogPdf(element){
+  showDialogPdf(element) {
     const dialogRef: MatDialogRef<PdfComponent> = this.dialog.open(PdfComponent, {
       disableClose: false,
       width: '90%',

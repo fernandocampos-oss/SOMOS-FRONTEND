@@ -1,6 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://appsqa.essalud.gob.pe/marcacion-develop-service/api',
-  apiUrlMarcacion: 'https://appsqa.essalud.gob.pe/marcaciones-service/api',
+  apiUrl: 'https://apps.essalud.gob.pe/somos-essalud-service/api',
   environmentName: '',
 };

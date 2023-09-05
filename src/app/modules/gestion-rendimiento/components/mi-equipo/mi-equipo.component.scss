@@ -1,52 +1,86 @@
-:host {
-    .actions {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        column-gap: 0.5rem;
-        padding-top: 1rem;
-        flex-wrap: wrap;
+// :host {
+//     .actions {
+//         display: flex;
+//         align-items: center;
+//         justify-content: flex-end;
+//         column-gap: 0.5rem;
+//         padding-top: 1rem;
+//         flex-wrap: wrap;
 
-        &__separator {
-            flex: 1;
-          }
-    }
-    .center {
-        text-align: center;
-    }
+//         &__separator {
+//             flex: 1;
+//         }
+//     }
 
-    .init {
-        text-align: start;
-    }
-    .alto {
-        background-color: rgb(255, 58, 58);
-        color: white;
-    }
-    .medio {
-        background-color: rgb(250, 250, 153);
-    }
-    .bajo {
-        background-color: rgb(74, 161, 74);
-        color: white;
-    }
-    .aprobar {
-        background-color: orange;
-        color: white;
+//     .center {
+//         text-align: center;
+//     }
+
+//     .init {
+//         text-align: start;
+//     }
+
+//     .alto {
+//         background-color: rgb(255, 58, 58);
+//         color: white;
+//     }
+
+//     .medio {
+//         background-color: rgb(250, 250, 153);
+//     }
+
+//     .bajo {
+//         background-color: rgb(74, 161, 74);
+//         color: white;
+//     }
+
+//     .aprobar {
+//         background-color: orange;
+//         color: white;
+//     }
+// }
+// .nuevo-button {
+//     size: 24px;
+//     color: white;
+//     background: #009EAD;
+//     border-radius: 4px;
+//     //   min-width:  260px !important;
+//     //   min-height: 37px !important;
+// }
+
+// .eliminar-button {
+//     color: white;
+//     background: #008AD1;
+//     border-radius: 4px;
+//     // min-width: 280px !important;
+//     // min-height: 37px !important;
+// }
+
+.btn-input {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+
+    mat-form-field {
+        width: 100%;
     }
 }
 
-.nuevo-button {
-      size: 24px;
-      color: white;
-      background: #009EAD;
-      border-radius: 4px;
-    //   min-width:  260px !important;
-    //   min-height: 37px !important;
-    }
- .eliminar-button{
+.search {
+    // margin-top: 10px;
+    margin-top: 4px !important;
+    margin-left: 0.5rem;
+    vertical-align: top;
+    height: 59px;
+    width: 9em;
+    // background-color: var(--color-MiEssalud);
     color: white;
     background: #008AD1;
     border-radius: 4px;
-    // min-width: 280px !important;
-    // min-height: 37px !important;
-    }
+}
+
+.btn-show{
+    color: white;
+    background: green;
+    border-radius: 4px;
+}

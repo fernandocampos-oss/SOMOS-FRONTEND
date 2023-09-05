@@ -1,0 +1,30 @@
+@import 'base/colors';
+@import 'base/breakpoints';
+
+.form {
+  display: grid;
+}
+
+.auth {
+  text-align: center;
+}
+
+.btnColor {
+  background-color: var(--color-MiEssalud);
+  color: white;
+}
+
+mat-icon {
+  color: #a4a4a4;
+  margin-right: 10px;
+}
+
+.image {
+  width: 180px;
+}
+
+mat-form-field.camposLogin{
+  ::ng-deep.mat-form-field-infix{
+    width:12px;
+  }
+}

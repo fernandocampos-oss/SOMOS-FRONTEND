@@ -12,9 +12,11 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
   styleUrls: ['./accept-reject-requirement.component.scss']
 })
 export class AcceptRejectRequirementComponent implements OnInit {
+
   requerimiento: String;
   form: FormGroup;
   reject: boolean;
+
   constructor(
     private services: GestionRendimientoService,
     private _notification: NotificationService,
@@ -23,8 +25,8 @@ export class AcceptRejectRequirementComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data.obj);
-    this.requerimiento = this.data.obj.nombre;
+    // console.log(this.data);
+    this.requerimiento = this.data.obj.requerimiento.nombre;
     this.reject = this.data.rechazar;
     if (this.reject == true) {
       this.createForm();
@@ -37,29 +39,24 @@ export class AcceptRejectRequirementComponent implements OnInit {
     });
   }
 
-  aprobarReq() {
-    // this.data.obj.estado = 'APROBADO'; Descomentar cuando se quiera ver el flujo en local
-    this.services.aprobarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_APROBADO, this.data.obj.idRequerimiento).subscribe(data => {
+  aprobarRequerimiento() {
+    this.services.aprobarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_APROBADO, this.data.obj.idRequerimientoUsuario).subscribe(data => {
       if (data) {
-        this._notification.success("Requerimiento aprobado");        
+        this._notification.success("Requerimiento aprobado");
       } else {
         this._notification.error("Error al aprobar requerimento")
       }
-
     });
   }
 
-  rechazarReq() {
-    // this.data.obj.estado = 'RECHAZADO'; Descomentar cuando se quiera ver el flujo en local
+  rechazarRequerimiento() {
     this.data.obj.motivo = this.form.value.frmMotivo;
-
-    this.services.rechazarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_RECHAZADO, this.data.obj.motivo, this.data.obj.idRequerimiento).subscribe(data => {
+    this.services.rechazarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_RECHAZADO, this.data.obj.motivo, this.data.obj.idRequerimientoUsuario).subscribe(data => {
       if (data) {
-        this._notification.success("Requerimiento rechazado");        
+        this._notification.success("Requerimiento rechazado");
       } else {
         this._notification.error("Error al rechazar requerimento")
       }
-
     });
 
   }

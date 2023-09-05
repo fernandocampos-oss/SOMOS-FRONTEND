@@ -1,7 +1,16 @@
 .nuevo-button {
     size: 10px;
     color: white;
-    background: #008AD1;
+    background-color: var(--color-bordes);
     border-radius: 4px;
-    width:  210px;
+    width: 120px;
+}
+
+table {
+    width: 100%;
+}
+
+.has-success{
+    // color: green;
+    color: var(--color-bordes);
 }

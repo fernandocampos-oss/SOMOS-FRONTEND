@@ -9,20 +9,6 @@ import { AcceptRejectRequirementComponent } from './dialogs/accept-reject-requir
 import { MoveRequirementComponent } from './dialogs/move-requirement/move-requirement.component';
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
-import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
-// import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
-//import { Requerimiento } from '@data/models/gestion-rendimiento/requerimiento';
-
-// interface Requerimiento {
-//   id: number;
-//   nombreRequerimiento: string;
-//   tipoRequerimiento: string;
-//   descripcion: string;
-//   gerenciaSolicitante: string;
-//   gerenciaReceptora: string;
-//   estado: string;
-//   motivo?: string;
-// }
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -34,20 +20,11 @@ export class MisRequerimientosComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Item', 'nombreRequerimiento', 'gerenciaSolicitante', 'estado', 'acciones'];
+  displayedColumns: string[] = ['Item', 'nombre_requerimiento', 'fecha_creacion', 'porcentaje_avance', 'estado', 'acciones'];
   menuToggle = new EventEmitter<void>();
 
-  // data: Requerimiento[] = [
-  //   { id: 1,  nombreRequerimiento: 'Hacer informe del SAP Planillas	', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 1', gerenciaSolicitante: 'GPyORH', gerenciaReceptora:'SGSA', estado:'EN PROCESO'},
-  //   { id: 2,  nombreRequerimiento: 'Requerimiento Prueba 1', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 2', gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'PENDIENTE'},
-  //   { id: 3,  nombreRequerimiento: 'Requerimiento Prueba 2', tipoRequerimiento:'Problemas de acceso', descripcion: 'Descripcion medianamente larga para el requerimiento 3', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'DERIVADO'},
-  //   { id: 4,  nombreRequerimiento: 'Requerimiento Prueba 3', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 4', gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'EN PROCESO'},
-  //   { id: 5,  nombreRequerimiento: 'Requerimiento Prueba 4', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 5', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'PENDIENTE'},
-  //   { id: 6,  nombreRequerimiento: 'Requerimiento Prueba 5', tipoRequerimiento:'Problemas de encendido', descripcion: 'Descripcion medianamente larga para el requerimiento 6', gerenciaSolicitante: 'GAP', gerenciaReceptora:'SGSA', estado:'DERIVADO'},
-  //   { id: 7,  nombreRequerimiento: 'Requerimiento Prueba 6', tipoRequerimiento:'Elaboración de Documento', descripcion: 'Descripcion medianamente larga para el requerimiento 7', gerenciaSolicitante: 'GDP', gerenciaReceptora:'SGSA', estado:'EN PROCESO'},
-  //   { id: 8,  nombreRequerimiento: 'Requerimiento Prueba 7', tipoRequerimiento:'Problemas con Plataforma', descripcion: 'Descripcion medianamente larga para el requerimiento 8', gerenciaSolicitante: 'GPyORH', gerenciaReceptora:'SGSA', estado:'DERIVADO'},
-  // ];
-  dataSorteada: Requerimiento[];
+  // dataSorteada: Object[];
+
   constructor(
     private dialog: MatDialog,
     private services: GestionRendimientoService,
@@ -58,44 +35,16 @@ export class MisRequerimientosComponent implements OnInit {
     this.loadTable();
   }
 
-  loadTable() {
-    // this.sortearTabla();
-
-    // this.services.ListarTareas(0).subscribe((dataItem) => {
-    //   if (dataItem.codigo == 1) {
-    //     this.dataSource = new MatTableDataSource(this.dataSorteada);
-    //     this.dataSource.paginator = this.paginator;
-    //     this.dataSource.sort = this.sort;
-    //   } else {
-    //     this.dataSource = null;
-    //     if (dataItem.msj == "LISTA VACIA") {
-    //       this._notification.warning(dataItem.msj)
-    //     } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-    //       this._notification.warning(dataItem.msj)
-    //     } else {
-    //       this._notification.error(dataItem.msj)
-    //     }
-    //   }
-    // });
-
-    this.services.listarRequerimiento().subscribe((data) => {
+  async loadTable() {
+    this.services.listarRequerimientoPrincipal().then((data) => {
       if (data) {
-        this.dataSorteada = data;
-        this.dataSource = new MatTableDataSource(this.dataSorteada);
+        this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this.dataSource = null;
-        // if (dataItem.msj == "LISTA VACIA") {
-        //   this._notification.warning(dataItem.msj)
-        // } if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-        //   this._notification.warning(dataItem.msj)
-        // } else {
-        //   this._notification.error(dataItem.msj)
-        // }
+        this._notification.warning("Lista de requerimientos vacio")
       }
     });
-
   }
 
   // sortearTabla() {
@@ -104,14 +53,14 @@ export class MisRequerimientosComponent implements OnInit {
   //   })
   // }
 
-  showDialogReadRequirement(element) {
+  verRequerimiento(element) {
     const dialogRef: MatDialogRef<ReadRequirementComponent> = this.dialog.open(ReadRequirementComponent, {
       disableClose: false,
-      width: '40%',
+      width: '60%',
       //height: '780px',
       autoFocus: false,
       data: {
-        obj: element
+        model: element
       }
     });
 
@@ -120,7 +69,7 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  showDialogSolicitud(element) {
+  registrarTareas(element) {
     const dialogRef: MatDialogRef<SolicitudRequirementComponent> = this.dialog.open(SolicitudRequirementComponent, {
       disableClose: true,
       width: '40%',
@@ -137,7 +86,7 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  showDialogAcceptRejectRequirement(element, onDelete: boolean) {
+  aprobarRequerimiento(element, onDelete: boolean) {
     const dialogRef: MatDialogRef<AcceptRejectRequirementComponent> = this.dialog.open(AcceptRejectRequirementComponent, {
       disableClose: false,
       autoFocus: false,
@@ -152,7 +101,7 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  showDialogMoveRequirement(element) {
+  derivarRequerimientoo(element) {
     const dialogRef: MatDialogRef<MoveRequirementComponent> = this.dialog.open(MoveRequirementComponent, {
       disableClose: false,
       width: '35%',

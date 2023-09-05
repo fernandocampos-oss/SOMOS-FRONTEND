@@ -3,8 +3,12 @@ mat-nav-list.mat-nav-list.mat-list-base {
   padding-top: 0;
 }
 
-mat-list-item.active {
-  background-color: #F0F9FB;//rgba(0, 0, 0, 0.04);
+mat-list-item.active, mat-list-item:focus{
+  background-color: #abe7e3 !important;//rgba(0, 0, 0, 0.04);
+}
+
+mat-list-item:hover {
+  background-color: #d9fefc !important;//rgba(0, 0, 0, 0.04);
 }
 
 mat-sidenav {
@@ -25,7 +29,7 @@ mat-sidenav {
 }
 
 .sidenav {
-  width: 350px;
+  width: 350px; 
   &__header {
     display: none;
     //padding: 1rem;
@@ -47,6 +51,12 @@ mat-icon{
   //color: var(--color-head-Title)  !important;
   color: #008BD2 !important ;
 }
+
+// .iconPopUp{
+//   width: 36px !important;
+//   height: 39px !important;
+//   padding-left: 0px !important;
+// }
 
 .example-container {
   height: 800px;
@@ -73,23 +83,29 @@ mat-icon{
 .menu-button.rotated {
   transform: rotate(180deg);
 }
-.submenu {
-  overflow-y: hidden;
-  transition: transform 300ms ease;
-  transform: scaleY(0);
-  transform-origin: top;
-  padding-left: 30px;
-}
-.submenu.expanded {
-  transform: scaleY(1);
-}
 .header-avatar{
   text-align: center;
   //border-bottom: 2px solid #008BD2;
   //padding-bottom: 30px;
-  background-color: #e7f0fd;
+  background-color: #e6effa;
   //height: 170px;
   //box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2);
+}
+.subMenu{
+  .mat-expansion-panel-header,.mat-expansion-panel-header.mat-expanded{
+    height: 56px;
+  }
+  .mat-expansion-panel-header{
+    padding: 0 20px;
+    font-size: 16px;
+    .option{
+      padding-left: 20px;
+      align-self: center;
+    }
+  }
+    ::ng-deep.mat-expansion-panel-body{
+      padding: 0 0 0 16px !important;
+    }
 }
 h5{
   margin-top: 1%;
@@ -100,3 +116,6 @@ h5{
   padding-top: 4%;
   font-weight: bold;
 }
+// .listItemImage{
+//   height: ;
+// }

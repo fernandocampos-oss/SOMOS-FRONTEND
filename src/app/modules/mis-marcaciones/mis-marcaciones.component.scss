@@ -21,17 +21,34 @@ mat-grid-list {
 .matero-page-header {
   height: 100%;
 }
+.back{
+  display: flex;
+  margin-top: 10px;
+  width: 9em;
+  font-size: 14px;
+  background-color: var(--color-MiEssalud);
+}
 .mat-sort-header{
   font-size: 16px;
   font-weight: bold;
 }
 .search{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 10px;
   height: 58%;
-  width: 50%;
+  width: 75%;
+  background-color: var(--color-MiEssalud);
+  color: white;
 }
 .mat-grid-tile{
   height: 100%;
+}
+@media screen and (min-width: 1650px) {
+  .search{
+    width: 50%;
+  }
 }
 @media screen and (max-width: 800px) {
   .matero-page-title {
@@ -43,5 +60,23 @@ mat-grid-list {
   }
   .mat-cell{
     font-size: 8px;
+  }
+}
+@media screen and (max-width: 445px) {
+  .buttonReturn{
+    font-size: 12px;
+  }
+  .marcaciones{
+    ::ng-deep .card{
+      padding: 0px;
+    }
+  }
+}
+@media screen and (max-width: 1279px) {
+  .matero-page-title {
+    padding: 40px 0px 20px 20px;
+  }
+  .search{
+    width: 100%;
   }
 }

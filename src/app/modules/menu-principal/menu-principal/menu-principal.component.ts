@@ -1,9 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { ajax }from 'rxjs/ajax';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShowSstComponent } from '../components/show-sst/show-sst.component';
 import { RegisterDatosEncuestaComponent } from '../components/register-datos-encuesta/register-datos-encuesta.component';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { OnomasticosResponse } from '@data/models/menu-principal/menu-principal.model';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ShowPublicacionComponent } from '../components/show-publicacion/show-publicacion.component';
+import { PublicacionResponse } from '@data/models/menu-principal/menu-publicacion.model';
+import { AdmPublicaciones } from '../components/adm-publicaciones/adm-publicaciones.component';
+import { AuthService } from '@data/services';
+import { ShowPaymentCalendarComponent } from '../components/show-payment-calendar/show-payment-calendar.component';
+import { EncuestaSimpleComponent } from '../components/encuesta-simple/encuesta-simple.component';
+import { ShowSistemasComponent } from '../components/show-sistemas/show-sistemas.component';
+import { AppRoute } from '@data/constants';
+import { Role } from '@data/enums';
+
+interface fechas_Imp{ // Provisional: para tener las fechas importantes
+  descripcion: string;
+  dia: Date;
+}
 
 @Component({
   selector: 'app-menu-principal',
@@ -11,60 +27,193 @@ import { OnomasticosResponse } from '@data/models/menu-principal/menu-principal.
   styleUrls: ['./menu-principal.component.scss']
 })
 export class MenuPrincipalComponent implements OnInit {
-
   onomasticos: OnomasticosResponse[] = [];
   today = new Date();
-  nextDay = new Date('05/01/2023');
-  dateD: Date;
-  ocultar = true;
-  diferencia: number;
-  division: number;
+  interfazCelular: boolean;
   daysLeft: number;
   hoursLeft: number;
   minutesLeft: number;
 
-  diaHoy = this.today.getDate();
-  mesHoy = this.today.getMonth()+1;
+  rol: number;
+  identificador: number;
+  fechas: fechas_Imp[] = [
+    {descripcion:'No Hay Fecha',dia: new Date('12/21/2012 00:00:00')},
+    {descripcion:'Día no laborable para el sector público',dia: new Date('01/02/2024 00:00:00')},
+    {descripcion:'Año Nuevo',dia: new Date('01/01/2024 00:00:00')},
+    {descripcion:'Día no laborable para el sector público',dia: new Date('12/26/2023 00:00:00')},
+    {descripcion:'Batalla de Ayacucho',dia: new Date('12/09/2023 00:00:00')},
+    {descripcion:'Día de la Inmaculada Concepción',dia: new Date('12/08/2023 00:00:00')},
+    {descripcion:'Día no laborable para el sector público',dia: new Date('12/07/2023 00:00:00')},
+    {descripcion:'Día de Todos los Santos',dia: new Date('11/01/2023 00:00:00')},
+    {descripcion:'Día no laborable para el sector público',dia: new Date('10/09/2023 00:00:00')},
+    {descripcion:'Combate de Angamos',dia: new Date('10/08/2023 00:00:00')},
+    {descripcion:'Santa Rosa de Lima',dia: new Date('08/30/2023 00:00:00')},
+    {descripcion:'Batalla de Junín',dia: new Date('08/06/2023 00:00:00')},
+    {descripcion:'Día de la independencia',dia: new Date('07/28/2023 00:00:00')},
+    {descripcion:'Día del Padre',dia: new Date('06/18/2023 00:00:00')},
+    {descripcion:'Día de la Madre',dia: new Date('05/14/2023 00:00:00')},
+    {descripcion:'Prueba 4',dia: new Date('01/01/2022 00:00:00')},
+  ]
+
+  publicaciones: PublicacionResponse[] = [];
+  encuestaRespondida = false;
+  encuestaNombre: string;
+
+  showPublicaciones = true;
+  showCumple = false;
+  showCountdown = false;
 
   parametros = {
     mesConsulta: '',
     diaConsulta: '',
   }
 
+  path = AppRoute.ADMINISTRAR_ROL_RED;
+  pathRenueva = AppRoute.RENUEVA_ESSALUD;
+
+  //roles
+  rolCentral = Role.ADMIN_CENTRAL;
+  rolRed = Role.ADMIN_SEDE;
+  rolTemporal_3: any;
+  rolTemporal_4: any;
+  roles: any;
+
   constructor(private dialog: MatDialog,
-              private _menuService:MenuPrincipalService) { }
+              private _menuService:MenuPrincipalService,
+              private responsive  : BreakpointObserver,
+              private _authService: AuthService) { }
 
   ngOnInit(): void {
-    this.convertirDiaMes(this.diaHoy, this.mesHoy);
+    this.rol = this._authService.getRol();
+    this.identificador = this.nearestDay(this.today);
+    this.responsive.observe([
+      Breakpoints.XSmall
+      ])
+      .subscribe(result => {
+        this.interfazCelular = false;
+        if (result.matches) {
+          this.interfazCelular = true;
+        }
+      });
+    this._menuService.getPublicaciones()
+    .subscribe( (data) => {
+      this.publicaciones = data;
+    }
+    );
+    this.convertirDiaMes(this.today.getDate(), this.today.getMonth()+1);
     this.CargarOnomasticos();
+    if(this.identificador != 0){
+      this.getDateDiff(this.fechas[this.identificador].dia,this.today);// Provisional: para tener las fechas importantes
+      setInterval(() => {  
+      var Actualidad = new Date();
+      this.getDateDiff(this.fechas[this.identificador].dia,Actualidad);
+      }, 30000); // Mil es 1 seg
+    }
+    else{
+      this.daysLeft= 0;
+      this.hoursLeft = 0;
+      this.minutesLeft = 0;
+    }
+    this.getRoles();
+
+    // this._menuService.getEncuestaActiva().subscribe(data => {
+    //   console.log(data);
+    //   if (data == null){ this.encuestaRespondida= true }
+    // else{ this.encuestaNombre = data.descripcion}});
   }
 
-  open(cuadro: number) {
+  open(cuadro: number){
     switch (cuadro) {
-      case 2:
-      const dialogRef2: MatDialogRef<ShowSstComponent> = this.dialog.open(ShowSstComponent, {
+      case 1:
+      const dialogRef: MatDialogRef<ShowSstComponent> = this.dialog.open(ShowSstComponent, {
           disableClose: false,
           width: '80%',
           autoFocus: false,
         });
-    
-        dialogRef2.afterClosed().subscribe(result => { });
           break;
-      case 3: 
-      const dialogRef3: MatDialogRef<RegisterDatosEncuestaComponent> = this.dialog.open(RegisterDatosEncuestaComponent, {
-        disableClose: true,
-        minWidth: '22em',
-        maxWidth:'40em',
-        maxHeight:'50em',
-        
-        autoFocus: false,
-      });
-  
-      dialogRef3.afterClosed();
-        break;
+      // case 2:
+      //   const dialogRef2: MatDialogRef<RegisterDatosEncuestaComponent> = this.dialog.open(RegisterDatosEncuestaComponent, {
+      //     disableClose: true,
+      //     minWidth: '22em',
+      //     maxWidth:'40em',
+      //     maxHeight:'50em',
+      //     autoFocus: false,
+      //   });
+      //   dialogRef2.afterClosed().subscribe(result => {
+      //     this._menuService.getEncuestaActiva().subscribe(data => {if (data == null) this.encuestaRespondida= true });
+      //   });
+      //     break;
+      case 3:
+        const dialogRef3: MatDialogRef<AdmPublicaciones> = this.dialog.open(AdmPublicaciones, {
+          disableClose: false,
+          width:'70vw',
+          maxHeight:'50em',
+        });
+        dialogRef3.afterClosed().subscribe(result => {
+          this._menuService.getPublicaciones()
+          .subscribe( (data) => {
+            this.publicaciones = data;
+          }
+          );
+        });
+          break;
+      case 4:
+        const dialogRef4: MatDialogRef<ShowSistemasComponent> = this.dialog.open(ShowSistemasComponent, {
+            disableClose: false,
+            width: '70%',
+            autoFocus: false,
+          });
+          break;
     }
   }
 
+  showEncuestaSimple(element){
+    const dialogRef: MatDialogRef<EncuestaSimpleComponent> = this.dialog.open(EncuestaSimpleComponent, {
+      disableClose: true,
+      minWidth: '22em',
+      maxWidth:'40em',
+      autoFocus: false,
+      data:{
+        obj: element
+      }
+      });
+  }
+
+  showPublicacion(publicacionData){
+    const dialogRef: MatDialogRef<ShowPublicacionComponent> = this.dialog.open(ShowPublicacionComponent, {
+      disableClose: false,
+      width: '728px',
+      minHeight: '20%',
+      maxHeight: '780px',
+      autoFocus: false,
+      data: {
+        obj : publicacionData
+      }
+    });
+  }
+
+  nearestDay(hoy: Date){
+    const target = hoy.getTime();
+    var nearest = Infinity;
+    var winner = -1;
+    this.fechas.forEach(function(diaDate, index){
+      if((diaDate.dia.getMonth() >= hoy.getMonth() && diaDate.dia.getDate() > hoy.getDate()
+      && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getMonth() > hoy.getMonth() && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getFullYear() > hoy.getFullYear())){
+        var diaD:number;
+        if (diaDate.dia instanceof Date) {
+          diaD = diaDate.dia.getTime();   
+        }
+        var distance = Math.abs(diaD - target);
+        if ( distance < nearest && distance>= 0){
+          nearest = distance;
+          winner = index;
+        }
+      }
+    });
+    if(winner == -1)
+      winner = 0;
+    return winner;
+  }
   convertirDiaMes(dia: number, mes: number){
     if (dia >= 10) {
       this.parametros.diaConsulta = dia.toString();
@@ -96,35 +245,62 @@ export class MenuPrincipalComponent implements OnInit {
     this.parametros.mesConsulta = `${fecha[3]}${fecha[4]}`;
     this.CargarOnomasticos();
   }
-  // printwhatyousee(num: string){
-  //   console.log(this.dateD);
-  //   console.log(num);
-  // }
-  // getDateDiff(startDate: Date, endDate: Date){
-  //   const msInDay = 24 * 60 * 60 * 1000;
-  //   const msInHours = 60 * 60 * 1000;
-  //   const msInMinutes = 60 * 1000;//13 dias - 13 horas - 49 minutos
-  //   this.diferencia = Math.abs(Number(endDate) - Number(startDate));
-  //   this.division = (this.diferencia - msInDay)/ msInDay;
-  //   this.daysLeft = Math.round(this.division);
-  //   console.log(this.daysLeft);
 
-  //   this.diferencia = Math.abs(this.diferencia - (this.daysLeft*msInDay));
-  //   this.division = this.diferencia/msInHours;
-  //   this.hoursLeft = Math.round(this.division);
-  //   console.log(this.hoursLeft);
+  getDateDiff(endDate: Date, startDate: Date){
+    var delta = Math.abs(Number(endDate) - Number(startDate)) / 1000;
 
-  //   this.diferencia = Math.abs(this.diferencia - (this.hoursLeft*msInHours));
-  //   this.division = this.diferencia/msInMinutes;
-  //   this.daysLeft = Math.round(this.division);
-  //   console.log(this.daysLeft);
-  //   // this.diferencia = this. diferencia - (this.daysLeft*msInDay);
-  //   // this.division = (this.diferencia - msInHours)/ msInHours;
-  //   // this.hoursLeft = Math.round(this.division);
-  //   // console.log(this.hoursLeft);
-  //   // //a partir de aqui todo bien
-  //   // this.diferencia = this. diferencia - (this.hoursLeft*msInHours);
-  //   // this.minutesLeft = Math.round((this.diferencia - msInMinutes)/ msInMinutes);
-  //   // console.log(this.minutesLeft);
-  // }
+    // calculate (and subtract) whole days
+    this.daysLeft = Math.floor(delta / 86400);
+    delta -= this.daysLeft * 86400;
+
+    // calculate (and subtract) whole hours
+    this.hoursLeft = Math.floor(delta / 3600) % 24;
+    delta -= this.hoursLeft * 3600;
+
+    // calculate (and subtract) whole minutes
+    this.minutesLeft = Math.floor(delta / 60) % 60;
+    delta -= this.minutesLeft * 60;
+  }
+
+  changeVisual(option: number){
+    switch (option) {
+      case 1:
+        this.showPublicaciones = true;
+        this.showCumple = false;
+        this.showCountdown = false;
+        break;
+      case 2:
+        this.showPublicaciones = false;
+        this.showCumple = true;
+        this.showCountdown = false;
+        break;
+      case 3:
+        this.showPublicaciones = false;
+        this.showCumple = false;
+        this.showCountdown = true;
+        break;
+    }
+  }
+
+  getRoles() {
+    let temporal = sessionStorage.getItem('_roles');
+    this.roles = temporal ? `${temporal}` : '';
+    this.roles = JSON.parse(temporal);
+    if (this.roles.length == 1) {
+      if (this.roles[0] === 'ROLE_3') {
+        this.rolTemporal_3 = 3;
+      }
+      if (this.roles[0] === 'ROLE_4') {
+        this.rolTemporal_4 = 4;
+      }
+    } else {
+      if (this.roles[0] === 'ROLE_3') {
+        this.rolTemporal_3 = 3;
+      }
+      if (this.roles[1] === 'ROLE_4') {
+        this.rolTemporal_4 = 4;
+      }
+    }
+  }
+
 }

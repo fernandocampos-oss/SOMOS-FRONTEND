@@ -7,9 +7,10 @@ import {
 } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatDrawer } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 import { filter } from 'rxjs/operators';
+import { AuthService } from '@data/services';
 
 @Component({
   selector: 'app-layout',
@@ -21,13 +22,20 @@ export class LayoutComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   @ViewChild('snav')
   sidenav: MatDrawer;
+  rol: number;
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
+    private _authService: AuthService,
     private _router: Router
   ) {
-    this.mobileQuery = media.matchMedia('(max-width: 790px)');
+    this._router.events.subscribe((ev) => {
+      if(ev instanceof NavigationEnd){
+        this.rol = this._authService.getRol();
+      }
+    });
+    this.mobileQuery = media.matchMedia('(max-width: 959px)');
     // FIXME: Review type error
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

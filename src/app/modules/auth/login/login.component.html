@@ -1,9 +1,10 @@
 <div class="auth card mat-elevation-z8" style="margin-top: 10px;">
   <div class="auth__header">
    
-      <img src="assets/images/Logo-MiEsSalud-ColorVertical.png" class="image" alt="Logotipo"
+      <img src="assets/images/LogoSomosEssalud.png" class="image" alt="Logotipo"
       />
    
+      <!-- <img class="image" src="assets/images/svg/LogoSomosEssalud-01.svg"> -->
    
   </div>
 
@@ -15,15 +16,15 @@
       [formGroup]="form"
       (ngSubmit)="login()"
     >
-      <mat-form-field appearance="outline">
-        <mat-label>Usuario</mat-label>
-        <input matInput formControlName="username" />
+      <mat-form-field appearance="outline" class="camposLogin">
+        <mat-label>Documento de identidad</mat-label>
+        <input matInput formControlName="username" name="doc"/>
         <mat-icon matPrefix>person &nbsp;</mat-icon>
         <mat-error *ngIf="usuarioField.hasError('required')"
           >El usuario es obligatorio</mat-error
         >
       </mat-form-field>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="camposLogin">
         <mat-label>Contraseña</mat-label>
         <input
           matInput
@@ -54,7 +55,7 @@
         <a [routerLink]="[routeChangePassword]">¿Olvidaste tu contraseña?</a>
 
         <p>¿Aún no tienes una cuenta?</p>
-        <button
+        <button class="botonRegistro"
           [routerLink]="[routeRegister]"
           mat-stroked-button
          
@@ -66,5 +67,8 @@
 
 
     </form>
+  </div>
+  <div class="boxConsulta">
+      <span>Consultas: sgrhs.bienestar@essalud.gob.pe</span>
   </div>
 </div>

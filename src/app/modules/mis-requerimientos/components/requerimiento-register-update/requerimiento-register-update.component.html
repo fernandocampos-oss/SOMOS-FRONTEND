@@ -1,59 +1,60 @@
-<h2 matDialogTitle>Nuevo Requerimiento</h2>
+<h2 matDialogTitle>Registrar nuevo requerimiento</h2>
 <form [formGroup]="form">
-  <mat-dialog-content>
-    <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
-        <mat-grid-tile [colspan]="6">
-            <mat-form-field appearance="outline">
-                <mat-label>Nombre del Requerimiento</mat-label>
-                <input matInput required formControlName="frmNombre"/>
-            </mat-form-field>
-        </mat-grid-tile>
-    </mat-grid-list>
-    <mat-form-field appearance="outline">
-        <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="frmDescripcion"></textarea>
-    </mat-form-field>
-    <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px" >
-        <mat-grid-tile [colspan]="6">
-            <mat-form-field appearance="outline">
-                <mat-label>Medio de información del requerimiento</mat-label>
-                <mat-select required formControlName="frmMedio">
-                    <mat-option value=1>Correo</mat-option>
-                    <mat-option value=2>Llamada</mat-option>
-                    <mat-option value=3>Reunión</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="6">
-            <mat-form-field appearance="outline">
-                <mat-label>Identificador del documento del requerimiento</mat-label>
-                <input matInput required formControlName="frmIdentificador"/>
-            </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="3">
-            <mat-form-field appearance="outline">
-                <mat-label>Área Solicitante</mat-label>
-                <input matInput formControlName="frmAreaSolicitante" readonly value="SGSA"/>
-            </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="3">
-            <mat-form-field appearance="outline">
-                <mat-label>Área Receptora</mat-label>
-                <mat-select formControlName="frmAreaReceptora">
-                    <mat-option value=1>SGSASS</mat-option>
-                    <mat-option value=2>SGSA</mat-option>
-                    <mat-option value=3>SGSI</mat-option>
-                    <mat-option value=4>SGOTI</mat-option>
-                    <mat-option value=5>SGC</mat-option>
-                    <mat-option value=6>OSI</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </mat-grid-tile>
-</mat-grid-list>
-</mat-dialog-content>
+    <mat-dialog-content>
+
+        <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre del Requerimiento</mat-label>
+                    <input matInput required formControlName="frmNombre" />
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-form-field appearance="outline">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="frmDescripcion"></textarea>
+        </mat-form-field>
+        <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Medio de información del requerimiento</mat-label>
+                    <mat-select required formControlName="frmMedio">
+                        <mat-option value=1>Correo</mat-option>
+                        <mat-option value=2>Llamada</mat-option>
+                        <mat-option value=3>Reunión</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Identificador del documento del requerimiento</mat-label>
+                    <input matInput required formControlName="frmIdentificador" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <!-- <mat-grid-tile [colspan]="3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Área Solicitante</mat-label>
+                    <input matInput formControlName="frmAreaSolicitante" readonly value="SGSA" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Área Receptora</mat-label>
+                    <mat-select formControlName="frmAreaReceptora">
+                        <mat-option value=1>SGSASS</mat-option>
+                        <mat-option value=2>SGSA</mat-option>
+                        <mat-option value=3>SGSI</mat-option>
+                        <mat-option value=4>SGOTI</mat-option>
+                        <mat-option value=5>SGC</mat-option>
+                        <mat-option value=6>OSI</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile> -->
+        </mat-grid-list>
+
+    </mat-dialog-content>
 </form>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close type="button">Cancelar</button>
-      <button mat-raised-button class="btnsave" type="submit" (click)="submitRequerimiento()">Grabar</button>
-    </mat-dialog-actions>
-      
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-raised-button class="btnsave" type="submit" (click)="registrarRequerimiento()">Grabar</button>
+</mat-dialog-actions>

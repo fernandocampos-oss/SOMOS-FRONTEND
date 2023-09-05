@@ -7,8 +7,11 @@ import { ColumnDef } from '@shared/table/table.component';
 import { filter } from 'rxjs/operators';
 import { RequerimientoRegisterUpdateComponent } from '../components/requerimiento-register-update/requerimiento-register-update.component';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
-import { MatTable } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { VerTareaComponent } from '../components/ver-tarea/ver-tarea.component';
 
 @Component({
   selector: 'app-mis-requerimientos',
@@ -16,44 +19,25 @@ import { NotificationService } from '@core/services';
   styleUrls: ['./mis-requerimientos.component.scss']
 })
 export class MisRequerimientosComponent implements OnInit {
-  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
-  reqPendientes = new Array;
-  reqFinalizados = new Array;
-  reqRechazados = new Array;
 
   actionPend = 'Avance';
   actionFin = 'Ver';
+ 
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSource: MatTableDataSource<any>;
+  displayedColumns: string[] = ['requerimiento', 'fecha_asignacion', 'avance', 'estado', 'acciones'];
 
-  // requerimientos: Requerimiento[];
-  reqPendientesColumns: ColumnDef[] = [
-    { label: 'Requerimiento', name: 'nombre' },
-    { label: 'Área Encargada', name: 'areaReceptor' }, 
-    { label: 'Estado', name: 'estado'},
-  ];
-  reqFinalizadosColumns: ColumnDef[] = [
-    {
-      label: 'Requerimiento',
-      name: 'nombreRequerimiento',
-    },
-    {
-      label: 'Área Encargada',
-      name: 'gerenciaReceptora',
-    },
-  ];
-  reqDerivadosColumns: ColumnDef[] = [
-    {
-      label: 'Requerimiento',
-      name: 'nombreRequerimiento',
-    },
-    {
-      label: 'Área Encargada',
-      name: 'gerenciaReceptora',
-    },
-    {
-      label: 'Motivo de Rechazo',
-      name: 'motivo',
-    },
-  ];
+  @ViewChild(MatSort) sort_finalizado: MatSort;
+  @ViewChild(MatPaginator) paginator_finalizado: MatPaginator;
+  dataSource_finalizado: MatTableDataSource<any>;
+  displayedColumns_finalizado: string[] = ['requerimiento', 'fecha_asignacion', 'avance', 'estado'];
+
+  @ViewChild(MatSort) sort_rechazado: MatSort;
+  @ViewChild(MatPaginator) paginator_rechazado: MatPaginator;
+  dataSource_rechazado: MatTableDataSource<any>;
+  displayedColumns_rechazado: string[] = ['requerimiento', 'fecha_asignacion', 'avance', 'estado'];
+
   constructor(
     private _matDialog: MatDialog,
     private _services: GestionRendimientoService,
@@ -61,12 +45,12 @@ export class MisRequerimientosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.requerimientos = this._services.FauxTablaRequerimientos();
-    this.catalogarRequerimientos();
-    this.loadTable();
+    this.loadTablePendiente();
+    this.loadTableFinalizado();
+    this.loadTableRechazado();
   }
 
-  onCreateRequerimiento() {
+  registrarRequerimiento() {
     const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._matDialog.open(RequerimientoRegisterUpdateComponent, {
       disableClose: false,
       width: '40%',
@@ -79,79 +63,69 @@ export class MisRequerimientosComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-      this.reqFinalizados = [];
-      this.reqPendientes = [];
-      this.reqRechazados = [];
-      // this.requerimientos = this._services.FauxTablaRequerimientos();
-      this.catalogarRequerimientos();
-      console.log(this.reqPendientes);
+      this.loadTablePendiente();
+      this.loadTableFinalizado();
+      this.loadTableRechazado();
     });
-    //this._openAddUpdateDialog(RequerimientoRegisterUpdateComponent, null, this._loadRequerimientos);
+    
   }
 
   onDeleteRequerimiento($event) {
   }
 
-  private _openAddUpdateDialog<T>(
-    dialog: ComponentType<T>,
-    data: any,
-    callback: () => void
-  ) {
-    this._matDialog
-      .open(dialog, { data, disableClose: true })
-      .afterClosed()
-      .pipe(
-        untilDestroyed(this),
-        filter((isSuccess) => isSuccess)
-      )
-      .subscribe(() => callback.call(this));
-  }
-
-  // filterReadFunction(row: Requerimiento): boolean {
-  //   return !(row.estado == 'PENDIENTE' || row.estado == 'APROBADO' || row.estado == 'DERIVADO');
-  // }
-
-  catalogarRequerimientos() {
-    // for (let i = 0; i < this.requerimientos.length; i++) {
-    //   switch (this.requerimientos[i].estado) {
-    //     case 'RECHAZADO':
-    //       this.reqRechazados.push(this.requerimientos[i]);
-    //       break;
-    //     case 'FINALIZADO':
-    //       this.reqFinalizados.push(this.requerimientos[i]);
-    //       break;
-    //     case 'EN PROCESO':
-    //       this.reqPendientes.push(this.requerimientos[i]);
-    //       break;
-    //     case 'DERIVADO':
-    //       this.reqPendientes.push(this.requerimientos[i]);
-    //       break;
-    //     case 'PENDIENTE':
-    //       this.reqPendientes.push(this.requerimientos[i]);
-    //       break;
-    //     case 'APROBADO':
-    //       this.reqPendientes.push(this.requerimientos[i]);
-    //       break;
-    //   }
-    // }
-  }
-
-  loadTable() {
-    this._services.listarRequerimiento().subscribe((data) => {
+  async loadTablePendiente() {
+    let listPendiente = await this._services.listarRequerimientoPendiente().then((data) => {
       if (data) {
-        this.reqPendientes = data;
+        this.dataSource = new MatTableDataSource(data);
+        // this.dataSource.paginator = this.paginator;
+        // this.dataSource.sort = this.sort;
       } else {
-        this.reqPendientes = null;
-        if (this.reqPendientes = null) {
-          this._notification.warning("La lista de requerimientos está vacia")
-        }
-        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-        //   this._notification.warning(dataItem.msj)
-        // } else {
-        //   this._notification.error(dataItem.msj)
-        // }
+        this._notification.warning('Lista de requerimientos pendientes vacia');
       }
+    });
+  }
+
+  async loadTableFinalizado() {
+    let listFinalizado = await this._services.listarRequerimientoFinalizado().then((data) => {
+      if (data) {
+        console.log(data)
+        this.dataSource_finalizado = new MatTableDataSource(data);
+        // this.dataSource.paginator = this.paginator_finalizado;
+        // this.dataSource.sort = this.sort_finalizado;
+      } else {
+        this._notification.warning('Lista de requerimientos finalizados vacia');
+      }
+    });
+  }
+
+  async loadTableRechazado() {
+    let listRechazado = await this._services.listarRequerimientoRechazado().then((data) => {
+      if (data) {
+        this.dataSource_rechazado = new MatTableDataSource(data);
+        // this.dataSource.paginator = this.paginator_rechazado;
+        // this.dataSource.sort = this.sort_rechazado;
+      } else {
+        this._notification.warning('Lista de requerimientos rechazados vacia');
+      }
+    });
+  }
+
+  verDetalleRequerimiento(element){
+    const dialogRef: MatDialogRef<VerTareaComponent> = this._matDialog.open(VerTareaComponent, {
+      disableClose: false,
+      width: '60%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        // auto: true,
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTablePendiente();
+      this.loadTableFinalizado();
+      this.loadTableRechazado();
     });
   }
 

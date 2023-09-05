@@ -68,9 +68,18 @@ export class LoginComponent implements OnInit {
           })
         )
         .subscribe((rta) => {
-          //console.log("rta from login...", rta);
-          this._router.navigate(['/'])});
-        
+          this._router.navigate(['/']);
+
+          if(rta.user.authorities.length > 0){
+            let listRol= [];
+            for (let a of rta.user.authorities) {
+              listRol.push(a.authority);
+            }
+            sessionStorage.setItem('_roles', JSON.stringify(listRol));
+          }
+
+        });
+
     } else {
       this.form.markAllAsTouched();
     }

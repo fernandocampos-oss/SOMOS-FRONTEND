@@ -29,8 +29,8 @@ export class UserDownloadTaskComponent implements OnInit {
   form: FormGroup;
   idTarea: number;
   idEstado: number;
-  msj: string="";
-  numerador: number=0;
+  msj: string = "";
+  numerador: number = 0;
 
   constructor(
     private _dialogService: DialogService,
@@ -44,6 +44,7 @@ export class UserDownloadTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.data)
     // this.idEstado=this.data.obj.idEstado;
     // this.idTarea=this.data.obj.id;
     // this.flgJefe=this.data.flg;
@@ -51,87 +52,61 @@ export class UserDownloadTaskComponent implements OnInit {
     // this.msj=this.data.obj.msj
     // this.numerador=this.data.obj.numerador;
     this.createForm();
-    this.loadTable(this.data.objAsignacion.idRequerimientoPersonal);
     this.showMsj();
+    this.loadTable();
   }
 
-  createForm(){
-    this.form = this._fb.group({      
+  loadTable() {
+    if (this.data.model.listTarea) {
+      this.dataSource = new MatTableDataSource(this.data.model.listTarea);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    } else {
+      this.dataSource = null;
+      this._notification.warning("Lista de tareas vacia");
+    }
+  }
+
+  createForm() {
+    this.form = this._fb.group({
       // frmDescripcion: [this.data.objAsignacion.nombreTarea],
       // frmFecFin: [[new Date(this.data.objAsignacion.plazo.split('/')[2],this.data.objAsignacion.plazo.split('/')[1]-1,this.data.objAsignacion.plazo.split('/')[0]).toLocaleDateString()]],
       // frmEstado: [this.data.objAsignacion.estado],
-      frmDescripcion: [this.data.objAsignacion.requerimiento.descripcion],
-      frmFecFin: [[new Date(this.data.objAsignacion.requerimiento.fechaCreacion)]],
-      frmEstado: [this.data.objAsignacion.requerimiento.estadoRequerimiento.descripcion],
+      frmDescripcion: [this.data.model.requerimiento.descripcion],
+      frmFecFin: [[new Date(this.data.model.requerimiento.fechaCreacion)]],
+      frmEstado: [this.data.model.estadoRequerimiento.descripcion],
       // frmCodigo: [this.objElement.codigo],
       // frmReferencia: [this.objElement.referencia],
       // frmMotivo: [this.objElement.motivo]
     });
   }
 
-  // loadTable(){
-  //   this.services.ListarInformes(this.idTarea).subscribe((dataItem) => {
-  //     if (dataItem.codigo == 1) {
-  //       this.dataSource = new MatTableDataSource(dataItem.data);
-  //       this.dataSource.paginator = this.paginator;
-  //       this.dataSource.sort = this.sort;
-  //     } else {
-  //       this.dataSource=null;
-  //       if(dataItem.msj=="LISTA VACIA"){
-  //         this._notification.warning(dataItem.msj)
-  //       } else {
-  //         this._notification.error(dataItem.msj)
-  //       }
-  //     }
-  //   });
-  // }
 
-  loadTable(idRequerimientoPersonal: Number) {
-    this.services.listarTareaPorRequermientoPersonal(idRequerimientoPersonal).subscribe((data: any) => {
-      if (data) {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      } else {
-        this.dataSource = null;
-        if (this.dataSource = null) {
-          this._notification.warning("LISTA VACIA");
-        }
-        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-        //   this._notification.warning(dataItem.msj)
-        // } else {
-        //   this._notification.error(dataItem.msj)
-        // }
-      }
-    });
-
-  }
-
-  showMsj(){
-    if(this.msj != null && this.msj.length > 0){
+  showMsj() {
+    if (this.msj != null && this.msj.length > 0) {
       this._notification.error(this.msj)
     }
   }
 
-  showDialogFiles(element){
+  showDialogFiles(element) {
     const dialogRef: MatDialogRef<UserDownloadFileComponent> = this.dialog.open(UserDownloadFileComponent, {
       disableClose: false,
       width: '500px',
       //height: '780px',
       autoFocus: false,
       data: {
-        id : element.id
+        idTarea: element.idTarea
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result=='ok'){
-        
+      if (result == 'ok') {
+
       }
     });
   }
 
-  showDialogRejectTasks(){
+  showDialogRejectTasks() {
     const dialogRef: MatDialogRef<TaskRejectComponent> = this.dialog.open(TaskRejectComponent, {
       disableClose: false,
       width: '500px',
@@ -143,23 +118,23 @@ export class UserDownloadTaskComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result=='ok'){
+      if (result == 'ok') {
         this.dialogRef.close("ok")
       }
     });
   }
 
-  confirmAprobar(aprobar: boolean){
-      this._dialogService
+  confirmAprobar(aprobar: boolean) {
+    this._dialogService
       .openConfirm('¿Está seguro de Aprobar la tarea?')
       .pipe(filter((isConfirmed) => isConfirmed))
       .subscribe(() => this.aprobar());
   }
 
-  aprobar(){
+  aprobar() {
     let obj = new Aprobar();
-    obj.id=this.idTarea;
-    obj.estado=true;
+    obj.id = this.idTarea;
+    obj.estado = true;
     this.services.AprobarRechazarTarea(obj).subscribe({
       next: data => {
         this.dialogRef.close("ok");

@@ -1,0 +1,313 @@
+<div class="page">
+    <div class="matero-page-header">
+      <h1 class="matero-page-title"><mat-icon>assignment</mat-icon> Inscripción a Renueva Essalud V<br>
+        <small class="mr-2">Inscribe a tu equipo como líder.</small><br>
+        <button mat-raised-button color="primary" class="search" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+        <a class="btnBases" href="http://www.essalud.gob.pe/mailing/RS_1079_GG_ESSALUD_2023_BASES_PROG_RENUEVA_ESSALUD_V_EDICION.pdf" target="_blank"><button mat-raised-button color="primary">Ver las bases <mat-icon>navigate_next</mat-icon></button></a>
+      </h1>
+    </div>
+    <div class="page__body">
+      <div class="card shadow">
+        <mat-stepper [linear]="false" [orientation]="(stepperOrientation | async)!">
+
+            <!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
+            <mat-step label="Datos del Grupo" state="group" [stepControl]="formDatosGenerales">
+                <form [formGroup]="formDatosGenerales">
+                    <div class="grid-cols-3">
+                        <div>
+                            <div class="imageBox">
+                                <div>
+                                    <h4>Imagen representativa del grupo</h4>
+                                    <!-- <mat-error *ngIf="msgErrores && imagenGrupoField.hasError('required')">Debe añadir una imagen del grupo</mat-error> -->
+                                    <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix (click)="file.click()"
+                                            color="primary" *ngIf="!retrievedImage" [disabled]='estadoInscripcion'>
+                                      <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
+                                    </button>
+                                    <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()"
+                                            color="warn" *ngIf="retrievedImage" [disabled]='estadoInscripcion'>
+                                      <mat-icon>clear</mat-icon> Remover Imagen
+                                    </button>
+                                </div>
+                                <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)"/>
+                                <img class="preview__img" [src]="retrievedImage" *ngIf="retrievedImage"/>
+                                <img class="preview__img" src="assets/images/imgPlaceholder.png" *ngIf="!retrievedImage"/>
+                            </div>
+                            <!-- <h4>Categoría a la que participan</h4>
+                            <mat-radio-group class="radioGroup" formControlName="ctrlCategoria">&nbsp;
+                                <mat-radio-button value="1"> Mejora en la atención y servicio</mat-radio-button>&nbsp;
+                                <mat-radio-button value="2"> Optimización de recursos</mat-radio-button>&nbsp;
+                                <mat-radio-button value="3"> Mejora de la práctica en el trabajo</mat-radio-button>&nbsp;
+                                <mat-radio-button value="4"> Prevención y promoción de la salud</mat-radio-button>&nbsp;
+                            </mat-radio-group> -->
+                            <!-- <div style="display: flex; flex-direction: column;">
+                                <h4>Datos del líder de grupo</h4>
+                                <mat-form-field appearance="outline">
+                                  <mat-label>N° de Celular</mat-label>
+                                  <input matInput required="required" formControlName="ctrlLiderCelular">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Email</mat-label>
+                                  <input matInput required="required">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                  <mat-label>N° de Telefono Fijo</mat-label>
+                                  <input matInput required="required">
+                                </mat-form-field>
+                            </div> -->
+                        </div>
+                        <div class="col-span-2" style="display: flex; flex-direction: column;">
+                            <h4>Nombre del grupo</h4>
+                            <mat-form-field appearance="outline">
+                              <input matInput required formControlName="ctrlNomGrupo">
+                            </mat-form-field>
+                            <h4>Red, Hospital, Área asistencial o administrativa a la que pertenecen</h4>
+                            <mat-form-field appearance="outline">
+                              <input matInput required formControlName="ctrlRed">
+                            </mat-form-field>
+                            <h4>Nombre completo del Jefe de Red Prestacional, Asistencial, IPRESS, Establecimiento de Salud o Área administrativa a la que pertenece</h4>
+                            <mat-form-field appearance="outline">
+                              <input type="text" required matInput [formControl]="jefeControl" name="nombreJefe" [matAutocomplete]="autoJefe">
+                              <mat-autocomplete #autoJefe="matAutocomplete" [displayWith]="displayFnJefe"
+                                (optionSelected)="onSelectionChangeJefe($event)">
+                                <mat-option *ngFor="let persona of filteredOptionsJefe | async" [value]="persona">
+                                  {{persona.nombres}} {{(persona.apellidos)}}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+
+                            <!-- <h4>Datos de miembros del grupo (mínimo 2 y máximo 5 personas, contando al líder)</h4>
+                            <div class="inputBtn" [formGroup]="formIntegrantes">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Nombre de miembro</mat-label>
+                                  <input matInput formControlName="frmNombre">
+                                </mat-form-field>
+                                <button mat-raised-button color="primary" class="search btnForm" (click)="addMiembro()">Añadir</button>
+                            </div> -->
+                            <!-- <table mat-table [dataSource]="dataSource_3" matSort style="width: 100%;">
+                                <ng-container matColumnDef="nombresApellidos">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres y Apellidos</th>
+                                  <td mat-cell *matCellDef="let element">
+                                    {{element.nombresApellidos}}
+                                  </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="dni">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
+                                  <td mat-cell *matCellDef="let element">
+                                    {{element.dni}}
+                                  </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="cargo">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Cargo/Profesión</th>
+                                  <td mat-cell *matCellDef="let element">
+                                    {{element.cargo}}
+                                  </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="estado">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Habilitar/Deshabilitar</th>
+                                  <td mat-cell *matCellDef="let element">
+                                    <mat-slide-toggle [checked]="element.habilitado" (click)="operarHabilitarDeshabilitar(element)">
+                                    </mat-slide-toggle>
+                                  </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                              </table> -->
+                        </div>
+
+                    </div>
+                    <div class="grid-cols-3">
+                        <div style="display: flex; flex-direction: column;">
+                            <h4>Categoría a la que participan</h4>
+                            <mat-radio-group class="radioGroup" formControlName="ctrlCategoria">&nbsp;
+                                <mat-radio-button value="Mejora en la atención y servicio"> Mejora en la atención y servicio</mat-radio-button>&nbsp;
+                                <mat-radio-button value="Optimización de recursos"> Optimización de recursos</mat-radio-button>&nbsp;
+                                <mat-radio-button value="Mejora de la práctica en el trabajo"> Mejora de la práctica en el trabajo</mat-radio-button>&nbsp;
+                                <mat-radio-button value="Prevención y promoción de la salud"> Prevención y promoción de la salud</mat-radio-button>&nbsp;
+                            </mat-radio-group>
+                        </div>
+                        <div class="col-span-2">
+                            <h4>Datos de miembros del grupo</h4>
+                            <div class="inputBtn">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Nombre de miembro</mat-label>
+                                  <input type="text" matInput [formControl]="integranteControl" [matAutocomplete]="autoPersona">
+                                  <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFnPersonal"
+                                    (optionSelected)="onSelectionChangePersonal($event)">
+                                    <mat-option *ngFor="let persona of filteredOptions | async" [value]="persona">
+                                      {{persona.nombres}} {{(persona.apellidos)}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                                <button mat-raised-button color="primary" class="search btnForm" (click)="aniadirIntegrante()" [disabled]='estadoInscripcion'>Añadir</button>
+                            </div>
+                            <table mat-table [dataSource]="listaIntegrantes" matSort style="width: 100%;">
+                                <ng-container matColumnDef="nombresApellidos">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres y Apellidos</th>
+                                  <td mat-cell *matCellDef="let element">
+                                    {{element.nombres | titlecase}} {{element.apellidos | titlecase}}
+                                    <span *ngIf='authService.getUserSession().id === element.idUsuario'>(Líder)</span>
+                                  </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="dni">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
+                                  <td mat-cell *matCellDef="let element">
+                                    {{element.numeroDocumento}}
+                                  </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="accion">
+                                  <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                                  <td mat-cell *matCellDef="let element, index as i" width="120px">
+                                    <button mat-icon-button color="primary" matTooltip="Ver Integrante" (click)="infoIntegrante(element)">
+                                        <mat-icon>remove_red_eye</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteMiembro(i)" [disabled]='estadoInscripcion' *ngIf="i!=0">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                  </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                              </table>
+                        </div>
+                    </div>
+                    <div class="navOptions">
+                        <button mat-raised-button (click)="guardaCambios1ro()" *ngIf='!estadoInscripcion'><mat-icon>save</mat-icon> Guardar cambios</button>
+                        <button mat-raised-button matStepperNext color="primary" class="btnOptionsActive">Siguiente <mat-icon>navigate_next</mat-icon></button>
+                    </div>
+                </form>
+            </mat-step>
+            <!----------------------------------------------------------- Segundo paso: Describir los datos del proyecto ----------------------------------------------------------->
+            <mat-step label="Descripción del Proyecto" state="description" [stepControl]="formDatosProyecto">
+                <div class="todo" [formGroup]="formDatosProyecto">
+                    <h4>Indicar desde qué fecha se ha implementado la acción innovadora</h4>
+                    <mat-form-field appearance="outline">
+                        <input matInput required [matDatepicker]="fechaInicioPicker" formControlName="ctrlFechaImplementacion"/>
+                        <mat-datepicker-toggle matSuffix [for]="fechaInicioPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fechaInicioPicker startView="multi-year"></mat-datepicker>
+                    </mat-form-field>
+                    <h4>Describir la motivación por la cual postulan (200 palabras)</h4>
+                    <mat-form-field appearance="outline">
+                        <textarea matInput required formControlName="ctrlMotivacion"></textarea>
+                    </mat-form-field>
+                    <h4>Descripción general de la acción innovadora (500 palabras)</h4>
+                    <mat-form-field appearance="outline">
+                        <textarea matInput required formControlName="ctrlAccionInnovadora"></textarea>
+                    </mat-form-field>
+                    <h4>Describir el contexto inicial (la situación inicial antes de implementar la acción innovadora)	(250 palabras)</h4>
+                    <mat-form-field appearance="outline">
+                        <textarea matInput required formControlName="ctrlContextoInicial"></textarea>
+                    </mat-form-field>
+                    <h4>¿Qué es lo innovador de esta acción implementada? (250 palabras)</h4>
+                    <mat-form-field appearance="outline">
+                        <textarea matInput required formControlName="ctrlInnovador"></textarea>
+                    </mat-form-field>
+                    <h4>Mencionar los principales indicadores de medición de resultados y/o impacto (máximo seis indicadores que miden el cambio o beneficio generado)</h4>
+                    <mat-form-field appearance="outline">
+                        <textarea matInput required formControlName="ctrlIndicadores"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="navOptions">
+                    <button mat-raised-button matStepperPrevious ><mat-icon>navigate_before</mat-icon> Regresar</button>
+                    <button mat-raised-button (click)="guardaCambios2do()" *ngIf='!estadoInscripcion'><mat-icon>save</mat-icon> Guardar cambios</button>
+                    <button mat-raised-button matStepperNext color="primary" class="btnOptionsActive">Siguiente <mat-icon>navigate_next</mat-icon></button>
+                </div>
+            </mat-step>
+            <!------------------------------------------------------- Tercer paso: Datos sobre como se implementó el proyecto ------------------------------------------------------>
+            <mat-step label="Implementación" state="build" [stepControl]="formImplementacion">
+                <div class="todo" [formGroup]="formImplementacion">
+                    <h4>Indicar los principales resultados e impacto, luego de implementada la acción innovadora. (300 palabras)</h4>
+                    <mat-form-field appearance="outline">
+                        <textarea matInput formControlName="ctrlResultado"></textarea>
+                    </mat-form-field>
+                    <h4>¿La acción innovadora es sostenible?</h4>
+                    <mat-radio-group style="display: grid !important;" formControlName="ctrlSostenible" (change)="onChangeL($event)">&nbsp;
+                        <mat-radio-button value="No"> No</mat-radio-button>&nbsp;
+                        <mat-radio-button value="Si"> Si</mat-radio-button>&nbsp;
+                    </mat-radio-group>
+                    <div *ngIf="selectedValueL === 'Si'" class="subPregunta">
+                        <h4>¿Por qué?</h4>
+                        <mat-form-field appearance="outline">
+                            <textarea matInput formControlName="ctrlSostenibleFundamento"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <h4>¿La acción innovadora es replicable?</h4>
+                    <mat-radio-group style="display: grid !important;" formControlName="ctrlReplicable" (change)="onChangeN($event)">&nbsp;
+                        <mat-radio-button value="No"> No</mat-radio-button>&nbsp;
+                        <mat-radio-button value="Si"> Si</mat-radio-button>&nbsp;
+                    </mat-radio-group>
+                    <div *ngIf="selectedValueN === 'Si'" class="subPregunta">
+                        <h4>Indicar las condiciones para la replicabilidad de la acción innovadora (400 palabras)</h4>
+                        <mat-form-field appearance="outline">
+                            <textarea matInput formControlName="ctrlReplicableFundamento"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <h4>¿La acción innovadora utiliza la tecnología?</h4>
+                    <mat-radio-group style="display: grid !important;" formControlName="ctrlTecnologia" (change)="onChangeO($event)">&nbsp;
+                        <mat-radio-button value="No"> No</mat-radio-button>&nbsp;
+                        <mat-radio-button value="Si"> Si</mat-radio-button>&nbsp;
+                    </mat-radio-group>
+                    <div *ngIf="selectedValueO === 'Si'" class="subPregunta">
+                        <h4>¿Qué tipo de tecnología y de qué manera se utiliza? (200 palabras)</h4>
+                        <mat-form-field appearance="outline">
+                            <textarea matInput formControlName="ctrlTecnologiaFundamento"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <h4>¿Indicar a qué servicios dentro de Essalud beneficia la acción innovadora?</h4>
+                    <mat-form-field appearance="outline">
+                        <textarea matInput formControlName="ctrlBeneficio"></textarea>
+                    </mat-form-field>
+                    <h4>Indicar si la acción innovadora involucra alguno o varios de estos enfoques: (Marcar una o varias alternativas)</h4>
+                    <ul *ngFor="let option of opcionesMultiples, index as i">
+                      <mat-checkbox (change)="option.activado = !option.activado" color="primary" [checked]="option.activado" [disabled]='estadoInscripcion'>
+                        {{option.value}}
+                      </mat-checkbox>
+                    </ul>
+                    <div class="pdfContainer">
+                      <h4>Evidencia de la Implementación</h4>
+                      <mat-error *ngIf="msgErrores && archivoPdfField.hasError('required')">Debe adjuntar un archivo de evidencia</mat-error>
+                      <div class="datosPdf">
+                        <h5 *ngIf="retrievedPdf">Archivo: {{nombrePdf}}</h5>
+                        <img class="preview__img" src="assets/images/pdfSelected.png" *ngIf="retrievedPdf" (click)='downloadPdf()' matTooltip="Descargar PDF" matTooltipPosition="right" style='cursor: pointer;'/>
+                        <img class="preview__img" src="assets/images/pdfPlaceholder.png" *ngIf="!retrievedPdf"/>
+                      </div>
+                      <div class="datosPdf">
+                          <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix (click)="filePdf.click()"
+                                  color="primary" *ngIf="!retrievedPdf" [disabled]='estadoInscripcion'>
+                            <mat-icon>add_photo_alternate</mat-icon> Cargar Pdf
+                          </button>
+                          <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removePdf()"
+                                  color="warn" *ngIf="retrievedPdf" [disabled]='estadoInscripcion'>
+                            <mat-icon>clear</mat-icon> Remover Pdf
+                          </button>
+                      </div>
+                      <input hidden #filePdf type="file" name="Upload" accept="application/pdf" (change)="onChangeFile(filePdf.files)">
+                    </div>
+                </div>
+                <div class="navOptions">
+                    <button mat-raised-button matStepperPrevious ><mat-icon>navigate_before</mat-icon> Regresar</button>
+                    <button mat-raised-button (click)="guardaCambios3ro()" *ngIf='!estadoInscripcion'><mat-icon>save</mat-icon> Guardar cambios</button>
+                    <button mat-raised-button color="primary" class="btnOptionsActive" (click)="enviarDatos()" *ngIf='!estadoInscripcion'><mat-icon>assignment_turned_in</mat-icon> Enviar Registro</button>
+                </div>
+            </mat-step>
+
+            <!-- Icon overrides. -->
+            <ng-template matStepperIcon="group">
+            <mat-icon>group</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="description">
+            <mat-icon>description</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="build">
+            <mat-icon>build</mat-icon>
+            </ng-template>
+        </mat-stepper>
+      </div>
+    </div>
+</div>

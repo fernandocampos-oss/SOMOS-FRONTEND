@@ -1,5 +1,3 @@
-import { PersonalFiltroNombreDTO } from './../../../../../../data/models/gestion-rendimiento/personalFiltroNombreDTO';
-import { map } from 'rxjs/operators';
 import { Component, OnInit, Inject, AfterViewInit, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -9,13 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { SelectionModel } from '@angular/cdk/collections';
-import { Observable } from 'rxjs';
-import { Personal } from '@data/models/gestion-rendimiento/personal';
-import { Cargo } from '@data/models/gestion-rendimiento/cargo';
-import { Dependencia } from '@data/models/gestion-rendimiento/dependencia';
 import { ConstantesGr } from '@data/constants/constantes-gr.constant';
-import { EstadoPersonal } from '@data/models/gestion-rendimiento/estadoPersonal';
-import { PersonalEliminarDTO } from '@data/models/gestion-rendimiento/PersonalEliminarDTO';
 
 @Component({
   selector: 'app-user-add-delete',
@@ -58,46 +50,16 @@ export class UserAddDeleteComponent implements OnInit {
   }
 
   searchIntegrante() {
-    let dtoFiltro = new PersonalFiltroNombreDTO(this.form.value.integrante);
-    dtoFiltro.nombres = dtoFiltro.nombres.toLowerCase();
-
-    if (!this.form.valid) {
-      this._notification.warning("Se deben ingresar los campos requeridos")
-    } else {
-      this.services.BuscarPersona(dtoFiltro).subscribe((dataItem) => {
-        if (dataItem) {
-          this.dataSource = new MatTableDataSource(dataItem);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        } else {
-          this.dataSource = null;
-          // this._notification.error(dataItem.msj)
-        }
-      });
-    }
+    
   }
 
-  // loadIntegrantes() {
-  //   this.services.ListarIntegrantes().subscribe((dataItem) => {
-  //     if (dataItem.codigo == 1) {
-  //       this.integrantes = dataItem.data
-  //     } else {
-  //       this.integrantes = null;
-  //       this._notification.error(dataItem.msj)
-  //     }
-  //   });
-  // }
-
   loadIntegrantes() {
-    console.log("tmp, 2");
-    let idDependencia = 2;
-
-    this.services.listarPersonalPorDependenciaAsignado(idDependencia, ConstantesGr.ESTADO_PERSONAL_ASIGNADO).subscribe((data) => {
-      if (data) {
-        this.integrantes = data
+    this.services.ListarIntegrantes().subscribe((dataItem) => {
+      if (dataItem.codigo == 1) {
+        this.integrantes = dataItem.data
       } else {
         this.integrantes = null;
-        this._notification.error("Error al cargar integrantes")
+        this._notification.error(dataItem.msj)
       }
     });
   }
@@ -144,57 +106,43 @@ export class UserAddDeleteComponent implements OnInit {
   onSave() {
     if (this.borrar) {
       if (this.form.valid) {
-        console.log(this.form.valid);
-        let dto = new PersonalEliminarDTO();
-        dto.idEstadoPersonal = ConstantesGr.ESTADO_PERSONAL_ELIMINADO;
-        dto.motivo = this.form.value.frmMotivo;
-        dto.idPersonal = this.form.value.frmIntegrantes
+        // console.log(this.form.valid);
+        // let dto = new PersonalEliminarDTO();
+        // dto.idEstadoPersonal = ConstantesGr.ESTADO_PERSONAL_ELIMINADO;
+        // dto.motivo = this.form.value.frmMotivo;
+        // dto.idPersonal = this.form.value.frmIntegrantes
 
-        // this.services.EliminarIntegrante(this.form.value.frmIntegrantes, this.form.value.frmMotivo).subscribe({
-        this.services.eliminarPersonalMotivo(dto).subscribe({
-          next: data => {
-            this.loadIntegrantes();
-            this.dialogRef.close();
-            this._notification.success("Se eliminó al integrante")
-          },
-          error: error => {
-            this._notification.error("Eliminar integrante: Se produjo un error")
-          }
-        });
+        // this.services.EliminarIntegrante(this.form.valueF.frmIntegrantes, this.form.value.frmMotivo).subscribe({
+        //   next: data => {
+        //     this.loadIntegrantes();
+        //     this.dialogRef.close();
+        //     this._notification.success("Se eliminó al integrante")
+        //   },
+        //   error: error => {
+        //     this._notification.error("Eliminar integrante: Se produjo un error")
+        //   }
+        // });
       } else {
         this._notification.warning("Se deben seleccionar / ingresar los campos requeridos")
       }
     } else {
       if (this.selection.selected.length > 0) {
-        let estado = new EstadoPersonal();
-        estado.idEstadoPersonal = ConstantesGr.ESTADO_PERSONAL_ASIGNADO;
-
-        for (let i of this.selection.selected) {
-          let p = new Personal();
-          p.numeroDni = i.numeroDni;
-          p.nombres = i.nombres;
-          p.apellidoPaterno = i.apellidoPaterno;
-          p.apellidoMaterno = i.apellidoMaterno;
-          p.estadoPersonal = estado;
-
-          let cargo = new Cargo();
-          cargo.idCargo = i.cargo.idCargo;
-
-          let dependencia = new Dependencia();
-          dependencia.idDependencia = i.dependencia.idDependencia;
-
-          p.cargo = cargo;
-          p.dependencia = dependencia;
-
-          this.services.registrarPersonal(p).subscribe((data) => {
-            if (data = 1) {
-              this.dialogRef.close();
-              this._notification.success("Se registró colaborador")
-            } else {
-              this._notification.error("Error al registrar colaborador")
-            }
-          });
-        }
+        // for (let i of this.selection.selected) {
+        //   // let p = new Personal();
+        //   // p.numeroDni = i.numeroDni;
+        //   // p.nombres = i.nombres;
+        //   // p.apellidoPaterno = i.apellidoPaterno;
+        //   // p.apellidoMaterno = i.apellidoMaterno;
+        //   // p.estadoPersonal = estado;
+        //   this.services.registrarPersonal(p).subscribe((data) => {
+        //     if (data = 1) {
+        //       this.dialogRef.close();
+        //       this._notification.success("Se registró colaborador")
+        //     } else {
+        //       this._notification.error("Error al registrar colaborador")
+        //     }
+        //   });
+        // }
       } else {
         this._notification.warning("Se deben seleccionar una persona para agregar al grupo")
       }

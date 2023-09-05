@@ -11,16 +11,49 @@ const data: MenuItem[] = [
   //     icon: 'record_voice_over',
   //     label: 'Actualización de datos',
   // },
+  {
+    icon: 'payment_icon',
+    svg: true,
+    label: 'Cronograma de Pagos',
+    type: 2,
+  },
   // {
   //   path: AppRoute.CAMBIAR_CONTRA,
   //   icon: 'https',
   //   label: 'Cambiar Contraseña',
   // },
   {
-      path: AppRoute.MIS_MARCACIONES,
-      icon: 'how_to_reg',
-      label: 'Mis Marcaciones',
+    path: AppRoute.MIS_MARCACIONES,
+    icon: 'marcacion_icon',
+    svg: true,
+    label: 'Mis Marcaciones',
   },
+  // {
+  //   path: AppRoute.ADMINISTRAR_USUARIOS,
+  //   icon: 'settings',
+  //   label: 'Administrar Usuarios',
+  //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+  // },
+  // {
+  //   icon: 'settings',
+  //   label:'Administracion',
+  //   type: 3,
+  //   roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+  //   children:[
+  //     {
+  //       path: AppRoute.ADMINISTRAR_ENCUESTA,
+  //       icon: 'settings',
+  //       label: 'Resultados encuesta',
+  //       roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+  //     },
+  //   ]
+  // },
+  // // // {
+  // // //     path: AppRoute.ADMINISTRAR_ENCUESTA,
+  // // //     icon: 'settings',
+  // // //     label: 'Administrar Resultados Encuesta',
+  // // //     roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+  // // // },
   // {
   //     path: AppRoute.MARCACION_TRABAJADOR,
   //     icon: 'airplanemode_active',
@@ -72,11 +105,11 @@ const data: MenuItem[] = [
   //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   // },
   {
-     path: AppRoute.GESTION_RENDIMIENTO,
-     icon: 'remote_menu',
-     svg : true,
-     label: 'Gestion del Rendimiento',
-     roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE, Role.TRABAJADOR],
+    path: AppRoute.GESTION_RENDIMIENTO,
+    icon: 'remote_menu',
+    svg: true,
+    label: 'Gestion del Rendimiento',
+    roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   },
   // // {
   // //   path : AppRoute.DDJJ_CONFLICTO,
@@ -88,12 +121,13 @@ const data: MenuItem[] = [
     path: AppRoute.MIS_REQUERIMIENTOS,
     icon: 'description',
     label: 'Mis Requerimientos',
+    roles: [Role.TRABAJADOR],
   },
 ];
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
-  constructor(private _authService: AuthService) {}
+  constructor(private _authService: AuthService) { }
   getAll() {
     const idRolSession = this._authService.getUserSession().idRol;
     return data.filter(

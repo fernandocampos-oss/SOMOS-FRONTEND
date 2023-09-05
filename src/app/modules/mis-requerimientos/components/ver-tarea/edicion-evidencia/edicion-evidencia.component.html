@@ -1,0 +1,19 @@
+<h3>Tarea: {{ titleTarea }}</h3><br>
+
+<div class="imageBox">
+    <div>
+        <h4>Imagen representativa</h4>
+        <!-- <mat-error *ngIf="msgErrores && imagenGrupoField.hasError('required')">Debe añadir una imagen del grupo</mat-error> -->
+        <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix (click)="file.click()"
+                color="primary" *ngIf="!retrievedImage" [disabled]='estadoInscripcion'>
+          <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
+        </button>
+        <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()"
+                color="warn" *ngIf="retrievedImage" [disabled]='estadoInscripcion'>
+          <mat-icon>clear</mat-icon> Remover Imagen
+        </button>
+    </div>
+    <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)"/>
+    <img class="preview__img" [src]="retrievedImage" *ngIf="retrievedImage"/>
+    <img class="preview__img" src="assets/images/imgPlaceholder.png" *ngIf="!retrievedImage"/>
+</div>

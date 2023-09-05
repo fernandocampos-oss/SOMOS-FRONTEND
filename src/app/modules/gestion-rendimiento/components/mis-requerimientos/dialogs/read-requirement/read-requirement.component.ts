@@ -1,7 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { element } from 'protractor';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { UpdateTareaComponent } from './update-tarea/update-tarea.component';
+import { TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
+import { VerEvidenciaComponent } from './ver-evidencia/ver-evidencia.component';
 
 @Component({
   selector: 'app-read-requirement',
@@ -9,31 +16,77 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
   styleUrls: ['./read-requirement.component.scss']
 })
 export class ReadRequirementComponent implements OnInit {
-  objElement: any;
+
   form: FormGroup;
   requerimiento: string;
-  estadoReq: string;
+  estadoReq: number;
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSource: MatTableDataSource<any>;
+  displayedColumns: string[] = ['nombre_tarea', 'fecha_asignacion', 'plazo', 'porcentaje_avance', 'acciones'];
+
+  dataSource_tarea: TareaResponse[];
+
   constructor(
     private _fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private services: GestionRendimientoService,
+    private _services: GestionRendimientoService,
+    private _dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
-    this.objElement = this.data.obj;
-    this.estadoReq = this.data.obj.estadoRequerimiento.descripcion;
-    this.requerimiento = this.objElement.nombre;
+    // console.log(this.data)
+    this.estadoReq = this.data.model.estadoRequerimiento.codigo;
+    this.requerimiento = this.data.model.requerimiento.nombre;
     this.createForm();
+
+    this.dataSource_tarea = this.data.model.listTarea;
   }
+
   createForm() {
-    console.log(this.estadoReq);
     this.form = this._fb.group({
-      frmIdentificador: [this.objElement.identificador],
-      frmDescripcion: [this.objElement.descripcion],
-      frmAreaSolicitante: [this.objElement.areaSolicitante.abreviatura],
-      frmAreaDestinatario: [this.objElement.areaReceptor.abreviatura],
-      frmMotivo: [this.objElement.motivo],
-      frmEstado: [this.objElement.estado]
+      frmDescripcion: [this.data.model.requerimiento.descripcion],
+      frmIdentificador: [this.data.model.requerimiento.identificador],
+      frmTipoIngreso: [this.data.model.requerimiento.tipoIngreso.descripcion],
+      frmporcentajeAvance: [this.data.model.requerimiento.porcentajeAvance + "%"],
+      // frmAreaSolicitante: [this.data.model.codUnidadSolicitante],
+      // frmAreaDestinatario: [this.data.model.codUnidadReceptor],
+      frmEstado: [this.data.model.estadoRequerimiento.descripcion],
+      frmMotivo: [this.data.model.motivo]
+    });
+  }
+
+  actualizarTarea(element) {
+    const dialogRef: MatDialogRef<UpdateTareaComponent> = this._dialog.open(UpdateTareaComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        // idRequerimientoUsuario: this.data.model.idRequerimientoUsuario,
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTable();
+    });
+  }
+
+  verEvidenciaTarea(element) {
+    const dialogRef: MatDialogRef<VerEvidenciaComponent> = this._dialog.open(VerEvidenciaComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTable();
     });
   }
 

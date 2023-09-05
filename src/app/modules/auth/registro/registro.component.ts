@@ -26,10 +26,13 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class RegistroComponent implements OnInit {
   form: FormGroup;
+  showHelpCPlanilla = false;
   form4Mobile = false;
   routeLogin = `/${AppRoute.AUTH}/${AppRoute.LOGIN}`;
   sedes: Sede[] = [];
   maxFechaNacimiento = AppConfig.MAX_FECHA_NACIMIENTO;
+  hidePassword = true;
+  hidePasswordConfirmation = true;
 
   get numeroDocumentoField() {
     return this.form.get('numeroDocumento');
@@ -72,7 +75,13 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm();
-    this._loadParams();
+    // this._loadParams();
+    this.form.controls.numeroDocumento.valueChanges.subscribe(val => {
+      this.form.controls.numeroDocumento.setValue(val.trim(), { emitEvent: false })
+    })
+    this.form.controls.codigoPlanilla.valueChanges.subscribe(val => {
+      this.form.controls.codigoPlanilla.setValue(val.trim(), { emitEvent: false })
+    })
     
     this.responsive.observe([
       Breakpoints.XSmall,
@@ -84,19 +93,24 @@ export class RegistroComponent implements OnInit {
         }
   });
   }
-  private _loadParams() {
-    this._paramService
-      .getParams(KeyParam.SEDES)
-      .pipe(untilDestroyed(this))
-      .subscribe((params) => (this.sedes = params[KeyParam.SEDES]));
-  }
+  // private _loadParams() {
+  //   this._paramService
+  //     .getParams(KeyParam.SEDES)
+  //     .pipe(untilDestroyed(this))
+  //     .subscribe((params) => (this.sedes = params[KeyParam.SEDES]));
+  // }
   onSave() {
     if (this.form.valid && this._validatePasswordMatch()) {
       this._authService
         .register(this.form.value)
         .pipe(untilDestroyed(this))
         .subscribe((data) => this._openConfirmTokenDialog(data));
-    } else {
+    }
+    else if(this.form.value.codigoPlanilla.length != 8){
+      this._notification.warning('Codigo de planilla incorrecto, de tener 7 dígitos, agregarle un "1" al inicio');
+    }
+    else {
+      this._notification.warning('Revisar los campos ingresados');
       this.form.markAllAsTouched();
     }
   }
@@ -121,12 +135,14 @@ export class RegistroComponent implements OnInit {
   private _createForm() {
     this.form = this._fb.group({
       numeroDocumento: [null, Validators.required],
-      codigoPlanilla: [null, Validators.required],
-      numeroCelular: [null, Validators.required],
+      codigoPlanilla: [null, [Validators.required, Validators.minLength(8)]],
+      numeroCelular: [null, [Validators.required, Validators.pattern("^9([0-9]){8}$")]],
       fechaNacimiento: [null, Validators.required],
       correo: [null, Validators.required],
      // idSede: [null, Validators.required],
       password: [null, Validators.required],
+      // password: [null, [Validators.required, Validators.pattern("^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$")]],
+      // password: [null, [Validators.required, Validators.pattern("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z])$")]],
       confirmarPassword: [null, Validators.required],
     });
   }

@@ -30,7 +30,7 @@ export class AuthService {
     private _httpClient: HttpClient,
     private _ls: LocalStorageService,
     private _router: Router
-  ) {}
+  ) { }
 
   login(model: LoginRequest): Observable<any> {
     const url = `${URL_BASE}/login`;
@@ -45,7 +45,9 @@ export class AuthService {
   }
 
   getRol(): number {
-    return this.getUserSession().idRol;
+    const idRol = this.getUserSession() ? this.getUserSession().idRol : 0;
+    return idRol;
+    // return this.getUserSession().idRol;
   }
 
   getUserSession(): UserSession {

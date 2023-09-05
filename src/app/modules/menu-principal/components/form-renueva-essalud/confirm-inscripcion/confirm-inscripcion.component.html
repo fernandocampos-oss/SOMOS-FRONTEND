@@ -1,0 +1,12 @@
+<div class="alert">
+    <h2>¿Está seguro de enviar estos datos?</h2>
+    <span style="justify-self: center;">Una vez enviado no se podrá deshacer</span><br>
+</div>
+<mat-grid-list cols="2" rowHeight="40px" gutterSize="6px">
+    <mat-grid-tile [colspan]="1" class="grid">
+        <button mat-button matDialogClose class="boton">Volver</button>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" class="grid">
+        <button mat-raised-button (click)="guardar()" color="primary" class="boton">Enviar</button>
+    </mat-grid-tile>
+</mat-grid-list>

@@ -8,7 +8,6 @@ import { UserDownloadTaskComponent } from '../mi-equipo/dialogs/user-download-ta
 import { ReportTaskComponent } from './dialogs/report-task/report-task.component';
 import { GestionRendimientoService } from '../../../../data/services/gestion-rendimiento.service'
 import { NotificationService } from '@core/services';
-import { Requerimiento_Integrante } from '@data/models/requerimiento/requerimiento.model';
 
 @Component({
   selector: 'gestion-rendimiento-mis-tareas',
@@ -33,7 +32,7 @@ export class MisTareasComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadTable();
+    // this.loadTable();
     this.cargarRequerimientos();
   }
 
@@ -56,8 +55,8 @@ export class MisTareasComponent implements OnInit {
   //   });
   // }
 
-  // loadTable(idPersonal: Number) { 
-  loadTable() { //tmp
+  
+  loadTable() { 
     let idPersonal = 1;
     this.services.listarTareaPorPersonal(idPersonal).subscribe((data: any) => {
       if (data) {        

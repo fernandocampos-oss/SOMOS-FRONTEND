@@ -1,3 +1,5 @@
+import { element } from 'protractor';
+import { startWith, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,23 +9,11 @@ import { UserAddDeleteComponent } from './dialogs/user-add-delete/user-add-delet
 import { UserTaskComponent } from './dialogs/user-task/user-task.component'
 import { GestionRendimientoService } from '../../../../data/services/gestion-rendimiento.service'
 import { NotificationService } from '@core/services';
-import { UserEditComponent } from './dialogs/user-edit/user-edit.component';
-import { UserAddTaskComponent } from './dialogs/user-add-task/user-add-task.component';
-import { TaskRejectComponent } from './dialogs/task-reject/task-reject.component';
-import { PdfComponent } from './dialogs/pdf/pdf.component';
-import { UserDownloadFileComponent } from './dialogs/user-download-file/user-download-file.component';
-import { UserDownloadTaskComponent } from './dialogs/user-download-task/user-download-task.component';
-import { AssignTaskUserComponent } from './dialogs/assign-task-user/assign-task-user.component';
-import { Personal } from '@data/models/gestion-rendimiento/personal';
-import { Equipo } from '@data/models/requerimiento/requerimiento.model';
 import { EditUserSelectedComponent } from './dialogs/edit-user-selected/edit-user-selected.component';
 import { ConstantesGr } from '@data/constants/constantes-gr.constant';
-
-// interface Equipo {
-//   item: number;
-//   colaborador: string;
-//   cargo: string;
-// }
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'gestion-rendimiento-mi-equipo',
@@ -35,20 +25,11 @@ export class MiEquipoComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  // displayedColumns: string[] = ['item', 'colaborador','cargo', 'tareas','pendientes', 'pendientesAprobacion','acciones'];
-  displayedColumns: string[] = ['id', 'nombrePersona', 'cargo', 'acciones'];
+  displayedColumns: string[] = ['item', 'numero_documento', 'nombre_persona', 'acciones'];
 
-  // equipos: Equipo[] = [
-  //   { item: 1, colaborador: 'Luis Lopez Gutierrez', cargo: 'Analista de costos' },
-  //   { item: 2, colaborador: 'Leandro Zarsosa Manuel', cargo: 'Analista de procesos' },
-  //   { item: 3, colaborador: 'Celia Requena Egas', cargo: 'Administrador de BD' },
-  //   { item: 4, colaborador: 'Elder Lizana Rodriguez', cargo: 'Tester QA' },
-  //   { item: 5, colaborador: 'Maria Lopez Uribe', cargo: 'Analista funcional' },
-  // ];
-  dataSorteada: Personal[];
+  colaboradores: any[] = []; //Equipo[] = [];
 
-  colaboradores: Equipo[] = [];
- // Pruebas para obtener el excel de los datos
+  // Pruebas para obtener el excel de los datos
   // arrayBuffer:any;
   // file:File;
   // incomingfile(event) 
@@ -74,35 +55,67 @@ export class MiEquipoComponent implements OnInit {
   //           //XLSX.writeFile(workbook, `Formato GDR 2023.xlsx`);
   //       }
   //       fileReader.readAsArrayBuffer(this.file);
-        
+
   // }
+
+  integranteControl = new FormControl('');
+  listPersonal = [];
+  filteredOptions: Observable<any[]>;
+  personalSeleccionadoTmp: any;
 
   constructor(
     private dialog: MatDialog,
     private services: GestionRendimientoService,
     private _notification: NotificationService,
-    ){ }
+  ) { }
 
   ngOnInit(): void {
     this.loadTable();
-    // this.colaboradores = this.services.FauxTablaEquipo();
+    this.listarPersonalGeneral();
+
+    //filter
+    this.filteredOptions = this.integranteControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
+        map(nombresCompletos => nombresCompletos ? this._filterPersonal(nombresCompletos) : this.listPersonal.slice())
+      );
   }
 
-  showDialogAdd(item) {
-    const dialogRef: MatDialogRef<EditUserSelectedComponent> = this.dialog.open(EditUserSelectedComponent, {
-      disableClose: false,
-      width: '60%',
-      autoFocus: false,
-      data: {
-        obj: item,
+  async listarPersonalGeneral() {
+    let load = await this.services.listarPersonalGeneral().then((data: any) => {
+      if (data) {
+        this.listPersonal = data;
+      } else {
+        this._notification.warning("Lista de personal vacia");
       }
     });
-
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
   }
+
+  private _filterPersonal(value: string) {
+    return this.listPersonal.filter(persona => (persona.nombres + ' ' + persona.apellidos).toLowerCase().includes(value.toLowerCase()));
+  }
+  displayFnPersonal(selectedpersona) {
+    return selectedpersona ? (selectedpersona.nombres + ' ' + selectedpersona.apellidos) : undefined;
+  }
+  onSelectionChangePersonal(event: any) {
+    this.personalSeleccionadoTmp = event.option.value;
+  }
+
+  // showDialogAdd(item) {
+  //   const dialogRef: MatDialogRef<EditUserSelectedComponent> = this.dialog.open(EditUserSelectedComponent, {
+  //     disableClose: false,
+  //     width: '60%',
+  //     autoFocus: false,
+  //     data: {
+  //       obj: item,
+  //     }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadTable();
+  //   });
+  // }
 
   showDialogUser(onDelete: boolean) {
     const dialogRef: MatDialogRef<UserAddDeleteComponent> = this.dialog.open(UserAddDeleteComponent, {
@@ -120,13 +133,13 @@ export class MiEquipoComponent implements OnInit {
     });
   }
 
-  showDialogTasks(item) {
+  showDialogTasks(element) {
     const dialogRef: MatDialogRef<UserTaskComponent> = this.dialog.open(UserTaskComponent, {
       disableClose: false,
       width: '70%',
       autoFocus: false,
       data: {
-        obj: item,
+        model: element,
       }
     });
 
@@ -135,27 +148,49 @@ export class MiEquipoComponent implements OnInit {
     });
   }
 
-  loadTable() {
-    let idDependencia = 2;
-    this.services.listarPersonalPorDependenciaAsignado(idDependencia, ConstantesGr.ESTADO_PERSONAL_ASIGNADO).subscribe((data: any) => {
-      if (data) {      
-        this.dataSorteada=data;  
-        this.dataSource = new MatTableDataSource(this.dataSorteada);
+  async loadTable() {
+    let listPersonal = await this.services.listarPersonalUnidad().then((data) => {
+      if (data) {
+        this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this.dataSource = null;
-        if (this.dataSource = null) {
-          this._notification.warning("LISTA VACIA");
-        } 
-        // if (dataItem.msj == "USTED NO SE ENCUENTRA ASGINADO EN UN EQUIPO DE TRABAJO") {
-        //   this._notification.warning(dataItem.msj)
-        // } else {
-        //   this._notification.error(dataItem.msj)
-        // }
+        this._notification.warning("Lista de integrantes vacia");
+      }
+    });
+  }
+
+  async agregarColaborador() {
+    if (this.personalSeleccionadoTmp != undefined) {
+      let add = await this.services.agregarIntegrante(this.personalSeleccionadoTmp.idUsuario).then((data: any) => {
+        if (data = 1) {
+          this._notification.success("Integrante agregado");
+          this.integranteControl.reset('');
+          this.personalSeleccionadoTmp = null;
+          this.loadTable();
+        } else {
+          this._notification.warning("Agregar integrante: Se produjo un error");
+        }
+      });
+    } else {
+      this._notification.warning('Por favor busque un colaborador');
+    }
+  }
+
+  eliminarColaborador(element) {
+    const dialogRef: MatDialogRef<DeleteDialogComponent> = this.dialog.open(DeleteDialogComponent, {
+      disableClose: false,
+      width: '30%',
+      autoFocus: false,
+      data: {
+        // funcion: 3,
+        model: element
       }
     });
 
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTable();
+    });
   }
 
   filter(value: string) {
@@ -163,46 +198,46 @@ export class MiEquipoComponent implements OnInit {
   }
 
   // Pruebas para obtener el excel de los datos
-  downloadGDRPersona(i: number){
-  //   //Paso a paso por si acaso
+  downloadGDRPersona(i: number) {
+    //   //Paso a paso por si acaso
 
-  //   //Información Importante para obtener DATOS
-  //   const colaboradorId: number = this.colaboradores[i].id;
-  //   const tareasAsignadas: Requerimiento_Integrante[] = this.services.getFauxTablaRequeAsignados(colaboradorId);
-  //   var infoRequerimientos: Requerimiento [] = [];
-  //   for (let i = 0; i < tareasAsignadas.length; i++) {
-  //     infoRequerimientos.push(this.services.getFauxRequerimiento(tareasAsignadas[i].idReq))      
-  //   }
-  //   console.log(infoRequerimientos);
-  //   console.log(tareasAsignadas);
-  //   //-----------------------------------------------------------------------
-    
-  //   //Armado de datos del Excel
-  //   var workbook = XLSX.utils.book_new();
-  //   var worksheet = XLSX.utils.aoa_to_sheet([]);
-  //   XLSX.utils.sheet_add_aoa(worksheet,
-  //     [["PRIORIDADES ANUALES DE GESTIÓN DEL ÓRGANO O UNIDAD ORGÁNICA",
-  //     'INDICADOR / PRODUCTO',
-  //     'VALOR META',
-  //     'PESO',
-  //     'EVIDENCIA',
-  //     'PLAZOS'
-  //     ]],
-  //     {origin: "B1"})
+    //   //Información Importante para obtener DATOS
+    //   const colaboradorId: number = this.colaboradores[i].id;
+    //   const tareasAsignadas: Requerimiento_Integrante[] = this.services.getFauxTablaRequeAsignados(colaboradorId);
+    //   var infoRequerimientos: Requerimiento [] = [];
+    //   for (let i = 0; i < tareasAsignadas.length; i++) {
+    //     infoRequerimientos.push(this.services.getFauxRequerimiento(tareasAsignadas[i].idReq))      
+    //   }
+    //   console.log(infoRequerimientos);
+    //   console.log(tareasAsignadas);
+    //   //-----------------------------------------------------------------------
 
-  //   for (let i = 0; i < tareasAsignadas.length; i++) {
-  //     XLSX.utils.sheet_add_aoa(worksheet,
-  //       [[infoRequerimientos[i].actividad,
-  //       'Número de informes de nuevas funcionalidades implementadas para los sistemas o procesos aseguradores, subsidios y sociales implementados en EsSalud, de acuerdo a las actividades planificadas en el POI',
-  //       [3],
-  //       '100%',
-  //       tareasAsignadas[i].nombreTarea,
-  //       tareasAsignadas[i].plazo
-  //       ]],
-  //       {origin: `B${i+2}`})
-  //   }
-  //   console.log(worksheet);
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'FORMATO');
-  //   XLSX.writeFile(workbook, `Formato GDR 2023 - ${this.colaboradores[i].nombrePersona}.xlsx`);
- }
+    //   //Armado de datos del Excel
+    //   var workbook = XLSX.utils.book_new();
+    //   var worksheet = XLSX.utils.aoa_to_sheet([]);
+    //   XLSX.utils.sheet_add_aoa(worksheet,
+    //     [["PRIORIDADES ANUALES DE GESTIÓN DEL ÓRGANO O UNIDAD ORGÁNICA",
+    //     'INDICADOR / PRODUCTO',
+    //     'VALOR META',
+    //     'PESO',
+    //     'EVIDENCIA',
+    //     'PLAZOS'
+    //     ]],
+    //     {origin: "B1"})
+
+    //   for (let i = 0; i < tareasAsignadas.length; i++) {
+    //     XLSX.utils.sheet_add_aoa(worksheet,
+    //       [[infoRequerimientos[i].actividad,
+    //       'Número de informes de nuevas funcionalidades implementadas para los sistemas o procesos aseguradores, subsidios y sociales implementados en EsSalud, de acuerdo a las actividades planificadas en el POI',
+    //       [3],
+    //       '100%',
+    //       tareasAsignadas[i].nombreTarea,
+    //       tareasAsignadas[i].plazo
+    //       ]],
+    //       {origin: `B${i+2}`})
+    //   }
+    //   console.log(worksheet);
+    //   XLSX.utils.book_append_sheet(workbook, worksheet, 'FORMATO');
+    //   XLSX.writeFile(workbook, `Formato GDR 2023 - ${this.colaboradores[i].nombrePersona}.xlsx`);
+  }
 }

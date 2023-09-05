@@ -14,14 +14,13 @@ import {
 } from '../models';
 
 const URL_BASE = `${environment.apiUrl}/marcaciones`;
-const URL_BASE2 = `${environment.apiUrlMarcacion}`;
 
 @Injectable({ providedIn: 'root' })
 export class MarcacionService {
   constructor(private _httpClient: HttpClient) {}
 
   searchMarcaciones(model: MarcacionesRequest){
-    return this._httpClient.get<MarcacionesResponse[]>(`${URL_BASE2}/lista?desde=${model.desde}&hasta=${model.hasta}&codigo=${model.codigo}`);
+    return this._httpClient.get<MarcacionesResponse[]>(`${URL_BASE}?desde=${model.desde}&hasta=${model.hasta}&codigo=${model.codigo}`);
   }
 
 

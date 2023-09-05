@@ -1,0 +1,32 @@
+<h3>Actualizar</h3><br>
+<mat-dialog-content>
+        <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tarea</mat-label>
+                    <textarea matInput placeholder="Tarea" [(ngModel)]="tarea.nombreTarea" maxlength="250" required></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="5">
+                <mat-form-field appearance="outline">
+                    <mat-label>Plazo máximo</mat-label>
+                    <input matInput placeholder="Plazo máximo" [(ngModel)]="tarea.plazo" required>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1">
+                <mat-form-field appearance="outline">
+                    <mat-label>Avance</mat-label>
+                    <input matInput placeholder="Avance" [(ngModel)]="tarea.porcentajeAvance" readonly>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button color="primary" (click)="modificarTareaAdministrador()">Guardar</button>
+</mat-dialog-actions>
+
+
+
+
+

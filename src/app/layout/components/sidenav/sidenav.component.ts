@@ -10,6 +10,7 @@ import { UsuarioService } from '../../../data/services/usuario.service';
 import { ZonaService } from '@data/services';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ChangePasswComponent } from './change-passw/change-passw/change-passw.component';
+import { ShowPaymentCalendarComponent } from '@modules/menu-principal/components/show-payment-calendar/show-payment-calendar.component';
 
 @Component({
   selector: 'app-sidenav',
@@ -32,6 +33,8 @@ export class SidenavComponent implements OnInit {
               private _userService   : UsuarioService) {
     this.matIconRegistry.addSvgIcon("remote_menu",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/remote_menu.svg"));
     this.matIconRegistry.addSvgIcon("ddjj",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/ddjj.svg"));
+    this.matIconRegistry.addSvgIcon("marcacion_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/carneMarcacionIcon.svg"));
+    this.matIconRegistry.addSvgIcon("payment_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/mon_azul_icon.svg"));
     this.matIconRegistry.addSvgIcon("check-access",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/check-access.svg"));
   }
 
@@ -40,9 +43,9 @@ export class SidenavComponent implements OnInit {
     this.user = this._authService.getUserSession();
     this._userService.get(this.user.id).subscribe( data =>{
       this.email = data.correo;
-      this._zonaService.get(data.idZonaControl).subscribe(info=>{
-        this.gerencia = info.descripcion;
-      })
+      // this._zonaService.get(data.idZonaControl).subscribe(info=>{
+      //   this.gerencia = info.descripcion;
+      // })
       this.nombre = data.nombres;
     })
   }
@@ -70,10 +73,25 @@ export class SidenavComponent implements OnInit {
   cambiar_contra(){
     const dialogRef: MatDialogRef<ChangePasswComponent> = this.dialog.open(ChangePasswComponent, {
         disableClose: false,
-        width: '20%',
+        width: '340px',
         autoFocus: false,
+        data:{
+          idUser: this.user.id
+        }
       });
   
       dialogRef.afterClosed().subscribe(result => { });
+  }
+  open(option: string){
+    switch (option) {
+      case 'Cronograma de Pagos':
+        const dialogRef: MatDialogRef<ShowPaymentCalendarComponent> = this.dialog.open(ShowPaymentCalendarComponent, {
+          disableClose: false,
+          minWidth: '350px',
+          maxWidth: '50%',
+          autoFocus: false,
+        });
+        break;
+    }
   }
 }

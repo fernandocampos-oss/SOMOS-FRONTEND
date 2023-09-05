@@ -2,10 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { AppRoute } from '../data/constants/app-route.constant';
-import { MarcacionTrabajadorModule } from '../modules/marcacion-trabajador/marcacion-trabajador.module';
-import { DjConflictoInteresComponent } from '../modules/dj-conflicto-interes/dj-conflicto-interes.component';
+import { MenuPrincipalAdminComponent } from '@modules/menu-principal-admin/menu-principal-admin/menu-principal-admin.component';
 
 export const ROUTES: Routes = [
+  {
+    path: 'admin',
+    component: LayoutComponent,
+    children:[
+      {
+        path: '',
+        loadChildren: () =>
+        import('../modules/menu-principal-admin/menu-principal-admin.module').then(
+        (m) => m.MenuPrincipalAdminModule
+        ),
+      }
+    ]
+  },
   {
     path: '',
     component: LayoutComponent,
@@ -17,13 +29,13 @@ export const ROUTES: Routes = [
             (m) => m.MenuPrincipalModule
           ),
       },
-      {
-        path:AppRoute.DATOS_PERSONALES,
-        loadChildren: () =>
-          import('../modules/datos-personales/datos-personales.module').then(
-            (m) => m.DatosPersonalesModule
-          ),
-      },
+      // {
+      //   path:AppRoute.DATOS_PERSONALES,
+      //   loadChildren: () =>
+      //     import('../modules/datos-personales/datos-personales.module').then(
+      //       (m) => m.DatosPersonalesModule
+      //     ),
+      // },
       // Antiguo Home
       // {
       //   //path: AppRoute.LEGAJO,
@@ -33,27 +45,27 @@ export const ROUTES: Routes = [
       //       (m) => m.DatosPersonalesModule
       //     ),
       // },
-      {
-        path: AppRoute.CONTROL_ACCESO,
-        loadChildren: () =>
-          import(
-            '../modules//marcacion/marcacion.module'
-          ).then((m) => m.MarcacionModule),
-      },
-      {
-        path: AppRoute.MARCACION_TRABAJADOR,
-        loadChildren: () =>
-          import(
-            '../modules/marcacion-trabajador/marcacion-trabajador.module'
-          ).then((m) => m.MarcacionTrabajadorModule),
-      },
-      {
-        path: AppRoute.PANEL_MARCACION,
-        loadChildren: () =>
-          import('../modules/panel-marcacion/panel-marcacion.module').then(
-            (m) => m.PanelMarcacionModule
-          ),
-      },
+      // {
+      //   path: AppRoute.CONTROL_ACCESO,
+      //   loadChildren: () =>
+      //     import(
+      //       '../modules//marcacion/marcacion.module'
+      //     ).then((m) => m.MarcacionModule),
+      // },
+      // {
+      //   path: AppRoute.MARCACION_TRABAJADOR,
+      //   loadChildren: () =>
+      //     import(
+      //       '../modules/marcacion-trabajador/marcacion-trabajador.module'
+      //     ).then((m) => m.MarcacionTrabajadorModule),
+      // },
+      // {
+      //   path: AppRoute.PANEL_MARCACION,
+      //   loadChildren: () =>
+      //     import('../modules/panel-marcacion/panel-marcacion.module').then(
+      //       (m) => m.PanelMarcacionModule
+      //     ),
+      // },
       {
         path: AppRoute.MIS_MARCACIONES,
         loadChildren: () =>
@@ -68,39 +80,46 @@ export const ROUTES: Routes = [
             (m) => m.GestionRendimientoModule
           ),
       },
+      // {
+      //   path: AppRoute.DDJJ_CONFLICTO,
+      //   loadChildren: () =>
+      //     import('../modules/ddjj-conflictos-interes/ddjj-conflictos-interes.module').then(
+      //       (m) => m.DdjjConflictosInteresModule
+      //     ),
+      // },
+      // {
+      //   path: AppRoute.ADJUNTAR_DOCUMENTOS,
+      //   loadChildren: () =>
+      //     import('../modules/adjuntar-documentos/adjuntar-documentos.module').then(
+      //       (m) => m.AdjuntarDocumentosModule
+      //     ),
+      // },
+      // {
+      //   path: AppRoute.MANTENIMIENTOS,
+      //   loadChildren: () =>
+      //     import('../modules/mantenimientos/mantenimientos.module').then(
+      //       (m) => m.MantenimientosModule
+      //     ),
+      // },
+      // {
+      //   path: AppRoute.SETTINGS,
+      //   loadChildren: () =>
+      //     import('../modules/configuraciones/configuraciones.module').then(
+      //       (m) => m.ConfiguracionesModule
+      //     ),
+      // },
       {
-        path: AppRoute.DDJJ_CONFLICTO,
+        path: AppRoute.ADMINISTRAR_ENCUESTA,
         loadChildren: () =>
-          import('../modules/ddjj-conflictos-interes/ddjj-conflictos-interes.module').then(
-            (m) => m.DdjjConflictosInteresModule
+          import('../modules/administracion/administracion.module').then(
+            (m) => m.AdministracionModule
           ),
       },
       {
-        path: AppRoute.DDJJ_CONFLICTO_OTRO,
+        path: AppRoute.ADMINISTRAR_USUARIOS,
         loadChildren: () =>
-          import('../modules/dj-conflicto-interes/dj-conflicto-interes.module').then(
-            (m) => m.DjConflictoInteresModule
-          ),
-      },
-      {
-        path: AppRoute.ADJUNTAR_DOCUMENTOS,
-        loadChildren: () =>
-          import('../modules/adjuntar-documentos/adjuntar-documentos.module').then(
-            (m) => m.AdjuntarDocumentosModule
-          ),
-      },
-      {
-        path: AppRoute.MANTENIMIENTOS,
-        loadChildren: () =>
-          import('../modules/mantenimientos/mantenimientos.module').then(
-            (m) => m.MantenimientosModule
-          ),
-      },
-      {
-        path: AppRoute.SETTINGS,
-        loadChildren: () =>
-          import('../modules/configuraciones/configuraciones.module').then(
-            (m) => m.ConfiguracionesModule
+          import('../modules/administrar-usuarios/administrar-usuarios.module').then(
+            (m) => m.AdministrarUsuariosModule
           ),
       },
       {
@@ -108,6 +127,13 @@ export const ROUTES: Routes = [
         loadChildren: () => 
           import('../modules/mis-requerimientos/mis-requerimientos.module').then(
             (m) => m.MisRequerimientosModule
+          ),
+      },
+      {
+        path: AppRoute.ADMINISTRAR_ROL_RED,
+        loadChildren: () => 
+          import('../modules/administrar-rol-red/administrar-rol-red.module').then(
+            (m) => m.AdministrarRolRedModule
           ),
       },
     ],

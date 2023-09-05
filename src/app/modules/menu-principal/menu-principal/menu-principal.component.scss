@@ -1,55 +1,63 @@
 .column1 {
     float: left;
-    width: 32%;
+    width: 35%;
     padding: 4px;
     position: sticky;
     top: 0;
 }
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-  background-color: #ffffff;
-}
-.asdf{
-  left: -1.6%; top: 10%;
-}
 .header {
 display: flex;
 font-weight: bold;
-justify-content: center;
+justify-content: space-between;
+align-items: center;
 span{
+  text-align-last: left;
+  width: 100%;
+  font-style: normal;
+}
+span.birthDescrp{
+  text-align-last: left;
+  width: 100%;
   font-style: normal;
   font-size: 1vw;
-  padding-top: 5px;
+  margin-left: 0.4vw;
 }
 }
 .column2 {
   float: left;
-  width: 68%;
-  padding: 4px;
+  width: 65%;
+  padding: 4px 2vw 4px 2vw;
 } 
-.boxBirth, .boxBirth-1{
-  margin: 8px 0px 0px 0px;
-  border: #37485f;
+.boxBirth {
   min-height: 10vw;
   max-height: 22vw;
-  border-style:solid;
   width: 100%;
-  border-radius: 11px;
   display: grid;
-}
-.boxBirth-1 {
-  cursor: pointer;
-  background-image: url(~src/assets/images/back-Birth.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-.boxBirth {
   .header{
-    display: block;
-    top: 0;
+    position: relative;
+    color:#2e245c;
+    background-color: #79ccf2;
+    border-bottom: var(--color-bordes);
+    border-bottom-style: solid;
+    border-bottom-width: 2.5px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    // .boxBorde2{
+    //   margin:3px;
+    //   img{
+    //     width: 3vw;
+    //   }
+    // }
+    img{
+      margin:3px 3px 3px 13px;
+      width: 2vw;
+    }
+    // .boxBorde{
+    //   margin:3px;
+    //   width: 3vw;
+    //   color: #37485f;
+    //   background: radial-gradient(circle, rgba(255,255,255,1) 6%, rgba(0,212,255,1) 100%);
+    // }
   }
   .OnomasticosDia{
     min-height: 10vw;
@@ -57,26 +65,13 @@ span{
     top: 0;
     overflow-y: auto;
   }
-  background-image: url(~src/assets/images/back-Birth.jpg);
-  background: rgba(76, 175, 80, 0.1);
+  // background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(209,214,227,1) 100%);
+  background-image: url(~src/assets/images/backBirth.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; //60% 15%
   .contenido{
     display: flex;
-    // .num{
-    //   border: #37485f;
-    //   font-size: 1vw;
-    //   width: 2.5vw;
-    //   height: 2.65vw;
-    //   border-style:solid;
-    //   align-self: center;
-    //   margin: 2%;
-    //   display: grid;
-    //   align-items: center;
-    //   color:white;
-    //   font-weight: bold;
-    //   border-radius: 100%;
-    //   padding: 2%;
-    //   background-color: #2b9ed8;
-    // }
     .num{
       background-image: url(~src/assets/images/avatar.png);
       background-repeat: no-repeat;
@@ -84,12 +79,12 @@ span{
       background-position: center;
       width: 3vw;
       height: 3.25vw;
-      margin:1%;
+      margin:1%; //sgrhs.bienestar@essalud.gob.pe
     }
     .body{
       display: block;
       padding-top: 2%;
-      color: black;
+      color: #422918;
       align-self: center;
       .nomBirth{
         font-weight: bold;
@@ -97,43 +92,99 @@ span{
     }
   }
 }
-.boxSST, .boxEncuesta, .boxSST-2{
-  margin: 8px 0px 0px 0px;
-  height: 140px;
+.changeBirth{
   cursor: pointer;
-  border: #37485f;
+  color: #3c3c3b;
+  display: flex;
+  position: absolute;
+  right: 0.5vw;
+  font-size: 1vw;
+}
+.boxBorde{
+  margin: 8px 0px 0px 0px;
+  border: var(--color-bordes);
   border-style:solid;
   border-radius: 11px;
-  width: 100%;
+  border-width: 2.5px;
 }
-.boxSST {
-  background-image: url(~src/assets/images/SST_logo.png);
+.boxSST, .boxEncuesta, .boxSST-2, .boxSistemas, .boxRenueva{
+  cursor: pointer;
+  font-weight: bold;
+  align-content: center;
+  display: flex;
+  color: #3c3c3b;
+}
+.boxSST, .boxRenueva{
+  height: 7.5vw;
+  width: 100%;
+  background-image: url(~src/assets/images/btnCapacitaciones.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  display: grid;
 }
-.boxEncuesta{
+.boxRenueva{
+  background-image: url(~src/assets/images/renuevaBoton.png);
+  background-size: auto;
+}
+.boxSistemas{
+  padding-left: 5vw;
+  height: 7.5vw;
+  width: 100%;
+  background-image: url(~src/assets/images/btnBackground.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  .contenido{
+    margin-top: 18px;
+    text-align: center;
+    width: 100%;
+  }
+}
+.boxEncuesta, .boxEncuestaRes{
   font-weight: bold;
-  align-content: center;
-  display: flex;
-  font-size: 3vw;
-  color: #37485f;
-  background-color: #8de4ff;
+  color: #3c3c3b;
+  width: 100%;
+  flex-wrap: wrap;
+  font-size: 1vw;
+  background-color: none;
+}
+.boxEncuestaRes{
+  padding: 3% 0% 3% 0%;
 }
 .boxSST-2{
-  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+  cursor: auto;
+  font-size: 12px;
+  background-color: #226bb2;
+  color: white;
+  span{
+     width: 100%;
+  }
+}
+.boxTemporizador, .boxPagos{
+  margin-bottom: 8px;
+  float: left;
   align-content: center;
-  display: flex;
-  font-size: 1.2vw;
-  color: #37485f;
-  background-color: #8de4ff;
+  text-align: center;
+  font-size: 0.9vw;
+}
+.boxPagos{
+  cursor: pointer;
+  // margin-left: 1%;
+  justify-items: center;
+  .imgPayment{
+    height: 3.5vw;
+    width: 3.5vw;
+  }
 }
 .info{
   margin: 2%;
   padding: 2%;
   cursor:auto;
-  border: #37485f;
+  border: var(--color-bordes);
   display: grid;
   border-style:solid;
   border-radius: 11px;
@@ -141,44 +192,103 @@ span{
   background-color: #ccebf5;
   align-content: center;
   justify-content: center;
-
 }
 .box2 {
-  margin: 8px;
+  .header{
+    font-size: 1.3vw;
+    position: relative;
+    height: 60px;
+    span{
+      text-align-last: center;
+    }
+  }
   height: 100%;
-  padding-bottom: 2%;
-  background: #dff1f4;
-  border-radius: 11px;
+  padding: 0 2% 1% 2%;
+  // background: #dff1f4;
   display: grid;
-  border: #37485f;
-  border-style:solid;
+  color: #575756;
   .body{
     display: contents;
   }
-  span{
-    color:#2b9ed8;
+  .buttonAdmImg{
+    position: absolute;
+    right: 0;
+    color: white;
+    background-color: var(--color-bordes);
   }
 }
-.imgCuadro{
-  border-radius: 11px;
+.boxPublicacion{
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 60%;
-  padding: 10px;
-  height: 100%;
+  margin:10px auto 10px auto;
+  overflow: hidden;
+  width: 100%;
+  height: 520px;
+  // height: 97.5%;
+  .descrPub{
+    font-size: 0.7vw;
+    font-weight: 550;
+    padding: 8px;
+    height: 34px;
+    color:white;
+    background: var(--color-subBordes);
+    // border-bottom: var(--color-bordes);
+    // border-bottom-style:solid;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  .containerImg{
+    // height: 100%;
+    .imgInfo{
+      // height:338px;
+      height: 486px;
+      cursor: pointer;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+  }
 }
-.imgCuadro_Msg{
-  border-radius: 11px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 60%;
-  padding: 10px;
-  height: 100%;
+
+.boxTemporizador{
+  padding-left: 5vw;
+  font-weight: bold;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: white;
+  background-image: url(~src/assets/images/btnEventos.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom;
+  h5{
+    margin-bottom: 0.2rem;
+  }
+  span{
+    margin-top: 5px;
+  }
 }
+
+.boxCounter{
+  display: flex;
+  justify-content: center;
+  .boxTimer{
+    font-family:'Gotham-Ultra' !important;
+    border: white;
+    border-style:solid;
+    border-radius: 11px;
+    border-width: 2.5px;
+    padding: 1% 1% 0 1%;
+    margin: 0% 3% 0 3%;
+    min-width: 4.199999999999999vw;
+    span{
+      font-size: 1.75vw;
+      font-weight: bolder;
+    }
+  }
+}
+
 mat-grid-list {
-  
   mat-form-field {
     width: 90%;
     top:10px;
@@ -187,14 +297,38 @@ mat-grid-list {
 
 .image{
   margin: 4%;
-  width: 5vw;
-  height: 5vw;
+  width: 4.5vw;
+  height: 4.5vw;
   border-radius: 10%;
+}
+.opcionesAcortadas{
+  cursor: pointer;
+  width: 12.5vw;
+  height: 13vw;
+  background: #FFFFFF;
+  border: #226bb2;
+  border-style:solid;
+  border-radius: 11px;
+  border-width: 2.5px;
+  margin: 10px auto 10px auto;
+  mat-icon.material-icons{
+    font-size: 12vw;
+    color: #226bb2;
+  }
+  img{
+    padding: 7px;
+    height: 100%;
+  }
+}
+@media screen and (min-width: 1484px) {
+  .boxPublicacion{
+    width: 650px;
+  }
 }
 
 @media screen and (min-width: 1024px) {
-  .boxEncuesta{
-    font-size: 1vw;
+  .boxEncuesta, .boxEncuestaRes{
+    font-size: 0.9vw;
   }
   .nomBirth{
     font-size: 0.9vw; 
@@ -204,8 +338,15 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 840px) and (max-width: 1024px) {
+  .image{
+    width: 3.4vw;
+    height: 3.4vw;
+  }
+  .descrPub{
+    font-size: 1.4vw !important;
+  }
   .boxEncuesta{
-    font-size: 1.5vw;
+    font-size: 0.8vw;
   }
   .nomBirth{
     font-size: 0.9vw; 
@@ -215,25 +356,168 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 500px) and (max-width: 840px) {
+  .boxPublicacion{
+    height: 380px;
+    .containerImg{
+      .imgInfo{
+        height: 346px;
+      }
+    }
+  }
+  .box2{
+    .header{
+      font-size: 1.4vw !important;
+    }
+  }
+  .descrPub{
+    font-size: 1.4vw !important;
+  }
   .boxEncuesta{
     font-size: 2vw;
-  }
-  .nomBirth{
-    font-size: 2vw; 
-  }
-  .areaBirth{
-    font-size: 1.6vw;
   }
   icon{
     width:1px;
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 499px) {
+  .boxPublicacion{
+    height: 280px;
+    .containerImg{
+      .imgInfo{
+        height: 246px;
+      }
+    }
+  }
+  .box2{
+    .header{
+      font-size: 2.4vw !important;
+    }
+  }
+  .descrPub{
+    font-size: 2.4vw !important;
+  }
+}
+@media screen and (min-width: 840px) and (max-width: 1279px) {
+  .boxSST, .boxSistemas, .boxRenueva{
+    height: 84px;
+  }
+  .boxPublicacion{
+    height: 380px;
+    .containerImg{
+      .imgInfo{
+        height: 346px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 600px) and (max-width: 839px) {
   .nomBirth{
-    font-size: 2vw; 
+    font-size: 1.5vw;
   }
   .areaBirth{
-    font-size: 1.6vw;
+    font-size: 1.5vw;
   }
+}
+@media screen and (min-width: 600px) and (max-width: 890px) {
+  .boxSST, .boxSistemas{
+    height: 84px;
+  }
+  .changeBirth{
+    mat-icon{
+      display: contents;
+    }
+    .material-icons{
+      font-size: 2.3em;
+    }
+  }
+}
+@media screen and (max-width: 599px) {
+  .boxCounter{
+    .boxTimer{
+      min-width: 14.2vw;
+    }
+  }
+  .descrPub{
+    font-size: 2.4vw !important;
+  }
+  .boxCounter{
+    .boxTimer{
+      width: 15vw;
+      span{
+        font-size: 8.5vw;
+      }
+    }
+  }
+  .boxTemporizador{
+    font-size: 3.5vw;
+  }
+  .column1 {
+    width: 15%;
+  }
+  .column2 {
+    width: 85%;
+  } 
+  .header {
+  span.birthDescrp{
+    font-size: 3.5vw;
+  }
+  }
+  .nomBirth{
+    font-size: 3.2vw; 
+  }
+  .areaBirth{
+    font-size: 3.2vw; 
+  }
+  .boxBirth {
+    min-height: 476px;
+    width: 100%;
+    display: grid;
+    .header{
+      height: 35px !important;
+      img{
+        margin:3px 3px 3px 13px;
+        width: 2vw;
+      }
+    }
+    .OnomasticosDia{
+      min-height: 432px;
+      top: 0;
+      overflow-y: auto;
+    }
+    .contenido{
+      margin:2px 0 2px 0;
+      display: flex;
+      .num{
+        background-image: url(~src/assets/images/avatar.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        width: 3vw;
+        height: 3.25vw;
+        margin:1%;
+      }
+      .body{
+        display: block;
+        padding-top: 2%;
+        color: #422918;
+        align-self: center;
+        .nomBirth{
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.button-color{
+  color: white;
+  background-color: var(--color-bordes);
+}
+
+.boxRowButtons{
+  display: block;
+  margin:10px auto 10px auto;
+  color:white;
+  text-align: right;
 }

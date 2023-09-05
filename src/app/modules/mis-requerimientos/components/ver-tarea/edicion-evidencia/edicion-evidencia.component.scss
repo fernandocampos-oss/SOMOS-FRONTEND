@@ -1,0 +1,12 @@
+.imageBox{
+    height: 345px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    button{
+        width: 100%;
+    }
+}
+img{
+    height: 16rem;
+}

@@ -7,6 +7,7 @@ import { CambiarClaveComponent } from './cambiar-clave/cambiar-clave.component';
 import { RegistroComponent } from './registro/registro.component';
 import { AuthComponent } from './auth.component';
 import { ConfirmarCambioClaveComponent } from './confirmar-cambio-clave/confirmar-cambio-clave.component';
+import { LoginAdminComponent } from './login-admin/login-admin.component';
 
 export const ROUTES: Routes = [
   {
@@ -16,6 +17,10 @@ export const ROUTES: Routes = [
       {
         path: AppRoute.LOGIN,
         component: LoginComponent,
+      },
+      {
+        path: AppRoute.LOGIN_ADMIN,
+        component: LoginAdminComponent,
       },
       {
         path: AppRoute.CAMBIAR_CLAVE,

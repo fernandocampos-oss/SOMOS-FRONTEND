@@ -1,8 +1,9 @@
 <div class="page">
     <div class="matero-page-header">
       <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon> Gestión del Rendimiento<br>
-      <small class="mr-2">Gestionar tus tareas y tu equipo</small><br>
+      <small class="mr-2">Gestiona tu equipo y sus tareas</small><br>
       </h1>
+      <!-- <button mat-raised-button color="primary" class="search" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button> -->
     </div>
     <div class="page__body">
       <div class="card shadow">
@@ -13,9 +14,9 @@
           <mat-tab label="Mi Equipo" *ngIf="rol != trabajador">
             <gestion-rendimiento-mi-equipo></gestion-rendimiento-mi-equipo>
           </mat-tab>
-          <mat-tab label="Mis Tareas">
+          <!-- <mat-tab label="Mis Tareas">
             <gestion-rendimiento-mis-tareas></gestion-rendimiento-mis-tareas>
-          </mat-tab>
+          </mat-tab> -->
         </mat-tab-group>
       </div>
     </div>

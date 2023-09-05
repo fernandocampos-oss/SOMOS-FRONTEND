@@ -1,0 +1,70 @@
+.header{    
+    text-align: center;
+    margin: 0 0 2% 0;
+}
+.contenedor{
+    position: relative;
+    .closeButton{
+        position: absolute;
+        right: -24px;
+        top: -28px;
+    }
+}
+
+.periodosPago{
+    background: var(--color-subBordes);
+    font-weight: 700;
+    color: white;
+}
+.infoPago{
+    background: var(--color-bordes);
+    font-weight: 700;
+    color: white;
+}
+.dataPago{
+    background: #e6effa;
+}
+mat-grid-list{
+    border: #37485f;
+    border-style:solid;
+    border-width: thin;
+}
+.mat-button-toggle{
+    background: #eaf8fb;
+}
+.mat-button-toggle-checked{
+    background: #79ccf2;
+}
+mat-button-toggle-group, mat-button-toggle{
+    font-weight: bold;
+    font-family: "Nunito", sans-serif;
+    width: 100%;
+}
+mat-button-toggle-group, .txt2{
+    margin-bottom: 2%;
+}
+mat-grid-tile{
+    border: #37485f;
+    border-style:solid;
+    border-width: thin;
+}
+.optPagos, .tablaContenidos{
+    font-size: 0.8vw;
+}
+.txtCenter{
+    text-align: center;
+}
+
+@media screen and (max-width: 1024px) {
+    .tablaContenidos{
+        font-size: 1.3vw;
+    }
+}
+@media screen and (max-width: 650px) {
+    .tablaContenidos{
+        font-size: 13px;
+    }
+    .optPagos{
+        font-size: 7px;
+    }
+}
