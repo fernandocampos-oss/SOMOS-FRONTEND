@@ -51,6 +51,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   msgErrores = false;
   // <!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
   idProyectoGrupo: number;
+  idLider: number;
 
   formDatosGenerales = this._formBuilder.group({
     ctrlCategoria: ['', Validators.required],
@@ -63,7 +64,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   // get imagenGrupoField() {
   //   return this.formDatosGenerales.get('ctrlImgGrupo64');
   // }
-  
+
   integranteControl = new FormControl('');
   jefeControl = new FormControl('');
   filteredOptions: Observable<any[]>;
@@ -143,10 +144,11 @@ export class FormRenuevaEssaludComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.idLider = this.authService.getUserSession().id;
     this.cargarUsuariosRed();
     this.cargarLider();
     this.renuevaService.getProyecto().subscribe((data) => {
-      const dataObj = Object(data[0]);console.log(data)
+      const dataObj = Object(data[0]);
       if (data[0]){
         this.hayDatos = true;
         this.idProyecto = dataObj.idProyecto;
@@ -183,7 +185,8 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   cargarDataProyecto(data: any) {
     this.estadoInscripcion = data.enviado;
-    console.log(data)
+    this.idLider = data.idUsuario;
+    console.log(data);
 
     // Data grupo
     this.formDatosGenerales.controls.ctrlNomGrupo.setValue(data.grupo.nombre);
@@ -195,13 +198,21 @@ export class FormRenuevaEssaludComponent implements OnInit {
     if (jefesFiltrados.length > 0) {
       this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
     }
-    data.grupo.miembros.forEach(m => {
-      if (m.idUsuario === this.authService.getUserSession().id) {
-        this.listaIntegrantes[0] = m;
-      } else {
-        this.listaIntegrantes.push(m);
-      }
-    });
+    if (this.authService.getUserSession().id === this.idLider) {
+      data.grupo.miembros.forEach(m => {
+        if (m.idUsuario === this.idLider) {
+          this.listaIntegrantes[0] = m;
+        } else {
+          this.listaIntegrantes.push(m);
+        }
+      });
+    } else {
+      this.listaIntegrantes = [];
+      data.grupo.miembros.forEach(m => {
+          this.listaIntegrantes.push(m);
+      });
+    }
+
     this.table.renderRows();
     if (data.grupo.imagenBase64) {
       this.retrievedImage = `data:image/png;base64,${data.grupo.imagenBase64}`;
@@ -239,7 +250,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
     if (data.implementacion.archivoBase64) {
       this.retrievedPdf = `data:application/pdf;base64,${data.implementacion.archivoBase64}`;
     }
-      
+
     if(this.selectedValueL === 'Si'){
       this.formImplementacion.controls.ctrlSostenibleFundamento.setValidators([Validators.required]);
       this.formImplementacion.controls['ctrlSostenibleFundamento'].updateValueAndValidity();
@@ -273,21 +284,24 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this.userService.get(this.authService.getUserSession().id).subscribe((data) => {
       this.formDatosGenerales.controls.ctrlRed.setValue(data.red);
       this.formDatosGenerales.controls.ctrlRed.disable();
-      this.listaIntegrantes.push({
-        apellidos: data.apellidos,
-        cargo: data.cargo,
-        codigoPlanilla: data.codigoPlanilla,
-        correo: data.correo,
-        fechaNacimiento: data.fechaNacimiento,
-        idUsuario: data.idUsuario,
-        nombres: data.nombres,
-        numeroCelular: data.numeroCelular,
-        numeroDocumento: data.numeroDocumento,
-        red: data.red
-      });
-      this.table.renderRows();
+      if (this.listaIntegrantes.length === 0) {
+        this.listaIntegrantes.push({
+          apellidos: data.apellidos,
+          cargo: data.cargo,
+          codigoPlanilla: data.codigoPlanilla,
+          correo: data.correo,
+          fechaNacimiento: data.fechaNacimiento,
+          idUsuario: data.idUsuario,
+          nombres: data.nombres,
+          numeroCelular: data.numeroCelular,
+          numeroDocumento: data.numeroDocumento,
+          red: data.red
+        });
+        this.table.renderRows();
+      }
     });
   }
+
   async cargarUsuariosRed() {
     const listPersonal = await this.renuevaService.getUsuariosMismaRed().then((data) => {
       if (data) {
@@ -614,7 +628,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
             enviado: this.estadoInscripcion
           }
         });
-    
+
         dialogRef.afterClosed().subscribe((result) => {
           if (result) {
               this._notification.success('Se enviaron los datos de la inscripción');
