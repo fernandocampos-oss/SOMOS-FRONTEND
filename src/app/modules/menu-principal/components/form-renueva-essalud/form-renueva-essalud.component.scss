@@ -118,6 +118,12 @@
             width: 242px;
         }
     }
+    td {
+        font-size: 11px;
+    }
+    .card.shadow{
+        padding: 2rem 2px;
+    }
 }
 @media screen and (min-width: 500px) {
     h1{

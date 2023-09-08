@@ -68,7 +68,7 @@
                             <mat-form-field appearance="outline">
                               <input matInput required formControlName="ctrlRed">
                             </mat-form-field>
-                            <h4>Nombre completo del Jefe de Red Prestacional, Asistencial, IPRESS, Establecimiento de Salud o Área administrativa a la que pertenece</h4>
+                            <h4>Nombre completo del Jefe de Red Prestacional, Asistencial, IPRESS, Establecimiento de Salud o Área administrativa a la que pertenece (debe estar registrado en Somos Essalud)</h4>
                             <mat-form-field appearance="outline">
                               <input type="text" required matInput [formControl]="jefeControl" name="nombreJefe" [matAutocomplete]="autoJefe">
                               <mat-autocomplete #autoJefe="matAutocomplete" [displayWith]="displayFnJefe"
@@ -134,7 +134,7 @@
                             </mat-radio-group>
                         </div>
                         <div class="col-span-2">
-                            <h4>Datos de miembros del grupo</h4>
+                            <h4>Datos de miembros del grupo (deben estar registrados en Somos Essalud)</h4>
                             <div class="inputBtn">
                                 <mat-form-field appearance="outline">
                                   <mat-label>Nombre de miembro</mat-label>
@@ -196,21 +196,25 @@
                         <mat-datepicker-toggle matSuffix [for]="fechaInicioPicker"></mat-datepicker-toggle>
                         <mat-datepicker #fechaInicioPicker startView="multi-year"></mat-datepicker>
                     </mat-form-field>
-                    <h4>Describir la motivación por la cual postulan (200 palabras)</h4>
+                    <h4>Describir la motivación por la cual postulan (máximo 200 palabras)</h4>
                     <mat-form-field appearance="outline">
                         <textarea matInput required formControlName="ctrlMotivacion"></textarea>
+                        <mat-error *ngIf="formDatosProyecto.get('ctrlMotivacion').hasError('maxWords')">El texto debe tener un máximo de {{ formDatosProyecto.get('ctrlMotivacion').getError('maxWords').max }} palabras ({{ formDatosProyecto.get('ctrlMotivacion').getError('maxWords').actual }} palabras encontradas).</mat-error>
                     </mat-form-field>
-                    <h4>Descripción general de la acción innovadora (500 palabras)</h4>
+                    <h4>Descripción general de la acción innovadora (máximo 500 palabras)</h4>
                     <mat-form-field appearance="outline">
                         <textarea matInput required formControlName="ctrlAccionInnovadora"></textarea>
+                        <mat-error *ngIf="formDatosProyecto.get('ctrlAccionInnovadora').hasError('maxWords')">El texto debe tener un máximo de {{ formDatosProyecto.get('ctrlAccionInnovadora').getError('maxWords').max }} palabras ({{ formDatosProyecto.get('ctrlAccionInnovadora').getError('maxWords').actual }} palabras encontradas).</mat-error>
                     </mat-form-field>
-                    <h4>Describir el contexto inicial (la situación inicial antes de implementar la acción innovadora)	(250 palabras)</h4>
+                    <h4>Describir el contexto inicial (la situación inicial antes de implementar la acción innovadora)	(máximo 250 palabras)</h4>
                     <mat-form-field appearance="outline">
                         <textarea matInput required formControlName="ctrlContextoInicial"></textarea>
+                        <mat-error *ngIf="formDatosProyecto.get('ctrlContextoInicial').hasError('maxWords')">El texto debe tener un máximo de {{ formDatosProyecto.get('ctrlContextoInicial').getError('maxWords').max }} palabras ({{ formDatosProyecto.get('ctrlContextoInicial').getError('maxWords').actual }} palabras encontradas).</mat-error>
                     </mat-form-field>
-                    <h4>¿Qué es lo innovador de esta acción implementada? (250 palabras)</h4>
+                    <h4>¿Qué es lo innovador de esta acción implementada? (máximo 250 palabras)</h4>
                     <mat-form-field appearance="outline">
                         <textarea matInput required formControlName="ctrlInnovador"></textarea>
+                        <mat-error *ngIf="formDatosProyecto.get('ctrlInnovador').hasError('maxWords')">El texto debe tener un máximo de {{ formDatosProyecto.get('ctrlInnovador').getError('maxWords').max }} palabras ({{ formDatosProyecto.get('ctrlInnovador').getError('maxWords').actual }} palabras encontradas).</mat-error>
                     </mat-form-field>
                     <h4>Mencionar los principales indicadores de medición de resultados y/o impacto (máximo seis indicadores que miden el cambio o beneficio generado)</h4>
                     <mat-form-field appearance="outline">
@@ -226,7 +230,7 @@
             <!------------------------------------------------------- Tercer paso: Datos sobre como se implementó el proyecto ------------------------------------------------------>
             <mat-step label="Implementación" state="build" [stepControl]="formImplementacion">
                 <div class="todo" [formGroup]="formImplementacion">
-                    <h4>Indicar los principales resultados e impacto, luego de implementada la acción innovadora. (300 palabras)</h4>
+                    <h4>Indicar los principales resultados e impacto, luego de implementada la acción innovadora. (máximo 300 palabras)</h4>
                     <mat-form-field appearance="outline">
                         <textarea matInput formControlName="ctrlResultado"></textarea>
                     </mat-form-field>
@@ -247,9 +251,10 @@
                         <mat-radio-button value="Si"> Si</mat-radio-button>&nbsp;
                     </mat-radio-group>
                     <div *ngIf="selectedValueN === 'Si'" class="subPregunta">
-                        <h4>Indicar las condiciones para la replicabilidad de la acción innovadora (400 palabras)</h4>
+                        <h4>Indicar las condiciones para la replicabilidad de la acción innovadora (máximo 400 palabras)</h4>
                         <mat-form-field appearance="outline">
                             <textarea matInput formControlName="ctrlReplicableFundamento"></textarea>
+                            <mat-error *ngIf="formImplementacion.get('ctrlReplicableFundamento').hasError('maxWords')">El texto debe tener un máximo de {{ formImplementacion.get('ctrlReplicableFundamento').getError('maxWords').max }} palabras ({{ formImplementacion.get('ctrlReplicableFundamento').getError('maxWords').actual }} palabras encontradas).</mat-error>
                         </mat-form-field>
                     </div>
                     <h4>¿La acción innovadora utiliza la tecnología?</h4>
@@ -258,9 +263,10 @@
                         <mat-radio-button value="Si"> Si</mat-radio-button>&nbsp;
                     </mat-radio-group>
                     <div *ngIf="selectedValueO === 'Si'" class="subPregunta">
-                        <h4>¿Qué tipo de tecnología y de qué manera se utiliza? (200 palabras)</h4>
+                        <h4>¿Qué tipo de tecnología y de qué manera se utiliza? (máximo 200 palabras)</h4>
                         <mat-form-field appearance="outline">
                             <textarea matInput formControlName="ctrlTecnologiaFundamento"></textarea>
+                            <mat-error *ngIf="formImplementacion.get('ctrlTecnologiaFundamento').hasError('maxWords')">El texto debe tener un máximo de {{ formImplementacion.get('ctrlTecnologiaFundamento').getError('maxWords').max }} palabras ({{ formImplementacion.get('ctrlTecnologiaFundamento').getError('maxWords').actual }} palabras encontradas).</mat-error>
                         </mat-form-field>
                     </div>
                     <h4>¿Indicar a qué servicios dentro de Essalud beneficia la acción innovadora?</h4>

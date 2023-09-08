@@ -1,18 +1,85 @@
 <div *ngIf="mostrar">
     <div class="dialogEncuesta">
-        <h3>Navidad EsSalud 2023</h3>
-        <p>Estás de acuerdo que la entrega sea:</p>
-        <mat-radio-group aria-label="Select an option">
+        <h3>Elecciones 2023</h3>
+        <p style="text-align: center;">Seleccione una opción por cada categoría</p>
+        <div class="columnCategorias">
+            <div class="elementoCat">
+                Categoría 1
+            </div>
+            <div class="elementoCat">
+                Categoría 2
+            </div>
+            <div class="elementoCat">
+                Categoría 3
+            </div>
+            <div class="candidato">
+                <ng-container *ngFor="let cat1 of candidatos.firstCategoria, index as i">
+                    <div class="candOpt" *ngIf="i != candidatos.firstCategoria.length-1" (click)="selectCand(i, cat1.cat)" [ngClass]="{'selected' : cat1.selected, 'noSelected': !cat1.selected}">
+                        <div class="candDescrp">
+                            <span>{{cat1.nombre}}</span>
+                        </div>
+                        <div class="imgCand">
+                            <img src="assets/images/personalAdmin.png">
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="candidato">
+                <ng-container *ngFor="let cat2 of candidatos.secondCategoria, index as i">
+                    <div class="candOpt" *ngIf="i != candidatos.secondCategoria.length-1" (click)="selectCand(i, cat2.cat)" [ngClass]="{'selected' : cat2.selected, 'noSelected': !cat2.selected}">
+                        <div class="candDescrp">
+                            <span>{{cat2.nombre}}</span>
+                        </div>
+                        <div class="imgCand">
+                            <img src="assets/images/personalAdmin.png">
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="candidato">
+                <ng-container *ngFor="let cat3 of candidatos.thirdCategoria, index as i">
+                    <div class="candOpt" *ngIf="i != candidatos.thirdCategoria.length-1" (click)="selectCand(i, cat3.cat)" [ngClass]="{'selected' : cat3.selected, 'noSelected': !cat3.selected}">
+                        <div class="candDescrp">
+                            <span>{{cat3.nombre}}</span>
+                        </div>
+                        <div class="imgCand">
+                            <img src="assets/images/personalAdmin.png">
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="candidato noOption">
+                <div class="candOpt" (click)="selectCand(candidatos.firstCategoria.length-1, 0)" [ngClass]="{'selected' : candidatos.firstCategoria[candidatos.firstCategoria.length-1].selected, 'noSelected': !candidatos.firstCategoria[candidatos.firstCategoria.length-1].selected}">
+                    <div class="candDescrp">
+                        <span>Ningún Candidato</span>
+                    </div>
+                </div>
+            </div>
+            <div class="candidato noOption">
+                <div class="candOpt" (click)="selectCand(candidatos.secondCategoria.length-1, 1)" [ngClass]="{'selected' : candidatos.secondCategoria[candidatos.secondCategoria.length-1].selected, 'noSelected': !candidatos.secondCategoria[candidatos.secondCategoria.length-1].selected}">
+                    <div class="candDescrp">
+                        <span>Ningún Candidato</span>
+                    </div>
+                </div>
+            </div>
+            <div class="candidato noOption">
+                <div class="candOpt" (click)="selectCand(candidatos.thirdCategoria.length-1, 2)" [ngClass]="{'selected' : candidatos.thirdCategoria[candidatos.thirdCategoria.length-1].selected, 'noSelected': !candidatos.thirdCategoria[candidatos.thirdCategoria.length-1].selected}">
+                    <div class="candDescrp">
+                        <span>Ningún Candidato</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <mat-radio-group aria-label="Select an option">
             <div class="containerOpciones">
-                <div class="opcionesEncuestaSimple"
+                <div class="opcionesEncuestaSimple" (click)="enableDisableRule(1)"
                 [ngClass]="{'confirm' : toggle, 'option': !toggle}">
                     <div class="options">
                         <img src="assets/images/creditCard.png">
-                        <!-- <img src="assets/images/creditCard.png"> -->
                         <p>{{alternativas[0].descripcion}}</p>
                     </div>
                 </div>
-                <div class="opcionesEncuestaSimple"
+                <div class="opcionesEncuestaSimple" (click)="enableDisableRule(2)"
                 [ngClass]="{'confirm' : toggle2, 'option': !toggle2}">
                     <div class="options">
                         <img src="assets/images/moneyIcon.png">
@@ -30,7 +97,7 @@
                     (click)="enableDisableRule(2)">Elegir</button>
                 </mat-grid-tile>
             </mat-grid-list>
-        </mat-radio-group>
+        </mat-radio-group> -->
     </div>
         <mat-dialog-actions>
                 <button mat-button mat-dialog-close>Cerrar</button>

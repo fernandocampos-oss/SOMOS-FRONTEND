@@ -18,6 +18,21 @@ import { DatosGrupo, DescripcionProyecto, Implementacion, InscripcionRenueva } f
 import * as moment from 'moment';
 import { ConfirmInscripcionComponent } from './confirm-inscripcion/confirm-inscripcion.component';
 
+function maxWordsValidator(maxWords: number) {
+  return (control: FormControl): { [key: string]: any } | null => {
+    const value = control.value;
+    if (!value) return null;
+
+    const wordCount = value.trim().split(/\s+/).length;
+
+    if (wordCount > maxWords) {
+      return { 'maxWords': { max: maxWords, actual: wordCount } };
+    }
+
+    return null;
+  };
+}
+
 @Component({
   selector: 'app-form-renueva-essalud',
   templateUrl: './form-renueva-essalud.component.html',
@@ -87,10 +102,10 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   formDatosProyecto = this._formBuilder.group({
     ctrlFechaImplementacion: [null, Validators.required],
-    ctrlMotivacion: [null, [Validators.required, Validators.maxLength(600)]],
-    ctrlAccionInnovadora: [null, [Validators.required, Validators.maxLength(1200)]],
-    ctrlContextoInicial: [null, [Validators.required, Validators.maxLength(750)]],
-    ctrlInnovador: [null, [Validators.required, Validators.maxLength(750)]],
+    ctrlMotivacion: [null, [Validators.required, maxWordsValidator(200)]],
+    ctrlAccionInnovadora: [null, [Validators.required, maxWordsValidator(500)]],
+    ctrlContextoInicial: [null, [Validators.required, maxWordsValidator(250)]],
+    ctrlInnovador: [null, [Validators.required, maxWordsValidator(250)]],
     ctrlIndicadores: [null, Validators.required],
   });
 
@@ -108,7 +123,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   isPdfUpdate = false;
 
   formImplementacion = this._formBuilder.group({
-    ctrlResultado: ['', [Validators.required, Validators.maxLength(900)]],
+    ctrlResultado: ['', [Validators.required, maxWordsValidator(300)]],
     ctrlSostenible: [null, Validators.required],
     ctrlSostenibleFundamento: [null],
     ctrlReplicable: [null, Validators.required],
@@ -194,9 +209,11 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this.formDatosGenerales.controls.ctrlJefeNombre.setValue(data.grupo.jefe);
     this.formDatosGenerales.controls.ctrlCategoria.setValue(data.grupo.categoria);
     // this.formDatosGenerales.controls.ctrlImgGrupo64.setValue(data.grupo.imagenBase64);
-    const jefesFiltrados: any[] = this._filterJefe(data.grupo.jefe);
-    if (jefesFiltrados.length > 0) {
-      this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
+    if(data.grupo.jefe){
+      const jefesFiltrados: any[] = this._filterJefe(data.grupo.jefe ? data.grupo.jefe : undefined);
+      if (jefesFiltrados.length > 0) {
+        this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
+      }
     }
     if (this.authService.getUserSession().id === this.idLider) {
       data.grupo.miembros.forEach(m => {
@@ -257,12 +274,12 @@ export class FormRenuevaEssaludComponent implements OnInit {
     }
 
     if(this.selectedValueN === 'Si'){
-      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, Validators.maxLength(900)]);
+      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, maxWordsValidator(400)]);
       this.formImplementacion.controls['ctrlReplicableFundamento'].updateValueAndValidity();
     }
 
     if(this.selectedValueO === 'Si'){
-      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, Validators.maxLength(600)]);
+      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, maxWordsValidator(200)]);
       this.formImplementacion.controls['ctrlTecnologiaFundamento'].updateValueAndValidity();
     }
 
@@ -491,7 +508,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   onChangeN(event: MatRadioChange) {
     this.selectedValueN = event.value;
     if(event.value === 'Si'){
-      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, Validators.maxLength(900)]);
+      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, maxWordsValidator(400)]);
     }
     else{
       this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([]);
@@ -503,7 +520,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   onChangeO(event: MatRadioChange) {
     this.selectedValueO = event.value;
     if(event.value === 'Si'){
-      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, Validators.maxLength(600)]);
+      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, maxWordsValidator(200)]);
     }
     else{
       this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([]);

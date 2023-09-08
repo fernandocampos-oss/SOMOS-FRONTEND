@@ -14,6 +14,10 @@ export class EncuestaSimpleComponent implements OnInit {
 
   datosEncuesta: MenuEncuestaShow;
 
+  candidatos = {firstCategoria: [{nombre: 'Nombre Candidato 1', selected: false, cat: 0}, {nombre: 'Nombre Candidato 2', selected: false, cat: 0}, {nombre: 'Nombre Candidato 3', selected: false, cat: 0}, {nombre: 'Ninguna opción', selected: false, cat: 0}],
+  secondCategoria: [{nombre: 'Nombre Candidato 1', selected: false, cat: 1}, {nombre: 'Nombre Candidato 2', selected: false, cat: 1}, {nombre: 'Ninguna opción', selected: false, cat: 1}],
+  thirdCategoria: [{nombre: 'Nombre Candidato 1', selected: false, cat: 2}, {nombre: 'Nombre Candidato 2', selected: false, cat: 2}, {nombre: 'Nombre Candidato 3', selected: false, cat: 2}, {nombre: 'Ninguna opción', selected: false, cat: 2}]}
+
   alternativas = [{valor:0, idAlternativa: 0, descripcion:''},{valor:0, idAlternativa: 0, descripcion:''}]
   toggle = false;
   toggle2 = false;
@@ -56,8 +60,25 @@ export class EncuestaSimpleComponent implements OnInit {
     }
   }
 
+  selectCand(index, categoria){
+    switch (categoria) {
+      case 0:
+        this.candidatos.firstCategoria.map(x=>x.selected = false);
+        this.candidatos.firstCategoria[index].selected = true
+        break;
+      case 1:
+        this.candidatos.secondCategoria.map(x=>x.selected = false);
+        this.candidatos.secondCategoria[index].selected = true
+        break;
+      case 2:
+        this.candidatos.thirdCategoria.map(x=>x.selected = false);
+        this.candidatos.thirdCategoria[index].selected = true
+        break;
+    }
+  }
+
   sendConfirmation(option) {
-    if(option == 0){
+    if(false){
       this._notification.warning("Debe elegir una opción");
     }
     else{
