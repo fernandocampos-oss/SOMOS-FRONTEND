@@ -15,6 +15,7 @@ import { EncuestaSimpleComponent } from '../components/encuesta-simple/encuesta-
 import { ShowSistemasComponent } from '../components/show-sistemas/show-sistemas.component';
 import { AppRoute } from '@data/constants';
 import { Role } from '@data/enums';
+import { RegisterInscripcionComponent } from '../components/register-inscripcion/register-inscripcion.component';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -97,6 +98,7 @@ export class MenuPrincipalComponent implements OnInit {
       });
     this._menuService.getPublicaciones()
     .subscribe( (data) => {
+      console.log(data)
       this.publicaciones = data;
     }
     );
@@ -301,6 +303,41 @@ export class MenuPrincipalComponent implements OnInit {
         this.rolTemporal_4 = 4;
       }
     }
+  }
+
+  showinscripcionView(idInscripcion: number, publicacionData){
+
+    const dialogRef: MatDialogRef<RegisterInscripcionComponent> = this.dialog.open(RegisterInscripcionComponent, {
+      disableClose: false,
+      // minWidth: '22em',
+      maxWidth:'480px',
+      autoFocus: false,
+      data:{
+        obj: idInscripcion,
+        pubData: {
+          imagenBase64: publicacionData.imagenBase64,
+          titulo: publicacionData.titulo
+        }
+      }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          const dialogRef2: MatDialogRef<RegisterInscripcionComponent> = this.dialog.open(RegisterInscripcionComponent, {
+            disableClose: false,
+            // minWidth: '22em',
+            maxWidth:'480px',
+            autoFocus: false,
+            data:{
+              obj: idInscripcion,
+              pubData: {
+                imagenBase64: publicacionData.imagenBase64,
+                titulo: publicacionData.titulo
+              }
+            }
+            });
+        }
+      });
   }
 
 }

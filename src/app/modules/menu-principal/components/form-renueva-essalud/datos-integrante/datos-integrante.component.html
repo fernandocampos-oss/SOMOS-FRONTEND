@@ -37,7 +37,13 @@
                 <input matInput formControlName="frmFecNac">
             </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="this.distribucionCorreo">
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Unidad Organizativa</mat-label>
+                <input matInput formControlName="frmUnidad">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
             <mat-form-field appearance="outline">
                 <mat-label>Correo</mat-label>
                 <input matInput formControlName="frmCorreo">

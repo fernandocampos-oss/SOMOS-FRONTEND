@@ -22,6 +22,7 @@ export class DatosIntegranteComponent implements OnInit {
     frmCelular: [''],
     frmFecNac: [''],
     frmCargo: [''],
+    frmUnidad: [''],
   });
 
   constructor(
@@ -31,6 +32,7 @@ export class DatosIntegranteComponent implements OnInit {
     private _formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+     console.log(this.data.integrante)
     this.responsive.observe([
       Breakpoints.XSmall,
       Breakpoints.Small
@@ -59,6 +61,8 @@ export class DatosIntegranteComponent implements OnInit {
     this.formIntegrante.controls["frmFecNac"].disable();
     this.formIntegrante.controls["frmCargo"].setValue(this.data.integrante.cargo);
     this.formIntegrante.controls["frmCargo"].disable();
+    this.formIntegrante.controls["frmUnidad"].setValue(this.data.integrante.unidad);
+    this.formIntegrante.controls["frmUnidad"].disable();
     if (this.data.enviado) {
       this.formIntegrante.disable();
     }

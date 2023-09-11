@@ -300,6 +300,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   cargarLider(){
     this.userService.get(this.authService.getUserSession().id).subscribe((data) => {
       this.formDatosGenerales.controls.ctrlRed.setValue(data.red);
+      console.log(data.unidad)
       this.formDatosGenerales.controls.ctrlRed.disable();
       if (this.listaIntegrantes.length === 0) {
         this.listaIntegrantes.push({
@@ -312,8 +313,10 @@ export class FormRenuevaEssaludComponent implements OnInit {
           nombres: data.nombres,
           numeroCelular: data.numeroCelular,
           numeroDocumento: data.numeroDocumento,
-          red: data.red
+          red: data.red,
+          unidad: data.unidad
         });
+        console.log(this.listaIntegrantes);
         this.table.renderRows();
       }
     });
