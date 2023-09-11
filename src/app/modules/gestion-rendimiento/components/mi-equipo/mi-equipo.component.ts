@@ -133,7 +133,7 @@ export class MiEquipoComponent implements OnInit {
     });
   }
 
-  showDialogTasks(element) {
+  verRequerimientos(element) {
     const dialogRef: MatDialogRef<UserTaskComponent> = this.dialog.open(UserTaskComponent, {
       disableClose: false,
       width: '70%',

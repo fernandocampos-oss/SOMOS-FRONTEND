@@ -11,12 +11,21 @@
           <br>
           <div style="text-align: left">
             <button mat-raised-button class="nuevo-button" (click)="registrarRequerimiento()">
-              <mat-icon>add</mat-icon>
-              Nuevo
+              <mat-icon>add_circle</mat-icon>&nbsp; Nuevo
             </button>
           </div>
 
           <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="item">
+              <th mat-header-cell *matHeaderCellDef>N°</th>
+              <td mat-cell *matCellDef="let element, index as i"> {{i+1}} </td>
+            </ng-container>
+            <ng-container matColumnDef="identificador">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Itentificador</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.requerimiento.identificador}}
+              </td>
+            </ng-container>
             <ng-container matColumnDef="requerimiento">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Requerimiento</th>
               <td mat-cell *matCellDef="let element">
@@ -24,35 +33,41 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="fecha_asignacion">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Asignación</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Asignación</th>
               <td mat-cell *matCellDef="let element">
                 {{element.requerimiento.fechaCreacion | date: 'dd/MM/y'}}
               </td>
             </ng-container>
+            <ng-container matColumnDef="tipo_ingreso">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ingreso</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.requerimiento.tipoIngreso.descripcion}}
+              </td>
+            </ng-container>
             <ng-container matColumnDef="avance">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Porcentaje de avance</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Avance (%)</th>
               <td mat-cell *matCellDef="let element">
                 {{element.requerimiento.porcentajeAvance}}%
               </td>
             </ng-container>
             <ng-container matColumnDef="estado">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>estado</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
               <td mat-cell *matCellDef="let element">
-                {{element.estadoRequerimiento.descripcion}}
+                <mat-chip-list>
+                  <mat-chip
+                    [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2}">
+                    {{element.estadoRequerimiento.descripcion}}
+                  </mat-chip>
+                </mat-chip-list>
               </td>
             </ng-container>
             <ng-container matColumnDef="acciones">
               <th mat-header-cell *matHeaderCellDef width="120px"> Acciones </th>
               <td mat-cell *matCellDef="let element">
-                <!-- <button mat-icon-button color="primary" matTooltip="Ver Requerimiento"
-                  [disabled]="(element.estadoRequerimiento.codigo == 1 ) ? true : false"
-                  (click)="verRequerimiento(element)">
-                  <mat-icon>remove_red_eye</mat-icon>
-                </button> -->
-                <button mat-icon-button class="has-success" matTooltip="Ver detalle"
+                <button mat-raised-button class="btn-tarea"
                   [disabled]="(element.estadoRequerimiento.codigo == 1 ) ? true : false"
                   (click)="verDetalleRequerimiento(element, false)">
-                  <mat-icon>edit</mat-icon>
+                  <mat-icon>library_books</mat-icon>&nbsp; Mis tareas
                 </button>
               </td>
             </ng-container>
@@ -66,6 +81,16 @@
           <br>
           <br>
           <table mat-table [dataSource]="dataSource_finalizado" matSort>
+            <ng-container matColumnDef="item">
+              <th mat-header-cell *matHeaderCellDef>N°</th>
+              <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+            </ng-container>
+            <ng-container matColumnDef="identificador">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Itentificador</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.requerimiento.identificador}}
+              </td>
+            </ng-container>
             <ng-container matColumnDef="requerimiento">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Requerimiento</th>
               <td mat-cell *matCellDef="let element">
@@ -73,26 +98,32 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="fecha_asignacion">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Asignación</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Asignación</th>
               <td mat-cell *matCellDef="let element">
                 {{element.requerimiento.fechaCreacion | date: 'dd/MM/y'}}
               </td>
             </ng-container>
+            <ng-container matColumnDef="tipo_ingreso">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ingreso</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.requerimiento.tipoIngreso.descripcion}}
+              </td>
+            </ng-container>
             <ng-container matColumnDef="avance">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Porcentaje de avance</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Avance (%)</th>
               <td mat-cell *matCellDef="let element">
                 <div style="text-align: center; width: 85%">
-                  {{element.requerimiento.porcentajeAvance}} %
-                  <mat-progress-bar mode="determinate" [value]="element.requerimiento.porcentajeAvance"></mat-progress-bar>
+                  100 %
+                  <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
                 </div>
               </td>
             </ng-container>
-            <ng-container matColumnDef="estado">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>estado</th>
+            <!-- <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
               <td mat-cell *matCellDef="let element">
                 {{element.estadoRequerimiento.descripcion}}
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns_finalizado"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns_finalizado;"></tr>
@@ -103,6 +134,16 @@
           <br>
           <br>
           <table mat-table [dataSource]="dataSource_rechazado" matSort>
+            <ng-container matColumnDef="item">
+              <th mat-header-cell *matHeaderCellDef>N°</th>
+              <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+            </ng-container>
+            <ng-container matColumnDef="identificador">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Itentificador</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.requerimiento.identificador}}
+              </td>
+            </ng-container>
             <ng-container matColumnDef="requerimiento">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Requerimiento</th>
               <td mat-cell *matCellDef="let element">
@@ -110,23 +151,29 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="fecha_asignacion">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Asignación</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Asignación</th>
               <td mat-cell *matCellDef="let element">
                 {{element.requerimiento.fechaCreacion | date: 'dd/MM/y'}}
               </td>
             </ng-container>
-            <ng-container matColumnDef="avance">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Porcentaje de avance</th>
+            <ng-container matColumnDef="tipo_ingreso">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Ingreso</th>
               <td mat-cell *matCellDef="let element">
-                {{element.requerimiento.porcentajeAvance}} %
+                {{element.requerimiento.tipoIngreso.descripcion}}
               </td>
             </ng-container>
-            <ng-container matColumnDef="estado">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>estado</th>
+            <ng-container matColumnDef="motivo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.motivo}}
+              </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
               <td mat-cell *matCellDef="let element">
                 {{element.estadoRequerimiento.descripcion}}
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns_rechazado"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns_rechazado;"></tr>

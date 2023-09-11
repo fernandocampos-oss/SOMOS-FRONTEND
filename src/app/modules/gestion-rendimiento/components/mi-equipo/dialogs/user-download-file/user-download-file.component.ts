@@ -30,50 +30,69 @@ export class UserDownloadFileComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.data)
-    this.idtarea = this.data.idTarea;
+    this.idtarea = this.data.model.idTarea;
     this.loadTable();
   }
 
-  loadTable() {
-    this.services.ListarArchivos(this.idtarea).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.dataSource = new MatTableDataSource(dataItem.data);
+  async loadTable() {
+    let listFiles = await this.services.getListarEvidenciasTarea(this.idtarea).then((data) => {
+      if (data.length > 0) {
+        this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
         this.dataSource = null;
-        if (dataItem.msj == "LISTA VACIA") {
-          this._notification.warning(dataItem.msj)
-        } else {
-          this._notification.error(dataItem.msj)
-        }
+        this._notification.warning("No se encontró evidencias");
       }
     });
   }
 
   downloadFile(element) {
-    this.services.DescargarArchivo(element.idArchivo).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        const byteString = window.atob(dataItem.data.base64);
+    console.log("File download", element)
+      if (element) {
+        const byteString = window.atob(element.imagenBase64);
         const arrayBuffer = new ArrayBuffer(byteString.length);
         const int8Array = new Uint8Array(arrayBuffer);
         for (let i = 0; i < byteString.length; i++) {
           int8Array[i] = byteString.charCodeAt(i);
         }
-        const blob = new Blob([int8Array], { type: dataItem.tipo });
+        const blob = new Blob([int8Array], { type: element.extension });
         let url = window.URL.createObjectURL(blob);
         let a = document.createElement('a');
         document.body.appendChild(a);
         a.setAttribute('style', 'display: none');
         a.href = url;
-        a.download = element.nombre + "." + element.ext;
+        a.download = "Evidencia" + "." + element.extension;
         a.click();
         window.URL.revokeObjectURL(url);
         a.remove();
       } else {
-        this._notification.error(dataItem.msj);
+        this._notification.error("Error al descargar imagen");
       }
-    });
+  
+
+    // this.services.DescargarArchivo(element.idEvidencia).subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     const byteString = window.atob(dataItem.data.base64);
+    //     const arrayBuffer = new ArrayBuffer(byteString.length);
+    //     const int8Array = new Uint8Array(arrayBuffer);
+    //     for (let i = 0; i < byteString.length; i++) {
+    //       int8Array[i] = byteString.charCodeAt(i);
+    //     }
+    //     const blob = new Blob([int8Array], { type: dataItem.tipo });
+    //     let url = window.URL.createObjectURL(blob);
+    //     let a = document.createElement('a');
+    //     document.body.appendChild(a);
+    //     a.setAttribute('style', 'display: none');
+    //     a.href = url;
+    //     a.download = element.nombre + "." + element.ext;
+    //     a.click();
+    //     window.URL.revokeObjectURL(url);
+    //     a.remove();
+    //   } else {
+    //     this._notification.error(dataItem.msj);
+    //   }
+    // });
   }
 
   showDialogPdf(element) {

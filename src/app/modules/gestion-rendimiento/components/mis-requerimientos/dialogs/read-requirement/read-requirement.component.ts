@@ -8,7 +8,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { UpdateTareaComponent } from './update-tarea/update-tarea.component';
 import { TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
-import { VerEvidenciaComponent } from './ver-evidencia/ver-evidencia.component';
 
 @Component({
   selector: 'app-read-requirement',
@@ -65,22 +64,6 @@ export class ReadRequirementComponent implements OnInit {
       autoFocus: true,
       data: {
         // idRequerimientoUsuario: this.data.model.idRequerimientoUsuario,
-        model: element
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // this.loadTable();
-    });
-  }
-
-  verEvidenciaTarea(element) {
-    const dialogRef: MatDialogRef<VerEvidenciaComponent> = this._dialog.open(VerEvidenciaComponent, {
-      disableClose: false,
-      width: '40%',
-      //height: '780px',
-      autoFocus: true,
-      data: {
         model: element
       }
     });

@@ -42,14 +42,13 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
     });
   }
 
-  registrarRequerimiento() {
+  async registrarRequerimiento() {
     const model = this._getModel();
 
-    this._requerimientoService.registrarRequerimiento(model).subscribe((data) => {
+    let listPendiente = await this._requerimientoService.registrarRequerimiento(model).then((data) => {
       this._notification.success("Requerimiento registrado")
       this.dialogRef.closeAll();
     });
-
   }
 
   private _getModel(): RequerimientoResponse {

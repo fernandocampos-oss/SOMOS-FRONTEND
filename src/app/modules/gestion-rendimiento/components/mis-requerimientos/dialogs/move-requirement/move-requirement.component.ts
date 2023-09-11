@@ -25,7 +25,7 @@ export class MoveRequirementComponent implements OnInit {
 
   constructor(
     private _dialogService: DialogService,
-    private fb: FormBuilder,
+    private _formBuilder: FormBuilder,
     private services: GestionRendimientoService,
     private _notification: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -38,7 +38,7 @@ export class MoveRequirementComponent implements OnInit {
 
   }
 
-  //Unidad Org
+  //Unidad Org.
   private _filter(value: string) {
     if (value != undefined) {
       return this.listUnidades.filter(u => u.descripcion.toLowerCase().includes(value.toLowerCase()));
@@ -75,9 +75,9 @@ export class MoveRequirementComponent implements OnInit {
   }
 
   createForm() {
-    this.form_cambio = this.fb.group({
-      frmArea: [null, [Validators.required, Validators.maxLength(30)]],
-      frmMotivo: [null, [Validators.required, Validators.maxLength(200)]],
+    this.form_cambio = this._formBuilder.group({
+      frmArea: [null, [Validators.required, Validators.maxLength(80)]],
+      frmMotivo: [null, [Validators.required, Validators.maxLength(250)]],
     });
   }
 

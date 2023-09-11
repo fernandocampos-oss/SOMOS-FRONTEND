@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
-import { ArchivoNew, Personal, Poi, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { EvidenciaRequest, EvidenciaResponseDTO, Personal, Poi, RequerimientoRequest, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { TareaDTO, TareaRequest, TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
 
 const URL_BASE = `${environment.apiUrl}`;
@@ -103,10 +103,10 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
-  registrarRequerimiento(requerimiento): Observable<any> {
+  async registrarRequerimiento(requerimiento: RequerimientoRequest) {
     const url = `${URL_BASE}/requerimientosUsuarios/registrar/requerimiento`;
     console.log(url, requerimiento);
-    return this.http.post(`${URL_BASE}/requerimientosUsuarios/registrar/requerimiento`, requerimiento);
+    return await this.http.post(url, requerimiento).toPromise();
   }
 
   async listarRequerimientoPrincipal() {
@@ -164,7 +164,6 @@ export class GestionRendimientoService {
   }
 
   //Equipos
-
   async listarRequerimientosPorPersonal(idUsuario) {
     const url = `${URL_BASE}/requerimientosUsuarios/listar/requerimientos/${idUsuario}/personal`;
     console.log(url);
@@ -188,65 +187,27 @@ export class GestionRendimientoService {
     console.log(url);
     return await this.http.get(url).toPromise();
   }
- 
-  
 
-
-
-  
-
-  // listarTareaPorRequermientoPersonal(idRequerimientoPersonal) {
-  //   const url = `${URL_BASE}/tareas/listar/requerimientoPersonal/${idRequerimientoPersonal}`;
-  //   console.log(url);
-  //   return this.http.get<Object[]>(url);
-  // }
-
-  // validarDuplicadoRequerimientoPersonal(idRequerimiento, idPersonal) {
-  //   const url = `${URL_BASE}/requerimientosPersonal/validar/duplicado/requerimiento/${idRequerimiento}/personal/${idPersonal}`;
-  //   console.log(url);
-  //   return this.http.get<Object[]>(url);
-  // }
-
-  // registrarTareaNoDuplicado(tareaValidacionTransaccionalDTO: any) {
-  //   const url = `${URL_BASE}/tareas/registrar/noDuplicado`;
-  //   console.log(url, tareaValidacionTransaccionalDTO);
-  //   return this.http.post(url, tareaValidacionTransaccionalDTO);
-  // }
-
-  //Mis tareas
-  listarTareaPorPersonal(idPersonal: number) {
-    const url = `${URL_BASE}/tareas/listar/personal/${idPersonal}`;
+  finalizarTareaAdministrador(idRequerimientoUsuario: number) {
+    const url = `${URL_BASE}/requerimientosUsuarios/finalizar/requerimiento?idRequerimientoUsuario=${idRequerimientoUsuario}`;
     console.log(url);
-    return this.http.get<TareaResponse[]>(url);
+    return this.http.get<any[]>(url);
   }
 
-  registrarEvidencia(evidencia: any): Observable<any> {
-    const url = `${URL_BASE}/evidencias/registrar`;
+  async registrarEvidencia(evidencia: EvidenciaRequest) {
+    const url = `${URL_BASE}/tareas/registrar/evidencia`;
     console.log(url, evidencia);
-    return this.http.post(`${URL_BASE}/evidencias/registrar`, evidencia);
+    return await this.http.post(url, evidencia).toPromise();
   }
 
-  registrarArchivo(archivo: ArchivoNew): Observable<any> {
-    const url = `${URL_BASE}/archivos/registrar`;
-    console.log(url, archivo);
-    return this.http.post(`${URL_BASE}/archivos/registrar`, archivo);
-  }
-
-  registrarEvidenciaArchivo(evidenciaArchivo: any): Observable<any> {
-    const url = `${URL_BASE}/evidenciasArchivos/registrar`;
-    console.log(url, evidenciaArchivo);
-    return this.http.post(`${URL_BASE}/evidenciasArchivos/registrar`, evidenciaArchivo);
-  }
-
-  listarArchivoPorEstadoActivo(idEvidenciaArchivo: number): Observable<any> {
-    const url = `${URL_BASE}/evidenciasArchivos/listar/${idEvidenciaArchivo}/estado`;
+  async getListarEvidenciasTarea(idTarea: number) {
+    const url = `${URL_BASE}/tareas/listar/evidencias/${idTarea}`;
     console.log(url);
-    return this.http.get<object>(url);
+    return await this.http.get<EvidenciaResponseDTO[]>(url).toPromise();
   }
 
-  eliminarArchivo(estado: boolean, idEvidenciaArchivo: number) {
-    return this.http.get(`${URL_BASE}/evidenciasArchivos/eliminar/estado/${estado}/id/${idEvidenciaArchivo}`);
-  }
-
+  // eliminarArchivo(estado: boolean, idEvidenciaArchivo: number) {
+  //   return this.http.get(`${URL_BASE}/evidenciasArchivos/eliminar/estado/${estado}/id/${idEvidenciaArchivo}`);
+  // }
 
 }

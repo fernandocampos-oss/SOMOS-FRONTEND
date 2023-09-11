@@ -4,20 +4,20 @@
         <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Descripción del Requerimiento</mat-label>
+                    <mat-label>Descripción</mat-label>
                     <input matInput formControlName="frmDescripcion" readonly>
                     <!-- <textarea matInput formControlName="frmDescripcion" readonly></textarea> -->
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="3">
+            <mat-grid-tile [colspan]="1">
                 <mat-form-field appearance="outline">
                     <mat-label>Tipo ingreso</mat-label>
                     <input matInput formControlName="frmTipoIngreso" readonly>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="3">
+            <mat-grid-tile [colspan]="1">
                 <mat-form-field appearance="outline">
-                    <mat-label>Porcentaje de avance</mat-label>
+                    <mat-label>Avance (%)</mat-label>
                     <input matInput formControlName="frmporcentajeAvance" readonly>
                 </mat-form-field>
             </mat-grid-tile>
@@ -44,29 +44,36 @@
     </form>
     <h3>Mis tareas:</h3><br>
     <table mat-table [dataSource]="dataSource_tarea" style="width:100%">
+        <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef >N°</th>
+            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+          </ng-container>
         <ng-container matColumnDef="nombre_tarea">
-            <th mat-header-cell *matHeaderCellDef>Tarea</th>
+            <th mat-header-cell *matHeaderCellDef>Descripcion Tarea</th>
             <td mat-cell *matCellDef="let element"> {{element.nombreTarea}} </td>
         </ng-container>
         <ng-container matColumnDef="fecha_asignacion">
-            <th mat-header-cell *matHeaderCellDef>Fecha de Asignacion</th>
+            <th mat-header-cell *matHeaderCellDef>Fecha Asignacion</th>
             <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd/MM/y'}} </td>
         </ng-container>
         <ng-container matColumnDef="plazo">
-            <th mat-header-cell *matHeaderCellDef>Plazo</th>
+            <th mat-header-cell *matHeaderCellDef>Plazo Máximo</th>
             <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
         </ng-container>
         <ng-container matColumnDef="porcentaje_avance">
-            <th mat-header-cell *matHeaderCellDef>Porcentaje Avance</th>
+            <th mat-header-cell *matHeaderCellDef>Avance (%)</th>
             <td mat-cell *matCellDef="let element"> {{element.porcentajeAvance}} </td>
         </ng-container>
         <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef width="100px"></th>
+            <th mat-header-cell *matHeaderCellDef width="120px"></th>
             <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="primary" class="search" matTooltip="Registrar evidencia"
+                <button mat-icon-button class="has-success" matTooltip="Nueva Evidencia"                
                     (click)="registrarEvidencia(element)">
-                    Evidencias
-                    <mat-icon>add</mat-icon>
+                    <mat-icon>add_circle</mat-icon>
+                </button>
+                <button mat-icon-button class="primary-button" matTooltip="Mis Evidencias"
+                (click)="listarEvidencias(element)">
+                    <mat-icon>collections</mat-icon>
                 </button>
             </td>
         </ng-container>

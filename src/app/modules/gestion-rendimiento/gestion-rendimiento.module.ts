@@ -27,7 +27,6 @@ import { SolicitudRequirementComponent } from './components/mis-requerimientos/d
 import { ConfirmRequerimientoComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/dialog/confirm-requerimiento/confirm-requerimiento.component';
 import { EditUserSelectedComponent } from './components/mi-equipo/dialogs/edit-user-selected/edit-user-selected.component';
 import { UpdateTareaComponent } from './components/mis-requerimientos/dialogs/read-requirement/update-tarea/update-tarea.component';
-import { VerEvidenciaComponent } from './components/mis-requerimientos/dialogs/read-requirement/ver-evidencia/ver-evidencia.component';
 import { DeleteDialogComponent } from './components/mi-equipo/dialogs/delete-dialog/delete-dialog.component';
 
 @NgModule({
@@ -52,7 +51,6 @@ import { DeleteDialogComponent } from './components/mi-equipo/dialogs/delete-dia
     ConfirmRequerimientoComponent,
     EditUserSelectedComponent,
     UpdateTareaComponent,
-    VerEvidenciaComponent,
     DeleteDialogComponent
   ],
   imports: [

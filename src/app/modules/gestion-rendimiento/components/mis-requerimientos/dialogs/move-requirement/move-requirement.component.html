@@ -1,4 +1,4 @@
-<h3>¿A qué área desea derivar este requerimiento?</h3><br>
+<h3>¿A que unidad desea derivar el requerimiento?</h3><br>
 <form [formGroup]="form_cambio">
     <!-- <mat-form-field appearance="outline">
         <mat-label>Áreas</mat-label>
@@ -12,10 +12,10 @@
         </mat-select>
     </mat-form-field> -->
     <!-- formControlName="frmArea" -->
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Unidad Organizacional</mat-label>
         <input type="text" placeholder="Escriba un nombre de unidad" matInput [formControl]="myControlUnidad"
-          [matAutocomplete]="autoUnidad">
+          [matAutocomplete]="autoUnidad" required>
         <mat-autocomplete #autoUnidad="matAutocomplete" [displayWith]="displayFnUnidad"
           (optionSelected)="onSelectionChangeUnidad($event)">
           <mat-option *ngFor="let u of filteredOptionsUnidad | async" [value]="u">
@@ -25,10 +25,13 @@
       </mat-form-field>
     <br>
     <mat-form-field appearance="outline">
-        <textarea matInput placeholder="Motivo" formControlName="frmMotivo" type="text" rows="4" minlength="5" maxlength="150" required></textarea>
+      <mat-label>Motivo</mat-label>
+        <textarea matInput formControlName="frmMotivo" type="text" rows="4" minlength="5" required></textarea>
     </mat-form-field>
+
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cerrar</button>
-        <button mat-raised-button color="primary" (click)="derivarRequiremento()" mat-dialog-close>Enviar</button>
+        <button mat-raised-button class="derivar-button" [disabled]="form_cambio.value.frmMotivo === ''"
+        (click)="derivarRequiremento()" mat-dialog-close>Enviar</button>
     </mat-dialog-actions>
 </form>

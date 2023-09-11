@@ -4,7 +4,6 @@ export class RequerimientoResponse {
   identificador?: string;
   motivo?: string;
   porcentajeAvance?: number;
-  // estado?: boolean;
   tipoIngreso?: TipoIngreso;
 }
 
@@ -15,9 +14,7 @@ export class RequerimientoRequest {
   identificador?: string;
   motivo?: string;
   porcentajeAvance?: number;
-  // estado: boolean;
   tipoIngreso?: TipoIngreso;
-  // poi?: Poi;
 }
 
 export class RequerimientoUsuario {
@@ -62,7 +59,34 @@ export class Personal {
   apellidos?: string;
 }
 
-//--------------------------
+export class EvidenciaRequest {
+  descripcion?: string;
+  porcentajeAvance?: number;
+  tarea?: Tarea;
+  imagenBase64?: string;
+
+  nombreImagen?: string;
+  sizeImagen?: number;
+  tipoImagen: string;
+  extension?: string;
+}
+
+export class EvidenciaResponseDTO {
+  idEvidencia?: number;
+  descripcion?: string;
+  porcentajeAvance?: number;
+  fechaCreacion?: string;
+  // estado: boolean;
+  imagenBase64?: string;
+  extension?: string;
+  nombreImagen?: string;
+}
+
+export class Tarea {
+  idTarea?: number;
+}
+
+// No activos--------------------------
 
 export class ArchivoNew {
   idArchivo: number;
@@ -73,25 +97,6 @@ export class ArchivoNew {
   extension: string;
   estado: boolean;
 }
-
-// export class Evidencia {
-//   idEvidencia: number;
-//   descripcion: string;
-//   avance: number;
-//   estado: boolean;
-//   tarea: Tarea;
-// }
-
-// export class EvidenciaArchivo {
-//   idEvidenciaArchivo: number;
-//   evidencia: Evidencia;
-//   archivo: Archivo;
-//   estado: boolean;
-// }
-
-
-
-// --------------------------
 
 export class Tarea1 {
   idEquipoIntegrante?: number;
@@ -134,19 +139,17 @@ export interface Requerimiento_Integrante {
   idIntegrante: number;
   nombreTarea: string;
   plazo: string;
-  estado: string; //PENDIENTE, FINALIZADO, RECHAZADO
+  estado: string;
   avance: number;
   tareas?: Informes[];
 }
 
 export interface Informes {
-  //id: number;
   descripcionInforme: string;
   avanceRepresentado: number;
   fechaCreacion: string;
 }
 
-//Seguro son temporales
 export interface Equipo {
   id: number;
   nombrePersona: string;

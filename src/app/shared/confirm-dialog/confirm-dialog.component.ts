@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationType } from '@data/enums/notification-type.enum';
 export interface ConfirmDialog {
   title: string;
@@ -12,12 +12,21 @@ export interface ConfirmDialog {
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
 })
-export class ConfirmDialogComponent implements OnInit {
-  isTypeWaring = this.data.type === NotificationType.WARNING;
-  isTypeInfo = this.data.type === NotificationType.INFO;
-  isTypeError = this.data.type === NotificationType.ERROR;
+export class ConfirmDialogComponent {
+  // isTypeWaring = this.data.type === NotificationType.WARNING;
+  // isTypeInfo = this.data.type === NotificationType.INFO;
+  // isTypeError = this.data.type === NotificationType.ERROR;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialog) {}
+  public confirmMessage: string;
 
-  ngOnInit() {}
+  /**
+   * Constructor
+   *
+   * @param {MatDialogRef<FuseConfirmDialogComponent>} dialogRef
+   */
+
+  constructor(
+    public _dialogRef: MatDialogRef<ConfirmDialogComponent>
+  ) { }
+
 }

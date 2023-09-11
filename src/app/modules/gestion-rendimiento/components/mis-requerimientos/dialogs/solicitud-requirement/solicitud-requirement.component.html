@@ -1,4 +1,4 @@
-<h2 class="auth__subtitle">Solicitud para un sistema de Gestión del Rendimiento</h2><br>
+<h3 class="auth__subtitle">Solicitud para un sistema de Gestión del Rendimiento</h3><br>
 <mat-stepper [linear]="true">
     <mat-step [stepControl]="formActividadSelect" label="Elección actividad">
         <form [formGroup]="formActividadSelect">
@@ -166,7 +166,7 @@
 <mat-divider></mat-divider>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-raised-button color="primary" [disabled]="formActividadSelect.value.frmActividad === ''" style="margin-left: 1rem;"
+    <button mat-raised-button class="aproved-button" [disabled]="formActividadSelect.value.frmActividad === ''" style="margin-left: 1rem;"
         (click)="registrarTareas()">Grabar</button>
 </mat-dialog-actions>
 

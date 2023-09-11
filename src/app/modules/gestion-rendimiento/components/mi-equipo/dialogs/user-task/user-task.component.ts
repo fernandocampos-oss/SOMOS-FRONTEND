@@ -5,10 +5,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { UserAddTaskComponent } from '../user-add-task/user-add-task.component';
 import { UserDownloadTaskComponent } from '../user-download-task/user-download-task.component';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { DialogService, NotificationService } from '@core/services';
+import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.component';
 //import * as XLSX from 'xlsx';
 
 @Component({
@@ -25,6 +25,8 @@ export class UserTaskComponent implements OnInit {
   idUsuario: number;
   nombreUsuario: string;
 
+  confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
+
   constructor(
     private _fb: FormBuilder,
     public dialogRef: MatDialogRef<UserTaskComponent>,
@@ -37,10 +39,9 @@ export class UserTaskComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.data);
-    // this.idUsuario = this.data.obj.id;
-    // this.nombreUsuario = this.data.obj.colaborador;
-    // this.cargarRequerimientos();
-    // this.loadTable();
+    this.nombreUsuario = this.data.model.nombres + " " + this.data.model.apellidos;
+    this.loadTableRequerimiento(this.data.model.idUsuario);
+
     // var workbook = XLSX.utils.book_new();
     // var worksheet = XLSX.utils.aoa_to_sheet([]);
 
@@ -51,60 +52,47 @@ export class UserTaskComponent implements OnInit {
     // console.log(worksheet);
     // console.log(workbook);
     // XLSX.writeFile(workbook, "out.xlsx");
-    this.loadTableRequerimiento(this.data.model.idUsuario);
+
   }
 
-  // cargarRequerimientos(){
-  // this.datosAsignados = this.services.getFauxTablaRequeAsignados(this.data.obj.id);
-  // for (let i = 0; i < this.datosAsignados.length; i++) {
-  //   var requerimiento = this.services.getFauxRequerimiento(this.datosAsignados[i].idReq);
-  //   this.reqAsignados.push({"idReq":requerimiento.id,
-  //     "idColaborador": this.data.obj.id,
-  //     "requerimiento":requerimiento.nombreRequerimiento,
-  //     "estado":this.datosAsignados[i].estado,
-  //     "porcentaje": this.datosAsignados[i].avance  
-  // });
+  // loadTable() {
+  //   this.services.ListarTareas(this.idUsuario).subscribe((dataItem) => {
+  //     if (dataItem.codigo == 0) {
+  //       this.dataSource = new MatTableDataSource(dataItem);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //     } else {
+  //       this.dataSource = null;
+  //       if (dataItem.msj == "LISTA VACIA") {
+  //         this._notification.warning(dataItem.msj)
+  //       } else {
+  //         this._notification.error(dataItem.msj)
+  //       }
+  //     }
+  //   });
   // }
+
+  // showDialogTaksUser() {
+  //   const dialogRef: MatDialogRef<UserAddTaskComponent> = this.dialog.open(UserAddTaskComponent, {
+  //     disableClose: false,
+  //     width: '450px',
+  //     //height: '780px',
+  //     autoFocus: false,
+  //     data: {
+  //       auto: false,
+  //       id: this.idUsuario
+  //     }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // this.loadTable();
+  //   });
   // }
 
-  loadTable() {
-    this.services.ListarTareas(this.idUsuario).subscribe((dataItem) => {
-      if (dataItem.codigo == 0) {
-        this.dataSource = new MatTableDataSource(dataItem);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      } else {
-        this.dataSource = null;
-        if (dataItem.msj == "LISTA VACIA") {
-          this._notification.warning(dataItem.msj)
-        } else {
-          this._notification.error(dataItem.msj)
-        }
-      }
-    });
-  }
-
-  showDialogTaksUser() {
-    const dialogRef: MatDialogRef<UserAddTaskComponent> = this.dialog.open(UserAddTaskComponent, {
-      disableClose: false,
-      width: '450px',
-      //height: '780px',
-      autoFocus: false,
-      data: {
-        auto: false,
-        id: this.idUsuario
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
-  }
-
-  showDialogDownloadTask(element, id: number) {
+  verTareas(element, id: number) {
     const dialogRef: MatDialogRef<UserDownloadTaskComponent> = this.dialog.open(UserDownloadTaskComponent, {
       disableClose: false,
-      width: '70%',
+      width: '65%',
       //height: '780px',
       autoFocus: false,
       data: {
@@ -114,16 +102,33 @@ export class UserTaskComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result == 'ok') {
-        this.loadTable()
+        // this.loadTable()
       }
     });
   }
 
+  // finalizarTarea(element) {
+  //   this._dialogService
+  //     .openConfirm('¿Está seguro de aprobar la tarea?', element.tarea)
+  //     .pipe(filter((isConfirmed) => isConfirmed))
+  //     .subscribe(() => this.onSave());
+  // }
+
   finalizarTarea(element) {
-    this._dialogService
-      .openConfirm('¿Está seguro de aprobar la tarea?', element.tarea)
-      .pipe(filter((isConfirmed) => isConfirmed))
-      .subscribe(() => this.onSave());
+    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      disableClose: false
+    });
+    this.confirmDialogRef.componentInstance.confirmMessage = '¿Estas seguro de finalizar el requerimiento?';
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+        this.services.finalizarTareaAdministrador(element.idRequerimientoUsuario).subscribe(() => {
+          this._notification.success('Requerimiento finalizado con exito');
+        });
+        this.loadTableRequerimiento(this.data.model.idUsuario);
+      }
+      this.confirmDialogRef == null;
+    });
   }
 
   onSave() {
@@ -131,14 +136,15 @@ export class UserTaskComponent implements OnInit {
   }
 
   async loadTableRequerimiento(idUsuario: Number) {
-    let load = await  this.services.listarRequerimientosPorPersonal(idUsuario).then((data: any) => {
-      if (data) {
+    let load = await this.services.listarRequerimientosPorPersonal(idUsuario).then((data: any) => {
+      if (data.length > 0) {
+        console.log(data)
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
         this.dataSource = null;
-        this._notification.warning("Lista de requerimientos vacios");
+        this._notification.warning("El integrante no cuenta con requerimientos");
       }
     });
   }

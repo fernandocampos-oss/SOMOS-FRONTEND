@@ -1,10 +1,14 @@
-mat-form-field{
+mat-form-field {
   width: 100%;
 }
 
-.aniadir{
+.aniadir {
   position: absolute;
-  bottom:27px;
+  bottom: 27px;
   height: 65%;
   width: 100%;
+}
+
+.edit-button {
+  color: var(--color-bordes);
 }

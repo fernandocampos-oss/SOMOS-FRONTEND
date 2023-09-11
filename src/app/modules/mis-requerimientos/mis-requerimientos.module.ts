@@ -10,6 +10,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { ReactiveFormsModule } from '@angular/forms';
 import { VerTareaComponent } from './components/ver-tarea/ver-tarea.component';
 import { EdicionEvidenciaComponent } from './components/ver-tarea/edicion-evidencia/edicion-evidencia.component';
+import { ListEvidenciaComponent } from './components/ver-tarea/list-evidencia/list-evidencia.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { EdicionEvidenciaComponent } from './components/ver-tarea/edicion-eviden
     MisRequerimientosComponent,
     RequerimientoRegisterUpdateComponent,
     VerTareaComponent,
-    EdicionEvidenciaComponent
+    EdicionEvidenciaComponent,
+    ListEvidenciaComponent
   ],
   imports: [
     CommonModule,

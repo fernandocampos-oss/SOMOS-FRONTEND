@@ -88,14 +88,14 @@ export class UserDownloadTaskComponent implements OnInit {
     }
   }
 
-  showDialogFiles(element) {
+  verFiles(element) {
     const dialogRef: MatDialogRef<UserDownloadFileComponent> = this.dialog.open(UserDownloadFileComponent, {
       disableClose: false,
       width: '500px',
       //height: '780px',
       autoFocus: false,
       data: {
-        idTarea: element.idTarea
+        model: element
       }
     });
 

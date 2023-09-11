@@ -1,24 +1,23 @@
-<h2 mat-dialog-title>Requerimientos Asignados: {{nombreUsuario}}</h2>
+<h2>Requerimientos:</h2>
+<br>
+<h3 mat-dialog-title>{{nombreUsuario}}</h3>
+<br>
 <mat-dialog-content>
     <table mat-table [dataSource]="dataSource" style="width:100%">
-
         <ng-container matColumnDef="item">
-            <th mat-header-cell *matHeaderCellDef width="100px"> Item </th>
-            <td mat-cell *matCellDef="let element, index as i"> {{i+1}} </td>
+            <th mat-header-cell *matHeaderCellDef width="100px">N°</th>
+            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
         </ng-container>
-
         <ng-container matColumnDef="requerimiento">
-            <th mat-header-cell *matHeaderCellDef> Requerimiento </th>
-            <td mat-cell *matCellDef="let element"> {{element.requerimiento.nombre}} </td>
+            <th mat-header-cell *matHeaderCellDef>Descripcion Requerimiento</th>
+            <td mat-cell *matCellDef="let element">{{element.requerimiento.nombre}}</td>
         </ng-container>
-
         <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef width="100px"> Estado </th>
-            <td mat-cell *matCellDef="let element"> {{element.estadoRequerimiento.descripcion}} </td>
+            <td mat-cell *matCellDef="let element">{{element.estadoRequerimiento.descripcion}}</td>
         </ng-container>
-
         <ng-container matColumnDef="porcentaje">
-            <th mat-header-cell *matHeaderCellDef width="100px"> % de avance </th>
+            <th mat-header-cell *matHeaderCellDef width="100px">Avance (%)</th>
             <td mat-cell *matCellDef="let element">
                 <div style="text-align: center; width: 85%">
                     {{element.requerimiento.porcentajeAvance}}%
@@ -27,15 +26,13 @@
                 </div>
             </td>
         </ng-container>
-
         <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef width="120px"> Acciones </th>
             <td mat-cell *matCellDef="let element, index as i">
-                <button mat-icon-button color="primary" (click)="showDialogDownloadTask(element, i)"
-                    matTooltip="Ver tareas">
+                <button mat-icon-button class="primary-button" (click)="verTareas(element, i)" matTooltip="Ver Tareas">
                     <mat-icon>remove_red_eye</mat-icon></button>
-                <button mat-icon-button color="primary" (click)="finalizarTarea(element)"
-                    [disabled]="element.porcentaje!=100" matTooltip="Aprobar tarea">
+                <button mat-icon-button class="has-success" (click)="finalizarTarea(element)"
+                    [disabled]="element.requerimiento.porcentajeAvance != 100 || element.estadoRequerimiento.codigo==6" matTooltip="Aprobar Tarea">
                     <mat-icon>check</mat-icon></button>
             </td>
         </ng-container>

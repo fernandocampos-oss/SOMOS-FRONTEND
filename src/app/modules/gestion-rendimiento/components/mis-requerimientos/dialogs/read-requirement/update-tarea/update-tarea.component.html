@@ -1,29 +1,29 @@
-<h3>Actualizar</h3><br>
+<h3>Editar Tarea</h3><br>
 <mat-dialog-content>
         <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Tarea</mat-label>
+                    <mat-label>Descripcion Tarea</mat-label>
                     <textarea matInput placeholder="Tarea" [(ngModel)]="tarea.nombreTarea" maxlength="250" required></textarea>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="5">
+            <mat-grid-tile [colspan]="4">
                 <mat-form-field appearance="outline">
                     <mat-label>Plazo máximo</mat-label>
                     <input matInput placeholder="Plazo máximo" [(ngModel)]="tarea.plazo" required>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="1">
+            <mat-grid-tile [colspan]="2">
                 <mat-form-field appearance="outline">
-                    <mat-label>Avance</mat-label>
+                    <mat-label>Avance (%)</mat-label>
                     <input matInput placeholder="Avance" [(ngModel)]="tarea.porcentajeAvance" readonly>
                 </mat-form-field>
             </mat-grid-tile>
         </mat-grid-list>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cerrar</button>
-    <button mat-button color="primary" (click)="modificarTareaAdministrador()">Guardar</button>
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button class="save-button" (click)="modificarTareaAdministrador()">Guardar</button>
 </mat-dialog-actions>
 
 

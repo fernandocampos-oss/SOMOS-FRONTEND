@@ -20,10 +20,8 @@ export class MisRequerimientosComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Item', 'nombre_requerimiento', 'fecha_creacion', 'porcentaje_avance', 'estado', 'acciones'];
+  displayedColumns: string[] = ['Item', 'nombre_requerimiento', 'integrante', 'fecha_creacion', 'porcentaje_avance', 'estado', 'acciones'];
   menuToggle = new EventEmitter<void>();
-
-  // dataSorteada: Object[];
 
   constructor(
     private dialog: MatDialog,
@@ -37,12 +35,12 @@ export class MisRequerimientosComponent implements OnInit {
 
   async loadTable() {
     this.services.listarRequerimientoPrincipal().then((data) => {
-      if (data) {
+      if (data.length > 0) {
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this._notification.warning("Lista de requerimientos vacio")
+        this._notification.warning("Lista de requerimientos vacia")
       }
     });
   }
@@ -56,7 +54,7 @@ export class MisRequerimientosComponent implements OnInit {
   verRequerimiento(element) {
     const dialogRef: MatDialogRef<ReadRequirementComponent> = this.dialog.open(ReadRequirementComponent, {
       disableClose: false,
-      width: '60%',
+      width: '70%',
       //height: '780px',
       autoFocus: false,
       data: {
@@ -72,7 +70,7 @@ export class MisRequerimientosComponent implements OnInit {
   registrarTareas(element) {
     const dialogRef: MatDialogRef<SolicitudRequirementComponent> = this.dialog.open(SolicitudRequirementComponent, {
       disableClose: true,
-      width: '40%',
+      width: '50%',
       maxHeight: '810px',
       //height: '780px',
       autoFocus: false,
@@ -101,14 +99,13 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  derivarRequerimientoo(element) {
+  derivarRequerimiento(element) {
     const dialogRef: MatDialogRef<MoveRequirementComponent> = this.dialog.open(MoveRequirementComponent, {
       disableClose: false,
       width: '35%',
       autoFocus: false,
       data: {
         obj: element,
-        // moreData: this.services.FauxTablaRequerimientos()
       }
     });
 

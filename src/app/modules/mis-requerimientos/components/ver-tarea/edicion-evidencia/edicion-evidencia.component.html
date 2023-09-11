@@ -1,19 +1,45 @@
-<h3>Tarea: {{ titleTarea }}</h3><br>
-
-<div class="imageBox">
-    <div>
-        <h4>Imagen representativa</h4>
-        <!-- <mat-error *ngIf="msgErrores && imagenGrupoField.hasError('required')">Debe añadir una imagen del grupo</mat-error> -->
-        <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix (click)="file.click()"
-                color="primary" *ngIf="!retrievedImage" [disabled]='estadoInscripcion'>
+<!-- <h3>Nueva Evidencia</h3> -->
+<form [formGroup]="form">
+  <mat-grid-list cols="6" rowHeight="20px">
+    <mat-grid-tile [colspan]="6" [rowspan]="2">
+      <h3>Tarea: {{ titleTarea }}</h3>
+    </mat-grid-tile>
+    <mat-grid-tile class="cargaImg" [colspan]="2" gutterSize="2px" [rowspan]="12">
+      <div class="imageBox">
+        <!-- <h4>Imagen representativa</h4> -->
+        <button type="button" class="preview__button btnColor" mat-raised-button MatPrefix (click)="file.click()"
+          color="primary" *ngIf="!retrievedImage">
           <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
         </button>
-        <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()"
-                color="warn" *ngIf="retrievedImage" [disabled]='estadoInscripcion'>
+        <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()" color="warn"
+          *ngIf="retrievedImage">
           <mat-icon>clear</mat-icon> Remover Imagen
         </button>
-    </div>
-    <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)"/>
-    <img class="preview__img" [src]="retrievedImage" *ngIf="retrievedImage"/>
-    <img class="preview__img" src="assets/images/imgPlaceholder.png" *ngIf="!retrievedImage"/>
-</div>
+        <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)" />
+        <img class="preview__img" [src]="retrievedImage" *ngIf="retrievedImage" />
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="8">
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="frmDescripcion" type="text" rows="4" minlength="5" maxlength="150"
+          required></textarea>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
+      <mat-form-field appearance="outline">
+        <mat-label>Porcentaje de avance</mat-label>
+        <mat-hint>Valor: 1-100</mat-hint>
+        <input matInput required formControlName="frmPorcentajeAvance" maxlength="3" />
+      </mat-form-field>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</form>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">Cancelar</button>
+  <button mat-raised-button class="btnsave" type="submit" (click)="registrarEvidencia()">Grabar</button>
+</mat-dialog-actions>

@@ -1,4 +1,3 @@
-import { Usuario } from "../usuario/usuario.model";
 import { Poi, RequerimientoUsuario } from "./gestion-rendimiento.model";
 
 export class TareaDTO {
@@ -10,20 +9,15 @@ export class TareaDTO {
 export class TareaResponse {
     nombreTarea?: string;
     plazo?: String;
-    // estado?: boolean;
     // estadoTarea?: EstadoTarea;
     porcentajeAvance?: number;
-    // fechaCreacion?: Date;
 }
 
 export class TareaRequest {
     idTarea?: number;
     nombreTarea?: string;
     plazo?: String;
-    // estado?: boolean;
-    // estadoTarea?: EstadoTarea;
     porcentajeAvance?: number;
-    // fechaCreacion?: Date;
     requerimientoUsuario?: RequerimientoUsuario;
 }
 

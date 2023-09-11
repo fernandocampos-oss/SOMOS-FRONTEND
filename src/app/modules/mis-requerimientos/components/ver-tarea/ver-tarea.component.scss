@@ -2,8 +2,16 @@ mat-form-field {
     width: 100%;
 }
 
-.search{
+.search {
     margin-top: 10px;
     width: 9em;
     background-color: var(--color-MiEssalud);
+}
+
+.has-success {
+    color: green;
+}
+
+.primary-button {
+    color: var(--color-bordes);
 }

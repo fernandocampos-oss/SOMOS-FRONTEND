@@ -22,21 +22,21 @@ export class MisRequerimientosComponent implements OnInit {
 
   actionPend = 'Avance';
   actionFin = 'Ver';
- 
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['requerimiento', 'fecha_asignacion', 'avance', 'estado', 'acciones'];
+  displayedColumns: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance', 'estado', 'acciones'];
 
   @ViewChild(MatSort) sort_finalizado: MatSort;
   @ViewChild(MatPaginator) paginator_finalizado: MatPaginator;
   dataSource_finalizado: MatTableDataSource<any>;
-  displayedColumns_finalizado: string[] = ['requerimiento', 'fecha_asignacion', 'avance', 'estado'];
+  displayedColumns_finalizado: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance']; 
 
   @ViewChild(MatSort) sort_rechazado: MatSort;
   @ViewChild(MatPaginator) paginator_rechazado: MatPaginator;
   dataSource_rechazado: MatTableDataSource<any>;
-  displayedColumns_rechazado: string[] = ['requerimiento', 'fecha_asignacion', 'avance', 'estado'];
+  displayedColumns_rechazado: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'motivo']; 
 
   constructor(
     private _matDialog: MatDialog,
@@ -67,7 +67,7 @@ export class MisRequerimientosComponent implements OnInit {
       this.loadTableFinalizado();
       this.loadTableRechazado();
     });
-    
+
   }
 
   onDeleteRequerimiento($event) {
@@ -75,7 +75,7 @@ export class MisRequerimientosComponent implements OnInit {
 
   async loadTablePendiente() {
     let listPendiente = await this._services.listarRequerimientoPendiente().then((data) => {
-      if (data) {
+      if (data.length > 0) {        
         this.dataSource = new MatTableDataSource(data);
         // this.dataSource.paginator = this.paginator;
         // this.dataSource.sort = this.sort;
@@ -87,8 +87,8 @@ export class MisRequerimientosComponent implements OnInit {
 
   async loadTableFinalizado() {
     let listFinalizado = await this._services.listarRequerimientoFinalizado().then((data) => {
-      if (data) {
-        console.log(data)
+      if (data.length > 0) {
+        console.log("Finalizado", data)
         this.dataSource_finalizado = new MatTableDataSource(data);
         // this.dataSource.paginator = this.paginator_finalizado;
         // this.dataSource.sort = this.sort_finalizado;
@@ -100,7 +100,8 @@ export class MisRequerimientosComponent implements OnInit {
 
   async loadTableRechazado() {
     let listRechazado = await this._services.listarRequerimientoRechazado().then((data) => {
-      if (data) {
+      if (data.length > 0) {
+        console.log("Rechazado", data)
         this.dataSource_rechazado = new MatTableDataSource(data);
         // this.dataSource.paginator = this.paginator_rechazado;
         // this.dataSource.sort = this.sort_rechazado;
@@ -110,7 +111,7 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  verDetalleRequerimiento(element){
+  verDetalleRequerimiento(element) {
     const dialogRef: MatDialogRef<VerTareaComponent> = this._matDialog.open(VerTareaComponent, {
       disableClose: false,
       width: '60%',
