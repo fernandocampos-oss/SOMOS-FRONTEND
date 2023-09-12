@@ -45,6 +45,14 @@
             </mat-nav-list>
           </mat-expansion-panel>
         </div>
+        <mat-list-item *ngIf="user.id == 402"
+          routerLinkActive="active"
+          [routerLink]="['/administrar-inscripciones']"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon mat-list-icon>how_to_reg</mat-icon>
+          <span class="option" matLine>Administrar Inscripciones </span>
+        </mat-list-item>
       </ng-container>
     </mat-nav-list>
   </div>

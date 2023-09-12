@@ -19,4 +19,9 @@ export class InscripcionService {
     const url = `${URL_BASE}/${idInscripcion}/guardar-respuesta`;
     return this._httpClient.post<any>(url,{});
   }
+
+  getUsuariosInscritos(idInscripcion: number){
+    const url = `${URL_BASE}/${idInscripcion}/inscritos`;
+    return this._httpClient.get<any>(url);
+  }
 }
