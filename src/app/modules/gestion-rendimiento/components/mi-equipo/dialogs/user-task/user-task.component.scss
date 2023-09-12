@@ -14,6 +14,20 @@
     height: 10px;
 }
 
+.mat-standard-chip {
+    min-height: 22px !important;
+}
+
+.red-background {
+    color: #fff;
+    background-color: rgb(255, 68, 68);
+}
+
+.gren-background {
+    color: #fff;
+    background-color: var(--color-success);
+}
+
 .primary-button {
     color: var(--color-bordes);
 }

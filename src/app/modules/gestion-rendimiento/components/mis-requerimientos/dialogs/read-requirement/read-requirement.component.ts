@@ -23,7 +23,7 @@ export class ReadRequirementComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['nombre_tarea', 'fecha_asignacion', 'plazo', 'porcentaje_avance', 'acciones'];
+  displayedColumns: string[] = ['nombre_tarea', 'fecha_asignacion', 'plazo', 'acciones'];
 
   dataSource_tarea: TareaResponse[];
 

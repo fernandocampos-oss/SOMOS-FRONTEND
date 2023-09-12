@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
-import { EvidenciaRequest, EvidenciaResponseDTO, Personal, Poi, RequerimientoRequest, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { EvidenciaRequest, EvidenciaResponseDTO, Personal, Poi, RequerimientoRequest, TipoIngreso, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { TareaDTO, TareaRequest, TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
 
 const URL_BASE = `${environment.apiUrl}`;
@@ -133,10 +133,10 @@ export class GestionRendimientoService {
     return this.http.get<any[]>(url);
   }
 
-  listarPoi() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/pois`;
+  async listarPoi() {
+    const url = `${URL_BASE}/tareas/listar/pois`;
     console.log(url);
-    return this.http.get<Poi[]>(url);
+    return await this.http.get<Poi[]>(url).toPromise();
   }
 
   async listarTodosUnidadOrganizativa() {
@@ -204,6 +204,12 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/tareas/listar/evidencias/${idTarea}`;
     console.log(url);
     return await this.http.get<EvidenciaResponseDTO[]>(url).toPromise();
+  }
+
+  async listarTipoIngreso() {
+    const url = `${URL_BASE}/tareas/listar/tipoIngreso`;
+    console.log(url);
+    return await this.http.get<TipoIngreso[]>(url).toPromise();
   }
 
   // eliminarArchivo(estado: boolean, idEvidenciaArchivo: number) {

@@ -69,6 +69,7 @@ export class EvidenciaRequest {
   sizeImagen?: number;
   tipoImagen: string;
   extension?: string;
+  idRequerimiento?: number;
 }
 
 export class EvidenciaResponseDTO {

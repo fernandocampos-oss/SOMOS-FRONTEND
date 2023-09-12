@@ -11,11 +11,6 @@ import { Personal, Poi, RequerimientoUsuario } from '@data/models/gestion-rendim
 import { TareaDTO, TareaResponse, } from '@data/models/gestion-rendimiento/tarea-model';
 import * as moment from 'moment';
 
-interface Tarea1 {
-  tarea: string;
-  plazo: string;
-}
-
 @Component({
   selector: 'app-solicitud-requirement',
   templateUrl: './solicitud-requirement.component.html',
@@ -60,12 +55,12 @@ export class SolicitudRequirementComponent implements OnInit {
     // this.listarPersonalUnidad();
   }
 
-  listarPoi() {
-    this.services.listarPoi().subscribe((data) => {
-      if (data) {
+  async listarPoi() {
+    let listPoi = await this.services.listarPoi().then((data) => {
+      if (data.length > 0) {
         this.listPoi = data;
       } else {
-        this._notification.warning("Lista vacia");
+        this._notification.warning("Lista de actividades vacia");
       }
     });
   }

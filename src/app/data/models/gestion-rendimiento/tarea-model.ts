@@ -17,7 +17,7 @@ export class TareaRequest {
     idTarea?: number;
     nombreTarea?: string;
     plazo?: String;
-    porcentajeAvance?: number;
+    // porcentajeAvance?: number;
     requerimientoUsuario?: RequerimientoUsuario;
 }
 

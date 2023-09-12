@@ -7,18 +7,18 @@
                     <textarea matInput placeholder="Tarea" [(ngModel)]="tarea.nombreTarea" maxlength="250" required></textarea>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="4">
+            <mat-grid-tile [colspan]="2">
                 <mat-form-field appearance="outline">
                     <mat-label>Plazo máximo</mat-label>
                     <input matInput placeholder="Plazo máximo" [(ngModel)]="tarea.plazo" required>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="2">
+            <!-- <mat-grid-tile [colspan]="2">
                 <mat-form-field appearance="outline">
                     <mat-label>Avance (%)</mat-label>
                     <input matInput placeholder="Avance" [(ngModel)]="tarea.porcentajeAvance" readonly>
                 </mat-form-field>
-            </mat-grid-tile>
+            </mat-grid-tile> -->
         </mat-grid-list>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

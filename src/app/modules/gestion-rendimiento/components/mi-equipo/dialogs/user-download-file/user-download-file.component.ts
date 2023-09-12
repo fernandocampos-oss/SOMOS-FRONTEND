@@ -42,7 +42,7 @@ export class UserDownloadFileComponent implements OnInit {
         this.dataSource.sort = this.sort;
       } else {
         this.dataSource = null;
-        this._notification.warning("No se encontró evidencias");
+        this._notification.warning("Aún no tiene evidencia registradas");
       }
     });
   }

@@ -17,6 +17,8 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
   user: UserSession;
   form: FormGroup;
   zona: string = '';
+  listTipoIngreso: TipoIngreso[] = [];
+
 
   constructor(
     private dialogRef: MatDialog,
@@ -28,7 +30,17 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm();
+    this.listarTipoIngreso();
+  }
 
+  async listarTipoIngreso() {
+    let listPoi = await this._requerimientoService.listarTipoIngreso().then((data) => {
+      if (data.length > 0) {
+        this.listTipoIngreso = data;
+      } else {
+        this._notification.warning("Lista vacia");
+      }
+    });
   }
 
   private _createForm() {
@@ -53,7 +65,7 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
 
   private _getModel(): RequerimientoResponse {
     let tipoIngreso = new TipoIngreso();
-    tipoIngreso.idTipoIngreso = this.form.value.frmMedio;
+    tipoIngreso.idTipoIngreso = this.form.value.frmMedio.idTipoIngreso;
 
     return {
       nombre: this.form.value.frmNombre,

@@ -32,7 +32,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Porcentaje de avance</mat-label>
         <mat-hint>Valor: 1-100</mat-hint>
-        <input matInput required formControlName="frmPorcentajeAvance" maxlength="3" />
+        <input matInput type="number" required formControlName="frmPorcentajeAvance" minlength="2" maxlength="3" />
       </mat-form-field>
     </mat-grid-tile>
 

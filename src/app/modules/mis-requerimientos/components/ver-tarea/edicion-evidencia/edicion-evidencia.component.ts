@@ -127,7 +127,8 @@ export class EdicionEvidenciaComponent implements OnInit {
       nombreImagen: this.nameImage,
       sizeImagen: this.sizeImage,
       tipoImagen: this.typeImage,
-      extension: completo.substring(nombreFile + 1)
+      extension: completo.substring(nombreFile + 1),
+      idRequerimiento: this.data.idRequerimiento
     };
   }
 

@@ -47,7 +47,11 @@
             <ng-container matColumnDef="avance">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Avance (%)</th>
               <td mat-cell *matCellDef="let element">
-                {{element.requerimiento.porcentajeAvance}}%
+                <div style="text-align: center; width: 85%">
+                  {{element.requerimiento.porcentajeAvance}}%
+                  <mat-progress-bar mode="determinate" [value]="element.requerimiento.porcentajeAvance">
+                  </mat-progress-bar>
+                </div>
               </td>
             </ng-container>
             <ng-container matColumnDef="estado">

@@ -17,12 +17,13 @@ import { ListEvidenciaComponent } from './list-evidencia/list-evidencia.componen
 export class VerTareaComponent implements OnInit {
 
   form: FormGroup;
-  requerimiento: string;
+  requerimiento: string = '';
+  idRequerimiento: number = 0;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'nombre_tarea', 'fecha_asignacion', 'plazo', 'porcentaje_avance', 'acciones'];
+  displayedColumns: string[] = ['item', 'nombre_tarea', 'fecha_asignacion', 'plazo', 'acciones'];
 
   dataSource_tarea: TareaResponse[];
 
@@ -35,6 +36,7 @@ export class VerTareaComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data)
     this.requerimiento = this.data.model.requerimiento.nombre;
+    this.idRequerimiento = this.data.model.requerimiento.idRequerimiento;
     this.createForm();
     this.dataSource_tarea = this.data.model.listTarea;
   }
@@ -57,6 +59,7 @@ export class VerTareaComponent implements OnInit {
       //height: '780px',
       autoFocus: true,
       data: {
+        idRequerimiento: this.idRequerimiento,
         model: element
       }
     });

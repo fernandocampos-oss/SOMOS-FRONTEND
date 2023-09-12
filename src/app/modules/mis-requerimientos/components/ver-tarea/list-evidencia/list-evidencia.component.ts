@@ -41,7 +41,7 @@ export class ListEvidenciaComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
-        this._notification.warning("Tarea no tiene cuenta con evidencias registradas");
+        this._notification.warning("Aún no tienes evidencias registradas");
       }
     });
   }

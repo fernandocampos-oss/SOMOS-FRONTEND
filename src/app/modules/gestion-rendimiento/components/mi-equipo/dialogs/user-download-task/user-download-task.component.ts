@@ -23,7 +23,7 @@ export class UserDownloadTaskComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'descripcion', 'porcentaje', 'fecha', 'acciones'];
+  displayedColumns: string[] = ['item', 'descripcion', 'fecha', 'acciones'];
   objElement: any;
   flgJefe: boolean = false;
   form: FormGroup;
@@ -73,11 +73,8 @@ export class UserDownloadTaskComponent implements OnInit {
       // frmFecFin: [[new Date(this.data.objAsignacion.plazo.split('/')[2],this.data.objAsignacion.plazo.split('/')[1]-1,this.data.objAsignacion.plazo.split('/')[0]).toLocaleDateString()]],
       // frmEstado: [this.data.objAsignacion.estado],
       frmDescripcion: [this.data.model.requerimiento.descripcion],
-      frmFecFin: [[new Date(this.data.model.requerimiento.fechaCreacion)]],
       frmEstado: [this.data.model.estadoRequerimiento.descripcion],
-      // frmCodigo: [this.objElement.codigo],
-      // frmReferencia: [this.objElement.referencia],
-      // frmMotivo: [this.objElement.motivo]
+      frmFecFin: [[new Date(this.data.model.requerimiento.fechaCreacion).toISOString().split('T', 1)[0]]]      
     });
   }
 
