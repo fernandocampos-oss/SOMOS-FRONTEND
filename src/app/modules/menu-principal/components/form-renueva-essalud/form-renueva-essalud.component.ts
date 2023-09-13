@@ -6,7 +6,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationService } from '@core/services';
+import { LocalStorageKey, NotificationService } from '@core/services';
 import { AuthService, UsuarioService } from '@data/services';
 import { Observable, of } from 'rxjs';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -159,6 +159,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    console.log(localStorage.getItem(LocalStorageKey.TOKEN))
     this.idLider = this.authService.getUserSession().id;
     this.cargarUsuariosRed();
     this.cargarLider();

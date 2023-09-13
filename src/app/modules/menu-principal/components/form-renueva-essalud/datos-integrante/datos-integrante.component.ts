@@ -77,6 +77,7 @@ export class DatosIntegranteComponent implements OnInit {
   }
 
   cerrar() {
+    console.log(1)
     this.dialogRef.close();
   }
 

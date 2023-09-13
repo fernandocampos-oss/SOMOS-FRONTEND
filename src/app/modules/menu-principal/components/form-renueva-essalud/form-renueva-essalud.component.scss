@@ -3,6 +3,11 @@
     width: 9em;
     background-color: var(--color-MiEssalud);
 }
+.optCat{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .btnBases{
     margin-left: 1rem;
     margin-top: 10px;
@@ -24,6 +29,9 @@
     element{
         font-family: "Nunito"!important;   
     }
+}
+::ng-deep.mat-tooltip {
+    font-size: 16px !important;
 }
 .radioGroup{
     display: grid !important;
