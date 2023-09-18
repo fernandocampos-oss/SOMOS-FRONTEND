@@ -1,22 +1,22 @@
-<h3>Requerimiento: {{ requerimiento }}</h3><br>
+<h3>Datos del requerimiento</h3><br>
 <mat-dialog-content>
     <form [formGroup]="form">
         <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
-            <mat-grid-tile [colspan]="5">
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Titulo</mat-label>
+                    <input matInput formControlName="frmTitulo" readonly>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
                     <mat-label>Descripción</mat-label>
                     <!-- <input matInput formControlName="frmDescripcion" readonly> -->
                     <textarea matInput formControlName="frmDescripcion" readonly></textarea>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="1">
-                <mat-form-field *ngIf="estadoReq !== 5" appearance="outline">
-                    <mat-label>Avance</mat-label>
-                    <input matInput formControlName="frmporcentajeAvance" readonly>
-                </mat-form-field>
-            </mat-grid-tile>
-        </mat-grid-list>
-        <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+
             <mat-grid-tile [colspan]="2">
                 <mat-form-field appearance="outline">
                     <mat-label>Identificador</mat-label>
@@ -37,18 +37,24 @@
             </mat-grid-tile> -->
             <mat-grid-tile [colspan]="2">
                 <mat-form-field appearance="outline">
-                    <mat-label>Tipo Ingreso</mat-label>
-                    <input matInput formControlName="frmTipoIngreso" readonly>
-                </mat-form-field>
-            </mat-grid-tile>
-            <mat-grid-tile [colspan]="2">
-                <mat-form-field appearance="outline">
                     <mat-label>Estado</mat-label>
                     <input matInput formControlName="frmEstado" readonly>
                 </mat-form-field>
             </mat-grid-tile>
-            
+            <mat-grid-tile [colspan]="1">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo Ingreso</mat-label>
+                    <input matInput formControlName="frmTipoIngreso" readonly>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1">
+                <mat-form-field *ngIf="estadoReq !== 5" appearance="outline">
+                    <mat-label>Avance</mat-label>
+                    <input matInput formControlName="frmporcentajeAvance" readonly>
+                </mat-form-field>
+            </mat-grid-tile>
         </mat-grid-list>
+
         <mat-form-field *ngIf="estadoReq == 4" appearance="outline">
             <mat-label>Motivo de derivación</mat-label>
             <textarea matInput formControlName="frmMotivo" readonly></textarea>
@@ -59,7 +65,7 @@
         </mat-form-field>
     </form>
     <div *ngIf="estadoReq !== 5">
-        <h3>Tareas Asignadas:</h3><br>
+        <h3>Tareas asignadas</h3><br>
         <table mat-table [dataSource]="dataSource_tarea" style="width:100%">
             <ng-container matColumnDef="nombre_tarea">
                 <th mat-header-cell *matHeaderCellDef>Descripcion Tarea</th>

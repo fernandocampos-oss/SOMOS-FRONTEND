@@ -33,8 +33,8 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
 
-  // back() {
-  //   this._router.navigate([''], { relativeTo: this.route });
-  // }
+  back() {
+    this._router.navigate([''], { relativeTo: this.route });
+  }
 
 }

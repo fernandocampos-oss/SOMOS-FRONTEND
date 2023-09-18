@@ -17,7 +17,6 @@ import { TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
 export class ReadRequirementComponent implements OnInit {
 
   form: FormGroup;
-  requerimiento: string;
   estadoReq: number;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -37,7 +36,6 @@ export class ReadRequirementComponent implements OnInit {
   ngOnInit(): void {
     // console.log(this.data)
     this.estadoReq = this.data.model.estadoRequerimiento.codigo;
-    this.requerimiento = this.data.model.requerimiento.nombre;
     this.createForm();
 
     this.dataSource_tarea = this.data.model.listTarea;
@@ -45,6 +43,7 @@ export class ReadRequirementComponent implements OnInit {
 
   createForm() {
     this.form = this._fb.group({
+      frmTitulo: [this.data.model.requerimiento.nombre],
       frmDescripcion: [this.data.model.requerimiento.descripcion],
       frmIdentificador: [this.data.model.requerimiento.identificador],
       frmTipoIngreso: [this.data.model.requerimiento.tipoIngreso.descripcion],

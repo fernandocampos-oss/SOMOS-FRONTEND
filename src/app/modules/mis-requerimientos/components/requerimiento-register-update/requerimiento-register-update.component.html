@@ -1,11 +1,11 @@
-<h2 matDialogTitle>Registrar Nuevo Requerimiento</h2>
+<h2 matDialogTitle>Registrar Requerimiento</h2>
 <form [formGroup]="form">
     <mat-dialog-content>
 
         <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Nombre del Requerimiento</mat-label>
+                    <mat-label>Titulo</mat-label>
                     <input matInput required formControlName="frmNombre" />
                 </mat-form-field>
             </mat-grid-tile>
@@ -17,7 +17,7 @@
         <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Medio de ingreso del requerimiento</mat-label>
+                    <mat-label>Medio de ingreso</mat-label>
                     <mat-select formControlName="frmMedio">
                         <mat-option *ngFor="let i of listTipoIngreso" [value]="i">
                             {{i.descripcion}}
@@ -27,7 +27,7 @@
             </mat-grid-tile>
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Identificador del documento del requerimiento</mat-label>
+                    <mat-label>Identificador del requerimiento</mat-label>
                     <input matInput required formControlName="frmIdentificador" />
                 </mat-form-field>
             </mat-grid-tile>
@@ -56,5 +56,6 @@
 </form>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close type="button">Cancelar</button>
-    <button mat-raised-button class="btnsave" type="submit" (click)="registrarRequerimiento()">Grabar</button>
+    <button mat-raised-button class="btnsave" type="submit" (click)="registrarRequerimiento()"
+        [disabled]="form.valid == false">Enviar</button>
 </mat-dialog-actions>

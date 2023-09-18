@@ -7,7 +7,7 @@
 <br>
 <div class="btn-input">
   <mat-form-field appearance="outline">
-    <mat-label>Ingrese nombre o apellido del colaborador</mat-label>
+    <mat-label>Ingrese nombre o apellido del integrante</mat-label>
     <input type="text" matInput [formControl]="integranteControl" [matAutocomplete]="autoPersona">
     <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFnPersonal"
       (optionSelected)="onSelectionChangePersonal($event)">

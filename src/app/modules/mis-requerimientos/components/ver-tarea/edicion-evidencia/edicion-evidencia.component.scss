@@ -8,7 +8,7 @@
     }
 
     &__button {
-        width: 100%;
+        width: 50%;
         margin-bottom: 1rem;
     }
 }
@@ -18,48 +18,25 @@
     color: white;
 }
 
-.imageBox {
-    width: 100%;
-    padding-right: 4px;
-}
-
-mat-form-field {
-    width: 100%;
-}
-
-textarea {
-    overflow: hidden;
-    resize: none;
-}
-
 .cargaImg {
     ::ng-deep .mat-grid-tile-content {
         align-items: flex-start;
     }
 }
 
-.boxEspaciado {
-    ::ng-deep .mat-form-field-infix {
-        top: 1.8px;
-    }
-}
-
-.alert {
-    display: grid;
-
-    h2 {
-        justify-self: center;
-        text-align: center;
-    }
-
-    span {
-        justify-self: center;
-        text-align: center;
-    }
-}
-
-.boton {
+.imageBox {
     width: 100%;
+    padding-right: 4px;
+}
+
+form {
+    mat-form-field {
+        width: 100%;
+    }
+
+    textarea {
+        resize: none;
+    }
 }
 
 .btnsave {
@@ -67,3 +44,31 @@ textarea {
     background-color: var(--color-MiEssalud);
     border-radius: 4px;
 }
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    border-top-color: #000000;
+    animation: spinner .8s linear infinite;
+}
+
+// .boxEspaciado {
+//     ::ng-deep .mat-form-field-infix {
+//         top: 1.8px;
+//     }
+// }

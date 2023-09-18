@@ -1,4 +1,6 @@
-<h2 mat-dialog-title>Evidencias</h2>
+<div style="text-align: center">
+  <h3>Evidencias</h3>
+</div>
 <mat-dialog-content>
   <table mat-table [dataSource]="dataSource" style="width:100%">
     <ng-container matColumnDef="item">
@@ -26,7 +28,7 @@
       <td class="empty-cell">Sin registros por mostrar</td>
     </tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cerrar</button>

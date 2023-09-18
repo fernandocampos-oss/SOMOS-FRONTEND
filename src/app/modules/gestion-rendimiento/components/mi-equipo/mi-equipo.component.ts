@@ -1,4 +1,3 @@
-import { element } from 'protractor';
 import { startWith, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,8 +8,6 @@ import { UserAddDeleteComponent } from './dialogs/user-add-delete/user-add-delet
 import { UserTaskComponent } from './dialogs/user-task/user-task.component'
 import { GestionRendimientoService } from '../../../../data/services/gestion-rendimiento.service'
 import { NotificationService } from '@core/services';
-import { EditUserSelectedComponent } from './dialogs/edit-user-selected/edit-user-selected.component';
-import { ConstantesGr } from '@data/constants/constantes-gr.constant';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
@@ -164,7 +161,7 @@ export class MiEquipoComponent implements OnInit {
     if (this.personalSeleccionadoTmp != undefined) {
       let add = await this.services.agregarIntegrante(this.personalSeleccionadoTmp.idUsuario).then((data: any) => {
         if (data = 1) {
-          this._notification.success("Integrante agregado");
+          this._notification.success("Integrante agregado correctamente");
           this.integranteControl.reset('');
           this.personalSeleccionadoTmp = null;
           this.loadTable();
@@ -173,7 +170,7 @@ export class MiEquipoComponent implements OnInit {
         }
       });
     } else {
-      this._notification.warning('Por favor busque un colaborador');
+      this._notification.warning('Ingrese nombre o apellido del integrante');
     }
   }
 

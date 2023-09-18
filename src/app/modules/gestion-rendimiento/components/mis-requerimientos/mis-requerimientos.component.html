@@ -1,3 +1,9 @@
+<div class="actions">
+  <button mat-raised-button class="nuevo-button" (click)="nuevoRequerimientoAdmin(false)">
+    <mat-icon>add_circle</mat-icon>&nbsp; Nuevo Requerimiento</button>
+  <button mat-raised-button class="eliminar-button" (click)="listRequerimientosAdmin(true)">
+    <mat-icon>remove_circle</mat-icon>&nbsp; Mis Requerimientos</button>
+</div>
 <br>
 <table mat-table [dataSource]="dataSource" style="width:100%" matSort>
     <ng-container matColumnDef="Item">

@@ -96,7 +96,7 @@ export class SolicitudRequirementComponent implements OnInit {
 
   registrarTareas() {
     if (this.listTareas.length == 0) {
-      this._notification.warning("Se debe asignar almenos 1 tarea al requerimiento");
+      this._notification.warning("Ingrese al menos una tarea para continuar");
     } else {
       const dialogRef: MatDialogRef<ConfirmRequerimientoComponent> = this.dialogRef.open(ConfirmRequerimientoComponent, {
         disableClose: false,

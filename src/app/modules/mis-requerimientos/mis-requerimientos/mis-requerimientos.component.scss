@@ -33,7 +33,7 @@
     color: white;
     background-color: var(--color-bordes);
     border-radius: 4px;
-    width: 120px;
+    width: 220px;
 }
 
 table {
@@ -43,6 +43,11 @@ table {
 .btn-tarea {
     margin-top: 10px;
     width: 9em;
+    color: white;
+    background-color: var(--color-bordes);
+}
+
+.primary-button {
     color: white;
     background-color: var(--color-bordes);
 }

@@ -55,7 +55,7 @@ export class VerTareaComponent implements OnInit {
   registrarEvidencia(element) {
     const dialogRef: MatDialogRef<EdicionEvidenciaComponent> = this._matDialog.open(EdicionEvidenciaComponent, {
       disableClose: false,
-      width: '55%',
+      width: '500px',
       //height: '780px',
       autoFocus: true,
       data: {

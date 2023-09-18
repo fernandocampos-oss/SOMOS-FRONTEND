@@ -9,6 +9,7 @@ import { AcceptRejectRequirementComponent } from './dialogs/accept-reject-requir
 import { MoveRequirementComponent } from './dialogs/move-requirement/move-requirement.component';
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
+import { RequerimientoRegisterUpdateComponent } from '@modules/mis-requerimientos/components/requerimiento-register-update/requerimiento-register-update.component';
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -24,7 +25,7 @@ export class MisRequerimientosComponent implements OnInit {
   menuToggle = new EventEmitter<void>();
 
   constructor(
-    private dialog: MatDialog,
+    private _dialog: MatDialog,
     private services: GestionRendimientoService,
     private _notification: NotificationService,
   ) { }
@@ -52,7 +53,7 @@ export class MisRequerimientosComponent implements OnInit {
   // }
 
   verRequerimiento(element) {
-    const dialogRef: MatDialogRef<ReadRequirementComponent> = this.dialog.open(ReadRequirementComponent, {
+    const dialogRef: MatDialogRef<ReadRequirementComponent> = this._dialog.open(ReadRequirementComponent, {
       disableClose: false,
       width: '70%',
       //height: '780px',
@@ -68,7 +69,7 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   registrarTareas(element) {
-    const dialogRef: MatDialogRef<SolicitudRequirementComponent> = this.dialog.open(SolicitudRequirementComponent, {
+    const dialogRef: MatDialogRef<SolicitudRequirementComponent> = this._dialog.open(SolicitudRequirementComponent, {
       disableClose: true,
       width: '50%',
       maxHeight: '810px',
@@ -85,7 +86,7 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   aprobarRequerimiento(element, onDelete: boolean) {
-    const dialogRef: MatDialogRef<AcceptRejectRequirementComponent> = this.dialog.open(AcceptRejectRequirementComponent, {
+    const dialogRef: MatDialogRef<AcceptRejectRequirementComponent> = this._dialog.open(AcceptRejectRequirementComponent, {
       disableClose: false,
       autoFocus: false,
       data: {
@@ -100,7 +101,7 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   derivarRequerimiento(element) {
-    const dialogRef: MatDialogRef<MoveRequirementComponent> = this.dialog.open(MoveRequirementComponent, {
+    const dialogRef: MatDialogRef<MoveRequirementComponent> = this._dialog.open(MoveRequirementComponent, {
       disableClose: false,
       width: '35%',
       autoFocus: false,
@@ -113,4 +114,25 @@ export class MisRequerimientosComponent implements OnInit {
       this.loadTable();
     });
   }
+
+  nuevoRequerimientoAdmin(onDelete: boolean){
+    const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._dialog.open(RequerimientoRegisterUpdateComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: false,
+      data: {
+        auto: true,
+        id: 0
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  listRequerimientosAdmin(onDelete: boolean){
+
+  }
+
 }

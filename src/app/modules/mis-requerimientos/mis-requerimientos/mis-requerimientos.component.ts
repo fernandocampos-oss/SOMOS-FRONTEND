@@ -1,17 +1,15 @@
-import { ComponentType } from '@angular/cdk/portal';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-// import { Requerimiento } from '@data/models/requerimiento/requerimiento.model';
-import { untilDestroyed } from '@ngneat/until-destroy';
-import { ColumnDef } from '@shared/table/table.component';
-import { filter } from 'rxjs/operators';
 import { RequerimientoRegisterUpdateComponent } from '../components/requerimiento-register-update/requerimiento-register-update.component';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { VerTareaComponent } from '../components/ver-tarea/ver-tarea.component';
+import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
+import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimiento/reporte-finalizados';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-requerimientos',
@@ -23,6 +21,8 @@ export class MisRequerimientosComponent implements OnInit {
   actionPend = 'Avance';
   actionFin = 'Ver';
 
+  listEvidencia: any[] = [];
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
@@ -31,17 +31,20 @@ export class MisRequerimientosComponent implements OnInit {
   @ViewChild(MatSort) sort_finalizado: MatSort;
   @ViewChild(MatPaginator) paginator_finalizado: MatPaginator;
   dataSource_finalizado: MatTableDataSource<any>;
-  displayedColumns_finalizado: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance']; 
+  displayedColumns_finalizado: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance', 'acciones'];
 
   @ViewChild(MatSort) sort_rechazado: MatSort;
   @ViewChild(MatPaginator) paginator_rechazado: MatPaginator;
   dataSource_rechazado: MatTableDataSource<any>;
-  displayedColumns_rechazado: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'motivo']; 
+  displayedColumns_rechazado: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'motivo'];
 
   constructor(
+    private _router: Router,
+    private route: ActivatedRoute,
     private _matDialog: MatDialog,
-    private _services: GestionRendimientoService,
+    private _requerimientoService: GestionRendimientoService,
     private _notification: NotificationService,
+    public _serviceExcel: ExportExcelGestionRendimientoService,
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +56,7 @@ export class MisRequerimientosComponent implements OnInit {
   registrarRequerimiento() {
     const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._matDialog.open(RequerimientoRegisterUpdateComponent, {
       disableClose: false,
-      width: '40%',
+      width: '500px',
       //height: '780px',
       autoFocus: false,
       data: {
@@ -74,39 +77,33 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   async loadTablePendiente() {
-    let listPendiente = await this._services.listarRequerimientoPendiente().then((data) => {
-      if (data.length > 0) {        
+    let listPendiente = await this._requerimientoService.listarRequerimientoPendiente().then((data) => {
+      if (data.length > 0) {
         this.dataSource = new MatTableDataSource(data);
-        // this.dataSource.paginator = this.paginator;
-        // this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       } else {
-        this._notification.warning('Lista de requerimientos pendientes vacia');
+        this._notification.warning('Aún no tiene requererimientos registrados');
       }
     });
   }
 
   async loadTableFinalizado() {
-    let listFinalizado = await this._services.listarRequerimientoFinalizado().then((data) => {
+    let listFinalizado = await this._requerimientoService.listarRequerimientoFinalizado().then((data) => {
       if (data.length > 0) {
-        console.log("Finalizado", data)
         this.dataSource_finalizado = new MatTableDataSource(data);
-        // this.dataSource.paginator = this.paginator_finalizado;
-        // this.dataSource.sort = this.sort_finalizado;
-      } else {
-        this._notification.warning('Lista de requerimientos finalizados vacia');
+        this.dataSource.paginator = this.paginator_finalizado;
+        this.dataSource.sort = this.sort_finalizado;
       }
     });
   }
 
   async loadTableRechazado() {
-    let listRechazado = await this._services.listarRequerimientoRechazado().then((data) => {
+    let listRechazado = await this._requerimientoService.listarRequerimientoRechazado().then((data) => {
       if (data.length > 0) {
-        console.log("Rechazado", data)
         this.dataSource_rechazado = new MatTableDataSource(data);
-        // this.dataSource.paginator = this.paginator_rechazado;
-        // this.dataSource.sort = this.sort_rechazado;
-      } else {
-        this._notification.warning('Lista de requerimientos rechazados vacia');
+        this.dataSource.paginator = this.paginator_rechazado;
+        this.dataSource.sort = this.sort_rechazado;
       }
     });
   }
@@ -129,5 +126,57 @@ export class MisRequerimientosComponent implements OnInit {
       this.loadTableRechazado();
     });
   }
+
+  back() {
+    this._router.navigate([''], { relativeTo: this.route });
+  }
+
+  async exportToExcel(element) {
+    console.log("#####", element)
+    if (element.idRequerimientoUsuario > 0) {
+
+      let reportePersonal = new ReportePersonal();
+      reportePersonal.apellidos = element.usuario.apellidos;
+      reportePersonal.nombres = element.usuario.nombres;
+      reportePersonal.cargo = element.usuario.cargo;
+
+      let listTarea: ReporteEvidencia[] = [];
+      for (let i of element.listTarea) {
+        let obj = new ReporteEvidencia();
+        obj.nombreTarea = i.nombreTarea;
+        obj.plazoTarea = i.plazo;
+
+        obj.poi = element.poi.descripcion;
+        obj.indicador = element.poi.indicador.descripcion;
+
+        let a = await this._requerimientoService.getListarEvidenciasTarea(i.idTarea).then((data: any) => {
+          if (data.length > 0) {
+            this.listEvidencia = data;
+          } else {
+            this._notification.warning("Error al obtener evidencias");
+          }
+        });
+
+        for (let j of this.listEvidencia) {
+          obj.descripcionEvidencia = j.descripcion;
+          obj.porcentajeAvanceEvidencia = j.porcentajeAvance;
+        }
+
+        listTarea.push(obj);
+        obj = null;
+      }
+
+      console.log("obj", listTarea)
+      let columnsName = ["SERVIDOR/A EVALUADO/A", "SERVIDOR/A EVALUADOR/A"];
+      let reportData = {
+        data_personal: reportePersonal,
+        data_evidencia: listTarea,
+        headers: columnsName,
+      };
+      this._serviceExcel.exportExcel(reportData);
+    }
+  }
+
+
 
 }

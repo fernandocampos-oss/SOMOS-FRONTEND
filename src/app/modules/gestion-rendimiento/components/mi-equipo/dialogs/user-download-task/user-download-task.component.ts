@@ -69,9 +69,8 @@ export class UserDownloadTaskComponent implements OnInit {
 
   createForm() {
     this.form = this._fb.group({
-      // frmDescripcion: [this.data.objAsignacion.nombreTarea],
+      frmTitulo: [this.data.model.requerimiento.nombre],
       // frmFecFin: [[new Date(this.data.objAsignacion.plazo.split('/')[2],this.data.objAsignacion.plazo.split('/')[1]-1,this.data.objAsignacion.plazo.split('/')[0]).toLocaleDateString()]],
-      // frmEstado: [this.data.objAsignacion.estado],
       frmDescripcion: [this.data.model.requerimiento.descripcion],
       frmEstado: [this.data.model.estadoRequerimiento.descripcion],
       frmFecFin: [[new Date(this.data.model.requerimiento.fechaCreacion).toISOString().split('T', 1)[0]]]      

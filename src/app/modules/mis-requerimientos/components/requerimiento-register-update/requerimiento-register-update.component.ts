@@ -57,7 +57,7 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
   async registrarRequerimiento() {
     const model = this._getModel();
 
-    let listPendiente = await this._requerimientoService.registrarRequerimiento(model).then((data) => {
+    let registrar = await this._requerimientoService.registrarRequerimiento(model).then((data) => {
       this._notification.success("Requerimiento registrado")
       this.dialogRef.closeAll();
     });

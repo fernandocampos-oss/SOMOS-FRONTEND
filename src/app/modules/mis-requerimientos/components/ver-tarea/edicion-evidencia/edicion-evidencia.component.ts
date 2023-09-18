@@ -20,9 +20,11 @@ export class EdicionEvidenciaComponent implements OnInit {
   retrievedImage: any;
   isImageUpdate = false;
 
-  nameImage: string;
-  sizeImage: number;
-  typeImage: string;
+  nameImage: string = '';
+  sizeImage: number = 0;
+  typeImage: string = '';
+
+  selectedIndex = 0;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -41,8 +43,8 @@ export class EdicionEvidenciaComponent implements OnInit {
 
   private _createForm() {
     this.form = this._fb.group({
-      frmDescripcion: [null, [Validators.required]],
-      frmPorcentajeAvance: [null, [Validators.required]],
+      frmDescripcion: [null, [Validators.required, Validators.maxLength(300)]],
+      frmPorcentajeAvance: [null, [Validators.required, Validators.min(1), Validators.max(100)]],
       // frmAreaSolicitante: 'SGSA',
     });
   }
@@ -93,7 +95,7 @@ export class EdicionEvidenciaComponent implements OnInit {
   async registrarEvidencia() {
     if (this.retrievedImage == undefined || !this.form.valid) {
       this._notification.warning(
-        'Por favor complete todos los campos obligatorios e ingrese una imagen'
+        'Complete todos los campos obligatorios e ingrese una imagen'
       );
       this.form.markAllAsTouched();
       return;
@@ -102,7 +104,7 @@ export class EdicionEvidenciaComponent implements OnInit {
       const model = this._getModel();
 
       let register = await this._requerimientoService.registrarEvidencia(model).then((data) => {
-        this._notification.success("Evidencia registrada correctamente")
+        this._notification.success("Enviado correctamente")
 
       });
       this._dialogRef.closeAll();
@@ -130,6 +132,17 @@ export class EdicionEvidenciaComponent implements OnInit {
       extension: completo.substring(nombreFile + 1),
       idRequerimiento: this.data.idRequerimiento
     };
+  }
+
+  onTabChanged(event) {
+    if (event.index == 1 && !this.form.valid) {
+      this.selectedIndex = 0;
+      this._notification.warning("Ingrese los campos para continuar");
+    }
+  }
+
+  next() {
+    this.selectedIndex = 1;
   }
 
 }
