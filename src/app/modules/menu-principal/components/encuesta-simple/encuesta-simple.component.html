@@ -5,7 +5,7 @@
         <div class="separacion">
             <ng-container *ngFor="let candidato of candMap, index as i">
                 <div class="elementos" *ngIf="i != candMap.length-1" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
-                    <div class="candHeader" matTooltipClass="tooltipEleccion" matTooltipPosition="above" [matTooltip]="'Unidad Orgánica: ' + candidato.unidad">
+                    <div class="candHeader" matTooltipClass="tooltipEleccion" matTooltipPosition="above" [matTooltip]="'Red: ' + candidato.unidad | titlecase">
                         <span>{{candidato.nombre | titlecase}}</span>
                     </div>
                     <div class="candBody">

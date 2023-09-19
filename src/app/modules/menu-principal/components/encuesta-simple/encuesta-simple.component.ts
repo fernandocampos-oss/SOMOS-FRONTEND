@@ -54,7 +54,7 @@ export class EncuestaSimpleComponent implements OnInit {
         for (let i = 0; i < this.candMap.length; i++) {
           this.userService.get(this.candMap[i].idUsuario).subscribe((data)=>{
             if(data){
-              this.candMap[i].unidad = data.unidad;
+              this.candMap[i].unidad = data.red;
             }
           })
         }
