@@ -9,7 +9,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ShowPublicacionComponent } from '../components/show-publicacion/show-publicacion.component';
 import { PublicacionResponse } from '@data/models/menu-principal/menu-publicacion.model';
 import { AdmPublicaciones } from '../components/adm-publicaciones/adm-publicaciones.component';
-import { AuthService } from '@data/services';
+import { AuthService, UsuarioService } from '@data/services';
 import { ShowPaymentCalendarComponent } from '../components/show-payment-calendar/show-payment-calendar.component';
 import { EncuestaSimpleComponent } from '../components/encuesta-simple/encuesta-simple.component';
 import { ShowSistemasComponent } from '../components/show-sistemas/show-sistemas.component';
@@ -28,6 +28,9 @@ interface fechas_Imp{ // Provisional: para tener las fechas importantes
   styleUrls: ['./menu-principal.component.scss']
 })
 export class MenuPrincipalComponent implements OnInit {
+  mostrarEleccion = false;
+  numDocUsuario = '';
+
   onomasticos: OnomasticosResponse[] = [];
   today = new Date();
   interfazCelular: boolean;
@@ -82,9 +85,15 @@ export class MenuPrincipalComponent implements OnInit {
   constructor(private dialog: MatDialog,
               private _menuService:MenuPrincipalService,
               private responsive  : BreakpointObserver,
+              private userService  : UsuarioService,
               private _authService: AuthService) { }
 
   ngOnInit(): void {
+    this.userService.get(this._authService.getUserSession().id).subscribe(data=>{
+      if(this._menuService.returnPadron(data.numeroDocumento)){
+        this.mostrarEleccion = true;
+      }
+    })
     this.rol = this._authService.getRol();
     this.identificador = this.nearestDay(this.today);
     this.responsive.observe([

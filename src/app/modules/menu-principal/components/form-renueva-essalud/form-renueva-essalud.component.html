@@ -124,16 +124,16 @@
 
                     </div>
                     <div class="grid-cols-3">
-                        <div style="display: flex; flex-direction: column;">
+                        <div class="categoriaRenueva">
                             <h4>Categoría a la que participan</h4>
                             <mat-radio-group class="radioGroup" formControlName="ctrlCategoria">&nbsp;
-                              <div class="optCat"><mat-radio-button value="Mejora en la atención y servicio"> Mejora en la atención y servicio </mat-radio-button><mat-icon matTooltipClass="tooltip" matTooltip="Son aquellas acciones, interacciones y procesos innovadores que eleven la calidad del servicio al asegurado e incrementen su bienestar"
+                              <div class="optCat"><mat-radio-button value="Mejora en la atención y servicio"> Mejora en la atención y servicio </mat-radio-button><mat-icon matTooltipClass="tooltipRenueva" matTooltip="Son aquellas acciones, interacciones y procesos innovadores que eleven la calidad del servicio al asegurado e incrementen su bienestar"
                                 matTooltipPosition="right">help_outline</mat-icon></div>&nbsp;
-                              <div class="optCat"><mat-radio-button value="Optimización de recursos"> Optimización de recursos </mat-radio-button><mat-icon matTooltipClass="tooltip" matTooltip="Son aquellas acciones que busquen gestionar de manera eficiente los diferentes recursos dentro del establecimiento de salud" 
+                              <div class="optCat"><mat-radio-button value="Optimización de recursos"> Optimización de recursos </mat-radio-button><mat-icon matTooltipClass="tooltipRenueva" matTooltip="Son aquellas acciones que busquen gestionar de manera eficiente los diferentes recursos dentro del establecimiento de salud" 
                                 matTooltipPosition="right">help_outline</mat-icon></div>&nbsp;
-                              <div class="optCat"><mat-radio-button value="Mejora de la práctica en el trabajo"> Mejora de la práctica en el trabajo </mat-radio-button><mat-icon matTooltipClass="tooltip" matTooltip="Son aquellas acciones que fomenten el bienestar de los trabajadores y que busquen el fortalecimiento del clima laboral" 
+                              <div class="optCat"><mat-radio-button value="Mejora de la práctica en el trabajo"> Mejora de la práctica en el trabajo </mat-radio-button><mat-icon matTooltipClass="tooltipRenueva" matTooltip="Son aquellas acciones que fomenten el bienestar de los trabajadores y que busquen el fortalecimiento del clima laboral" 
                                 matTooltipPosition="right">help_outline</mat-icon></div>&nbsp;
-                              <div class="optCat"><mat-radio-button value="Prevención y promoción de la salud"> Prevención y promoción de la salud </mat-radio-button><mat-icon matTooltipClass="tooltip" matTooltip="Son aquellas acciones y procesos innovadores que promueven la promoción de la salud, así como el fortalecimiento de acciones preventivas" 
+                              <div class="optCat"><mat-radio-button value="Prevención y promoción de la salud"> Prevención y promoción de la salud </mat-radio-button><mat-icon matTooltipClass="tooltipRenueva" matTooltip="Son aquellas acciones y procesos innovadores que promueven la promoción de la salud, así como el fortalecimiento de acciones preventivas" 
                                 matTooltipPosition="right">help_outline</mat-icon></div>&nbsp;
                             </mat-radio-group>
                         </div>
@@ -278,7 +278,7 @@
                         <textarea matInput formControlName="ctrlBeneficio"></textarea>
                     </mat-form-field>
                     <h4>Indicar si la acción innovadora involucra alguno o varios de estos enfoques: (Marcar una o varias alternativas)</h4>
-                    <ul *ngFor="let option of opcionesMultiples, index as i">
+                    <ul *ngFor="let option of opcionesMultiples, index as i" class="marcarRenueva">
                       <mat-checkbox (change)="option.activado = !option.activado" color="primary" [checked]="option.activado" [disabled]='estadoInscripcion'>
                         {{option.value}}
                       </mat-checkbox>

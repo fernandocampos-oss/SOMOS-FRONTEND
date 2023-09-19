@@ -1,3 +1,82 @@
+::root {
+    --tamanio-array: '2';
+}
+
+.separacion{
+    display: grid;
+    grid-template-columns: repeat(var(--tamanio-array), minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+::ng-deep.tooltipEleccion{
+    font-size: 15px !important;
+}
+.elementos{
+    overflow: hidden;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: var(--color-bordes);
+    border-style: solid;
+    border-radius: 11px;
+    border-width: 2.5px;
+    .candHeader{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 100%;
+        padding: 0.25rem 0.75rem;
+        border-bottom: var(--color-bordes);
+        border-bottom-style: solid;
+        border-width: 2.5px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .candBody{
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        img{
+            width: 7vw;
+            max-width: 120px;
+            min-width: 80px;
+        }
+    }
+}
+.containerNo{
+    text-align: -webkit-center;
+}
+.ninguno{
+    width: fit-content;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    .candHeader{
+        border-bottom-style: none;
+        border-radius: 8px;
+    }
+}
+
+.noSelected{
+    .candHeader{
+        background-color: #e6effa;
+    }
+    .candBody{
+        background-color: #ffffff;
+    }
+}
+.selected{
+    .candHeader{
+        background-color: rgb(72, 210, 72);
+    }
+    .candBody{
+        background-color: #caf3ce;
+    }
+}
+
 mat-dialog-actions{
     justify-content: space-between;
 }
@@ -76,12 +155,6 @@ mat-grid-tile.opcionesEncuestaSimple {
         text-align: center;
         font-weight: 600;
     }
-    .noOption{
-        .candDescrp{
-            border-bottom-style: none !important;
-            border-radius: 11px;
-        }
-    }
     .candidato{
         .candDescrp{
             text-align: center;
@@ -113,22 +186,6 @@ mat-grid-tile.opcionesEncuestaSimple {
             padding: 1rem 0;
             border-bottom-left-radius: 11px;
             border-bottom-right-radius: 11px;
-        }
-    }
-    .noSelected{
-        .candDescrp{
-            background-color: #e6effa;
-        }
-        .imgCand{
-            background-color: #ffffff;
-        }
-    }
-    .selected{
-        .candDescrp{
-            background-color: rgb(72, 210, 72);
-        }
-        .imgCand{
-            background-color: #caf3ce;
         }
     }
 }

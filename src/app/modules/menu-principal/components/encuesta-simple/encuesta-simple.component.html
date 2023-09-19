@@ -1,72 +1,31 @@
 <div *ngIf="mostrar">
     <div class="dialogEncuesta">
-        <h3>Elecciones 2023</h3>
-        <p style="text-align: center;">Seleccione una opción por cada categoría</p>
-        <div class="columnCategorias">
-            <div class="elementoCat">
-                Categoría 1
-            </div>
-            <div class="elementoCat">
-                Categoría 2
-            </div>
-            <div class="elementoCat">
-                Categoría 3
-            </div>
-            <div class="candidato">
-                <ng-container *ngFor="let cat1 of candidatos.firstCategoria, index as i">
-                    <div class="candOpt" *ngIf="i != candidatos.firstCategoria.length-1" (click)="selectCand(i, cat1.cat)" [ngClass]="{'selected' : cat1.selected, 'noSelected': !cat1.selected}">
-                        <div class="candDescrp">
-                            <span>{{cat1.nombre}}</span>
-                        </div>
-                        <div class="imgCand">
-                            <img src="assets/images/personalAdmin.png">
-                        </div>
+        <h3>{{datosEncuesta.descripcion}}</h3>
+        <p style="text-align: center;">Seleccione un candidato</p>
+        <div class="separacion">
+            <ng-container *ngFor="let candidato of candMap, index as i">
+                <div class="elementos" *ngIf="i != candMap.length-1" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
+                    <div class="candHeader" matTooltipClass="tooltipEleccion" matTooltipPosition="above" [matTooltip]="'Unidad Orgánica: ' + candidato.unidad">
+                        <span>{{candidato.nombre | titlecase}}</span>
                     </div>
-                </ng-container>
-            </div>
-            <div class="candidato">
-                <ng-container *ngFor="let cat2 of candidatos.secondCategoria, index as i">
-                    <div class="candOpt" *ngIf="i != candidatos.secondCategoria.length-1" (click)="selectCand(i, cat2.cat)" [ngClass]="{'selected' : cat2.selected, 'noSelected': !cat2.selected}">
-                        <div class="candDescrp">
-                            <span>{{cat2.nombre}}</span>
-                        </div>
-                        <div class="imgCand">
-                            <img src="assets/images/personalAdmin.png">
-                        </div>
-                    </div>
-                </ng-container>
-            </div>
-            <div class="candidato">
-                <ng-container *ngFor="let cat3 of candidatos.thirdCategoria, index as i">
-                    <div class="candOpt" *ngIf="i != candidatos.thirdCategoria.length-1" (click)="selectCand(i, cat3.cat)" [ngClass]="{'selected' : cat3.selected, 'noSelected': !cat3.selected}">
-                        <div class="candDescrp">
-                            <span>{{cat3.nombre}}</span>
-                        </div>
-                        <div class="imgCand">
-                            <img src="assets/images/personalAdmin.png">
-                        </div>
-                    </div>
-                </ng-container>
-            </div>
-            <div class="candidato noOption">
-                <div class="candOpt" (click)="selectCand(candidatos.firstCategoria.length-1, 0)" [ngClass]="{'selected' : candidatos.firstCategoria[candidatos.firstCategoria.length-1].selected, 'noSelected': !candidatos.firstCategoria[candidatos.firstCategoria.length-1].selected}">
-                    <div class="candDescrp">
-                        <span>Ningún Candidato</span>
+                    <div class="candBody">
+                        <img src="assets/images/personalAdmin.png">
                     </div>
                 </div>
-            </div>
-            <div class="candidato noOption">
-                <div class="candOpt" (click)="selectCand(candidatos.secondCategoria.length-1, 1)" [ngClass]="{'selected' : candidatos.secondCategoria[candidatos.secondCategoria.length-1].selected, 'noSelected': !candidatos.secondCategoria[candidatos.secondCategoria.length-1].selected}">
-                    <div class="candDescrp">
-                        <span>Ningún Candidato</span>
+                <div class="elementos" *ngIf="i == candMap.length-1 && candMap.length == 6" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
+                    <div class="candHeader">
+                        <span>{{candidato.nombre | titlecase}}</span>
+                    </div>
+                    <div class="candBody">
+                        <img src="assets/images/prohibitionIcon.png">
                     </div>
                 </div>
-            </div>
-            <div class="candidato noOption">
-                <div class="candOpt" (click)="selectCand(candidatos.thirdCategoria.length-1, 2)" [ngClass]="{'selected' : candidatos.thirdCategoria[candidatos.thirdCategoria.length-1].selected, 'noSelected': !candidatos.thirdCategoria[candidatos.thirdCategoria.length-1].selected}">
-                    <div class="candDescrp">
-                        <span>Ningún Candidato</span>
-                    </div>
+            </ng-container>
+        </div>
+        <div class="containerNo" *ngIf="candMap.length != 6">
+            <div class="elementos ninguno" (click)="selectCand(candMap.length-1, candMap[candMap.length-1])" [ngClass]="{'selected' : candMap[candMap.length-1].selected, 'noSelected': !candMap[candMap.length-1].selected}">
+                <div class="candHeader">
+                    <span>{{candMap[candMap.length-1].nombre | titlecase}}</span>
                 </div>
             </div>
         </div>
@@ -101,13 +60,13 @@
     </div>
         <mat-dialog-actions>
                 <button mat-button mat-dialog-close>Cerrar</button>
-                <button mat-raised-button color="primary" (click)="sendConfirmation(seleccion)">Enviar</button>
+                <button mat-raised-button color="primary" (click)="sendConfirmation(selectedCandidato)">Enviar</button>
         </mat-dialog-actions>
 </div>
 
 <div class="dialogEncuesta encuestaHecha" *ngIf="!mostrar">
     <img src="assets/images/surveyCheck.png">
-    <h3>¡Gracias por participar de la encuesta!</h3>
+    <h3>¡Gracias por participar de la elección!</h3>
     <mat-dialog-actions align="center">
             <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
     </mat-dialog-actions>

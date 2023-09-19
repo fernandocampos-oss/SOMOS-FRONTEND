@@ -30,14 +30,21 @@
         font-family: "Nunito"!important;   
     }
 }
-::ng-deep.mat-tooltip {
+::ng-deep.tooltipRenueva{
     font-size: 16px !important;
+}
+.categoriaRenueva{
+    display: flex; 
+    flex-direction: column;
 }
 .radioGroup{
     display: grid !important;
     ::ng-deep.mat-radio-label-content{
         white-space: normal;
     }
+}
+.example-tooltip-uppercase {
+  text-transform: uppercase;
 }
 .grid-cols-3{
     display: grid;
@@ -67,13 +74,15 @@
         width: 100%;
     }
 }
-::ng-deep.mat-checkbox-layout {
-  white-space: normal !important;
-  text-align: justify;
-
-}
-::ng-deep .mat-checkbox-inner-container {
-  margin-top: 4px !important;
+.marcarRenueva{
+    ::ng-deep.mat-checkbox-layout {
+      white-space: normal !important;
+      text-align: justify;
+    
+    }
+    ::ng-deep .mat-checkbox-inner-container {
+      margin-top: 4px !important;
+    }
 }
 .subPregunta{
     margin-left: 2rem;

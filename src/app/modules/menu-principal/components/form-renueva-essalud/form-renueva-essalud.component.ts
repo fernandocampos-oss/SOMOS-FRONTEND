@@ -159,7 +159,6 @@ export class FormRenuevaEssaludComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    console.log(localStorage.getItem(LocalStorageKey.TOKEN))
     this.idLider = this.authService.getUserSession().id;
     this.cargarUsuariosRed();
     this.cargarLider();
@@ -301,7 +300,6 @@ export class FormRenuevaEssaludComponent implements OnInit {
   cargarLider(){
     this.userService.get(this.authService.getUserSession().id).subscribe((data) => {
       this.formDatosGenerales.controls.ctrlRed.setValue(data.red);
-      console.log(data.unidad)
       this.formDatosGenerales.controls.ctrlRed.disable();
       if (this.listaIntegrantes.length === 0) {
         this.listaIntegrantes.push({
@@ -317,7 +315,6 @@ export class FormRenuevaEssaludComponent implements OnInit {
           red: data.red,
           unidad: data.unidad
         });
-        console.log(this.listaIntegrantes);
         this.table.renderRows();
       }
     });
@@ -398,7 +395,6 @@ export class FormRenuevaEssaludComponent implements OnInit {
     }
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
-    console.log(files)
     reader.onload = _event => {
       const imgLoad = new Image();
       this.applicationFile = files[0];
@@ -569,12 +565,9 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   downloadPdf() {
     const blob = this.base64ToBlob(this.retrievedPdf.split(',')[1], 'application/pdf');
-    console.log(blob)
     const url = URL.createObjectURL(blob);
-    console.log(url)
 
     const link = document.createElement('a');
-    console.log(link)
     link.href = url;
     link.download = 'archivo.pdf';
     link.click();
