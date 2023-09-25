@@ -54,7 +54,7 @@
                         <mat-label>Redes Asignadas</mat-label>
                         <mat-select [(ngModel)]="redItemSeleccionadoRol_3_4" [ngModelOptions]="{standalone: true}" multiple>
                             <mat-option *ngFor="let r of listRedesAsignadas" [value]="r.codRed">
-                                {{r.descripcion}}
+                                {{r.descripcion | titlecase}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

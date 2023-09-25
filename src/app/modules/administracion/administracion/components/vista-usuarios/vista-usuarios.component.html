@@ -1,0 +1,74 @@
+<h4>Los datos mostrados son los últimos usuarios registrados</h4>
+<div class="opciones" *ngIf="showTable">
+    <mat-form-field appearance="outline">
+        <mat-label>Redes disponibles</mat-label>
+        <mat-select [formControl]="frmCtrlRedes">
+            <ng-container *ngIf="redesAsignadas.length > 1">
+                <mat-option [value]="''" selected> Todas las redes</mat-option>
+                <mat-option *ngFor="let red of redesAsignadas" [value]="red.codRed">{{red.descripcion | titlecase}}</mat-option>
+            </ng-container>
+            <ng-container *ngIf="redesAsignadas.length == 1">
+                <mat-option [value]="redesAsignadas[0].codRed" selected>{{redesAsignadas[0].descripcion | titlecase}}</mat-option>
+            </ng-container>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="exportarReporte()" [disabled]="deshabilitarDescarga" [ngClass]="deshabilitarDescarga ? 'deshabilitado': ''"><mat-icon *ngIf="!deshabilitarDescarga">cloud_download</mat-icon>{{deshabilitarDescarga ? 'Se esta descargando los registros' : ' Exportar a Excel'}}</button>
+</div>
+<table mat-table [dataSource]="dataSource" style="width:100%" matSort>      
+    <ng-container matColumnDef="item">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef width="1%"> N° </th>
+        <td mat-cell *matCellDef="let element, index as i"> {{i+1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dni">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef width="4%"> Nro. Documento </th>
+        <td mat-cell *matCellDef="let element"> {{element.numeroDocumento}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="codPlanilla">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef width="5%"> Cod. Planilla </th>
+        <td mat-cell *matCellDef="let element"> {{element.codigoPlanilla}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nombre">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef width="12%"> Nombre Completo </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombres | titlecase}} {{element.apellidos | titlecase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaCrea">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef mat-sort-header width="5%"> Fecha Registro </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="regimen">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef mat-sort-header width="8%"> Regimen </th>
+        <td mat-cell *matCellDef="let element"> {{element.regimen | titlecase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cargo">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef mat-sort-header width="7%"> Cargo </th>
+        <td mat-cell *matCellDef="let element"> {{element.cargo | titlecase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="red">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef mat-sort-header width="8%"> Red </th>
+        <td mat-cell *matCellDef="let element"> {{element.descripcionRed | titlecase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unidad">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef mat-sort-header width="10%"> Unidad Orgánica </th>
+        <td mat-cell *matCellDef="let element"> {{element.descripcionUnidad}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sexo">
+        <th mat-header-cell class="adminUsuariosHeader" *matHeaderCellDef mat-sort-header width="7%"> Sexo </th>
+        <td mat-cell *matCellDef="let element"> {{element.sexo}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr class="empty-row" *matNoDataRow>
+      <td class="empty-cell">Sin registros por mostrar</td>
+    </tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>

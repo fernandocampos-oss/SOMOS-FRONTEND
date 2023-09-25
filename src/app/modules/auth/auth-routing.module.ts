@@ -16,23 +16,35 @@ export const ROUTES: Routes = [
     children: [
       {
         path: AppRoute.LOGIN,
-        component: LoginComponent,
+        component: LoginComponent
       },
       {
         path: AppRoute.LOGIN_ADMIN,
         component: LoginAdminComponent,
+        data: {
+          title: 'Login Administrador'
+        }
       },
       {
         path: AppRoute.CAMBIAR_CLAVE,
         component: CambiarClaveComponent,
+        data: {
+          title: 'Cambiar Contraseña'
+        }
       },
       {
         path: AppRoute.CONFIRMAR_CAMBIO_CLAVE,
         component: ConfirmarCambioClaveComponent,
+        data: {
+          title: 'Confirmar Cambio Contraseña'
+        }
       },
       {
         path: AppRoute.REGISTRO,
         component: RegistroComponent,
+        data: {
+          title: 'Registrarse'
+        }
       },
     ],
   },

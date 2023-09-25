@@ -81,6 +81,7 @@ export class EditarPublicacionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.data)
     this._createForm();
     // console.log(this.selected);
     this.getRoles();
@@ -187,13 +188,18 @@ export class EditarPublicacionComponent implements OnInit {
       return;
     }
     else {
-      const model = this._getModel_rol_3();
-
-      const idPublicacion = this.data.obj.idPublicacion;
-      this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
-        this._notification.success('Publicación actualizada correctamente');
-      });
-      this.dialogRef.close();
+      if(this.selectedSave == 2 && this.redItemSeleccionadoRol_3_4.length == 0){
+        this._notification.warning('Seleccione una Red Asistencial para este tipo de alcance');
+      }
+      else{
+        const model = this._getModel_rol_3();
+  
+        const idPublicacion = this.data.obj.idPublicacion;
+        this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
+          this._notification.success('Publicación actualizada correctamente');
+        });
+        this.dialogRef.close();
+      }
     }
   }
   private _getModel_rol_3(): PublicacionRequest {
@@ -202,8 +208,6 @@ export class EditarPublicacionComponent implements OnInit {
       for (let a of this.redItemSeleccionadoRol_3) {
         redes.push(a);
       }
-    } else {
-      this._notification.warning('Seleccione una Red Asistencial');
     }
 
     return {
@@ -223,13 +227,18 @@ export class EditarPublicacionComponent implements OnInit {
       return;
     }
     else {
-      const model = this._getModel_rol_4_3();
-      const idPublicacion = this.data.obj.idPublicacion;
-
-      this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
-          this._notification.success('Publicación actualizada correctamente');
-        });
-      this.dialogRef.close();
+      if(this.selectedSave == 2 && this.redItemSeleccionadoRol_3_4.length == 0){
+        this._notification.warning('Seleccione una Red Asistencial para este tipo de alcance');
+      }
+      else{
+        const model = this._getModel_rol_4_3();
+        const idPublicacion = this.data.obj.idPublicacion;
+  
+        this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
+            this._notification.success('Publicación actualizada correctamente');
+          });
+        this.dialogRef.close();
+      }
     }
   }
   private _getModel_rol_4_3(): PublicacionRequest {
@@ -249,7 +258,7 @@ export class EditarPublicacionComponent implements OnInit {
       descripcion: this.form.value.frmDescripcion,
       imagenBase64: this.retrievedImage.split(',')[1],
       urlRedireccion: this.form.value.frmEnlace,
-      alcance: 2, //this.selectedSave,
+      alcance: this.selectedSave,
       redes: redes,
     };
   }

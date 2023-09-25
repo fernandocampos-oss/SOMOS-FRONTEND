@@ -1,20 +1,117 @@
-<div class="page" *ngIf="rol == 3">
+<div class="page">
     <div class="matero-page-header">
-        <div class="row">
-          <div class="column1">
-            <h1 class="matero-page-title"><mat-icon >settings</mat-icon> Administrar resultados de la encuesta<br>
-                <!-- <small class="mr-2">Obtén los reportes que necesitas según la información ingresada.</small><br> -->
-            </h1>
+        <h1 class="matero-page-title"><mat-icon>settings</mat-icon> Administra los usuarios registrados<br>
+          <small class="mr-2">Visualiza los usuarios en tus redes asignadas y obtén reportes.</small><br>
+          <div class="optionsBar">
+            <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+            <button mat-raised-button color="primary" (click)="showReporte()"><mat-icon>assignment_ind</mat-icon> Ver reporte de usuarios</button>
           </div>
-          <div class="column2">
-            <button mat-raised-button color="primary" class="search buttonReturn" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
-          </div>
-        </div>
+        </h1>
     </div>
     <div class="page__body">
       <div class="card shadow">
         
-        <mat-grid-list cols="1" rowHeight="50px" gutterSize="6px">
+        <mat-grid-list cols="4" rowHeight="220px" gutterSize="6px" *ngIf="cargaLista">
+            <mat-grid-tile [colspan]="2" class="orden">
+                <!-- <h4 *ngIf="dataSeleccionada">Red Seleccionada: {{redElegida}}</h4> -->
+                <div class="subOrden">
+                    <img src="assets/images/groupPeople.png">
+                    <h3>{{datosRedes.cuentaTotalUsuarios}}</h3>
+                </div>
+                <h2>Usuarios Totales<span *ngIf="dataSeleccionada">: {{redElegida}}</span></h2>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" [rowspan]="3" class="tabla">
+                <ngx-charts-bar-horizontal *ngIf="single.length > 6"
+                [scheme]="colorScheme"
+                [results]="single"
+                [xAxis]="true"
+                [noBarWhenZero]="true"
+                [yAxis]="true"
+                [gradient]="true"
+                [showXAxisLabel]="true"
+                [showYAxisLabel]="true"
+                [xAxisLabel]="'Usuarios Registrados'"
+                [trimYAxisTicks]="false"
+                [yAxisLabel]="'Redes'"
+                (select)="onSelect($event)">
+                </ngx-charts-bar-horizontal>
+                <div class="menorSeis" *ngIf="single.length <= 6">
+                    <div *ngFor="let red of single, index as i" class="redContenedor" (click)="onSelect(red)">
+                        <h4>{{red.name}}</h4>
+                        <img src="assets/images/hospitalIcon.png">
+                        <h3>Usuarios: {{red.value}}</h3>
+                    </div>
+                </div>
+                
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="2" class="orden">
+                <h2>Trabajadores Asistenciales</h2>
+                <img src="assets/images/personalAsist.png">
+                <h3>{{datosRedes.cuentaAsistenciales}}</h3>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="2" class="orden">
+                <h2>Trabajadores Administrativos</h2>
+                <img src="assets/images/personalAdmin.png">
+                <h3>{{datosRedes.cuentaAdministrativos}}</h3>
+            </mat-grid-tile>
+        </mat-grid-list>
+        
+        <!-- --------------------------------------------------------------------------------------------------------------------- -->
+        <!-- <mat-grid-list cols="3" rowHeight="95px" gutterSize="6px">
+            <mat-grid-tile [colspan]="1">
+                <mat-form-field appearance="outline">
+                    <mat-label>Redes</mat-label>
+                    <mat-select (selectionChange)="print($event)">
+                        <mat-option value="-" selected>Todas las redes</mat-option>
+                        <mat-option *ngFor="let red of redesAsignadas" [value]='red.codRed'>{{red.descripcion}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" [rowspan]="6" class="tabla">
+                <div class="containerTabla">
+                    <table mat-table [dataSource]="dataSource" matSort>
+                      
+                        <ng-container matColumnDef="documento">
+                            <th mat-header-cell *matHeaderCellDef width="2%"> Documento </th>
+                            <td mat-cell *matCellDef="let element"> {{element.numeroDocumento}} </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="nombreCompleto">
+                            <th mat-header-cell *matHeaderCellDef width="6%"> Nombre Completo </th>
+                            <td mat-cell *matCellDef="let element" class="columnaCambiante"> {{element.nombres | titlecase}} {{element.apellidos | titlecase}}  </td>
+                        </ng-container>
+                            
+                        <ng-container matColumnDef="fechaRegistro">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header width="3.2%"> Fecha Registro </th>
+                            <td mat-cell *matCellDef="let element"> {{element.fechaRegistro}} </td>
+                        </ng-container>
+                              
+                        <ng-container matColumnDef="codRed">
+                            <th mat-header-cell *matHeaderCellDef width="2%"> Cod. Red </th>
+                            <td mat-cell *matCellDef="let element"> {{element.cod_red}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr class="empty-row" *matNoDataRow>
+                          <td class="empty-cell">Sin registros por mostrar</td>
+                        </tr>
+                      </table> -->
+                      <!-- 796 width se desaparece esto -->
+                      <!-- <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>  
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="2" class="cuadroInforme">
+                <div class="headerInforme">
+                    <h3>Usuarios Registrados</h3>
+                </div>
+                <div class="Informe">
+                    <h2 class="cuenta">{{dataSource.filteredData.length}}</h2>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list> -->
+        <!-- --------------------------------------------------------------------------------------------------------------------- -->
+        <!-- <mat-grid-list cols="1" rowHeight="50px" gutterSize="6px">
             <mat-grid-tile [colspan]="1">
                 <h2>{{respuestas.descripcion}}</h2>
             </mat-grid-tile>
@@ -64,7 +161,8 @@
                     </div>
                 </mat-grid-tile>
             </div>
-        </mat-grid-list>
+        </mat-grid-list> -->
+        <!-- ------------------------------------------------------------------------------------------------------------------------------------------- -->
         <!-- <div style="height: 80px;">
             <div style="float: left; display: grid; width: 75.5%; height: 100%;">
                 <h4>Total de Registros: 484</h4>

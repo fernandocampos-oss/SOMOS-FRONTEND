@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { of } from 'rxjs';
@@ -12,7 +12,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AppRoute } from '@data/constants/app-route.constant';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { error } from 'protractor';
 
 @UntilDestroy()
 @Component({
@@ -41,7 +40,7 @@ export class LoginComponent implements OnInit {
     private _authService: AuthService,
     private _notificacion: NotificationService,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer,
+    private domSanitizer: DomSanitizer
   ) {
     this.matIconRegistry.addSvgIcon("password-cursor",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/password-cursor.svg"));
     this.matIconRegistry.addSvgIcon("newuser",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/newuser.svg"));

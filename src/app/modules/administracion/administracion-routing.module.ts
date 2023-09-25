@@ -6,6 +6,9 @@ const routes: Routes = [
   {
     path: '',
     component: AdministracionComponent,
+    data: {
+      title: 'Administrar Plataforma'
+    }
   },
 ];
 

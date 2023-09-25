@@ -6,6 +6,9 @@ const routes: Routes = [
   {
     path: '',
     component: MisMarcacionesComponent,
+    data: {
+      title: 'Mis Marcaciones'
+    }
   },
 ];
 

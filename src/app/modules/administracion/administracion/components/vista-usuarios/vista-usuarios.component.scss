@@ -1,0 +1,41 @@
+td{
+    font-size: 11px !important;
+    text-align: center !important;
+}
+
+th.adminUsuariosHeader{
+    text-align: center !important;
+    ::ng-deep .mat-sort-header-container {
+        justify-content: center !important;
+    }
+}
+
+.empty {
+    &-row {
+      display: flex;
+    }
+    &-cell {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      padding: .75rem;
+    }
+  }
+
+.opciones{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    button{
+        background-color:#67b556;
+    }
+    .deshabilitado{
+        background-color:lightgray;
+    }
+    mat-form-field{
+        width: 23vw;
+        max-width: 350px;
+        min-width: 250px;
+    }
+}

@@ -1,95 +1,129 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@data/services';
+import { AdministracionService } from '@data/services/administracion.service';
+import { RedesDatos } from '@data/models/administracion/administracion';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { TitleCasePipe } from '@angular/common';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { VistaUsuariosComponent } from './components/vista-usuarios/vista-usuarios.component';
 
-interface sede_Demo{
-  descripcion: string;
-}
-interface grupoPers_Demo{
-  descripcion: string;
-}
-interface areaPers_Demo{
-  descripcion: string;
-}
-interface tiempoServicio_Demo{
-  descripcion: string;
-}
+@UntilDestroy()
 @Component({
   selector: 'app-administracion',
   templateUrl: './administracion.component.html',
   styleUrls: ['./administracion.component.scss']
 })
 export class AdministracionComponent implements OnInit {
-  rol: number;
+  // @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  // redes: {value: string, descr: string}[];
+  // usuariosRed: UsuarioxRed[];
 
-  respuestas= {
-    usuariosActivos: 17,
-    idEncuesta: 1,
-    descripcion: 'Navidad EsSalud 2023',
-    votos: 21,
-    encuestaVotaciones: [
-        {
-            idAlternativa: 1,
-            descripcion: 'Tarjetas para canje de alimentos y juguetes',
-            votos: 9
-        },
-        {
-            idAlternativa: 2,
-            descripcion: 'Abono en cuenta',
-            votos: 12
-        }
-    ]
+  // usuarios: UsuarioInformacionResponseDto[];
+  // redesAsignadas: RedPersonal[];
+  
+  redElegida: string;
+  bkpTotal: number;
+  bkpUserAdmin: number;
+  bkpUserAsist: number;
+  dataSeleccionada: boolean = false;
+  datosRedes: RedesDatos;
+  cargaLista = false;
+
+  // dataSource: MatTableDataSource<any>;
+  // displayedColumns: string[] = ['documento','nombreCompleto','fechaRegistro', 'codRed'];
+  single = [];
+  
+  colorScheme = {
+    domain: ['#5AA454', '#C7B42C', '#AAAAAA']
   };
-  // restringir = false;
-  // sedes: sede_Demo[] = [
-  //   {descripcion:'Todos'},
-  //   {descripcion:'Central'},
-  //   {descripcion:'INCOR'},
-  //   {descripcion:'Salud Renal'},
-  // ]
-  // gruposPers: grupoPers_Demo[] = [
-  //   {descripcion:'Todos'},
-  //   {descripcion:'D.L 276'},
-  //   {descripcion:'D.L 728'},
-  //   {descripcion:'D.L 1057'},
-  // ]
-  // areasP: areaPers_Demo[] = [
-  //   {descripcion:'Todos'},
-  //   {descripcion:'Auxiliar'},
-  //   {descripcion:'Ejecutivo'},
-  //   {descripcion:'Profesional'},
-  //   {descripcion:'Técnico'},
-  //   {descripcion:'Residente'},
-  // ]
-  // tiemposServ: tiempoServicio_Demo[] = [
-  //   {descripcion:'Todos'},
-  //   {descripcion:'Menor a 06 meses'},
-  //   {descripcion:'De 06 meses a 1 año'},
-  //   {descripcion:'De 1 año 1 día hasta 5 años'},
-  //   {descripcion:'De 5 años 1 día hasta 10 años'},
-  //   {descripcion:'De 10 años 1 día hasta 15 años'},
-  //   {descripcion:'De 15 años 1 día a más'},
-  // ]
 
-  // frmSede = new FormControl([''],[Validators.pattern('Todos')]);
-
-  // frmGrupoPers = new FormControl([''],[Validators.pattern('Todos')]);
-
-  // frmAreaPers = new FormControl([''],[Validators.pattern('Todos')]);
-
-  // frmTiempoServ = new FormControl([''],[Validators.pattern('Todos')]);
-
-  constructor(private _router : Router,
-              private route   : ActivatedRoute,
-              private authService:AuthService) { }
+  constructor(private _router       : Router,
+              private _adminServ    : AdministracionService,
+              private dialogRef     : MatDialog,
+              private route         : ActivatedRoute,
+              private titlecasePipe : TitleCasePipe) { }
 
   ngOnInit(): void {
-    this.rol = this.authService.getRol();
+    // this._adminServ.getUsuariosRedes().pipe(untilDestroyed(this)).subscribe((data)=>{
+    //   this.usuarios = data.usuarios;
+    //   this.redesAsignadas = data.redes;
+    //   console.log(document.getElementById("examinar"));
+    //   console.log(data);
+    // }); 
+
+    this._adminServ.getDatosRedes().subscribe((data)=>{
+      this.datosRedes = data;
+      this.bkpTotal= data.cuentaTotalUsuarios;
+      this.bkpUserAdmin= data.cuentaAdministrativos;
+      this.bkpUserAsist= data.cuentaAsistenciales;
+      let newArray = data.datosRedes.map(item=>{
+        return{
+          name: this.titlecasePipe.transform(item.descripcion),
+          value: item.cantidad,
+          extra:{
+            numAsist: item.personalAsistencial,
+            numAdmin: item.personalAdministrativo
+          },
+        };
+      })
+      this.single = [...newArray];
+      console.log(newArray)
+      this.cargaLista = true;
+    });
+    // if(this.authService.getRol() == 4){
+    //   this.cargarTabla('-');
+    // }
+    // else{
+    //   this.cargarTabla('0100');
+    //   this.notAdmin = true
+    // }
+    // this.redes = this._marcacionService.getRedes();
   }
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
 
   back(){
     this._router.navigate([''], { relativeTo: this.route });
+  }
+  print(obj){
+    // console.log(obj.value);
+    // this.cargarTabla(obj.value);
+  }
+
+  onSelect(data): void {
+    console.log(data)
+    console.log(this.datosRedes)
+    if (this.redElegida !== data.name) {
+      this.dataSeleccionada = true;
+      this.redElegida = data.name;
+      this.datosRedes.cuentaTotalUsuarios = data.value;
+      this.datosRedes.cuentaAsistenciales = data.extra.numAsist;
+      this.datosRedes.cuentaAdministrativos = data.extra.numAdmin;
+    }
+    else{
+      this.dataSeleccionada = false;
+      this.redElegida = undefined;
+      this.datosRedes.cuentaTotalUsuarios = this.bkpTotal;
+      this.datosRedes.cuentaAsistenciales = this.bkpUserAsist;
+      this.datosRedes.cuentaAdministrativos = this.bkpUserAdmin;
+    }
+  }
+
+  showReporte(){
+    const dialogRef: MatDialogRef<VistaUsuariosComponent> = this.dialogRef.open(VistaUsuariosComponent, {
+      disableClose: false,
+      autoFocus: false,
+      width: '80%'
+    });
+  }
+
+  cargarTabla(red: string){
+    // this.dataSource = new MatTableDataSource(this._marcacionService.getUserRed(red));
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
   }
   // restringirFiltros(event){
   //   this.restringir = event.checked;

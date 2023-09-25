@@ -170,11 +170,16 @@ export class CrearPublicacionComponent implements OnInit {
     }
     else {
       const model = this._getModel_rol_3();
-
-      this._menuService.newPublicacion(model).subscribe(() => {
-        this._notification.success('Publicación registrada correctamente');
-      });
-      this.dialogRef.close();
+      console.log(model)
+      if(model.redes.length == 0){
+        this._notification.warning('Seleccione una Red Asistencial para este tipo de alcance');
+      }
+      else{
+        this._menuService.newPublicacion(model).subscribe(() => {
+          this._notification.success('Publicación registrada correctamente');
+        });
+        this.dialogRef.close();
+      }
     }
   }
   private _getModel_rol_3(): PublicacionRequest {
@@ -183,8 +188,6 @@ export class CrearPublicacionComponent implements OnInit {
       for (let a of this.redItemSeleccionadoRol_3) {
         redes.push(a);
       }
-    } else {
-      this._notification.warning('Seleccione una Red Asistencial');
     }
 
     return {
@@ -206,10 +209,16 @@ export class CrearPublicacionComponent implements OnInit {
     }
     else {
       const model = this._getModel_rol_4_3();
-      this._menuService.newPublicacion(model).subscribe(() => {
-        this._notification.success('Publicación registrada correctamente');
-      });
-      this.dialogRef.close();
+
+      if(model.alcance == 2 && model.redes.length == 0){
+        this._notification.warning('Seleccione una Red Asistencial para este tipo de alcance');
+      }
+      else{
+        this._menuService.newPublicacion(model).subscribe(() => {
+          this._notification.success('Publicación registrada correctamente');
+        });
+        this.dialogRef.close();
+      }
     }
   }
   private _getModel_rol_4_3(): PublicacionRequest {

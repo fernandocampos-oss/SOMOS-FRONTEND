@@ -6,6 +6,9 @@ const routes: Routes = [
   {
     path: '',
     component: AdministrarInscripcionComponent,
+    data: {
+      title: 'Administrar Campañas'
+    }
   }
 ];
 

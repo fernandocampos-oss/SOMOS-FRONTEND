@@ -34,20 +34,20 @@ const data: MenuItem[] = [
   //   label: 'Administrar Usuarios',
   //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   // },
-  // {
-  //   icon: 'settings',
-  //   label:'Administracion',
-  //   type: 3,
-  //   roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
-  //   children:[
-  //     {
-  //       path: AppRoute.ADMINISTRAR_ENCUESTA,
-  //       icon: 'settings',
-  //       label: 'Resultados encuesta',
-  //       roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
-  //     },
-  //   ]
-  // },
+  // // // // {
+  // // // //   icon: 'settings',
+  // // // //   label:'Administracion',
+  // // // //   type: 3,
+  // // // //   roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+  // // // //   children:[
+  // // // //     {
+  // // // //       path: AppRoute.ADMINISTRAR_ENCUESTA,
+  // // // //       icon: 'settings',
+  // // // //       label: 'Usuarios por Red',
+  // // // //       roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+  // // // //     },
+  // // // //   ]
+  // // // // },
   // // // {
   // // //     path: AppRoute.ADMINISTRAR_ENCUESTA,
   // // //     icon: 'settings',
