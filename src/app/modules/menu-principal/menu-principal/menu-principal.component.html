@@ -40,8 +40,8 @@
                   <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
                 </div>
                 <div class="containerImg">
-                  <img class="imgInfo" *ngIf="pub.idPublicacion != 44" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showPublicacion(pub)">
-                  <img class="imgInfo" *ngIf="pub.idPublicacion == 44" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showinscripcionView(1,pub)">
+                  <img class="imgInfo" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showPublicacion(pub)">
+                  <!-- <img class="imgInfo" *ngIf="pub.idPublicacion == 44" src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showinscripcionView(1,pub)"> -->
                   <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
                   <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
                 </div>

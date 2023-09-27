@@ -122,13 +122,13 @@ export const ROUTES: Routes = [
             (m) => m.AdministrarUsuariosModule
           ),
       },
-      {
-        path: AppRoute.ADMINISTRAR_INSCRIPCIONES,
-        loadChildren: () =>
-          import('../modules/administrar-inscripcion/administrar-inscripcion.module').then(
-            (m) => m.AdministrarInscripcionModule
-          ),
-      },
+      // {
+      //   path: AppRoute.ADMINISTRAR_INSCRIPCIONES,
+      //   loadChildren: () =>
+      //     import('../modules/administrar-inscripcion/administrar-inscripcion.module').then(
+      //       (m) => m.AdministrarInscripcionModule
+      //     ),
+      // },
       // {
       //   path: AppRoute.MIS_REQUERIMIENTOS,
       //   loadChildren: () => 
