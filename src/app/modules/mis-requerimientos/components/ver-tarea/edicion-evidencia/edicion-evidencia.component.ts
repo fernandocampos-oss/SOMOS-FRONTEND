@@ -35,7 +35,7 @@ export class EdicionEvidenciaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
+    // console.log(this.data)
     this.titleTarea = this.data.model.nombreTarea;
     this._createForm();
 
@@ -104,7 +104,7 @@ export class EdicionEvidenciaComponent implements OnInit {
       const model = this._getModel();
 
       let register = await this._requerimientoService.registrarEvidencia(model).then((data) => {
-        this._notification.success("Enviado correctamente")
+        this._notification.success("Evidencia registrada correctamente")
 
       });
       this._dialogRef.closeAll();

@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RequerimientoRegisterUpdateComponent } from '../components/requerimiento-register-update/requerimiento-register-update.component';
@@ -17,11 +18,10 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./mis-requerimientos.component.scss']
 })
 export class MisRequerimientosComponent implements OnInit {
-
-  actionPend = 'Avance';
-  actionFin = 'Ver';
-
   listEvidencia: any[] = [];
+  listDataRechazados: any[] = [];
+  listDataFinalizados: any[] = [];
+  listDataPendientes: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -56,12 +56,11 @@ export class MisRequerimientosComponent implements OnInit {
   registrarRequerimiento() {
     const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._matDialog.open(RequerimientoRegisterUpdateComponent, {
       disableClose: false,
-      width: '500px',
+      width: '50%',
       //height: '780px',
       autoFocus: false,
       data: {
-        auto: true,
-        id: 0
+        esJefe: false,
       }
     });
 
@@ -73,17 +72,13 @@ export class MisRequerimientosComponent implements OnInit {
 
   }
 
-  onDeleteRequerimiento($event) {
-  }
-
   async loadTablePendiente() {
     let listPendiente = await this._requerimientoService.listarRequerimientoPendiente().then((data) => {
       if (data.length > 0) {
-        this.dataSource = new MatTableDataSource(data);
+        this.listDataPendientes = data;
+        this.dataSource = new MatTableDataSource(this.listDataPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      } else {
-        this._notification.warning('Aún no tiene requererimientos registrados');
       }
     });
   }
@@ -91,7 +86,8 @@ export class MisRequerimientosComponent implements OnInit {
   async loadTableFinalizado() {
     let listFinalizado = await this._requerimientoService.listarRequerimientoFinalizado().then((data) => {
       if (data.length > 0) {
-        this.dataSource_finalizado = new MatTableDataSource(data);
+        this.listDataFinalizados = data;
+        this.dataSource_finalizado = new MatTableDataSource(this.listDataFinalizados);
         this.dataSource.paginator = this.paginator_finalizado;
         this.dataSource.sort = this.sort_finalizado;
       }
@@ -101,7 +97,8 @@ export class MisRequerimientosComponent implements OnInit {
   async loadTableRechazado() {
     let listRechazado = await this._requerimientoService.listarRequerimientoRechazado().then((data) => {
       if (data.length > 0) {
-        this.dataSource_rechazado = new MatTableDataSource(data);
+        this.listDataRechazados = data;
+        this.dataSource_rechazado = new MatTableDataSource(this.listDataRechazados);
         this.dataSource.paginator = this.paginator_rechazado;
         this.dataSource.sort = this.sort_rechazado;
       }
@@ -125,6 +122,27 @@ export class MisRequerimientosComponent implements OnInit {
       this.loadTableFinalizado();
       this.loadTableRechazado();
     });
+  }
+
+  editarRequerimiento(element, es_editar) {
+    const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._matDialog.open(RequerimientoRegisterUpdateComponent, {
+      disableClose: false,
+      width: '600px',
+      //height: '780px',
+      autoFocus: false,
+      data: {
+        esEditar: es_editar,
+        esJefe: false,
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTablePendiente();
+      this.loadTableFinalizado();
+      this.loadTableRechazado();
+    });
+
   }
 
   back() {

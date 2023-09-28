@@ -24,13 +24,13 @@ export class PdfComponent implements OnInit {
   }
 
   loadPdfFile(element){
-    this.services.DescargarArchivo(element).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.pdfSrc=dataItem.data.base64
-      } else {
-        this._notification.error(dataItem.msj);
-      }
-    });
+    // this.services.DescargarArchivo(element).subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.pdfSrc=dataItem.data.base64
+    //   } else {
+    //     this._notification.error(dataItem.msj);
+    //   }
+    // });
   }
 
 }

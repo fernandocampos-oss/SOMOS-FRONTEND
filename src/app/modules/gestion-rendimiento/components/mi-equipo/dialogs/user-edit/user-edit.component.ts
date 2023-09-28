@@ -45,67 +45,67 @@ export class UserEditComponent implements OnInit {
   }
 
   loadTable(){
-    this.services.ListarMisModalidades(this.idUsuario).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.dataSourceM = new MatTableDataSource(dataItem.data);
-        this.dataSourceM.paginator = this.mat1;
-        this.idEquipoIntegranteModalidad=dataItem.data[0].idModalidad;
-      } else {
-        this.idEquipoIntegranteModalidad=0;
-        this.dataSourceM=null;
-        if(dataItem.msj=="LISTA VACIA"){
-          this._notification.warning(dataItem.msj)
-        } else {
-          this._notification.error(dataItem.msj)
-        }
-      }
-      this.loadModalidad();
-    });
+    // this.services.ListarMisModalidades(this.idUsuario).subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.dataSourceM = new MatTableDataSource(dataItem.data);
+    //     this.dataSourceM.paginator = this.mat1;
+    //     this.idEquipoIntegranteModalidad=dataItem.data[0].idModalidad;
+    //   } else {
+    //     this.idEquipoIntegranteModalidad=0;
+    //     this.dataSourceM=null;
+    //     if(dataItem.msj=="LISTA VACIA"){
+    //       this._notification.warning(dataItem.msj)
+    //     } else {
+    //       this._notification.error(dataItem.msj)
+    //     }
+    //   }
+    //   this.loadModalidad();
+    // });
 
-    this.services.ListarMisRiesgos(this.idUsuario).subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.dataSourceR = new MatTableDataSource(dataItem.data);
-        this.dataSourceR.paginator = this.mat2;
-        this.idEquipoIntegranteRiesgo=dataItem.data[0].idRiesgo;
-      } else {
-        this.idEquipoIntegranteRiesgo=0;
-        this.dataSourceR=null;
-        if(dataItem.msj=="LISTA VACIA"){
-          this._notification.warning(dataItem.msj)
-        } else {
-          this._notification.error(dataItem.msj)
-        }
-      }
-      this.loadRiesgo();
-    });
+    // this.services.ListarMisRiesgos(this.idUsuario).subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.dataSourceR = new MatTableDataSource(dataItem.data);
+    //     this.dataSourceR.paginator = this.mat2;
+    //     this.idEquipoIntegranteRiesgo=dataItem.data[0].idRiesgo;
+    //   } else {
+    //     this.idEquipoIntegranteRiesgo=0;
+    //     this.dataSourceR=null;
+    //     if(dataItem.msj=="LISTA VACIA"){
+    //       this._notification.warning(dataItem.msj)
+    //     } else {
+    //       this._notification.error(dataItem.msj)
+    //     }
+    //   }
+    //   this.loadRiesgo();
+    // });
   }
 
   loadModalidad(){
-    this.services.ListarModalidad().subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.listaModalidad = dataItem.data;
-        if(this.idEquipoIntegranteModalidad!=0){
-          this.idModalidad=this.idEquipoIntegranteModalidad;
-        }
-      } else {
-        this.listaModalidad = null;
-        this._notification.error(dataItem.msj)
-      }
-    });
+    // this.services.ListarModalidad().subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.listaModalidad = dataItem.data;
+    //     if(this.idEquipoIntegranteModalidad!=0){
+    //       this.idModalidad=this.idEquipoIntegranteModalidad;
+    //     }
+    //   } else {
+    //     this.listaModalidad = null;
+    //     this._notification.error(dataItem.msj)
+    //   }
+    // });
   }
 
   loadRiesgo(){
-    this.services.ListarRiesgo().subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.listaRiesgo = dataItem.data;
-        if(this.idEquipoIntegranteRiesgo!=0){
-          this.idRiesgo=this.idEquipoIntegranteRiesgo;
-        }
-      } else {
-        this.listaRiesgo = null;
-        this._notification.error(dataItem.msj)
-      }
-    });
+    // this.services.ListarRiesgo().subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.listaRiesgo = dataItem.data;
+    //     if(this.idEquipoIntegranteRiesgo!=0){
+    //       this.idRiesgo=this.idEquipoIntegranteRiesgo;
+    //     }
+    //   } else {
+    //     this.listaRiesgo = null;
+    //     this._notification.error(dataItem.msj)
+    //   }
+    // });
   }
 
   onSave(){
@@ -116,14 +116,14 @@ export class UserEditComponent implements OnInit {
       obj.idEquipoIntegrante=this.idUsuario;
       obj.idModalidad=this.idModalidad;
       obj.idRiesgo=this.idRiesgo;
-      this.services.RegistrarIntegranteDetalle(obj).subscribe((dataItem) => {
-        if (dataItem.codigo == 1) {
-          this.loadTable();
-          this._notification.success(dataItem.msj);
-        } else {
-          this._notification.error(dataItem.msj);
-        }
-      });
+      // this.services.RegistrarIntegranteDetalle(obj).subscribe((dataItem) => {
+      //   if (dataItem.codigo == 1) {
+      //     this.loadTable();
+      //     this._notification.success(dataItem.msj);
+      //   } else {
+      //     this._notification.error(dataItem.msj);
+      //   }
+      // });
     }
   }
 

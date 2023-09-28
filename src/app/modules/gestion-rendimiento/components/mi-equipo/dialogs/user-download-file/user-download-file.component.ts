@@ -29,7 +29,6 @@ export class UserDownloadFileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
     this.idtarea = this.data.model.idTarea;
     this.loadTable();
   }
@@ -48,7 +47,6 @@ export class UserDownloadFileComponent implements OnInit {
   }
 
   downloadFile(element) {
-    console.log("File download", element)
       if (element) {
         const byteString = window.atob(element.imagenBase64);
         const arrayBuffer = new ArrayBuffer(byteString.length);
@@ -70,7 +68,6 @@ export class UserDownloadFileComponent implements OnInit {
         this._notification.error("Error al descargar imagen");
       }
   
-
     // this.services.DescargarArchivo(element.idEvidencia).subscribe((dataItem) => {
     //   if (dataItem.codigo == 1) {
     //     const byteString = window.atob(dataItem.data.base64);

@@ -10,6 +10,7 @@ import { MoveRequirementComponent } from './dialogs/move-requirement/move-requir
 import { ReadRequirementComponent } from './dialogs/read-requirement/read-requirement.component';
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
 import { RequerimientoRegisterUpdateComponent } from '@modules/mis-requerimientos/components/requerimiento-register-update/requerimiento-register-update.component';
+import { JefeRequirementComponent } from './dialogs/jefe-requirement/jefe-requirement.component';
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -17,12 +18,13 @@ import { RequerimientoRegisterUpdateComponent } from '@modules/mis-requerimiento
   styleUrls: ['./mis-requerimientos.component.scss']
 })
 export class MisRequerimientosComponent implements OnInit {
+  listDataPendientes: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['Item', 'nombre_requerimiento', 'integrante', 'fecha_creacion', 'porcentaje_avance', 'estado', 'acciones'];
-  menuToggle = new EventEmitter<void>();
+  // menuToggle = new EventEmitter<void>();
 
   constructor(
     private _dialog: MatDialog,
@@ -37,12 +39,11 @@ export class MisRequerimientosComponent implements OnInit {
   async loadTable() {
     this.services.listarRequerimientoPrincipal().then((data) => {
       if (data.length > 0) {
-        this.dataSource = new MatTableDataSource(data);
+        this.listDataPendientes = data;
+        this.dataSource = new MatTableDataSource(this.listDataPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      } else {
-        this._notification.warning("Lista de requerimientos vacia")
-      }
+      } 
     });
   }
 
@@ -115,15 +116,14 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  nuevoRequerimientoAdmin(onDelete: boolean){
+  nuevoRequerimientoJefe(){
     const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._dialog.open(RequerimientoRegisterUpdateComponent, {
       disableClose: false,
-      width: '40%',
+      width: '50%',
       //height: '780px',
       autoFocus: false,
       data: {
-        auto: true,
-        id: 0
+        esJefe: true,
       }
     });
 
@@ -131,8 +131,19 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  listRequerimientosAdmin(onDelete: boolean){
+  listRequerimientosJefe(){
+    const dialogRef: MatDialogRef<JefeRequirementComponent> = this._dialog.open(JefeRequirementComponent, {
+      disableClose: false,
+      width: '80%',
+      height: '680px',
+      autoFocus: false,
+      data: {
+        esJefe: true,
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
 }

@@ -1006,7 +1006,7 @@ export class ExportExcelGestionRendimientoService {
 
     data_evidencia.forEach((d: any) => {
       let row = worksheet.addRow(Object.values(d));
-      console.log("gg", d);
+      console.log(">>>", d);
 
       let a = row.getCell(1);
       a.font = { size: 8 };

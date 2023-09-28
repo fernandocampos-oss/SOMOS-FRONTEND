@@ -25,7 +25,6 @@ export class AcceptRejectRequirementComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data);
     this.requerimiento = this.data.obj.requerimiento.nombre;
     this.reject = this.data.rechazar;
     if (this.reject == true) {
@@ -42,7 +41,7 @@ export class AcceptRejectRequirementComponent implements OnInit {
   aprobarRequerimiento() {
     this.services.aprobarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_APROBADO, this.data.obj.idRequerimientoUsuario).subscribe(data => {
       if (data) {
-        this._notification.success("Requerimiento aprobado");
+        this._notification.success("Requerimiento aprobado correctamente");
       } else {
         this._notification.error("Error al aprobar requerimento")
       }

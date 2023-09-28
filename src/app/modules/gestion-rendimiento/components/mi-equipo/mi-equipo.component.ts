@@ -11,6 +11,7 @@ import { NotificationService } from '@core/services';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
+import { Integrante, Lider, LiderEquipoRequest } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 @Component({
   selector: 'gestion-rendimiento-mi-equipo',
@@ -22,10 +23,11 @@ export class MiEquipoComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'numero_documento', 'nombre_persona', 'acciones'];
+  displayedColumns: string[] = ['item', 'numero_documento', 'nombre_persona', 'cargo', 'acciones'];
 
-  colaboradores: any[] = []; //Equipo[] = [];
+  listEquipo: any[] = [];
 
+  // colaboradores: any[] = [];
   // Pruebas para obtener el excel de los datos
   // arrayBuffer:any;
   // file:File;
@@ -68,7 +70,7 @@ export class MiEquipoComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTable();
-    this.listarPersonalGeneral();
+    this.listarPersonalPorRed();
 
     //filter
     this.filteredOptions = this.integranteControl.valueChanges
@@ -79,8 +81,8 @@ export class MiEquipoComponent implements OnInit {
       );
   }
 
-  async listarPersonalGeneral() {
-    let load = await this.services.listarPersonalGeneral().then((data: any) => {
+  async listarPersonalPorRed() {
+    let load = await this.services.listarPersonalPorRed().then((data: any) => {
       if (data) {
         this.listPersonal = data;
       } else {
@@ -146,29 +148,44 @@ export class MiEquipoComponent implements OnInit {
   }
 
   async loadTable() {
-    let listPersonal = await this.services.listarPersonalUnidad().then((data) => {
-      if (data) {
-        this.dataSource = new MatTableDataSource(data);
+    let listPersonal = await this.services.listarIntegrantesPorLider().then((data) => {
+      if (data.length > 0) {
+        this.listEquipo = data;
+        this.dataSource = new MatTableDataSource(this.listEquipo);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      } else {
-        this._notification.warning("Lista de integrantes vacia");
-      }
+      } 
     });
   }
 
-  async agregarColaborador() {
+  async agregarIntegrante() {
     if (this.personalSeleccionadoTmp != undefined) {
-      let add = await this.services.agregarIntegrante(this.personalSeleccionadoTmp.idUsuario).then((data: any) => {
-        if (data = 1) {
-          this._notification.success("Integrante agregado correctamente");
-          this.integranteControl.reset('');
-          this.personalSeleccionadoTmp = null;
-          this.loadTable();
-        } else {
-          this._notification.warning("Agregar integrante: Se produjo un error");
-        }
-      });
+
+      if (this.listEquipo.find(x => x.integrante.idUsuario == Number(this.personalSeleccionadoTmp.idUsuario)) != undefined) {
+        this._notification.warning("El integrante ya se encuentra inscrito en tu equipo");
+        return;
+      } else {
+        let liderModel = new Lider();
+        liderModel.idUsuario = 0;
+
+        let integranteModel = new Integrante();
+        integranteModel.idUsuario = this.personalSeleccionadoTmp.idUsuario;
+
+        let liderEquipo = new LiderEquipoRequest();
+        liderEquipo.lider = liderModel;
+        liderEquipo.integrante = integranteModel;
+
+        let add = await this.services.agregarIntegrante(liderEquipo).then((data: any) => {
+          if (data = 1) {
+            this._notification.success("Integrante agregado correctamente");
+            this.integranteControl.reset('');
+            this.personalSeleccionadoTmp = null;
+            this.loadTable();
+          } else {
+            this._notification.warning("Agregar integrante: Se produjo un error");
+          }
+        });
+      }
     } else {
       this._notification.warning('Ingrese nombre o apellido del integrante');
     }

@@ -34,7 +34,7 @@ export class VerTareaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
+    // console.log(this.data)
     this.requerimiento = this.data.model.requerimiento.nombre;
     this.idRequerimiento = this.data.model.requerimiento.idRequerimiento;
     this.createForm();

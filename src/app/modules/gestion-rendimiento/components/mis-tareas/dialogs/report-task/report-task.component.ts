@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ArchivoNew } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 @Component({
   selector: 'app-report-task',
@@ -38,7 +37,6 @@ export class ReportTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
     // this.objInforme = this.data.obj;
     this.createForm();
   }
@@ -85,11 +83,11 @@ export class ReportTaskComponent implements OnInit {
     this.loading = true;
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      let archivo = new ArchivoNew();
-      let completo = file.name;
-      const nombreFile = completo.lastIndexOf('.');
-      archivo.nombre = completo.substring(0, nombreFile);
-      archivo.extension = completo.substring(nombreFile + 1);
+      // let archivo = new ArchivoNew();
+      // let completo = file.name;
+      // const nombreFile = completo.lastIndexOf('.');
+      // archivo.nombre = completo.substring(0, nombreFile);
+      // archivo.extension = completo.substring(nombreFile + 1);
       
     }
   }

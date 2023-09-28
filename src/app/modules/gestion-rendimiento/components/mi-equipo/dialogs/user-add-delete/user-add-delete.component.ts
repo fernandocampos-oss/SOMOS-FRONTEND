@@ -40,7 +40,6 @@ export class UserAddDeleteComponent implements OnInit {
 
   ngOnInit(): void {
     this.onProcess(this.data.borrar);
-    console.log(this.data);
   }
 
   onProcess(data) {
@@ -54,36 +53,36 @@ export class UserAddDeleteComponent implements OnInit {
   }
 
   loadIntegrantes() {
-    this.services.ListarIntegrantes().subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.integrantes = dataItem.data
-      } else {
-        this.integrantes = null;
-        this._notification.error(dataItem.msj)
-      }
-    });
+    // this.services.ListarIntegrantes().subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.integrantes = dataItem.data
+    //   } else {
+    //     this.integrantes = null;
+    //     this._notification.error(dataItem.msj)
+    //   }
+    // });
   }
 
   loadModalidad() {
-    this.services.ListarModalidad().subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.listaModalidad = dataItem.data
-      } else {
-        this.listaModalidad = null;
-        this._notification.error(dataItem.msj)
-      }
-    });
+    // this.services.ListarModalidad().subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.listaModalidad = dataItem.data
+    //   } else {
+    //     this.listaModalidad = null;
+    //     this._notification.error(dataItem.msj)
+    //   }
+    // });
   }
 
   loadRiesgo() {
-    this.services.ListarRiesgo().subscribe((dataItem) => {
-      if (dataItem.codigo == 1) {
-        this.listaRiesgo = dataItem.data
-      } else {
-        this.listaRiesgo = null;
-        this._notification.error(dataItem.msj)
-      }
-    });
+    // this.services.ListarRiesgo().subscribe((dataItem) => {
+    //   if (dataItem.codigo == 1) {
+    //     this.listaRiesgo = dataItem.data
+    //   } else {
+    //     this.listaRiesgo = null;
+    //     this._notification.error(dataItem.msj)
+    //   }
+    // });
   }
 
   createForm(borrar: boolean) {

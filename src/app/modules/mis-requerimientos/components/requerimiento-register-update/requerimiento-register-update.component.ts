@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { UserSession } from '@data/models';
 import { RequerimientoResponse, TipoIngreso } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
@@ -14,13 +14,11 @@ import { UntilDestroy } from '@ngneat/until-destroy';
   styleUrls: ['./requerimiento-register-update.component.scss']
 })
 export class RequerimientoRegisterUpdateComponent implements OnInit {
-  user: UserSession;
   form: FormGroup;
-  zona: string = '';
   listTipoIngreso: TipoIngreso[] = [];
 
-
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialog,
     private _requerimientoService: GestionRendimientoService,
     private _fb: FormBuilder,
@@ -29,6 +27,7 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.data)
     this._createForm();
     this.listarTipoIngreso();
   }
@@ -38,29 +37,44 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
       if (data.length > 0) {
         this.listTipoIngreso = data;
       } else {
-        this._notification.warning("Lista vacia");
+        this._notification.warning("Lista tipo de ingreso vacio");
       }
     });
   }
 
   private _createForm() {
-    this.form = this._fb.group({
-      frmNombre: [null, [Validators.required]],
-      frmDescripcion: [null, [Validators.required]],
-      frmMedio: [null, [Validators.required]],
-      frmIdentificador: [null, [Validators.required]],
-      // frmAreaSolicitante: 'SGSA',
-      // frmAreaReceptora: [null, [Validators.required]],
-    });
+    if (this.data.esEditar == true) {
+      this.form = this._fb.group({
+        frmNombre: [this.data.model.requerimiento.nombre, [Validators.required]],
+        frmDescripcion: [this.data.model.requerimiento.descripcion, [Validators.required]],
+        frmMedio: [this.data.model.requerimiento.tipoIngreso, [Validators.required]],
+        frmIdentificador: [this.data.model.requerimiento.identificador, [Validators.required]],
+      });
+    } else {
+      this.form = this._fb.group({
+        frmNombre: [null, [Validators.required]],
+        frmDescripcion: [null, [Validators.required]],
+        frmMedio: [null, [Validators.required]],
+        frmIdentificador: [null, [Validators.required]],
+        // frmAreaSolicitante: 'SGSA',
+      });
+    }
   }
 
-  async registrarRequerimiento() {
+  async registrarActualizarRequerimiento() {
     const model = this._getModel();
 
-    let registrar = await this._requerimientoService.registrarRequerimiento(model).then((data) => {
-      this._notification.success("Requerimiento registrado")
-      this.dialogRef.closeAll();
-    });
+    if (this.data.esEditar == true) {
+      let modificar = await this._requerimientoService.updateRequerimiento(this.data.model.requerimiento.idRequerimiento, model).then((data) => {
+        this._notification.success("Requerimiento actualizado correctamente")
+        this.dialogRef.closeAll();
+      });
+    } else {
+      let registrar = await this._requerimientoService.registrarRequerimiento(model).then((data) => {
+        this._notification.success("Requerimiento registrado correctamente")
+        this.dialogRef.closeAll();
+      });
+    }
   }
 
   private _getModel(): RequerimientoResponse {
@@ -73,6 +87,7 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
       identificador: this.form.value.frmIdentificador,
       porcentajeAvance: 0,
       tipoIngreso: tipoIngreso,
+      esJefe: this.data.esJefe,
     };
   }
 

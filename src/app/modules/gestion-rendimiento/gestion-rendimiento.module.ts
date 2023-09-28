@@ -28,6 +28,7 @@ import { ConfirmRequerimientoComponent } from './components/mis-requerimientos/d
 import { EditUserSelectedComponent } from './components/mi-equipo/dialogs/edit-user-selected/edit-user-selected.component';
 import { UpdateTareaComponent } from './components/mis-requerimientos/dialogs/read-requirement/update-tarea/update-tarea.component';
 import { DeleteDialogComponent } from './components/mi-equipo/dialogs/delete-dialog/delete-dialog.component';
+import { JefeRequirementComponent } from './components/mis-requerimientos/dialogs/jefe-requirement/jefe-requirement.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { DeleteDialogComponent } from './components/mi-equipo/dialogs/delete-dia
     ConfirmRequerimientoComponent,
     EditUserSelectedComponent,
     UpdateTareaComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    JefeRequirementComponent
   ],
   imports: [
     CommonModule,

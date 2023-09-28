@@ -1,21 +1,20 @@
-<h2 matDialogTitle>Registrar Requerimiento</h2>
+<h2 matDialogTitle>{{this.data.esEditar == true ? 'Editar Requerimiento':'Nuevo Requerimiento'}}</h2>
 <form [formGroup]="form">
     <mat-dialog-content>
-
-        <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+        <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
                     <mat-label>Titulo</mat-label>
-                    <input matInput required formControlName="frmNombre" />
+                    <input matInput required formControlName="frmNombre" maxlength="250" />
                 </mat-form-field>
             </mat-grid-tile>
-        </mat-grid-list>
-        <mat-form-field appearance="outline">
-            <mat-label>Descripción</mat-label>
-            <textarea matInput formControlName="frmDescripcion"></textarea>
-        </mat-form-field>
-        <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput formControlName="frmDescripcion" maxlength="350"></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="3">
                 <mat-form-field appearance="outline">
                     <mat-label>Medio de ingreso</mat-label>
                     <mat-select formControlName="frmMedio">
@@ -25,37 +24,17 @@
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="6">
-                <mat-form-field appearance="outline">
-                    <mat-label>Identificador del requerimiento</mat-label>
-                    <input matInput required formControlName="frmIdentificador" />
-                </mat-form-field>
-            </mat-grid-tile>
-            <!-- <mat-grid-tile [colspan]="3">
-                <mat-form-field appearance="outline">
-                    <mat-label>Área Solicitante</mat-label>
-                    <input matInput formControlName="frmAreaSolicitante" readonly value="SGSA" />
-                </mat-form-field>
-            </mat-grid-tile>
             <mat-grid-tile [colspan]="3">
                 <mat-form-field appearance="outline">
-                    <mat-label>Área Receptora</mat-label>
-                    <mat-select formControlName="frmAreaReceptora">
-                        <mat-option value=1>SGSASS</mat-option>
-                        <mat-option value=2>SGSA</mat-option>
-                        <mat-option value=3>SGSI</mat-option>
-                        <mat-option value=4>SGOTI</mat-option>
-                        <mat-option value=5>SGC</mat-option>
-                        <mat-option value=6>OSI</mat-option>
-                    </mat-select>
+                    <mat-label>Identificador del requerimiento</mat-label>
+                    <input matInput required formControlName="frmIdentificador" maxlength="20" />
                 </mat-form-field>
-            </mat-grid-tile> -->
+            </mat-grid-tile>
         </mat-grid-list>
-
     </mat-dialog-content>
 </form>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close type="button">Cancelar</button>
-    <button mat-raised-button class="btnsave" type="submit" (click)="registrarRequerimiento()"
-        [disabled]="form.valid == false">Enviar</button>
+    <button mat-raised-button class="btnsave" type="submit" (click)="registrarActualizarRequerimiento()"
+        [disabled]="form.valid == false">{{this.data.esEditar == true ? 'Actualizar':'Registrar'}}</button>
 </mat-dialog-actions>

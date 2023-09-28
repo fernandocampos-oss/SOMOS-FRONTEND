@@ -38,9 +38,8 @@ export class UserTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
-    this.nombreUsuario = this.data.model.nombres + " " + this.data.model.apellidos;
-    this.loadTableRequerimiento(this.data.model.idUsuario);
+    this.nombreUsuario = this.data.model.integrante.nombres + " " + this.data.model.integrante.apellidos;
+    this.loadTableRequerimiento(this.data.model.integrante.idUsuario);
 
     // var workbook = XLSX.utils.book_new();
     // var worksheet = XLSX.utils.aoa_to_sheet([]);
@@ -55,40 +54,6 @@ export class UserTaskComponent implements OnInit {
 
   }
 
-  // loadTable() {
-  //   this.services.ListarTareas(this.idUsuario).subscribe((dataItem) => {
-  //     if (dataItem.codigo == 0) {
-  //       this.dataSource = new MatTableDataSource(dataItem);
-  //       this.dataSource.paginator = this.paginator;
-  //       this.dataSource.sort = this.sort;
-  //     } else {
-  //       this.dataSource = null;
-  //       if (dataItem.msj == "LISTA VACIA") {
-  //         this._notification.warning(dataItem.msj)
-  //       } else {
-  //         this._notification.error(dataItem.msj)
-  //       }
-  //     }
-  //   });
-  // }
-
-  // showDialogTaksUser() {
-  //   const dialogRef: MatDialogRef<UserAddTaskComponent> = this.dialog.open(UserAddTaskComponent, {
-  //     disableClose: false,
-  //     width: '450px',
-  //     //height: '780px',
-  //     autoFocus: false,
-  //     data: {
-  //       auto: false,
-  //       id: this.idUsuario
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // this.loadTable();
-  //   });
-  // }
-
   verTareas(element, id: number) {
     const dialogRef: MatDialogRef<UserDownloadTaskComponent> = this.dialog.open(UserDownloadTaskComponent, {
       disableClose: false,
@@ -101,9 +66,9 @@ export class UserTaskComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result == 'ok') {
-        // this.loadTable()
-      }
+      // if (result == 'ok') {
+      // this.loadTable()
+      // }
     });
   }
 
@@ -121,24 +86,21 @@ export class UserTaskComponent implements OnInit {
     this.confirmDialogRef.componentInstance.confirmMessage = '¿Estas seguro de finalizar el requerimiento?';
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
-
         this.services.finalizarTareaAdministrador(element.idRequerimientoUsuario).subscribe(() => {
-          this._notification.success('Requerimiento finalizado con exito');
+          this._notification.success('Requerimiento finalizado correctamente');
+          this.loadTableRequerimiento(this.data.model.integrante.idUsuario);
         });
-        this.loadTableRequerimiento(this.data.model.idUsuario);
       }
       this.confirmDialogRef == null;
     });
   }
 
   onSave() {
-
   }
 
   async loadTableRequerimiento(idUsuario: Number) {
     let load = await this.services.listarRequerimientosPorPersonal(idUsuario).then((data: any) => {
       if (data.length > 0) {
-        console.log(data)
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

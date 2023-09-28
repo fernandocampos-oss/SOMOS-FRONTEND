@@ -57,15 +57,15 @@ export class TaskRejectComponent implements OnInit {
     obj.estado=false;
     obj.motivo=this.form.value.frmMotivo;
     obj.dias=this.form.value.frmDias
-    this.services.AprobarRechazarTarea(obj).subscribe({
-      next: data => {
-        this.dialogRef.close("ok");
-        this._notification.success("Se actualizó el estado de la tarea")
-      },
-      error: error => {
-        this._notification.error("Rechazar: Se produjo un error")
-      }
-    });
+    // this.services.AprobarRechazarTarea(obj).subscribe({
+    //   next: data => {
+    //     this.dialogRef.close("ok");
+    //     this._notification.success("Se actualizó el estado de la tarea")
+    //   },
+    //   error: error => {
+    //     this._notification.error("Rechazar: Se produjo un error")
+    //   }
+    // });
   }
 
 }

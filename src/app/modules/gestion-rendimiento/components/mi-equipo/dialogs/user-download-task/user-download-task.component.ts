@@ -44,13 +44,8 @@ export class UserDownloadTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
     // this.idEstado=this.data.obj.idEstado;
-    // this.idTarea=this.data.obj.id;
     // this.flgJefe=this.data.flg;
-    // this.objElement=this.data.obj;
-    // this.msj=this.data.obj.msj
-    // this.numerador=this.data.obj.numerador;
     this.createForm();
     this.showMsj();
     this.loadTable();
@@ -131,15 +126,15 @@ export class UserDownloadTaskComponent implements OnInit {
     let obj = new Aprobar();
     obj.id = this.idTarea;
     obj.estado = true;
-    this.services.AprobarRechazarTarea(obj).subscribe({
-      next: data => {
-        this.dialogRef.close("ok");
-        this._notification.success("Se actualizó el estado de la tarea")
-      },
-      error: error => {
-        this._notification.error("Aprobar: Se produjo un error")
-      }
-    });
+    // this.services.AprobarRechazarTarea(obj).subscribe({
+    //   next: data => {
+    //     this.dialogRef.close("ok");
+    //     this._notification.success("Se actualizó el estado de la tarea")
+    //   },
+    //   error: error => {
+    //     this._notification.error("Aprobar: Se produjo un error")
+    //   }
+    // });
   }
 
 }

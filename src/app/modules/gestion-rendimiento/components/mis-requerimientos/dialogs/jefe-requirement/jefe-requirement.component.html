@@ -1,0 +1,197 @@
+<div style="text-align: center">
+    <h3>Mis Requerimientos</h3>
+</div>
+<br>
+<mat-tab-group class="tab-group">
+    <mat-tab label="Pendientes">
+        <br>
+        <div *ngIf="listDataPendientes.length == 0" style="text-align: center">
+            <p class="color-mensaje">Aún no tienes requerimientos finalizados</p>
+        </div>
+        <div *ngIf="listDataPendientes.length !== 0">
+            <br>
+            <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="item">
+                    <th mat-header-cell *matHeaderCellDef>N°</th>
+                    <td mat-cell *matCellDef="let element, index as i"> {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="identificador">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Itentificador</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.identificador}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="requerimiento">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Requerimiento</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.nombre}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha_asignacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Asignación</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.fechaCreacion | date: 'dd/MM/y'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="tipo_ingreso">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Ingreso</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.tipoIngreso.descripcion}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="avance">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Avance (%)</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div style="text-align: center; width: 85%">
+                            {{element.requerimiento.porcentajeAvance}}%
+                            <mat-progress-bar mode="determinate" [value]="element.requerimiento.porcentajeAvance">
+                            </mat-progress-bar>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="estado">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-chip-list>
+                            <mat-chip
+                                [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2}">
+                                {{element.estadoRequerimiento.descripcion}}
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef width="120px"> Acciones </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button class="btn-tarea"
+                            [disabled]="(element.estadoRequerimiento.codigo == 1 ) ? true : false"
+                            (click)="verDetalleRequerimiento(element, false)">
+                            <mat-icon>library_books</mat-icon>&nbsp; Mis tareas
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+
+
+    </mat-tab>
+
+    <mat-tab label="Finalizados">
+        <br>
+        <div *ngIf="listDataFinalizados.length == 0" style="text-align: center">
+            <p class="color-mensaje">Aún no tienes requerimientos finalizados</p>
+        </div>
+        <div *ngIf="listDataFinalizados.length !== 0">
+            <br>
+            <table mat-table [dataSource]="dataSource_finalizado" matSort>
+                <ng-container matColumnDef="item">
+                    <th mat-header-cell *matHeaderCellDef>N°</th>
+                    <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+                </ng-container>
+                <ng-container matColumnDef="identificador">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Itentificador</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.identificador}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="requerimiento">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Requerimiento</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.nombre}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha_asignacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Asignación</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.fechaCreacion | date: 'dd/MM/y'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="tipo_ingreso">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Ingreso</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.tipoIngreso.descripcion}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="avance">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Avance (%)</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div style="text-align: center; width: 85%">
+                            100 %
+                            <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button color="primary" matTooltip="Descargar Excel"
+                            (click)="exportToExcel(element)">
+                            <mat-icon>get_app</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns_finalizado"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns_finalizado;"></tr>
+            </table>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+
+    </mat-tab>
+
+    <mat-tab label="Rechazados">
+        <br>
+        <div *ngIf="listDataRechazados.length == 0" style="text-align: center">
+            <p class="color-mensaje">Aún no tienes requerimientos rechazados</p>
+        </div>
+        <div *ngIf="listDataRechazados.length !== 0">
+            <br>
+            <table mat-table [dataSource]="dataSource_rechazado" matSort>
+                <ng-container matColumnDef="item">
+                    <th mat-header-cell *matHeaderCellDef>N°</th>
+                    <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+                </ng-container>
+                <ng-container matColumnDef="identificador">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Itentificador</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.identificador}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="requerimiento">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Requerimiento</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.nombre}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha_asignacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Asignación</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.fechaCreacion | date: 'dd/MM/y'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="tipo_ingreso">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Ingreso</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.requerimiento.tipoIngreso.descripcion}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="motivo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.motivo}}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns_rechazado"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns_rechazado;"></tr>
+            </table>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+
+    </mat-tab>
+
+</mat-tab-group>

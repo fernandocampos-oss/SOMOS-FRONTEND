@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
-import { EvidenciaRequest, EvidenciaResponseDTO, Personal, Poi, RequerimientoRequest, TipoIngreso, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
-import { TareaDTO, TareaRequest, TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
+import { EvidenciaRequest, EvidenciaResponseDTO, LiderEquipoRequest, Personal, Poi, RequerimientoRequest, TipoIngreso, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { TareaDTO } from '@data/models/gestion-rendimiento/tarea-model';
 
 const URL_BASE = `${environment.apiUrl}`;
 
@@ -14,75 +14,74 @@ export class GestionRendimientoService {
     private http: HttpClient
   ) { }
 
-  AgregarPersona(data): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/equipo/registrarIntegrante/`, data);
-  }
+  // AgregarPersona(data): Observable<any> {
+  //   return this.http.post(`${environment.apiUrl}/equipo/registrarIntegrante/`, data);
+  // }
 
-  ListarIntegrantes(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/equipo/listarMisIntegrantes`);
-  }
+  // ListarIntegrantes(): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/equipo/listarMisIntegrantes`);
+  // }
 
-  EliminarIntegrante(id, motivo) {
-    return this.http.delete(`${environment.apiUrl}/equipo/eliminarIntegrante/${id}/${motivo}`);
-  }
+  // EliminarIntegrante(id, motivo) {
+  //   return this.http.delete(`${environment.apiUrl}/equipo/eliminarIntegrante/${id}/${motivo}`);
+  // }
 
-  ListarTareas(id): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/tarea/listarTareas/${id}`);
-  }
+  // ListarTareas(id): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/tarea/listarTareas/${id}`);
+  // }
 
-  RegistrarTarea(data): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/tarea/registrar`, data);
-  }
+  // RegistrarTarea(data): Observable<any> {
+  //   return this.http.post(`${environment.apiUrl}/tarea/registrar`, data);
+  // }
 
-  ListarInformes(id): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/evidencia/listarPorTarea/${id}`);
-  }
+  // ListarInformes(id): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/evidencia/listarPorTarea/${id}`);
+  // }
 
-  RegistrarInforme(data): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/evidencia/registrar`, data);
-  }
+  // RegistrarInforme(data): Observable<any> {
+  //   return this.http.post(`${environment.apiUrl}/evidencia/registrar`, data);
+  // }
 
-  ListarArchivos(id): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/evidencia/listarArchivosEvidencia/${id}`);
-  }
+  // ListarArchivos(id): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/evidencia/listarArchivosEvidencia/${id}`);
+  // }
 
-  CargarArchivo(data): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/evidencia/subirArchivo/`, data);
-  }
+  // CargarArchivo(data): Observable<any> {
+  //   return this.http.post(`${environment.apiUrl}/evidencia/subirArchivo/`, data);
+  // }
 
-  EliminarArchivo(id) {
-    return this.http.delete(`${environment.apiUrl}/evidencia/eliminarArchivo/${id}`);
-  }
+  // EliminarArchivo(id) {
+  //   return this.http.delete(`${environment.apiUrl}/evidencia/eliminarArchivo/${id}`);
+  // }
 
-  DescargarArchivo(id): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/archivo/descargar/${id}`);
-  }
+  // DescargarArchivo(id): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/archivo/descargar/${id}`);
+  // }
 
-  AprobarRechazarTarea(data) {
-    return this.http.put(`${environment.apiUrl}/tarea/actualizarEstado`, data);
-  }
+  // AprobarRechazarTarea(data) {
+  //   return this.http.put(`${environment.apiUrl}/tarea/actualizarEstado`, data);
+  // }
 
-  ListarModalidad(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/equipo/listarModalidad`);
-  }
+  // ListarModalidad(): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/equipo/listarModalidad`);
+  // }
 
-  ListarRiesgo(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/equipo/listarRiesgo`);
-  }
+  // ListarRiesgo(): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/equipo/listarRiesgo`);
+  // }
 
-  ListarMisModalidades(id): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/equipo/listarMisModalidades/${id}`);
-  }
+  // ListarMisModalidades(id): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/equipo/listarMisModalidades/${id}`);
+  // }
 
-  ListarMisRiesgos(id): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/equipo/listarMisRiesgos/${id}`);
-  }
+  // ListarMisRiesgos(id): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/equipo/listarMisRiesgos/${id}`);
+  // }
 
-  RegistrarIntegranteDetalle(data): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/equipo/registrarIntegranteDetalle`, data);
-  }
+  // RegistrarIntegranteDetalle(data): Observable<any> {
+  //   return this.http.post(`${environment.apiUrl}/equipo/registrarIntegranteDetalle`, data);
+  // }
 
-  //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   //Requerimientos
   async listarRequerimientoPendiente() {
@@ -107,6 +106,12 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/requerimientosUsuarios/registrar/requerimiento`;
     console.log(url, requerimiento);
     return await this.http.post(url, requerimiento).toPromise();
+  }
+
+  async updateRequerimiento(idRequerimiento: number, model: RequerimientoRequest) {
+    const url = `${URL_BASE}/requerimientosUsuarios/modificar/requerimiento/${idRequerimiento}`;
+    console.log(url, model);
+    return await this.http.put(url, model).toPromise();
   }
 
   async listarRequerimientoPrincipal() {
@@ -145,8 +150,8 @@ export class GestionRendimientoService {
     return await this.http.get<UnidadOrganizativa[]>(url).toPromise();
   }
 
-  async listarPersonalUnidad() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/personal`;
+  async listarIntegrantesPorLider() {
+    const url = `${URL_BASE}/lideres-equipos/listar/equipo`;
     console.log(url);
     return await this.http.get<Personal[]>(url).toPromise();
   }
@@ -163,29 +168,29 @@ export class GestionRendimientoService {
     return await this.http.get<any[]>(url).toPromise();
   }
 
-  //Equipos
+  //Equipo
   async listarRequerimientosPorPersonal(idUsuario) {
     const url = `${URL_BASE}/requerimientosUsuarios/listar/requerimientos/${idUsuario}/personal`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
-  async listarPersonalGeneral() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/personal/general`;
+  async listarPersonalPorRed() {
+    const url = `${URL_BASE}/requerimientosUsuarios/listar/personal/red`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
-  async eliminarIntegranteUnidad(idUsuario: number) {
-    const url = `${URL_BASE}/requerimientosUsuarios/integrante/eliminar?idUsuario=${idUsuario}`;
+  async eliminarIntegrante(idIntegrante: number) {
+    const url = `${URL_BASE}/lideres-equipos/integrante/eliminar?idIntegrante=${idIntegrante}`;
     console.log(url);
     return await this.http.get(url).toPromise();
   }
 
-  async agregarIntegrante(idUsuario: number) {
-    const url = `${URL_BASE}/requerimientosUsuarios/integrante/agregar?idUsuario=${idUsuario}`;
-    console.log(url);
-    return await this.http.get(url).toPromise();
+  async agregarIntegrante(liderEquipoRequest: LiderEquipoRequest) {
+    const url = `${URL_BASE}/lideres-equipos/integrante/agregar`;
+    console.log(url, liderEquipoRequest);
+    return await this.http.post(url, liderEquipoRequest).toPromise();
   }
 
   finalizarTareaAdministrador(idRequerimientoUsuario: number) {

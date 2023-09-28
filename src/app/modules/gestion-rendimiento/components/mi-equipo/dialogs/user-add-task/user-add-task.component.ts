@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { NotificationService } from '@core/services';
-import { Tarea1 } from '../../../../../../data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service';
 import { DialogService } from '@core/services';
 import { filter } from 'rxjs/operators';
@@ -45,19 +44,20 @@ export class UserAddTaskComponent implements OnInit {
     if(!this.form.valid){
       this._notification.warning("Se deben ingresar los campos requeridos")
     } else {
-      let t = new Tarea1();
-      t.idEquipoIntegrante=this.idUsuario;
-      t.fechaInicio=new Date(this.form.value.frmFecInicio);
-      t.fechaFin=new Date(this.form.value.frmFecFin);
-      t.descripcion=this.form.value.frmDescripcion;
-      this.services.RegistrarTarea(t).subscribe((dataItem) => {
-        if (dataItem.codigo == 1) {
-          this._notification.success(dataItem.msj);
-          this._dlg.close();
-        } else {
-          this._notification.error(dataItem.msj)
-        }
-      });
+      // let t = new Tarea1();
+      // t.idEquipoIntegrante=this.idUsuario;
+      // t.fechaInicio=new Date(this.form.value.frmFecInicio);
+      // t.fechaFin=new Date(this.form.value.frmFecFin);
+      // t.descripcion=this.form.value.frmDescripcion;
+
+      // this.services.RegistrarTarea(t).subscribe((dataItem) => {
+      //   if (dataItem.codigo == 1) {
+      //     this._notification.success(dataItem.msj);
+      //     this._dlg.close();
+      //   } else {
+      //     this._notification.error(dataItem.msj)
+      //   }
+      // });
     }
   }
 
