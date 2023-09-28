@@ -63,6 +63,7 @@ const data: MenuItem[] = [
   //     path: AppRoute.MIS_BOLETAS,
   //     icon: 'payment',
   //     label: 'Mis boletas de pago',
+  //     type: 2,
   // },
   // // {
   // //   path: '',

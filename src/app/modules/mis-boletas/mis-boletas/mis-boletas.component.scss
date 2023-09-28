@@ -1,0 +1,32 @@
+.optionsBar{
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    button{
+      padding: 0 24px;
+    //   background-color: var(--color-MiEssalud);
+    }
+}
+
+.alignCard{
+    margin-top: 0;
+}
+
+.segundoCard{
+  margin-top: 1rem;
+  .matero-page-title{
+    color: #666666;
+    padding: 10px;
+  }
+}
+.optSearchBoleta{
+  padding: 20px;
+  display: flex;
+  gap: 1rem;
+  .containerSearch{
+    .searchBoleta{
+      height: 59px;
+      margin: 0.25em 0;
+    }
+  }
+}

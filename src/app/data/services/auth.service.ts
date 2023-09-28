@@ -39,6 +39,7 @@ export class AuthService {
       model.password
     );
 
+    this._ls.setItem(LocalStorageKey.USER_SESSION, model.username)
     return this._httpClient
       .post<LoginResponse>(url, null, { headers })
       .pipe(tap((data) => this._setToken(data.token)));

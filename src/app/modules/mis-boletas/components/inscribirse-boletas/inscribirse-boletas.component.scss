@@ -1,0 +1,28 @@
+.headerDialog{
+    text-align: center;
+    img{
+        max-width: 280px;
+        min-width: 200px;
+        width: 40%;
+    }
+    h2{
+        color: #002060;
+        font-size: 1.4rem;
+    }
+}
+.contenidoPuntos{
+    display: flex;
+    flex-direction: column;
+    .elementoLista{
+        display: flex;
+        gap: 7px;
+        margin-top: 0.5rem;
+    }
+}
+.optDialog{
+    margin-top: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
