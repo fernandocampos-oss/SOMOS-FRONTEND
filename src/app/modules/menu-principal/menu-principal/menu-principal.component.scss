@@ -124,7 +124,7 @@ span.birthDescrp{
 }
 .boxRenueva{
   background-image: url(~src/assets/images/renuevaBoton.png);
-  background-size: auto;
+  background-size: contain;
 }
 .boxSistemas{
   padding-left: 5vw;
@@ -324,6 +324,9 @@ mat-grid-list {
   .boxPublicacion{
     width: 650px;
   }
+  .boxRenueva{
+    background-size: auto;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -420,7 +423,7 @@ mat-grid-list {
   }
 }
 @media screen and (min-width: 600px) and (max-width: 890px) {
-  .boxSST, .boxSistemas{
+  .boxSST, .boxSistemas, .boxRenueva{
     height: 84px;
   }
   .changeBirth{
@@ -471,8 +474,6 @@ mat-grid-list {
   }
   .boxBirth {
     min-height: 476px;
-    width: 100%;
-    display: grid;
     .header{
       height: 35px !important;
       img{
@@ -487,21 +488,7 @@ mat-grid-list {
     }
     .contenido{
       margin:2px 0 2px 0;
-      display: flex;
-      .num{
-        background-image: url(~src/assets/images/avatar.png);
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        width: 3vw;
-        height: 3.25vw;
-        margin:1%;
-      }
       .body{
-        display: block;
-        padding-top: 2%;
-        color: #422918;
-        align-self: center;
         .nomBirth{
           font-weight: bold;
         }

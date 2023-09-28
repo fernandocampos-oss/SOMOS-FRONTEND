@@ -37,7 +37,13 @@
                 <input matInput formControlName="frmFecNac">
             </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="this.distribucionCorreo">
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Unidad Organizativa</mat-label>
+                <input matInput formControlName="frmUnidad">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
             <mat-form-field appearance="outline">
                 <mat-label>Correo</mat-label>
                 <input matInput formControlName="frmCorreo">
@@ -51,7 +57,7 @@
         </mat-grid-tile>
     </mat-grid-list>
     <div class="mat-button-container" style="display: flex; justify-content: flex-end;">
-        <button mat-raised-button (click)='cerrar()'><mat-icon>close</mat-icon> Cerrar</button>
-        <button mat-raised-button color="primary" (click)='guardar()' [disabled]='data.enviado' style="margin-left: 1rem;"><mat-icon>save</mat-icon> Guardar</button>
+        <!-- <button mat-raised-button (click)='cerrar()'><mat-icon>close</mat-icon> Cerrar</button> -->
+        <button mat-raised-button color="primary" (click)='data.enviado ? cerrar() : guardar()'  style="margin-left: 1rem;background-color: var(--color-MiEssalud);">Cerrar</button>
     </div>
 </div>

@@ -1,3 +1,82 @@
+::root {
+    --tamanio-array: '2';
+}
+
+.separacion{
+    display: grid;
+    grid-template-columns: repeat(var(--tamanio-array), minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+::ng-deep.tooltipEleccion{
+    font-size: 15px !important;
+}
+.elementos{
+    overflow: hidden;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: var(--color-bordes);
+    border-style: solid;
+    border-radius: 11px;
+    border-width: 2.5px;
+    .candHeader{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 100%;
+        padding: 0.25rem 0.75rem;
+        border-bottom: var(--color-bordes);
+        border-bottom-style: solid;
+        border-width: 2.5px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .candBody{
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        img{
+            width: 7vw;
+            max-width: 120px;
+            min-width: 80px;
+        }
+    }
+}
+.containerNo{
+    text-align: -webkit-center;
+}
+.ninguno{
+    width: fit-content;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    .candHeader{
+        border-bottom-style: none;
+        border-radius: 8px;
+    }
+}
+
+.noSelected{
+    .candHeader{
+        background-color: #e6effa;
+    }
+    .candBody{
+        background-color: #ffffff;
+    }
+}
+.selected{
+    .candHeader{
+        background-color: rgb(72, 210, 72);
+    }
+    .candBody{
+        background-color: #caf3ce;
+    }
+}
+
 mat-dialog-actions{
     justify-content: space-between;
 }
@@ -15,13 +94,13 @@ mat-dialog-actions{
 }
 .encuestaHecha{
     text-align: center;
+    img{
+        width:45%;
+        margin-bottom: 15px;
+    }
 }
 h3{
     text-align: center;
-}
-img{
-    width:45%;
-    margin-bottom: 15px;
 }
 .confirm {
     background-color: rgb(72, 210, 72);
@@ -54,7 +133,59 @@ mat-grid-tile.opcionesEncuestaSimple {
 .containerOpciones{
     display: flex;
     padding: 12px 0 12px 0;
+    img{
+        width:45%;
+        margin-bottom: 15px;
+    }
 }
 .selector{
     width: 70%;
+}
+
+.columnCategorias{
+    margin-top: 0.5rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+    .elementoCat{
+        width: 100%;
+        padding: 0.25rem;
+        text-align: center;
+        font-weight: 600;
+    }
+    .candidato{
+        .candDescrp{
+            text-align: center;
+            padding: 0.25rem 0.75rem;
+            border-bottom: var(--color-bordes);
+            border-bottom-style: solid;
+            border-width: 2.5px;
+            font-size: 14px;
+            font-weight: 600;
+            border-top-left-radius: 11px;
+            border-top-right-radius: 11px;
+        }
+        .candOpt{
+            cursor: pointer;
+            border: var(--color-bordes);
+            border-style: solid;
+            border-radius: 11px;
+            border-width: 2.5px;
+            margin-bottom: 0.75rem;
+        }
+        img{
+            width: 7vw;
+            max-width: 120px;
+            min-width: 80px;
+        }
+        .imgCand{
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+            border-bottom-left-radius: 11px;
+            border-bottom-right-radius: 11px;
+        }
+    }
 }

@@ -80,6 +80,13 @@ export const ROUTES: Routes = [
             (m) => m.GestionRendimientoModule
           ),
       },
+      {
+        path: AppRoute.MIS_BOLETAS,
+        loadChildren: () =>
+          import('../modules/mis-boletas/mis-boletas.module').then(
+            (m) => m.MisBoletasModule
+          ),
+      },
       // {
       //   path: AppRoute.DDJJ_CONFLICTO,
       //   loadChildren: () =>
@@ -129,6 +136,13 @@ export const ROUTES: Routes = [
             (m) => m.MisRequerimientosModule
           ),
       },
+      // {
+      //   path: AppRoute.ADMINISTRAR_INSCRIPCIONES,
+      //   loadChildren: () =>
+      //     import('../modules/administrar-inscripcion/administrar-inscripcion.module').then(
+      //       (m) => m.AdministrarInscripcionModule
+      //     ),
+      // },
       {
         path: AppRoute.ADMINISTRAR_ROL_RED,
         loadChildren: () => 

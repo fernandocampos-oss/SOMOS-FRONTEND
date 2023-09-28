@@ -43,7 +43,7 @@ const data: MenuItem[] = [
   //     {
   //       path: AppRoute.ADMINISTRAR_ENCUESTA,
   //       icon: 'settings',
-  //       label: 'Resultados encuesta',
+  //       label: 'Usuarios por Red',
   //       roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
   //     },
   //   ]
@@ -60,9 +60,10 @@ const data: MenuItem[] = [
   //     label: 'Mis vacaciones',
   // },
   // {
-  //     path: AppRoute.MIS_REQUERIMIENTOS,
+  //     path: AppRoute.MIS_BOLETAS,
   //     icon: 'payment',
   //     label: 'Mis boletas de pago',
+  //     type: 2,
   // },
   // {
   //   path: '',

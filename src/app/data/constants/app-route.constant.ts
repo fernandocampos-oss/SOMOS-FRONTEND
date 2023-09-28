@@ -11,6 +11,7 @@ export class AppRoute {
   static readonly NOT_FOUND = '404';
 
   static readonly MIS_MARCACIONES = 'mis-marcaciones';
+  static readonly MIS_BOLETAS = 'mis-boletas';
   static readonly MARCACION_TRABAJADOR = 'marcacion-trabajador';
   static readonly SETTINGS = 'configuraciones';
   static readonly GESTION_RENDIMIENTO = 'gestion-rendimiento';
@@ -25,6 +26,7 @@ export class AppRoute {
 
   static readonly ADMINISTRAR_ENCUESTA = 'administracion-encuesta';
   static readonly ADMINISTRAR_USUARIOS = 'administrar-usuarios';
+  static readonly ADMINISTRAR_INSCRIPCIONES = 'administrar-inscripciones';
 
   static readonly RENUEVA_ESSALUD = 'renueva-essalud-v';
   static readonly ADMINISTRAR_ROL_RED = 'administrar-rol-red';

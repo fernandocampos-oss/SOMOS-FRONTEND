@@ -6,7 +6,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationService } from '@core/services';
+import { LocalStorageKey, NotificationService } from '@core/services';
 import { AuthService, UsuarioService } from '@data/services';
 import { Observable, of } from 'rxjs';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -17,6 +17,21 @@ import { RenuevaEssaludService } from '@data/services/renueva-essalud.service';
 import { DatosGrupo, DescripcionProyecto, Implementacion, InscripcionRenueva } from '@data/models/proyecto/proyecto.model';
 import * as moment from 'moment';
 import { ConfirmInscripcionComponent } from './confirm-inscripcion/confirm-inscripcion.component';
+
+function maxWordsValidator(maxWords: number) {
+  return (control: FormControl): { [key: string]: any } | null => {
+    const value = control.value;
+    if (!value) return null;
+
+    const wordCount = value.trim().split(/\s+/).length;
+
+    if (wordCount > maxWords) {
+      return { 'maxWords': { max: maxWords, actual: wordCount } };
+    }
+
+    return null;
+  };
+}
 
 @Component({
   selector: 'app-form-renueva-essalud',
@@ -33,6 +48,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   stepperOrientation: Observable<StepperOrientation>;
 
+  vistaCelular = false;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['nombresApellidos', 'dni', 'accion'];
   estadoInscripcion = false;
@@ -50,6 +66,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   msgErrores = false;
   // <!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
   idProyectoGrupo: number;
+  idLider: number;
 
   formDatosGenerales = this._formBuilder.group({
     ctrlCategoria: ['', Validators.required],
@@ -62,7 +79,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   // get imagenGrupoField() {
   //   return this.formDatosGenerales.get('ctrlImgGrupo64');
   // }
-  
+
   integranteControl = new FormControl('');
   jefeControl = new FormControl('');
   filteredOptions: Observable<any[]>;
@@ -85,10 +102,10 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   formDatosProyecto = this._formBuilder.group({
     ctrlFechaImplementacion: [null, Validators.required],
-    ctrlMotivacion: [null, [Validators.required, Validators.maxLength(600)]],
-    ctrlAccionInnovadora: [null, [Validators.required, Validators.maxLength(1200)]],
-    ctrlContextoInicial: [null, [Validators.required, Validators.maxLength(750)]],
-    ctrlInnovador: [null, [Validators.required, Validators.maxLength(750)]],
+    ctrlMotivacion: [null, [Validators.required, maxWordsValidator(200)]],
+    ctrlAccionInnovadora: [null, [Validators.required, maxWordsValidator(500)]],
+    ctrlContextoInicial: [null, [Validators.required, maxWordsValidator(250)]],
+    ctrlInnovador: [null, [Validators.required, maxWordsValidator(250)]],
     ctrlIndicadores: [null, Validators.required],
   });
 
@@ -106,7 +123,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   isPdfUpdate = false;
 
   formImplementacion = this._formBuilder.group({
-    ctrlResultado: ['', [Validators.required, Validators.maxLength(900)]],
+    ctrlResultado: ['', [Validators.required, maxWordsValidator(300)]],
     ctrlSostenible: [null, Validators.required],
     ctrlSostenibleFundamento: [null],
     ctrlReplicable: [null, Validators.required],
@@ -134,13 +151,19 @@ export class FormRenuevaEssaludComponent implements OnInit {
       this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
+      breakpointObserver
+      .observe('(min-width: 600px)')
+      .pipe(map(({matches})=> (matches ? true : false))).subscribe((data)=>{
+        this.vistaCelular = data;
+      });
     }
 
   ngOnInit(): void {
+    this.idLider = this.authService.getUserSession().id;
     this.cargarUsuariosRed();
     this.cargarLider();
     this.renuevaService.getProyecto().subscribe((data) => {
-      const dataObj = Object(data[0]);console.log(data)
+      const dataObj = Object(data[0]);
       if (data[0]){
         this.hayDatos = true;
         this.idProyecto = dataObj.idProyecto;
@@ -177,7 +200,8 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   cargarDataProyecto(data: any) {
     this.estadoInscripcion = data.enviado;
-    console.log(data)
+    this.idLider = data.idUsuario;
+    console.log(data);
 
     // Data grupo
     this.formDatosGenerales.controls.ctrlNomGrupo.setValue(data.grupo.nombre);
@@ -185,17 +209,27 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this.formDatosGenerales.controls.ctrlJefeNombre.setValue(data.grupo.jefe);
     this.formDatosGenerales.controls.ctrlCategoria.setValue(data.grupo.categoria);
     // this.formDatosGenerales.controls.ctrlImgGrupo64.setValue(data.grupo.imagenBase64);
-    const jefesFiltrados: any[] = this._filterJefe(data.grupo.jefe);
-    if (jefesFiltrados.length > 0) {
-      this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
-    }
-    data.grupo.miembros.forEach(m => {
-      if (m.idUsuario === this.authService.getUserSession().id) {
-        this.listaIntegrantes[0] = m;
-      } else {
-        this.listaIntegrantes.push(m);
+    if(data.grupo.jefe){
+      const jefesFiltrados: any[] = this._filterJefe(data.grupo.jefe ? data.grupo.jefe : undefined);
+      if (jefesFiltrados.length > 0) {
+        this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
       }
-    });
+    }
+    if (this.authService.getUserSession().id === this.idLider) {
+      data.grupo.miembros.forEach(m => {
+        if (m.idUsuario === this.idLider) {
+          this.listaIntegrantes[0] = m;
+        } else {
+          this.listaIntegrantes.push(m);
+        }
+      });
+    } else {
+      this.listaIntegrantes = [];
+      data.grupo.miembros.forEach(m => {
+          this.listaIntegrantes.push(m);
+      });
+    }
+
     this.table.renderRows();
     if (data.grupo.imagenBase64) {
       this.retrievedImage = `data:image/png;base64,${data.grupo.imagenBase64}`;
@@ -233,19 +267,19 @@ export class FormRenuevaEssaludComponent implements OnInit {
     if (data.implementacion.archivoBase64) {
       this.retrievedPdf = `data:application/pdf;base64,${data.implementacion.archivoBase64}`;
     }
-      
+
     if(this.selectedValueL === 'Si'){
       this.formImplementacion.controls.ctrlSostenibleFundamento.setValidators([Validators.required]);
       this.formImplementacion.controls['ctrlSostenibleFundamento'].updateValueAndValidity();
     }
 
     if(this.selectedValueN === 'Si'){
-      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, Validators.maxLength(900)]);
+      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, maxWordsValidator(400)]);
       this.formImplementacion.controls['ctrlReplicableFundamento'].updateValueAndValidity();
     }
 
     if(this.selectedValueO === 'Si'){
-      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, Validators.maxLength(600)]);
+      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, maxWordsValidator(200)]);
       this.formImplementacion.controls['ctrlTecnologiaFundamento'].updateValueAndValidity();
     }
 
@@ -267,21 +301,25 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this.userService.get(this.authService.getUserSession().id).subscribe((data) => {
       this.formDatosGenerales.controls.ctrlRed.setValue(data.red);
       this.formDatosGenerales.controls.ctrlRed.disable();
-      this.listaIntegrantes.push({
-        apellidos: data.apellidos,
-        cargo: data.cargo,
-        codigoPlanilla: data.codigoPlanilla,
-        correo: data.correo,
-        fechaNacimiento: data.fechaNacimiento,
-        idUsuario: data.idUsuario,
-        nombres: data.nombres,
-        numeroCelular: data.numeroCelular,
-        numeroDocumento: data.numeroDocumento,
-        red: data.red
-      });
-      this.table.renderRows();
+      if (this.listaIntegrantes.length === 0) {
+        this.listaIntegrantes.push({
+          apellidos: data.apellidos,
+          cargo: data.cargo,
+          codigoPlanilla: data.codigoPlanilla,
+          correo: data.correo,
+          fechaNacimiento: data.fechaNacimiento,
+          idUsuario: data.idUsuario,
+          nombres: data.nombres,
+          numeroCelular: data.numeroCelular,
+          numeroDocumento: data.numeroDocumento,
+          red: data.red,
+          unidad: data.unidad
+        });
+        this.table.renderRows();
+      }
     });
   }
+
   async cargarUsuariosRed() {
     const listPersonal = await this.renuevaService.getUsuariosMismaRed().then((data) => {
       if (data) {
@@ -357,7 +395,6 @@ export class FormRenuevaEssaludComponent implements OnInit {
     }
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
-    console.log(files)
     reader.onload = _event => {
       const imgLoad = new Image();
       this.applicationFile = files[0];
@@ -471,7 +508,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   onChangeN(event: MatRadioChange) {
     this.selectedValueN = event.value;
     if(event.value === 'Si'){
-      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, Validators.maxLength(900)]);
+      this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([Validators.required, maxWordsValidator(400)]);
     }
     else{
       this.formImplementacion.controls.ctrlReplicableFundamento.setValidators([]);
@@ -483,7 +520,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   onChangeO(event: MatRadioChange) {
     this.selectedValueO = event.value;
     if(event.value === 'Si'){
-      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, Validators.maxLength(600)]);
+      this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([Validators.required, maxWordsValidator(200)]);
     }
     else{
       this.formImplementacion.controls.ctrlTecnologiaFundamento.setValidators([]);
@@ -528,12 +565,9 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   downloadPdf() {
     const blob = this.base64ToBlob(this.retrievedPdf.split(',')[1], 'application/pdf');
-    console.log(blob)
     const url = URL.createObjectURL(blob);
-    console.log(url)
 
     const link = document.createElement('a');
-    console.log(link)
     link.href = url;
     link.download = 'archivo.pdf';
     link.click();
@@ -608,7 +642,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
             enviado: this.estadoInscripcion
           }
         });
-    
+
         dialogRef.afterClosed().subscribe((result) => {
           if (result) {
               this._notification.success('Se enviaron los datos de la inscripción');

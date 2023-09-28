@@ -3,6 +3,11 @@
     width: 9em;
     background-color: var(--color-MiEssalud);
 }
+.optCat{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .btnBases{
     margin-left: 1rem;
     margin-top: 10px;
@@ -25,11 +30,21 @@
         font-family: "Nunito"!important;   
     }
 }
+::ng-deep.tooltipRenueva{
+    font-size: 16px !important;
+}
+.categoriaRenueva{
+    display: flex; 
+    flex-direction: column;
+}
 .radioGroup{
     display: grid !important;
     ::ng-deep.mat-radio-label-content{
         white-space: normal;
     }
+}
+.example-tooltip-uppercase {
+  text-transform: uppercase;
 }
 .grid-cols-3{
     display: grid;
@@ -59,13 +74,15 @@
         width: 100%;
     }
 }
-::ng-deep.mat-checkbox-layout {
-  white-space: normal !important;
-  text-align: justify;
-
-}
-::ng-deep .mat-checkbox-inner-container {
-  margin-top: 4px !important;
+.marcarRenueva{
+    ::ng-deep.mat-checkbox-layout {
+      white-space: normal !important;
+      text-align: justify;
+    
+    }
+    ::ng-deep .mat-checkbox-inner-container {
+      margin-top: 4px !important;
+    }
 }
 .subPregunta{
     margin-left: 2rem;
@@ -81,9 +98,9 @@
     button{
         width: 100%;
     }
-}
-img{
-    height: 16rem;
+    img{
+        height: 16rem;
+    }
 }
 .navOptions{
     margin-top: 1rem;
@@ -108,6 +125,38 @@ img{
     .inputBtn{
         mat-form-field{
             width: 74%;
+        }
+    }
+}
+@media screen and (max-width: 600px) {
+    .conteImg{
+        text-align: center;
+        .preview__img{
+            width: 242px;
+        }
+    }
+    td {
+        font-size: 11px;
+    }
+    .card.shadow{
+        padding: 2rem 2px;
+    }
+}
+@media screen and (min-width: 500px) {
+    h1{
+        position: relative;
+        .preview__img{
+            bottom: 45px;
+            right: 20px;
+            position: absolute;
+            width: 242px;
+        }
+    }
+}
+@media screen and (max-width: 662px) {
+    h1{
+        .preview__img{
+            bottom: 20px;
         }
     }
 }

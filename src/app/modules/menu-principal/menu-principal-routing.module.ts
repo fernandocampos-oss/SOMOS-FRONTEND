@@ -8,10 +8,16 @@ const routes: Routes = [
   {
     path: '',
     component: MenuPrincipalComponent,
+    data: {
+      title: ' Menú Principal'
+    }
   },
   {
     path: AppRoute.RENUEVA_ESSALUD,
     component: FormRenuevaEssaludComponent,
+    data: {
+      title: 'Renueva EsSalud'
+    }
   },
 ];
 

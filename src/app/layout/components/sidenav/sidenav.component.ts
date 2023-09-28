@@ -11,6 +11,10 @@ import { ZonaService } from '@data/services';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ChangePasswComponent } from './change-passw/change-passw/change-passw.component';
 import { ShowPaymentCalendarComponent } from '@modules/menu-principal/components/show-payment-calendar/show-payment-calendar.component';
+import { InscribirseBoletasComponent } from '@modules/mis-boletas/components/inscribirse-boletas/inscribirse-boletas.component';
+import { BoletaService } from '@data/services/boleta.service';
+import { Router } from '@angular/router';
+import { AppRoute } from '@data/constants';
 
 @Component({
   selector: 'app-sidenav',
@@ -23,12 +27,15 @@ export class SidenavComponent implements OnInit {
   gerencia: String = '';//Aqui se guarda la gerencia
   email: String = '';
   nombre: String = '';
+  numDoc: string = '';
 
   constructor(private dialog: MatDialog,
               private _menuService   : MenuService,
+              private router         : Router,
               private matIconRegistry: MatIconRegistry,
               private domSanitizer   : DomSanitizer,
               private _authService   : AuthService,
+              private _boletaService : BoletaService,
               private _zonaService   : ZonaService,
               private _userService   : UsuarioService) {
     this.matIconRegistry.addSvgIcon("remote_menu",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/remote_menu.svg"));
@@ -41,12 +48,14 @@ export class SidenavComponent implements OnInit {
   ngOnInit(): void {
     this._initialize();
     this.user = this._authService.getUserSession();
+    console.log(this.user)
     this._userService.get(this.user.id).subscribe( data =>{
       this.email = data.correo;
       // this._zonaService.get(data.idZonaControl).subscribe(info=>{
       //   this.gerencia = info.descripcion;
       // })
       this.nombre = data.nombres;
+      this.numDoc = data.numeroDocumento;
     })
   }
 
@@ -92,6 +101,19 @@ export class SidenavComponent implements OnInit {
           autoFocus: false,
         });
         break;
+      case 'Mis boletas de pago':
+          if (this._boletaService.getIfInscritosBoleta(this.numDoc)) {
+            this.router.navigate([AppRoute.MIS_BOLETAS]);
+          }
+          else{
+            const dialogRef2: MatDialogRef<InscribirseBoletasComponent> = this.dialog.open(InscribirseBoletasComponent, {
+              disableClose: false,
+              minWidth: '350px',
+              maxWidth: '30%',
+              autoFocus: false,
+            });
+          }
+          break;
     }
   }
 }

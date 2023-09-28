@@ -1,0 +1,25 @@
+<div>
+    <div class="headerDialog">
+        <img src="assets/images/acceptBoletas.png">
+        <h2>Recibe tu Boleta de Pago Digitalmente a través de la Plataforma Somos Essalud</h2>
+    </div>
+    <div class="contenidoPuntos">
+        <div class="lista">
+            <div class="elementoLista">
+                <mat-icon>check</mat-icon><span>Tendrás habilitado para descargar las veces que quieras tu Boleta de Pago</span>
+            </div>
+            <div class="elementoLista">
+                <mat-icon>check</mat-icon><span>Puedes desafiliarte en cualquier momento</span>
+            </div>
+            <div class="elementoLista">
+                <mat-icon>check</mat-icon><span>Podrás afiliarte aceptando los términos y condiciones de uso</span>
+            </div>
+        </div>
+    </div>
+    <div class="optDialog">
+        <mat-checkbox (change)="habilitado = !habilitado" color="primary" [checked]="habilitado">
+        Acepto los términos y condiciones de uso
+        </mat-checkbox>
+        <button mat-raised-button color="primary" [disabled]="!habilitado" (click)="inscribirseBoletas()">Aceptar</button>
+    </div>
+</div>

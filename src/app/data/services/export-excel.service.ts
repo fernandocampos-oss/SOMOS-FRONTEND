@@ -1,0 +1,153 @@
+import { DatePipe } from '@angular/common';
+import { Injectable } from '@angular/core';
+import { inscritosResponse } from '@data/models/inscripcion/inscripcion.model';
+
+import { Workbook, Worksheet } from 'exceljs';
+import * as fs from 'file-saver';
+
+export const imgBase64 = "data:image/jpg;base64,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";
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const EXCEL_EXTENSION = '.xlsx';
+
+export interface ReporteHijo {
+  cod_regimen: string;
+  cod_planilla: string;
+  nombre_trabajador: string;
+  nombre_hijo: string;
+  fec_nac: string;
+  edad: string;
+  sexo: string;
+  red: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ExportExcelService {
+  fileName: string = "Inscripción Campaña";
+
+  constructor() { }
+
+  exportExcel(titulo, columnas: string[], inscritos :inscritosResponse[]) {
+    //Title, Header & Data
+    // const regimen = excelData.regimen;
+    // const header = excelData.headers;
+    // const data = excelData.data;
+
+    //Create a workbook with a worksheet
+    let workbook = new Workbook();
+    let worksheet = workbook.addWorksheet('Data');
+
+    //Add Row and formatting
+    worksheet.mergeCells('A3', 'E3');
+    let titleReport = worksheet.getCell('A3');
+      titleReport.value = titulo;
+      titleReport.font = {
+        name:'Times New Roman',
+        size: 16,
+        bold:true,
+      }
+      titleReport.alignment = { horizontal: 'center'};
+
+      this.formatoHeaders(worksheet,'A5',columnas[0]);
+      this.formatoHeaders(worksheet,'B5',columnas[1]);
+      this.formatoHeaders(worksheet,'C5',columnas[2]);
+      this.formatoHeaders(worksheet,'D5',columnas[3]);
+      this.formatoHeaders(worksheet,'E5',columnas[4]);
+      // worksheet.getCell('A5').value = columnas[0];
+      // worksheet.getCell('B5').value = columnas[1];
+      // worksheet.getCell('C5').value = columnas[2];
+      // worksheet.getCell('D5').value = columnas[3];
+      // worksheet.getCell('E5').value = columnas[4];
+    for (let i = 0; i < inscritos.length; i++) {
+      worksheet.getRow(i+6).getCell('A').value = inscritos[i].numeroDocumento;
+      worksheet.getRow(i+6).getCell('B').value = inscritos[i].nombreCompleto;
+      worksheet.getRow(i+6).getCell('C').value = inscritos[i].regimen;
+      worksheet.getRow(i+6).getCell('D').value = inscritos[i].numeroCelular;
+      worksheet.getRow(i+6).getCell('E').value = inscritos[i].correo;
+      worksheet.getRow(i+6).getCell('A').font = {
+        name: 'Calibri',
+        size: 16,
+      }
+      worksheet.getRow(i+6).getCell('A').border = {
+        top: {style:'thin'},
+        left: {style:'thin'},
+        bottom: {style:'thin'},
+        right: {style:'thin'}
+      }
+      worksheet.getRow(i+6).getCell('B').font = {
+        name: 'Calibri',
+        size: 16,
+      }
+      worksheet.getRow(i+6).getCell('B').border = {
+        top: {style:'thin'},
+        left: {style:'thin'},
+        bottom: {style:'thin'},
+        right: {style:'thin'}
+      }
+      worksheet.getRow(i+6).getCell('C').font = {
+        name: 'Calibri',
+        size: 16,
+      }
+      worksheet.getRow(i+6).getCell('C').border = {
+        top: {style:'thin'},
+        left: {style:'thin'},
+        bottom: {style:'thin'},
+        right: {style:'thin'}
+      }
+      worksheet.getRow(i+6).getCell('D').font = {
+        name: 'Calibri',
+        size: 16,
+      }
+      worksheet.getRow(i+6).getCell('D').border = {
+        top: {style:'thin'},
+        left: {style:'thin'},
+        bottom: {style:'thin'},
+        right: {style:'thin'}
+      }
+      worksheet.getRow(i+6).getCell('E').font = {
+        name: 'Calibri',
+        size: 16,
+      }
+      worksheet.getRow(i+6).getCell('E').border = {
+      top: {style:'thin'},
+      left: {style:'thin'},
+      bottom: {style:'thin'},
+      right: {style:'thin'}
+      }
+    }
+
+    for (let i = 0; i < columnas.length; i++) {
+      worksheet.getColumn(i+1).width = columnas[i].length + 2*columnas[i].length;
+      // worksheet.getColumn(i+1).alignment = { wrapText:true};
+    }
+    
+    //Generate & Save Excel File
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: EXCEL_TYPE, });
+      fs.saveAs(blob, this.fileName + EXCEL_EXTENSION);
+    });
+  }
+  
+  formatoHeaders(wb: Worksheet, celda: string, value){
+    let header = wb.getCell(celda);
+    header.value = value;
+    header.font = {
+      name:'Times New Roman',
+      size: 16,
+      bold: true,
+    }
+    header.alignment = { horizontal: 'center'};
+    header.border = {
+      top: {style:'thin'},
+      left: {style:'thin'},
+      bottom: {style:'thin'},
+      right: {style:'thin'}
+    }
+  }
+
+  formatoContenido(wb: Worksheet, values){
+
+  }
+}
