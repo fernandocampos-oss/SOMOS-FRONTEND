@@ -48,12 +48,6 @@ const data: MenuItem[] = [
   //     },
   //   ]
   // },
-  // // // {
-  // // //     path: AppRoute.ADMINISTRAR_ENCUESTA,
-  // // //     icon: 'settings',
-  // // //     label: 'Administrar Resultados Encuesta',
-  // // //     roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
-  // // // },
   // {
   //     path: AppRoute.MARCACION_TRABAJADOR,
   //     icon: 'airplanemode_active',

@@ -5,11 +5,14 @@
         <div class="separacion">
             <ng-container *ngFor="let candidato of candMap, index as i">
                 <div class="elementos" *ngIf="i != candMap.length-1" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
-                    <div class="candHeader" matTooltipClass="tooltipEleccion" matTooltipPosition="above" [matTooltip]="'Red: ' + candidato.unidad | titlecase">
+                    <div class="candHeader" matTooltipClass="tooltipEleccion" matTooltipPosition="above" [matTooltip]="getTooltip(candidato.numeroDocumento)">
                         <span>{{candidato.nombre | titlecase}}</span>
                     </div>
                     <div class="candBody">
-                        <img src="assets/images/personalAdmin.png">
+                        <img *ngIf="candidato.numeroDocumento === '08443100'" src="assets/images/candidatoFortunato.jpg">
+                        <img *ngIf="candidato.numeroDocumento === '21882665'" src="assets/images/candidatoPedro.jpg">
+                        <img *ngIf="candidato.numeroDocumento === '41594662'" src="assets/images/candidatoFernando.jpg">
+                        <img *ngIf="candidato.numeroDocumento === '25465670'" src="assets/images/candidatoJavier.jpg">
                     </div>
                 </div>
                 <div class="elementos" *ngIf="i == candMap.length-1 && candMap.length == 6" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">

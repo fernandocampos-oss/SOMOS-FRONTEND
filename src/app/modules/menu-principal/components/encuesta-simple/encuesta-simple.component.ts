@@ -1,15 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MenuEncuestaShow } from '@data/models/menu-principal/menu-encuesta.model';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { ConfirmEncuestaSimpleComponent } from './confirm-encuesta-simple/confirm-encuesta-simple.component';
 import { NotificationService } from '@core/services';
 import { EleccionService } from '@data/services/eleccion.service';
 import { CandidatosResponse, EleccionActivaResponse } from '@data/models/eleccion/eleccion.model';
 import { UsuarioService } from '@data/services';
-import { Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Usuario } from '@data/models';
 
 @Component({
   selector: 'app-encuesta-simple',
@@ -85,7 +81,7 @@ export class EncuestaSimpleComponent implements OnInit {
     this.selectedCandidato = cand;
   }
 
-  sendConfirmation(option) {
+  sendConfirmation(option){
     if(!this.selectedCandidato){
       this._notification.warning("Debe elegir una opción");
     }
@@ -103,4 +99,24 @@ export class EncuestaSimpleComponent implements OnInit {
       });
     }
   }
+
+  getTooltip(nroDoc: string): string{
+    let toolText;
+    switch (nroDoc) {
+      case '08443100':
+        toolText = 'Red: Sede Central\nUnid. Org: Gerencia de Acceso y Acreditación del asegurado';
+        break;
+      case '21882665':
+        toolText = 'Red: Sede Central\nUnid. Org: Oficina de Seguridad Informática';
+        break;
+      case '41594662':
+        toolText = 'Red: Sede Central\nUnid. Org: Gerencia de Planificación y Evaluación de Inversiones';
+        break;
+      case '25465670':
+        toolText = 'Red: Sede Central\nUnid. Org: Gerencia de Producción';
+        break;
+    }
+    return toolText;
+  }
+
 }
