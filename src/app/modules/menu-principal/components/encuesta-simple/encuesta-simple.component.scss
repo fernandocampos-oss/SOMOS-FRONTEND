@@ -1,7 +1,15 @@
 ::root {
     --tamanio-array: '2';
 }
+.imgInfo{
+    max-height: 700px;
+}
 
+.boxBorde{
+  border: #37485f;
+  border-style:solid;
+  border-radius: 11px;
+}
 .separacion{
     display: grid;
     grid-template-columns: repeat(var(--tamanio-array), minmax(0, 1fr));

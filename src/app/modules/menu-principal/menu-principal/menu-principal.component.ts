@@ -180,7 +180,7 @@ export class MenuPrincipalComponent implements OnInit {
 
   showEncuestaSimple(element){
     const dialogRef: MatDialogRef<EncuestaSimpleComponent> = this.dialog.open(EncuestaSimpleComponent, {
-      disableClose: true,
+      disableClose: false,
       minWidth: '22em',
       maxWidth:'40em',
       autoFocus: false,

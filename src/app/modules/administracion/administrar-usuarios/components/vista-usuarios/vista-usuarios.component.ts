@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
 import { RedPersonal, RequestDatosUsuarios, UsuarioInformacionResponseDto } from '@data/models/administracion/administracion';
 import { AdministracionService } from '@data/services/administracion.service';
+import { ExportExcelAdministracionesService } from '@data/services/excel-export-services/export-excel-administraciones.service';
 
 @Component({
   selector: 'app-vista-usuarios',
@@ -22,9 +23,12 @@ export class VistaUsuariosComponent implements OnInit{
   dataSource: MatTableDataSource<UsuarioInformacionResponseDto>;
   displayedColumns: string[] = ['item','dni','codPlanilla','nombre','fechaCrea','regimen','cargo','red','unidad','sexo'];
 
+  headers = ['Nro. Documento','Cod. Planilla','Nombres','Apellidos','Fecha Registro','Regimen','Cargo','Red','Unidad Orgánica','Sexo']
+
   redesAsignadas: RedPersonal[] = [];
   
   constructor(private _adminServ    : AdministracionService,
+              public _serviceExcel  : ExportExcelAdministracionesService,
               private _notification : NotificationService,) { }
 
   ngOnInit(): void {
@@ -42,7 +46,6 @@ export class VistaUsuariosComponent implements OnInit{
         this.dataSource = new MatTableDataSource(data.usuarios);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        
         if(this.redesAsignadas.length == 1 && !this.showTable){
           console.log(1)
           this.frmCtrlRedes.setValue(this.redesAsignadas[0].codRed);
@@ -58,7 +61,7 @@ export class VistaUsuariosComponent implements OnInit{
 
   exportarReporte(){
     this._adminServ.getUsuariosRedes(this.getRequest(0)).subscribe((data)=>{
-      console.log(data.usuarios)
+      this._serviceExcel.exportExcel('Reporte de Inscritos en Somos EsSalud', this.headers, data.usuarios)
       this.deshabilitarDescarga = true;
     })
   }

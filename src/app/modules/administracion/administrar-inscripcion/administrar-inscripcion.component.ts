@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserSession } from '@data/models';
 import { inscritosResponse } from '@data/models/inscripcion/inscripcion.model';
 import { AuthService } from '@data/services';
-import { ExportExcelService } from '@data/services/export-excel.service';
+import { ExportExcelService } from '@data/services/excel-export-services/export-excel-inscripciones.service';
 import { InscripcionService } from '@data/services/inscripcion.service';
 
 @Component({

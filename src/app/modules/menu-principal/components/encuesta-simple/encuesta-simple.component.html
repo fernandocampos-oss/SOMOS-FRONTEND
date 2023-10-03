@@ -1,76 +1,79 @@
-<div *ngIf="mostrar">
-    <div class="dialogEncuesta">
-        <h3>{{datosEncuesta.descripcion}}</h3>
-        <p style="text-align: center;">Seleccione un candidato</p>
-        <div class="separacion">
-            <ng-container *ngFor="let candidato of candMap, index as i">
-                <div class="elementos" *ngIf="i != candMap.length-1" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
-                    <div class="candHeader" matTooltipClass="tooltipEleccion" matTooltipPosition="above" [matTooltip]="getTooltip(candidato.numeroDocumento)">
-                        <span>{{candidato.nombre | titlecase}}</span>
+<div *ngIf="esHora">
+    <div *ngIf="mostrar">
+        <div class="dialogEncuesta">
+            <h3>{{datosEncuesta.descripcion}}</h3>
+            <p style="text-align: center;">Seleccione un candidato</p>
+            <div class="separacion">
+                <ng-container *ngFor="let candidato of candMap, index as i">
+                    <div class="elementos" *ngIf="i != candMap.length-1" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
+                        <div class="candHeader" matTooltipClass="tooltipEleccion" matTooltipPosition="above" [matTooltip]="getTooltip(candidato.numeroDocumento)">
+                            <span>{{candidato.nombre | titlecase}}</span>
+                        </div>
+                        <div class="candBody">
+                            <img *ngIf="candidato.numeroDocumento === '08443100'" src="assets/images/candidatoFortunato.jpg">
+                            <img *ngIf="candidato.numeroDocumento === '21882665'" src="assets/images/candidatoPedro.jpg">
+                            <img *ngIf="candidato.numeroDocumento === '41594662'" src="assets/images/candidatoFernando.jpg">
+                            <img *ngIf="candidato.numeroDocumento === '25465670'" src="assets/images/candidatoJavier.jpg">
+                        </div>
                     </div>
-                    <div class="candBody">
-                        <img *ngIf="candidato.numeroDocumento === '08443100'" src="assets/images/candidatoFortunato.jpg">
-                        <img *ngIf="candidato.numeroDocumento === '21882665'" src="assets/images/candidatoPedro.jpg">
-                        <img *ngIf="candidato.numeroDocumento === '41594662'" src="assets/images/candidatoFernando.jpg">
-                        <img *ngIf="candidato.numeroDocumento === '25465670'" src="assets/images/candidatoJavier.jpg">
+                    <div class="elementos" *ngIf="i == candMap.length-1 && candMap.length == 6" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
+                        <div class="candHeader">
+                            <span>{{candidato.nombre | titlecase}}</span>
+                        </div>
+                        <div class="candBody">
+                            <img src="assets/images/prohibitionIcon.png">
+                        </div>
                     </div>
-                </div>
-                <div class="elementos" *ngIf="i == candMap.length-1 && candMap.length == 6" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
+                </ng-container>
+            </div>
+            <div class="containerNo" *ngIf="candMap.length != 6">
+                <div class="elementos ninguno" (click)="selectCand(candMap.length-1, candMap[candMap.length-1])" [ngClass]="{'selected' : candMap[candMap.length-1].selected, 'noSelected': !candMap[candMap.length-1].selected}">
                     <div class="candHeader">
-                        <span>{{candidato.nombre | titlecase}}</span>
-                    </div>
-                    <div class="candBody">
-                        <img src="assets/images/prohibitionIcon.png">
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-        <div class="containerNo" *ngIf="candMap.length != 6">
-            <div class="elementos ninguno" (click)="selectCand(candMap.length-1, candMap[candMap.length-1])" [ngClass]="{'selected' : candMap[candMap.length-1].selected, 'noSelected': !candMap[candMap.length-1].selected}">
-                <div class="candHeader">
-                    <span>{{candMap[candMap.length-1].nombre | titlecase}}</span>
-                </div>
-            </div>
-        </div>
-        <!-- <mat-radio-group aria-label="Select an option">
-            <div class="containerOpciones">
-                <div class="opcionesEncuestaSimple" (click)="enableDisableRule(1)"
-                [ngClass]="{'confirm' : toggle, 'option': !toggle}">
-                    <div class="options">
-                        <img src="assets/images/creditCard.png">
-                        <p>{{alternativas[0].descripcion}}</p>
-                    </div>
-                </div>
-                <div class="opcionesEncuestaSimple" (click)="enableDisableRule(2)"
-                [ngClass]="{'confirm' : toggle2, 'option': !toggle2}">
-                    <div class="options">
-                        <img src="assets/images/moneyIcon.png">
-                        <p>{{alternativas[1].descripcion}}</p>
+                        <span>{{candMap[candMap.length-1].nombre | titlecase}}</span>
                     </div>
                 </div>
             </div>
-            <mat-grid-list cols="2" rowHeight="48px" gutterSize="6px">
-                <mat-grid-tile [colspan]="1">
-                    <button class="selector" mat-raised-button color="primary"
-                    (click)="enableDisableRule(1)">Elegir</button>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="1">
-                    <button class="selector" mat-raised-button color="primary"
-                    (click)="enableDisableRule(2)">Elegir</button>
-                </mat-grid-tile>
-            </mat-grid-list>
-        </mat-radio-group> -->
+            <!-- <mat-radio-group aria-label="Select an option">
+                <div class="containerOpciones">
+                    <div class="opcionesEncuestaSimple" (click)="enableDisableRule(1)"
+                    [ngClass]="{'confirm' : toggle, 'option': !toggle}">
+                        <div class="options">
+                            <img src="assets/images/creditCard.png">
+                            <p>{{alternativas[0].descripcion}}</p>
+                        </div>
+                    </div>
+                    <div class="opcionesEncuestaSimple" (click)="enableDisableRule(2)"
+                    [ngClass]="{'confirm' : toggle2, 'option': !toggle2}">
+                        <div class="options">
+                            <img src="assets/images/moneyIcon.png">
+                            <p>{{alternativas[1].descripcion}}</p>
+                        </div>
+                    </div>
+                </div>
+                <mat-grid-list cols="2" rowHeight="48px" gutterSize="6px">
+                    <mat-grid-tile [colspan]="1">
+                        <button class="selector" mat-raised-button color="primary"
+                        (click)="enableDisableRule(1)">Elegir</button>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="1">
+                        <button class="selector" mat-raised-button color="primary"
+                        (click)="enableDisableRule(2)">Elegir</button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-radio-group> -->
+        </div>
+            <mat-dialog-actions>
+                    <button mat-button mat-dialog-close>Cerrar</button>
+                    <button mat-raised-button color="primary" (click)="sendConfirmation(selectedCandidato)">Enviar</button>
+            </mat-dialog-actions>
     </div>
-        <mat-dialog-actions>
-                <button mat-button mat-dialog-close>Cerrar</button>
-                <button mat-raised-button color="primary" (click)="sendConfirmation(selectedCandidato)">Enviar</button>
+    
+    <div class="dialogEncuesta encuestaHecha" *ngIf="!mostrar">
+        <img src="assets/images/surveyCheck.png">
+        <h3>¡Gracias por participar de la elección!</h3>
+        <mat-dialog-actions align="center">
+                <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
         </mat-dialog-actions>
+    </div>
 </div>
-
-<div class="dialogEncuesta encuestaHecha" *ngIf="!mostrar">
-    <img src="assets/images/surveyCheck.png">
-    <h3>¡Gracias por participar de la elección!</h3>
-    <mat-dialog-actions align="center">
-            <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
-    </mat-dialog-actions>
-</div>
+<img *ngIf="!esHora" class="imgInfo boxBorde" src='assets/images/p_Votaciones.png'>

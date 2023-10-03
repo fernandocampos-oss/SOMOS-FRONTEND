@@ -1,3 +1,8 @@
-<h4>{{data.obj.titulo}}</h4>
-<a *ngIf="data.obj.urlRedireccion !== '' " href='{{data.obj.urlRedireccion}}' target="_blank"><img class="imgInfo boxBorde" src='data:image/jpeg;base64,{{data.obj.imagenBase64}}' alt='{{data.obj.titulo}}'></a>
-<img *ngIf="data.obj.urlRedireccion === '' " class="imgInfo boxBorde" src='data:image/jpeg;base64,{{data.obj.imagenBase64}}' alt='{{data.obj.titulo}}'>
+<div *ngIf="data.obj.idPublicacion != 56">
+    <h4>{{data.obj.titulo}}</h4>
+    <a *ngIf="data.obj.urlRedireccion !== '' " href='{{data.obj.urlRedireccion}}' target="_blank"><img class="imgInfo boxBorde" src='data:image/jpeg;base64,{{data.obj.imagenBase64}}' alt='{{data.obj.titulo}}'></a>
+    <img *ngIf="data.obj.urlRedireccion === '' " class="imgInfo boxBorde" src='data:image/jpeg;base64,{{data.obj.imagenBase64}}' alt='{{data.obj.titulo}}'>
+</div>
+<div *ngIf="data.obj.idPublicacion == 56">
+    <img class="imgInfo boxBorde" src='assets/images/p_Votaciones.png'>
+</div>
