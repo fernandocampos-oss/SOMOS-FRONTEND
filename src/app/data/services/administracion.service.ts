@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AdministracionRedesResponse, RedesDatos, RequestDatosUsuarios } from '@data/models/administracion/administracion';
 import { environment } from '@env';
 
-const URL_BASE = `${environment.apiTestUrl}/usuarios-redes`;
+const URL_BASE = `${environment.apiUrl}/usuarios-redes`;
 
 @Injectable({ providedIn: 'root' })
 export class AdministracionService {
