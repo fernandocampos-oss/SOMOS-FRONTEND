@@ -22,9 +22,10 @@ export class AppRoute {
   static readonly DDJJ_CONFLICTO_OTRO = 'dj-conflicto-interes';
   static readonly ADJUNTAR_DOCUMENTOS = 'adjuntar-documentos';
   static readonly MIS_REQUERIMIENTOS = 'mis-requerimientos';
-  static readonly ADMINISTRAR_ENCUESTA = 'administracion-encuesta';
-  static readonly ADMINISTRAR_USUARIOS = 'administrar-usuarios';
-  static readonly ADMINISTRAR_INSCRIPCIONES = 'administrar-inscripciones';
+  static readonly ADMINISTRACION = 'administracion';
+  static readonly ADMINISTRAR_ENCUESTA = 'encuesta';
+  static readonly ADMINISTRAR_USUARIOS = 'usuarios';
+  static readonly ADMINISTRAR_INSCRIPCIONES = 'inscripciones';
 
   static readonly RENUEVA_ESSALUD = 'renueva-essalud-v';
   static readonly ADMINISTRAR_ROL_RED = 'administrar-rol-red';

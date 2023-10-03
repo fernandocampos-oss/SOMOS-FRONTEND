@@ -116,17 +116,10 @@ export const ROUTES: Routes = [
       //     ),
       // },
       {
-        path: AppRoute.ADMINISTRAR_ENCUESTA,
+        path: AppRoute.ADMINISTRACION,
         loadChildren: () =>
           import('../modules/administracion/administracion.module').then(
             (m) => m.AdministracionModule
-          ),
-      },
-      {
-        path: AppRoute.ADMINISTRAR_USUARIOS,
-        loadChildren: () =>
-          import('../modules/administrar-usuarios/administrar-usuarios.module').then(
-            (m) => m.AdministrarUsuariosModule
           ),
       },
       // {

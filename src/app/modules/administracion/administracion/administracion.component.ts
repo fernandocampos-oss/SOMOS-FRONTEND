@@ -1,11 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AdministracionService } from '@data/services/administracion.service';
-import { RedesDatos } from '@data/models/administracion/administracion';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { TitleCasePipe } from '@angular/common';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { VistaUsuariosComponent } from './components/vista-usuarios/vista-usuarios.component';
 
 @UntilDestroy()
 @Component({
@@ -14,122 +8,85 @@ import { VistaUsuariosComponent } from './components/vista-usuarios/vista-usuari
   styleUrls: ['./administracion.component.scss']
 })
 export class AdministracionComponent implements OnInit {
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-  // redes: {value: string, descr: string}[];
-  // usuariosRed: UsuarioxRed[];
+  single = [
+    {
+      "name": "Menú Principal",
+      "value": 64
+    },
+    {
+      "name": "Mis Marcaciones",
+      "value": 39
+    },
+    {
+      "name": "Cronograma de Pagos",
+      "value": 29
+    }
+  ];
+  diasVisita = [{"name": 9, "value": 5},
+                {"name": 10, "value": 6},
+                {"name": 11, "value": 7},
+                {"name": 12, "value": 6},
+                {"name": 13, "value": 23},
+                {"name": 14, "value": 16},
+                {"name": 15, "value": 17},
+                {"name": 16, "value": 5},
+                {"name": 17, "value": 5},
+                {"name": 18, "value": 6},
+                {"name": 19, "value": 12},
+                {"name": 20, "value": 14},
+                {"name": 21, "value": 13},
+                {"name": 22, "value": 15},
+                {"name": 23, "value": 27},
+               ];
+  diasVisitaYLabel = "Visitas a la página";
+  edades = [{"name": "[20 - 30]","value": 9},{"name": "[30 - 40]","value": 9},{"name": "[40 - 50]","value": 14},{"name": "[50 - 60]","value": 20}
+  ];
+  view = [350, 200];
 
-  // usuarios: UsuarioInformacionResponseDto[];
-  // redesAsignadas: RedPersonal[];
-  
-  redElegida: string;
-  bkpTotal: number;
-  bkpUserAdmin: number;
-  bkpUserAsist: number;
-  dataSeleccionada: boolean = false;
-  datosRedes: RedesDatos;
-  cargaLista = false;
+  // options
+  showXAxis: boolean = true;
+  showYAxis: boolean = true;
+  showXAxisLabel: boolean = true;
+  yAxisLabel: string = 'Páginas';
+  showYAxisLabel: boolean = true;
+  xAxisLabel: string = 'Visitas';
 
-  // dataSource: MatTableDataSource<any>;
-  // displayedColumns: string[] = ['documento','nombreCompleto','fechaRegistro', 'codRed'];
-  single = [];
-  
+  pieTitleLegend = "Edades";
+  gradient: boolean = true;
+  showLegend: boolean = false;
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+  legendPosition: string = 'below';
+
   colorScheme = {
     domain: ['#5AA454', '#C7B42C', '#AAAAAA']
   };
 
-  constructor(private _router       : Router,
-              private _adminServ    : AdministracionService,
-              private dialogRef     : MatDialog,
-              private route         : ActivatedRoute,
-              private titlecasePipe : TitleCasePipe) { }
+  colorScheme2 = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
 
-  ngOnInit(): void {
-    // this._adminServ.getUsuariosRedes().pipe(untilDestroyed(this)).subscribe((data)=>{
-    //   this.usuarios = data.usuarios;
-    //   this.redesAsignadas = data.redes;
-    //   console.log(document.getElementById("examinar"));
-    //   console.log(data);
-    // }); 
+  colorScheme3 = {
+    domain: ['#023858', '#045a8d', '#0570b0', '#3690c0']
+  };
 
-    this._adminServ.getDatosRedes().subscribe((data)=>{
-      this.datosRedes = data;
-      this.bkpTotal= data.cuentaTotalUsuarios;
-      this.bkpUserAdmin= data.cuentaAdministrativos;
-      this.bkpUserAsist= data.cuentaAsistenciales;
-      let newArray = data.datosRedes.map(item=>{
-        return{
-          name: this.titlecasePipe.transform(item.descripcion),
-          value: item.cantidad,
-          extra:{
-            numAsist: item.personalAsistencial,
-            numAdmin: item.personalAdministrativo
-          },
-        };
-      })
-      this.single = [...newArray];
-      console.log(newArray)
-      this.cargaLista = true;
-    });
-    // if(this.authService.getRol() == 4){
-    //   this.cargarTabla('-');
-    // }
-    // else{
-    //   this.cargarTabla('0100');
-    //   this.notAdmin = true
-    // }
-    // this.redes = this._marcacionService.getRedes();
-  }
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
+  schemeType: string = 'linear';
 
-  back(){
-    this._router.navigate([''], { relativeTo: this.route });
-  }
-  print(obj){
-    // console.log(obj.value);
-    // this.cargarTabla(obj.value);
+  constructor() {
   }
 
   onSelect(data): void {
-    console.log(data)
-    console.log(this.datosRedes)
-    if (this.redElegida !== data.name) {
-      this.dataSeleccionada = true;
-      this.redElegida = data.name;
-      this.datosRedes.cuentaTotalUsuarios = data.value;
-      this.datosRedes.cuentaAsistenciales = data.extra.numAsist;
-      this.datosRedes.cuentaAdministrativos = data.extra.numAdmin;
-    }
-    else{
-      this.dataSeleccionada = false;
-      this.redElegida = undefined;
-      this.datosRedes.cuentaTotalUsuarios = this.bkpTotal;
-      this.datosRedes.cuentaAsistenciales = this.bkpUserAsist;
-      this.datosRedes.cuentaAdministrativos = this.bkpUserAdmin;
-    }
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
-  showReporte(){
-    const dialogRef: MatDialogRef<VistaUsuariosComponent> = this.dialogRef.open(VistaUsuariosComponent, {
-      disableClose: false,
-      autoFocus: false,
-      width: '80%'
-    });
+  onActivate(data): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
-  cargarTabla(red: string){
-    // this.dataSource = new MatTableDataSource(this._marcacionService.getUserRed(red));
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
+  onDeactivate(data): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
-  // restringirFiltros(event){
-  //   this.restringir = event.checked;
-  //   console.log(this.frmSede, this.frmAreaPers.value, this.frmGrupoPers.value, this.frmTiempoServ.value);
-  //   if (this.restringir == true){
+  ngOnInit(): void {
+  }
 
-  //   }
-  // }
 }
