@@ -135,7 +135,7 @@ export class MisRequerimientosComponent implements OnInit {
     const dialogRef: MatDialogRef<JefeRequirementComponent> = this._dialog.open(JefeRequirementComponent, {
       disableClose: false,
       width: '80%',
-      height: '680px',
+      // height: '680px',
       autoFocus: false,
       data: {
         esJefe: true,

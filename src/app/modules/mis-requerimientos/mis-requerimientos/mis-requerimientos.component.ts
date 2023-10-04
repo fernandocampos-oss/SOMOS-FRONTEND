@@ -88,8 +88,8 @@ export class MisRequerimientosComponent implements OnInit {
       if (data.length > 0) {
         this.listDataFinalizados = data;
         this.dataSource_finalizado = new MatTableDataSource(this.listDataFinalizados);
-        this.dataSource.paginator = this.paginator_finalizado;
-        this.dataSource.sort = this.sort_finalizado;
+        this.dataSource_finalizado.paginator = this.paginator_finalizado;
+        this.dataSource_finalizado.sort = this.sort_finalizado;
       }
     });
   }
@@ -99,8 +99,8 @@ export class MisRequerimientosComponent implements OnInit {
       if (data.length > 0) {
         this.listDataRechazados = data;
         this.dataSource_rechazado = new MatTableDataSource(this.listDataRechazados);
-        this.dataSource.paginator = this.paginator_rechazado;
-        this.dataSource.sort = this.sort_rechazado;
+        this.dataSource_rechazado.paginator = this.paginator_rechazado;
+        this.dataSource_rechazado.sort = this.sort_rechazado;
       }
     });
   }
@@ -150,9 +150,8 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   async exportToExcel(element) {
-    console.log("#####", element)
+    console.log("element", element)
     if (element.idRequerimientoUsuario > 0) {
-
       let reportePersonal = new ReportePersonal();
       reportePersonal.apellidos = element.usuario.apellidos;
       reportePersonal.nombres = element.usuario.nombres;
@@ -163,6 +162,7 @@ export class MisRequerimientosComponent implements OnInit {
         let obj = new ReporteEvidencia();
         obj.nombreTarea = i.nombreTarea;
         obj.plazoTarea = i.plazo;
+        obj.requerimientoDescripcion = element.requerimiento.nombre;
 
         obj.poi = element.poi.descripcion;
         obj.indicador = element.poi.indicador.descripcion;
@@ -179,13 +179,11 @@ export class MisRequerimientosComponent implements OnInit {
           obj.descripcionEvidencia = j.descripcion;
           obj.porcentajeAvanceEvidencia = j.porcentajeAvance;
         }
-
         listTarea.push(obj);
         obj = null;
       }
-
-      console.log("obj", listTarea)
-      let columnsName = ["SERVIDOR/A EVALUADO/A", "SERVIDOR/A EVALUADOR/A"];
+      console.log("para excel", listTarea)
+      let columnsName = ["String_1", "String_2"];
       let reportData = {
         data_personal: reportePersonal,
         data_evidencia: listTarea,

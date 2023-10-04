@@ -7,6 +7,7 @@ export class ReportePersonal {
 export class ReporteEvidencia {
     poi: string;
     indicador: string;
+    requerimientoDescripcion: string;
     
     nombreTarea: string;
     plazoTarea: string;

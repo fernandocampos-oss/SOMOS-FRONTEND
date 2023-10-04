@@ -102,4 +102,8 @@ export class JefeRequirementComponent implements OnInit {
     });
   }
 
+  exportToExcel(){
+    
+  }
+
 }

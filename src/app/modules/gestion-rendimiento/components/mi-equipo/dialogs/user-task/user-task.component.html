@@ -16,8 +16,8 @@
             <th mat-header-cell *matHeaderCellDef width="110px"> Estado </th>
             <td mat-cell *matCellDef="let element">
                 <mat-chip-list>
-                    <mat-chip
-                        [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2}">
+                    <mat-chip [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2,
+                        'finalizado-background':element.estadoRequerimiento.codigo== 6}">
                         {{element.estadoRequerimiento.descripcion}}
                     </mat-chip>
                 </mat-chip-list>

@@ -16,6 +16,7 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 export class RequerimientoRegisterUpdateComponent implements OnInit {
   form: FormGroup;
   listTipoIngreso: TipoIngreso[] = [];
+  idTipoIngresoSeleccionado: number;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,10 +45,11 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
 
   private _createForm() {
     if (this.data.esEditar == true) {
+      this.idTipoIngresoSeleccionado = this.data.model.requerimiento.tipoIngreso.idTipoIngreso;
       this.form = this._fb.group({
         frmNombre: [this.data.model.requerimiento.nombre, [Validators.required]],
         frmDescripcion: [this.data.model.requerimiento.descripcion, [Validators.required]],
-        frmMedio: [this.data.model.requerimiento.tipoIngreso, [Validators.required]],
+        frmMedio: [this.data.model.requerimiento.tipoIngreso.idTipoIngreso, [Validators.required]],
         frmIdentificador: [this.data.model.requerimiento.identificador, [Validators.required]],
       });
     } else {
@@ -79,7 +81,7 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
 
   private _getModel(): RequerimientoResponse {
     let tipoIngreso = new TipoIngreso();
-    tipoIngreso.idTipoIngreso = this.form.value.frmMedio.idTipoIngreso;
+    tipoIngreso.idTipoIngreso = this.form.value.frmMedio;
 
     return {
       nombre: this.form.value.frmNombre,

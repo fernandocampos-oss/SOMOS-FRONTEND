@@ -1,13 +1,10 @@
-mat-grid-list {
-    mat-form-field {
-      width: 100%;
-    }
+.datos{
+    display: grid;
 }
-// mat-grid-tile{
-//     background: rgb(175, 175, 175);
-// }
-.editRequerimientosPersona{
-    ::ng-deep .mat-form-field-wrapper {
-        padding-bottom: 0px;
-    }
+.contenedorDatos{
+    overflow: auto;
+    max-height: 300px;
+}
+mat-form-field{
+    width: 100%;
 }

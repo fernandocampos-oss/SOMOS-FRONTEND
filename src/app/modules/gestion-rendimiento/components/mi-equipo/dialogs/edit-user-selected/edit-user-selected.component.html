@@ -1,46 +1,62 @@
-<h2 matDialogTitle>Editar datos del colaborador</h2>
-
-<mat-grid-list class="editRequerimientosPersona" cols="6" rowHeight="40px" gutterSize="6px" [formGroup]="formEditar">
-    <mat-grid-tile [colspan]="4" [rowspan]="2">
-        <mat-form-field appearance="outline">
-            <mat-label>Cargo desempeñado</mat-label>
-            <input matInput formControlName="frmCargo">
-        </mat-form-field>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="2">
-        <!-- <button mat-raised-button color="primary">Cambiar</button> -->
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <h3>Requerimiento Asignado</h3>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <h3>Tarea Asignada</h3>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <h3>Plazo Máximo</h3>
-    </mat-grid-tile>
-    <div formArrayName="tareas">
-        <div *ngFor="let element of tareas.controls, index as i">
-            <form [formGroup]="element">
-                <mat-grid-tile [colspan]="2" [rowspan]="2">
-                    <span>{{requerimientos[i].nombreRequerimiento}}</span>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="2" [rowspan]="2">
-                    <mat-form-field appearance="outline">
-                        <input matInput formControlName="frmTarea">
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="1" [rowspan]="2">
-                    <mat-form-field appearance="outline">
-                        <input matInput formControlName="frmPlazo" [min]="minFechaTarea" [matDatepicker]="fechaPlazo"/>
-                        <mat-datepicker-toggle matSuffix [for]="fechaPlazo"></mat-datepicker-toggle>
-                        <mat-datepicker #fechaPlazo></mat-datepicker>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="1" [rowspan]="2">
-                    <button mat-raised-button color="primary" (click)="mostrarElemento(element)">Cambiar</button>
-                </mat-grid-tile>
-            </form>
-        </div>
+<h4>Datos del Integrante</h4><br>
+<div [formGroup]="formIntegrante" class="datos">
+    <mat-grid-list [cols]="this.distribucionTotal" rowHeight="90px" gutterSize="6px" class="contenedorDatos">
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre del miembro</mat-label>
+                <input matInput formControlName="frmNombres">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Apellido del miembro</mat-label>
+                <input matInput formControlName="frmApellidos">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Cargo</mat-label>
+                <input matInput formControlName="frmCargo">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Nro. Documento</mat-label>
+                <input matInput formControlName="frmNroDoc">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Código de planilla</mat-label>
+                <input matInput formControlName="frmCodPlanilla">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha Nacimiento</mat-label>
+                <input matInput formControlName="frmFecNac">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Unidad Organizativa</mat-label>
+                <input matInput formControlName="frmUnidad">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Correo</mat-label>
+                <input matInput formControlName="frmCorreo">
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Celular</mat-label>
+                <input matInput formControlName="frmCelular">
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <div class="mat-button-container" style="display: flex; justify-content: flex-end;">
+        <button mat-raised-button color="primary" (click)='cerrar()'  style="margin-left: 1rem;background-color: var(--color-MiEssalud);">Cerrar</button>
     </div>
-</mat-grid-list>
+</div>

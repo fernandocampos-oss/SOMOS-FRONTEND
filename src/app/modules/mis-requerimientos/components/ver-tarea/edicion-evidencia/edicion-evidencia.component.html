@@ -1,4 +1,3 @@
-<!--<h3>Tarea: {{ titleTarea }}</h3> -->
 <form [formGroup]="form">
   <h2 mat-dialog-title>Registrar Evidencia</h2>
   <mat-dialog-content>
@@ -17,12 +16,11 @@
           <mat-grid-tile [colspan]="1">
             <mat-form-field appearance="outline">
               <mat-label>Porcentaje de avance</mat-label>
-              <mat-hint>Valor: 10-100</mat-hint>
+              <mat-hint>Ingrese el valor numérico</mat-hint>
               <input matInput type="number" required formControlName="frmPorcentajeAvance" minlength="2"
                 maxlength="3" />
             </mat-form-field>
           </mat-grid-tile>
-
         </mat-grid-list>
       </mat-tab>
 
@@ -43,6 +41,7 @@
             </div>
             <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)" />
             <img class="preview__img" [src]="retrievedImage" *ngIf="retrievedImage" />
+            <img class="preview__img" src="assets/images/imgPlaceholder.png" *ngIf="!retrievedImage" />
           </div>
         </div>
       </mat-tab>

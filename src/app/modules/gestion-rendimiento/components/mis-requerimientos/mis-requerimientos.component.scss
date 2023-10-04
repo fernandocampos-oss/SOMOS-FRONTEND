@@ -35,12 +35,17 @@
 
 .red-background {
     color: #fff;
-    background-color: rgb(255, 68, 68);
+    background-color: var(--color-danger);
 }
 
 .gren-background {
     color: #fff;
     background-color: var(--color-success);
+}
+
+.finalizado-background {
+    color: #fff;
+    background-color: #8d5c9c;
 }
 
 .has-success {
@@ -58,14 +63,6 @@
     background: rgb(74, 161, 74);
     border-radius: 4px;
     // min-width: 260px !important;
-    // min-height: 37px !important;
-}
-
-.eliminar-button {
-    color: white;
-    background: #008AD1;
-    border-radius: 4px;
-    // min-width: 280px !important;
     // min-height: 37px !important;
 }
 

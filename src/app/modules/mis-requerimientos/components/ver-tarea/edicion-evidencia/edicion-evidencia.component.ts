@@ -11,7 +11,6 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
   styleUrls: ['./edicion-evidencia.component.scss']
 })
 export class EdicionEvidenciaComponent implements OnInit {
-  titleTarea: string;
   form: FormGroup;
 
   width: number;
@@ -36,9 +35,7 @@ export class EdicionEvidenciaComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(this.data)
-    this.titleTarea = this.data.model.nombreTarea;
     this._createForm();
-
   }
 
   private _createForm() {
@@ -119,7 +116,6 @@ export class EdicionEvidenciaComponent implements OnInit {
     const nombreFile = completo.lastIndexOf('.');
     // archivo.nombre = completo.substring(0, nombreFile);
     // archivo.extension = completo.substring(nombreFile + 1);
-
     return {
       descripcion: this.form.value.frmDescripcion,
       porcentajeAvance: this.form.value.frmPorcentajeAvance,

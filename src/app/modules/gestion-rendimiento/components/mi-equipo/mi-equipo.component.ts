@@ -12,6 +12,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 import { Integrante, Lider, LiderEquipoRequest } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { EditUserSelectedComponent } from './dialogs/edit-user-selected/edit-user-selected.component';
 
 @Component({
   selector: 'gestion-rendimiento-mi-equipo',
@@ -23,39 +24,9 @@ export class MiEquipoComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'numero_documento', 'nombre_persona', 'cargo', 'acciones'];
+  displayedColumns: string[] = ['item', 'numero_documento', 'nombres_persona', 'apellidos_persona', 'fecha_creacion', 'acciones'];
 
   listEquipo: any[] = [];
-
-  // colaboradores: any[] = [];
-  // Pruebas para obtener el excel de los datos
-  // arrayBuffer:any;
-  // file:File;
-  // incomingfile(event) 
-  //   {
-  //   this.file= event.target.files[0]; 
-  //   }
-
-  // Upload() {
-  //     let fileReader = new FileReader();
-  //       fileReader.onload = (e) => {
-  //           this.arrayBuffer = fileReader.result;
-  //           var data = new Uint8Array(this.arrayBuffer);
-  //           console.log(data);
-  //           var arr = new Array();
-  //           for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-  //           var bstr = arr.join("");
-  //           var workbook = XLSX.read(bstr, {type:"binary"});
-  //           console.log(workbook);
-  //           var first_sheet_name = workbook.SheetNames[0];
-  //           var worksheet = workbook.Sheets[first_sheet_name];
-  //           console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));
-  //           console.log(workbook);
-  //           //XLSX.writeFile(workbook, `Formato GDR 2023.xlsx`);
-  //       }
-  //       fileReader.readAsArrayBuffer(this.file);
-
-  // }
 
   integranteControl = new FormControl('');
   listPersonal = [];
@@ -100,21 +71,6 @@ export class MiEquipoComponent implements OnInit {
   onSelectionChangePersonal(event: any) {
     this.personalSeleccionadoTmp = event.option.value;
   }
-
-  // showDialogAdd(item) {
-  //   const dialogRef: MatDialogRef<EditUserSelectedComponent> = this.dialog.open(EditUserSelectedComponent, {
-  //     disableClose: false,
-  //     width: '60%',
-  //     autoFocus: false,
-  //     data: {
-  //       obj: item,
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadTable();
-  //   });
-  // }
 
   showDialogUser(onDelete: boolean) {
     const dialogRef: MatDialogRef<UserAddDeleteComponent> = this.dialog.open(UserAddDeleteComponent, {
@@ -187,7 +143,7 @@ export class MiEquipoComponent implements OnInit {
         });
       }
     } else {
-      this._notification.warning('Ingrese nombre o apellido del integrante');
+      this._notification.warning('Debe seleccionar a un integrante');
     }
   }
 
@@ -211,47 +167,19 @@ export class MiEquipoComponent implements OnInit {
     this.dataSource.filter = value.trim().toUpperCase();
   }
 
-  // Pruebas para obtener el excel de los datos
-  downloadGDRPersona(i: number) {
-    //   //Paso a paso por si acaso
+  datosIntegrante(item) {
+    const dialogRef: MatDialogRef<EditUserSelectedComponent> = this.dialog.open(EditUserSelectedComponent, {
+      disableClose: false,
+      width: '60%',
+      autoFocus: false,
+      data: {
+        model: item,
+      }
+    });
 
-    //   //Información Importante para obtener DATOS
-    //   const colaboradorId: number = this.colaboradores[i].id;
-    //   const tareasAsignadas: Requerimiento_Integrante[] = this.services.getFauxTablaRequeAsignados(colaboradorId);
-    //   var infoRequerimientos: Requerimiento [] = [];
-    //   for (let i = 0; i < tareasAsignadas.length; i++) {
-    //     infoRequerimientos.push(this.services.getFauxRequerimiento(tareasAsignadas[i].idReq))      
-    //   }
-    //   console.log(infoRequerimientos);
-    //   console.log(tareasAsignadas);
-    //   //-----------------------------------------------------------------------
-
-    //   //Armado de datos del Excel
-    //   var workbook = XLSX.utils.book_new();
-    //   var worksheet = XLSX.utils.aoa_to_sheet([]);
-    //   XLSX.utils.sheet_add_aoa(worksheet,
-    //     [["PRIORIDADES ANUALES DE GESTIÓN DEL ÓRGANO O UNIDAD ORGÁNICA",
-    //     'INDICADOR / PRODUCTO',
-    //     'VALOR META',
-    //     'PESO',
-    //     'EVIDENCIA',
-    //     'PLAZOS'
-    //     ]],
-    //     {origin: "B1"})
-
-    //   for (let i = 0; i < tareasAsignadas.length; i++) {
-    //     XLSX.utils.sheet_add_aoa(worksheet,
-    //       [[infoRequerimientos[i].actividad,
-    //       'Número de informes de nuevas funcionalidades implementadas para los sistemas o procesos aseguradores, subsidios y sociales implementados en EsSalud, de acuerdo a las actividades planificadas en el POI',
-    //       [3],
-    //       '100%',
-    //       tareasAsignadas[i].nombreTarea,
-    //       tareasAsignadas[i].plazo
-    //       ]],
-    //       {origin: `B${i+2}`})
-    //   }
-    //   console.log(worksheet);
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, 'FORMATO');
-    //   XLSX.writeFile(workbook, `Formato GDR 2023 - ${this.colaboradores[i].nombrePersona}.xlsx`);
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTable();
+    });
   }
+
 }

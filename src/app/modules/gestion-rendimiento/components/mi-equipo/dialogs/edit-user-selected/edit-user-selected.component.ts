@@ -1,6 +1,7 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfig } from '@core/configs';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
@@ -12,48 +13,70 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
 export class EditUserSelectedComponent implements OnInit {
   minFechaTarea = AppConfig.MAX_FECHA_NACIMIENTO;
 
-  // datosAsignados: Requerimiento_Integrante[] = [];
+  distribucionTotal: number = 3;
+  distribucionCorreo: number = 2;
 
-  formEditar = this._fb.group({
-    frmCargo: [this.data.obj.cargo, Validators.required],
-    tareas: this._fb.array([])
+  formIntegrante = this._formBuilder.group({
+    frmNroDoc: [''],
+    frmCodPlanilla: [''],
+    frmNombres: [''],
+    frmApellidos: [''],
+    frmCorreo: [''],
+    frmCelular: [''],
+    frmFecNac: [''],
+    frmCargo: [''],
+    frmUnidad: [''],
   });
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _gestionRendimientoService: GestionRendimientoService,
-    private _fb: FormBuilder,) { }
+    private _formBuilder: FormBuilder,
+    private responsive: BreakpointObserver,
+    private dialogRef: MatDialogRef<EditUserSelectedComponent>,
+  ) { }
 
   ngOnInit(): void {
-    this.cargarRequerimientos();
-  }
+    console.log(this.data);
+    this.responsive.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small
+    ])
+      .subscribe(result => {
+        this.distribucionTotal = 3;
+        this.distribucionCorreo = 2;
 
-  cargarRequerimientos() {
-    // this.datosAsignados = this._gestionRendimientoService.getFauxTablaRequeAsignados(this.data.obj.id);
-    // for (let i = 0; i < this.datosAsignados.length; i++) {
-    //   var requerimiento = this._gestionRendimientoService.getFauxRequerimiento(this.datosAsignados[i].idReq);
-    //   this.requerimientos.push(requerimiento);
-    //   this.addTareas(this.datosAsignados[i]);      
-    // }
-  }
-
-  get tareas() {
-    return this.formEditar.controls["tareas"] as FormArray;
-  }
-
-  // addTareas(tarea: Requerimiento_Integrante) {
-  //   const tareasForm = this._fb.group({
-  //     frmTarea: [tarea.nombreTarea, Validators.required],
-  //     frmPlazo: [new Date(+tarea.plazo.split('/')[2], +tarea.plazo.split('/')[1] - 1, +tarea.plazo.split('/')[0]), Validators.required]
-  //   });
-  //   this.tareas.push(tareasForm);
-  // }
-
-  mostrarElemento(element) {
-    if (element.value.frmPlazo._d != undefined) { // una vez se cambia la fecha
-      console.log(element.value.frmPlazo._d.toLocaleDateString());
+        if (result.matches) {
+          this.distribucionTotal = 1;
+          this.distribucionCorreo = 1;
+        }
+      });
+    this.formIntegrante.controls["frmNroDoc"].setValue(this.data.model.integrante.numeroDocumento);
+    this.formIntegrante.controls["frmNroDoc"].disable();
+    this.formIntegrante.controls["frmCodPlanilla"].setValue(this.data.model.integrante.codigoPlanilla);
+    this.formIntegrante.controls["frmCodPlanilla"].disable();
+    this.formIntegrante.controls["frmNombres"].setValue(this.data.model.integrante.nombres);
+    this.formIntegrante.controls["frmNombres"].disable();
+    this.formIntegrante.controls["frmApellidos"].setValue(this.data.model.integrante.apellidos);
+    this.formIntegrante.controls["frmApellidos"].disable();
+    this.formIntegrante.controls["frmCorreo"].setValue(this.data.model.integrante.correo);
+    this.formIntegrante.controls["frmCorreo"].disable();
+    this.formIntegrante.controls["frmCelular"].setValue(this.data.model.integrante.numeroCelular);
+    this.formIntegrante.controls["frmCelular"].disable();
+    this.formIntegrante.controls["frmFecNac"].setValue(this.data.model.integrante.fechaNacimiento);
+    this.formIntegrante.controls["frmFecNac"].disable();
+    this.formIntegrante.controls["frmCargo"].setValue(this.data.model.integrante.cargo);
+    this.formIntegrante.controls["frmCargo"].disable();
+    this.formIntegrante.controls["frmUnidad"].setValue(this.data.model.integrante.unidad);
+    this.formIntegrante.controls["frmUnidad"].disable();
+    if (this.data.enviado) {
+      this.formIntegrante.disable();
     }
-    else {
-      console.log(element.value.frmPlazo.toLocaleDateString());
-    }
   }
+
+  cerrar() {
+    console.log(1)
+    this.dialogRef.close();
+  }
+
 }
