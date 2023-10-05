@@ -11,6 +11,7 @@ import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { filter } from 'rxjs/operators';
 import { TaskRejectComponent } from '../task-reject/task-reject.component';
+import { PdfComponent } from '../pdf/pdf.component';
 
 @Component({
   providers: [DatePipe],
@@ -72,14 +73,13 @@ export class UserDownloadTaskComponent implements OnInit {
     });
   }
 
-
   showMsj() {
     if (this.msj != null && this.msj.length > 0) {
       this._notification.error(this.msj)
     }
   }
 
-  verFiles(element) {
+  verEvidencia(element) {
     const dialogRef: MatDialogRef<UserDownloadFileComponent> = this.dialog.open(UserDownloadFileComponent, {
       disableClose: false,
       width: '500px',
@@ -94,6 +94,22 @@ export class UserDownloadTaskComponent implements OnInit {
       if (result == 'ok') {
 
       }
+    });
+  }
+
+  verPdf(element) {
+    const dialogRef: MatDialogRef<PdfComponent> = this.dialog.open(PdfComponent, {
+      disableClose: false,
+      width: '50%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTablePendiente();
     });
   }
 

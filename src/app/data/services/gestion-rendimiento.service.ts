@@ -205,10 +205,10 @@ export class GestionRendimientoService {
     return await this.http.post(url, evidencia).toPromise();
   }
 
-  async getListarEvidenciasTarea(idTarea: number) {
-    const url = `${URL_BASE}/tareas/listar/evidencias/${idTarea}`;
+  async getEvidenciaPorTarea(idTarea: number) {
+    const url = `${URL_BASE}/tareas/obtener/evidencia/${idTarea}`;
     console.log(url);
-    return await this.http.get<EvidenciaResponseDTO[]>(url).toPromise();
+    return await this.http.get<EvidenciaResponseDTO>(url).toPromise();
   }
 
   async listarTipoIngreso() {

@@ -978,6 +978,7 @@ export class ExportExcelGestionRendimientoService {
       worksheet.mergeCells(currentRowIdx, 7, currentRowIdx, 7); // porcentaje
       worksheet.mergeCells(currentRowIdx, 8, currentRowIdx, 9); // evidencia
       worksheet.mergeCells(currentRowIdx, 10, currentRowIdx, 11); // plazos
+      worksheet.mergeCells(currentRowIdx, 13, currentRowIdx, 15); // comentarios
 
       worksheet.getRow(currentRowIdx).getCell('A').value = d.poi;
       worksheet.getRow(currentRowIdx).getCell('D').value = d.requerimientoDescripcion;
@@ -985,6 +986,7 @@ export class ExportExcelGestionRendimientoService {
       worksheet.getRow(currentRowIdx).getCell('G').value = d.porcentajeAvanceEvidencia + '%';
       worksheet.getRow(currentRowIdx).getCell('H').value = d.nombreTarea;
       worksheet.getRow(currentRowIdx).getCell('J').value = d.plazoTarea;
+      worksheet.getRow(currentRowIdx).getCell('M').value = d.comentario;
 
       let a = row.getCell('A');
       a.font = { size: 8 };
@@ -1015,6 +1017,11 @@ export class ExportExcelGestionRendimientoService {
       g.font = { size: 8 };
       g.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
       worksheet.getColumn('J').width = 8;
+
+      let m = row.getCell('M');
+      m.font = { size: 8 };
+      m.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+      worksheet.getColumn('M').width = 8;
 
     });
 

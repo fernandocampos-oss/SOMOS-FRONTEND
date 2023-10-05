@@ -1,3 +1,4 @@
+import { DateFormat } from './../../../data/enums/date-format.enum';
 import { element } from 'protractor';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -11,6 +12,7 @@ import { VerTareaComponent } from '../components/ver-tarea/ver-tarea.component';
 import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimiento/reporte-finalizados';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EvidenciaResponseDTO } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 @Component({
   selector: 'app-mis-requerimientos',
@@ -18,7 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./mis-requerimientos.component.scss']
 })
 export class MisRequerimientosComponent implements OnInit {
-  listEvidencia: any[] = [];
+  evidenciaDTO: EvidenciaResponseDTO;
   listDataRechazados: any[] = [];
   listDataFinalizados: any[] = [];
   listDataPendientes: any[] = [];
@@ -106,6 +108,7 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   verDetalleRequerimiento(element) {
+    console.log(element)
     const dialogRef: MatDialogRef<VerTareaComponent> = this._matDialog.open(VerTareaComponent, {
       disableClose: false,
       width: '60%',
@@ -161,28 +164,68 @@ export class MisRequerimientosComponent implements OnInit {
       for (let i of element.listTarea) {
         let obj = new ReporteEvidencia();
         obj.nombreTarea = i.nombreTarea;
-        obj.plazoTarea = i.plazo;
+        // obj.plazoTarea = i.plazo;
         obj.requerimientoDescripcion = element.requerimiento.nombre;
 
         obj.poi = element.poi.descripcion;
         obj.indicador = element.poi.indicador.descripcion;
 
-        let a = await this._requerimientoService.getListarEvidenciasTarea(i.idTarea).then((data: any) => {
-          if (data.length > 0) {
-            this.listEvidencia = data;
+        let a = await this._requerimientoService.getEvidenciaPorTarea(i.idTarea).then((data: any) => {
+          if (data != null) {
+            this.evidenciaDTO = data;
+            console.log("dto:", data);
           } else {
-            this._notification.warning("Error al obtener evidencias");
+            this.evidenciaDTO = null;
           }
         });
 
-        for (let j of this.listEvidencia) {
-          obj.descripcionEvidencia = j.descripcion;
-          obj.porcentajeAvanceEvidencia = j.porcentajeAvance;
+        //comparar fechas para comentario excel
+        let partsPlazo = i.plazo.split("T");
+        let part1Plazo = partsPlazo[0];
+
+        if (this.evidenciaDTO.idEvidencia > 0) {
+          let partsEvidencia = this.evidenciaDTO.fechaCreacion.split("T");
+          let part1Evidencia = partsEvidencia[0];
+
+          console.log("23 ", part1Plazo);
+          console.log("24 ", part1Evidencia)
+
+          var first = new Date(part1Plazo);
+          var second = new Date(part1Evidencia);
+          if (first < second) {
+            console.log(first, "es menor que", second);
+            obj.comentario = 'Se pasó de la fecha';
+          }
+          else if (first > second) {
+            console.log(first, "es mayor que", second);
+            obj.comentario = 'Presentó evidencia dentro de la fecha';
+          }
+          else if (first == second) {
+            console.log(first, "es igual que", second);
+            obj.comentario = 'Presentó evidencia dentro de la fecha';
+          }
+
+          obj.descripcionEvidencia = this.evidenciaDTO.descripcion;
+          obj.porcentajeAvanceEvidencia = this.evidenciaDTO.porcentajeAvance;
+          obj.plazoTarea = part1Plazo;
+          listTarea.push(obj);
+          obj = null;
+
+        } else {
+          this._notification.warning("No se encontró evidencia para la tarea: " + i.nombreTarea);
+
+          let obj = new ReporteEvidencia();
+          obj.nombreTarea = i.nombreTarea;
+          obj.requerimientoDescripcion = element.requerimiento.nombre;
+          obj.poi = element.poi.descripcion;
+          obj.plazoTarea = part1Plazo;
+          obj.porcentajeAvanceEvidencia = 0;
+          obj.comentario = 'No presentó evidencia';
+          listTarea.push(obj);
         }
-        listTarea.push(obj);
-        obj = null;
+
       }
-      console.log("para excel", listTarea)
+      console.log("data excel", listTarea)
       let columnsName = ["String_1", "String_2"];
       let reportData = {
         data_personal: reportePersonal,
@@ -192,7 +235,5 @@ export class MisRequerimientosComponent implements OnInit {
       this._serviceExcel.exportExcel(reportData);
     }
   }
-
-
 
 }

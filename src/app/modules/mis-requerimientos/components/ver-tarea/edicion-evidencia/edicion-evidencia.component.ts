@@ -17,13 +17,22 @@ export class EdicionEvidenciaComponent implements OnInit {
   height: number;
   applicationFile: any = File;
   retrievedImage: any;
-  isImageUpdate = false;
 
   nameImage: string = '';
-  sizeImage: number = 0;
-  typeImage: string = '';
-
+  // sizeImage: number = 0;
+  // typeImage: string = '';
   selectedIndex = 0;
+  defaultPorcentaje: number = 0;
+
+  //pdf 1
+  retrievedPdf: any;
+  nombrePdf = '';
+  isPdfUpdate = false;
+  globalBase64: any;
+  globalextension: string = '';
+  pdfExtension: string = '';
+  operacionSeleccionada: string = 'Imagen';
+  tipoArchivo = ['Imagen', 'PDF'];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -34,14 +43,14 @@ export class EdicionEvidenciaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data)
+    console.log(this.data)
     this._createForm();
   }
 
   private _createForm() {
     this.form = this._fb.group({
       frmDescripcion: [null, [Validators.required, Validators.maxLength(300)]],
-      frmPorcentajeAvance: [null, [Validators.required, Validators.min(1), Validators.max(100)]],
+      frmPorcentajeAvance: [(this.data.model.porcentajeInicial > 0 ? 90 : ''), [Validators.required, Validators.min(1), Validators.max(100)]],
       // frmAreaSolicitante: 'SGSA',
     });
   }
@@ -72,12 +81,9 @@ export class EdicionEvidenciaComponent implements OnInit {
           // console.log(this.width, '||', this.height);
         };
         this.retrievedImage = reader.result;
-        // this.formDatosGenerales.controls.ctrlImgGrupo64.setValue(this.retrievedImage.split(',')[1]);
-        this.isImageUpdate = true;
-
         this.nameImage = files[0].name;
-        this.sizeImage = files[0].size;
-        this.typeImage = files[0].type;
+        // this.sizeImage = files[0].size;
+        // this.typeImage = files[0].type;
       }
     };
   }
@@ -86,26 +92,58 @@ export class EdicionEvidenciaComponent implements OnInit {
     this.retrievedImage = null;
     // this.formDatosGenerales.controls.ctrlImgGrupo64.reset();
     this.applicationFile = null;
-    this.isImageUpdate = true;
+    // this.isImageUpdate = true;
+  }
+
+  //pdf 2
+  onChangeFile(files) {
+    if (files.length === 0) {
+      return;
+    }
+    const mimeType = files[0].type;
+    this.nombrePdf = files[0].name;
+    if (mimeType.match(/pdf\/*/) == null) {
+      this._notification.warning(
+        'Por favor seleccione un archivo PDF'
+      );
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = _event => {
+      const fileApp = files[0];
+      if (fileApp.size >= 2097152) {
+        this._notification.warning('Tamaño de archivo excedido, máximo 2MB');
+        return;
+      } else {
+      }
+      this.retrievedPdf = reader.result;
+      this.pdfExtension = fileApp.type;
+      this.isPdfUpdate = true;
+    };
+  }
+
+  removePdf() {
+    this.retrievedPdf = null;
+    this.isPdfUpdate = false;
   }
 
   async registrarEvidencia() {
-    if (this.retrievedImage == undefined || !this.form.valid) {
-      this._notification.warning(
-        'Complete todos los campos obligatorios e ingrese una imagen'
-      );
-      this.form.markAllAsTouched();
-      return;
-    }
-    else {
-      const model = this._getModel();
+    // if (this.retrievedImage == undefined || !this.form.valid) {
+    //   this._notification.warning(
+    //     'Complete todos los campos obligatorios e ingrese una imagen'
+    //   );
+    //   this.form.markAllAsTouched();
+    //   return;
+    // }
+    // else {
+    const model = this._getModel();
 
-      let register = await this._requerimientoService.registrarEvidencia(model).then((data) => {
-        this._notification.success("Evidencia registrada correctamente")
-
-      });
-      this._dialogRef.closeAll();
-    }
+    let register = await this._requerimientoService.registrarEvidencia(model).then((data) => {
+      this._notification.success("Evidencia registrada correctamente")
+    });
+    this._dialogRef.closeAll();
+    // }
   }
 
   private _getModel(): EvidenciaRequest {
@@ -114,18 +152,25 @@ export class EdicionEvidenciaComponent implements OnInit {
 
     let completo = this.nameImage;
     const nombreFile = completo.lastIndexOf('.');
-    // archivo.nombre = completo.substring(0, nombreFile);
-    // archivo.extension = completo.substring(nombreFile + 1);
+    // // archivo.nombre = completo.substring(0, nombreFile);
+    // // archivo.extension = completo.substring(nombreFile + 1);
+    if (this.operacionSeleccionada == 'Imagen') {
+      this.globalBase64 = this.retrievedImage.split(',')[1];
+      this.globalextension = completo.substring(nombreFile + 1);
+    } else if (this.operacionSeleccionada == 'PDF') {
+      this.globalBase64 = this.retrievedPdf.split(',')[1];
+      this.globalextension = this.pdfExtension.split('/')[1];
+    }
+
     return {
       descripcion: this.form.value.frmDescripcion,
       porcentajeAvance: this.form.value.frmPorcentajeAvance,
       tarea: t,
-      imagenBase64: this.retrievedImage.split(',')[1],
-
-      nombreImagen: this.nameImage,
-      sizeImagen: this.sizeImage,
-      tipoImagen: this.typeImage,
-      extension: completo.substring(nombreFile + 1),
+      imagenBase64: this.globalBase64,
+      // nombreImagen: this.nameImage,
+      // sizeImagen: this.sizeImage,
+      // tipoImagen: this.typeImage,
+      extension: this.globalextension,
       idRequerimiento: this.data.idRequerimiento
     };
   }

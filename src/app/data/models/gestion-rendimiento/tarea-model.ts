@@ -9,7 +9,7 @@ export class TareaDTO {
 export class TareaResponse {
     nombreTarea?: string;
     plazo?: String;
-    porcentajeAvance?: number;
+    porcentajeInicial?: number;
 }
 
 export class TareaRequest {

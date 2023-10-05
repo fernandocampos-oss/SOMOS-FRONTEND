@@ -28,7 +28,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    img{
+
+    img {
         height: 16rem;
     }
 }
@@ -49,30 +50,25 @@ form {
     border-radius: 4px;
 }
 
-@keyframes spinner {
-    to {
-        transform: rotate(360deg);
-    }
+// numeric input
+.example-right-align {
+    text-align: right;
 }
 
-.spinner:before {
-    content: '';
-    box-sizing: border-box;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    margin-left: -10px;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-    border-top-color: #000000;
-    animation: spinner .8s linear infinite;
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+    display: none;
 }
 
-// .boxEspaciado {
-//     ::ng-deep .mat-form-field-infix {
-//         top: 1.8px;
-//     }
-// }
+input.example-right-align {
+    -moz-appearance: textfield;
+}
+
+.percent-align {
+    position: relative;
+    top: -3px;
+}
+
+.datosPdf{
+    text-align: center;
+}

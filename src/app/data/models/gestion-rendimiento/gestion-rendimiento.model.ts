@@ -66,10 +66,6 @@ export class EvidenciaRequest {
   porcentajeAvance?: number;
   tarea?: Tarea;
   imagenBase64?: string;
-
-  nombreImagen?: string;
-  sizeImagen?: number;
-  tipoImagen: string;
   extension?: string;
   idRequerimiento?: number;
 }
@@ -81,7 +77,6 @@ export class EvidenciaResponseDTO {
   fechaCreacion?: string;
   imagenBase64?: string;
   extension?: string;
-  nombreImagen?: string;
 }
 
 export class Tarea {

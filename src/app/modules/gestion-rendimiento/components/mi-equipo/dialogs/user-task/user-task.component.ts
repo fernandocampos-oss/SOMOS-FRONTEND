@@ -40,18 +40,6 @@ export class UserTaskComponent implements OnInit {
   ngOnInit(): void {
     this.nombreUsuario = this.data.model.integrante.nombres + " " + this.data.model.integrante.apellidos;
     this.loadTableRequerimiento(this.data.model.integrante.idUsuario);
-
-    // var workbook = XLSX.utils.book_new();
-    // var worksheet = XLSX.utils.aoa_to_sheet([]);
-
-    // for (let i = 0; i < this.datosAsignados.length; i++) {
-    //   XLSX.utils.sheet_add_aoa(worksheet,[[this.datosAsignados[i].idReq,this.datosAsignados[i].nombreTarea,this.datosAsignados[i].avance]], { origin: `B${i+1}` })
-    // }
-    // XLSX.utils.book_append_sheet(workbook, worksheet, 'Prueba 1');
-    // console.log(worksheet);
-    // console.log(workbook);
-    // XLSX.writeFile(workbook, "out.xlsx");
-
   }
 
   verTareas(element, id: number) {

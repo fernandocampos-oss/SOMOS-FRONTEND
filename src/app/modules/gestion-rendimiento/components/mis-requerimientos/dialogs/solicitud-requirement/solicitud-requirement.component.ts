@@ -84,7 +84,8 @@ export class SolicitudRequirementComponent implements OnInit {
     else {
       this.listTareas.push({
         nombreTarea: this.formTareasListadas.value.frmDescTarea,
-        plazo: this.formTareasListadas.value.frmDateTarea._d.toLocaleDateString()
+        // plazo: this.formTareasListadas.value.frmDateTarea._d.toLocaleDateString()
+        plazo: moment(this.formTareasListadas.value.frmDateTarea._d).format('YYYY-MM-DDTHH:mm:ss')
       });
       this.table.renderRows();
     }
@@ -94,7 +95,7 @@ export class SolicitudRequirementComponent implements OnInit {
     this.table.renderRows();
   }
 
-  registrarTareas() {
+  registrarTareas() {    
     if (this.listTareas.length == 0) {
       this._notification.warning("Ingrese al menos una tarea para continuar");
     } else {
@@ -111,12 +112,18 @@ export class SolicitudRequirementComponent implements OnInit {
 
   private _getModel(): TareaDTO {
     let tareas: TareaResponse[] = [];
+    let porcentajeDefault = 90;
 
     for (let i of this.listTareas) {
       let t = new TareaResponse();
       t.nombreTarea = i.nombreTarea;
       t.plazo = i.plazo;
-      t.porcentajeAvance = 0;
+      if (this.listTareas.length >= 2) {
+        t.porcentajeInicial = porcentajeDefault;
+        porcentajeDefault = 0;
+      } else {
+        t.porcentajeInicial = 0;
+      }
       tareas.push(t);
     }
 

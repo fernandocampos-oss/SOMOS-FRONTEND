@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EdicionEvidenciaComponent } from './edicion-evidencia/edicion-evidencia.component';
 import { TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
 import { ListEvidenciaComponent } from './list-evidencia/list-evidencia.component';
+import { PdfComponent } from '@modules/gestion-rendimiento/components/mi-equipo/dialogs/pdf/pdf.component';
 
 @Component({
   selector: 'app-ver-tarea',
@@ -34,7 +35,7 @@ export class VerTareaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data)
+    console.log(this.data)
     this.requerimiento = this.data.model.requerimiento.nombre;
     this.idRequerimiento = this.data.model.requerimiento.idRequerimiento;
     this.createForm();
@@ -69,8 +70,24 @@ export class VerTareaComponent implements OnInit {
     });
   }
 
-  listarEvidencias(element) {
+  verEvidencia(element) {
     const dialogRef: MatDialogRef<ListEvidenciaComponent> = this._matDialog.open(ListEvidenciaComponent, {
+      disableClose: false,
+      width: '50%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTablePendiente();
+    });
+  }
+
+  verPdf(element) {
+    const dialogRef: MatDialogRef<PdfComponent> = this._matDialog.open(PdfComponent, {
       disableClose: false,
       width: '50%',
       //height: '780px',

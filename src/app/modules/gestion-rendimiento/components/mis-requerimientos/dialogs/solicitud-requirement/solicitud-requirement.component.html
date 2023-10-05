@@ -142,7 +142,7 @@
                     </ng-container>
                     <ng-container matColumnDef="plazo">
                         <th mat-header-cell *matHeaderCellDef width="25%"> Plazo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.plazo | date: 'dd-MM-yyyy'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="Quitar">
                         <th mat-header-cell *matHeaderCellDef width="10%"> Quitar </th>

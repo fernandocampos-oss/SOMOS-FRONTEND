@@ -27,8 +27,7 @@
 
     <ng-container matColumnDef="plazo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px"> Plazo Máximo </th>
-        <!-- <td mat-cell *matCellDef="let element"> {{element.plazo | date: 'dd/MM/yyyy'}} </td> -->
-        <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.plazo | date: 'dd-MM-yyyy'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="estado">

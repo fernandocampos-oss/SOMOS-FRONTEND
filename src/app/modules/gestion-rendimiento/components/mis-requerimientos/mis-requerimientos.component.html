@@ -28,7 +28,7 @@
 
         <ng-container matColumnDef="fecha_creacion">
             <th mat-header-cell *matHeaderCellDef width="100px">Fecha de registro</th>
-            <td mat-cell *matCellDef="let element"> {{element.requerimiento.fechaCreacion | date: 'dd/MM/y'}}</td>
+            <td mat-cell *matCellDef="let element"> {{element.requerimiento.fechaCreacion | date: 'dd-MM-yyyy'}}</td>
         </ng-container>
 
         <ng-container matColumnDef="porcentaje_avance">

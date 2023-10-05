@@ -61,11 +61,11 @@
             </ng-container>
             <ng-container matColumnDef="fecha_asignacion">
                 <th mat-header-cell *matHeaderCellDef>Fecha Asignacion</th>
-                <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd/MM/y'}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd-MM-yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="plazo">
                 <th mat-header-cell *matHeaderCellDef>Plazo</th>
-                <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.plazo | date: 'dd-MM-yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="acciones">
                 <th mat-header-cell *matHeaderCellDef>Editar</th>

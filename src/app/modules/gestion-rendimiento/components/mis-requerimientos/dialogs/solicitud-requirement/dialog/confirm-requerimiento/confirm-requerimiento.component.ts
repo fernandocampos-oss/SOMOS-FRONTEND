@@ -28,7 +28,7 @@ export class ConfirmRequerimientoComponent implements OnInit {
 
   async registrarTareas() {
     let actualizar = await this._service.registrarTareas(this.data.element).then(data => {
-      this._notification.success("Tareas registradas correctamente");
+      this._notification.success("Se registró correctamente");
       // this._snackbar.success("Tareas registradas correctamente");
       // this.dialogRef.closeAll();
     });

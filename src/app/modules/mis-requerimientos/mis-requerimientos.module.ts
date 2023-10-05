@@ -7,7 +7,7 @@ import { MaterialModule } from '@material';
 import { SharedModule } from '@shared/shared.module';
 import { RequerimientoRegisterUpdateComponent } from './components/requerimiento-register-update/requerimiento-register-update.component';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VerTareaComponent } from './components/ver-tarea/ver-tarea.component';
 import { EdicionEvidenciaComponent } from './components/ver-tarea/edicion-evidencia/edicion-evidencia.component';
 import { ListEvidenciaComponent } from './components/ver-tarea/list-evidencia/list-evidencia.component';
@@ -27,7 +27,8 @@ import { ListEvidenciaComponent } from './components/ver-tarea/list-evidencia/li
     ReactiveFormsModule,
     MatGridListModule,
     MisRequerimientosRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class MisRequerimientosModule { }

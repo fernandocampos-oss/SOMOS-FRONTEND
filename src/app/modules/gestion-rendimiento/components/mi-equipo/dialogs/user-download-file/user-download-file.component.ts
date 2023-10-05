@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { PdfComponent } from '../pdf/pdf.component';
+import { EvidenciaResponseDTO } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 @Component({
   selector: 'app-user-download-file',
@@ -14,14 +15,12 @@ import { PdfComponent } from '../pdf/pdf.component';
 })
 export class UserDownloadFileComponent implements OnInit {
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'descripcion', 'acciones'];
-  idtarea = 0;
+  descripcionEvidencia: string;
+  stringBase64: string;
+  evidenciaDTO: EvidenciaResponseDTO;
 
   constructor(
-    private services: GestionRendimientoService,
+    private _requerimientoService: GestionRendimientoService,
     private _notification: NotificationService,
     public dialogRef: MatDialogRef<UserDownloadFileComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -29,68 +28,68 @@ export class UserDownloadFileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.idtarea = this.data.model.idTarea;
-    this.loadTable();
+    console.log(this.data)
+    this.getEvidenciaPorTarea();
   }
 
-  async loadTable() {
-    let listFiles = await this.services.getListarEvidenciasTarea(this.idtarea).then((data) => {
-      if (data.length > 0) {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+  async getEvidenciaPorTarea() {
+    let load = await this._requerimientoService.getEvidenciaPorTarea(this.data.model.idTarea).then((data: any) => {
+      if (data != null) {
+        this.evidenciaDTO = data;
+        this.descripcionEvidencia = data.descripcion;
+        this.stringBase64 = data.imagenBase64;
       } else {
-        this.dataSource = null;
-        this._notification.warning("Aún no tiene evidencia registradas");
+        this.evidenciaDTO = null;
+        this._notification.warning("Aún no tienes evidencias registradas");
       }
     });
   }
 
-  downloadFile(element) {
-      if (element) {
-        const byteString = window.atob(element.imagenBase64);
-        const arrayBuffer = new ArrayBuffer(byteString.length);
-        const int8Array = new Uint8Array(arrayBuffer);
-        for (let i = 0; i < byteString.length; i++) {
-          int8Array[i] = byteString.charCodeAt(i);
-        }
-        const blob = new Blob([int8Array], { type: element.extension });
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement('a');
-        document.body.appendChild(a);
-        a.setAttribute('style', 'display: none');
-        a.href = url;
-        a.download = "Evidencia" + "." + element.extension;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-      } else {
-        this._notification.error("Error al descargar imagen");
+  downloadFile() {
+    if (this.evidenciaDTO != null) {
+      const byteString = window.atob(this.evidenciaDTO.imagenBase64);
+      const arrayBuffer = new ArrayBuffer(byteString.length);
+      const int8Array = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < byteString.length; i++) {
+        int8Array[i] = byteString.charCodeAt(i);
       }
-  
-    // this.services.DescargarArchivo(element.idEvidencia).subscribe((dataItem) => {
-    //   if (dataItem.codigo == 1) {
-    //     const byteString = window.atob(dataItem.data.base64);
-    //     const arrayBuffer = new ArrayBuffer(byteString.length);
-    //     const int8Array = new Uint8Array(arrayBuffer);
-    //     for (let i = 0; i < byteString.length; i++) {
-    //       int8Array[i] = byteString.charCodeAt(i);
-    //     }
-    //     const blob = new Blob([int8Array], { type: dataItem.tipo });
-    //     let url = window.URL.createObjectURL(blob);
-    //     let a = document.createElement('a');
-    //     document.body.appendChild(a);
-    //     a.setAttribute('style', 'display: none');
-    //     a.href = url;
-    //     a.download = element.nombre + "." + element.ext;
-    //     a.click();
-    //     window.URL.revokeObjectURL(url);
-    //     a.remove();
-    //   } else {
-    //     this._notification.error(dataItem.msj);
-    //   }
-    // });
+      const blob = new Blob([int8Array], { type: this.evidenciaDTO.extension });
+      let url = window.URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = "Evidencia" + '_' + new Date().getTime() + "." + this.evidenciaDTO.extension;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    } else {
+      this._notification.error("Error al descargar imagen");
+    }
   }
+
+  // this.services.DescargarArchivo(element.idEvidencia).subscribe((dataItem) => {
+  //   if (dataItem.codigo == 1) {
+  //     const byteString = window.atob(dataItem.data.base64);
+  //     const arrayBuffer = new ArrayBuffer(byteString.length);
+  //     const int8Array = new Uint8Array(arrayBuffer);
+  //     for (let i = 0; i < byteString.length; i++) {
+  //       int8Array[i] = byteString.charCodeAt(i);
+  //     }
+  //     const blob = new Blob([int8Array], { type: dataItem.tipo });
+  //     let url = window.URL.createObjectURL(blob);
+  //     let a = document.createElement('a');
+  //     document.body.appendChild(a);
+  //     a.setAttribute('style', 'display: none');
+  //     a.href = url;
+  //     a.download = element.nombre + "." + element.ext;
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+  //     a.remove();
+  //   } else {
+  //     this._notification.error(dataItem.msj);
+  //   }
+  // });
 
   showDialogPdf(element) {
     const dialogRef: MatDialogRef<PdfComponent> = this.dialog.open(PdfComponent, {

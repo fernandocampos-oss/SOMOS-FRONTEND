@@ -63,7 +63,7 @@
     </ng-container>
     <ng-container matColumnDef="fecha_creacion">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Registro</th>
-      <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd/MM/y'}}</td>
+      <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd-MM-yyyy'}}</td>
     </ng-container>
     <!-- <ng-container matColumnDef="pendientesAprobacion">
         <th mat-header-cell *matHeaderCellDef mat-sort-header width="80px"> Por Aprobar </th>
