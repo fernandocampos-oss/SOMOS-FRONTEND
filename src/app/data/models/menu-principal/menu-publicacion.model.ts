@@ -13,6 +13,7 @@ export class PublicacionRequest{
     imagenBase64: string;
     urlRedireccion: string;
     alcance: number;
+    anuncio: boolean;
     redes: string[];
 }
 
