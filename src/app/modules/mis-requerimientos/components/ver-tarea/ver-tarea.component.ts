@@ -73,7 +73,7 @@ export class VerTareaComponent implements OnInit {
   verEvidencia(element) {
     const dialogRef: MatDialogRef<ListEvidenciaComponent> = this._matDialog.open(ListEvidenciaComponent, {
       disableClose: false,
-      width: '50%',
+      width: '35%',
       //height: '780px',
       autoFocus: true,
       data: {

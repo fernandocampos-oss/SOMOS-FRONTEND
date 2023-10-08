@@ -23,7 +23,6 @@ export class UserTaskComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['item', 'requerimiento', 'estado', 'porcentaje', 'acciones'];
   idUsuario: number;
-  nombreUsuario: string;
 
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
 
@@ -38,7 +37,7 @@ export class UserTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.nombreUsuario = this.data.model.integrante.nombres + " " + this.data.model.integrante.apellidos;
+    // console.log(this.data);
     this.loadTableRequerimiento(this.data.model.integrante.idUsuario);
   }
 

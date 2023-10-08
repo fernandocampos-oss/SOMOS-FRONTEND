@@ -28,7 +28,7 @@ export class MisRequerimientosComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance', 'estado', 'acciones'];
+  displayedColumns: string[] = ['item', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance', 'estado', 'acciones'];
 
   @ViewChild(MatSort) sort_finalizado: MatSort;
   @ViewChild(MatPaginator) paginator_finalizado: MatPaginator;
@@ -164,9 +164,7 @@ export class MisRequerimientosComponent implements OnInit {
       for (let i of element.listTarea) {
         let obj = new ReporteEvidencia();
         obj.nombreTarea = i.nombreTarea;
-        // obj.plazoTarea = i.plazo;
         obj.requerimientoDescripcion = element.requerimiento.nombre;
-
         obj.poi = element.poi.descripcion;
         obj.indicador = element.poi.indicador.descripcion;
 
@@ -179,19 +177,20 @@ export class MisRequerimientosComponent implements OnInit {
           }
         });
 
-        //comparar fechas para comentario excel
-        let partsPlazo = i.plazo.split("T");
-        let part1Plazo = partsPlazo[0];
+        //comparar fechas para el comentario en excel
+        let fechaISOPlazo = i.plazo.split("T");
+        let fechaPlazo = fechaISOPlazo[0];
 
         if (this.evidenciaDTO.idEvidencia > 0) {
-          let partsEvidencia = this.evidenciaDTO.fechaCreacion.split("T");
-          let part1Evidencia = partsEvidencia[0];
+          let fechaISOEvidencia = this.evidenciaDTO.fechaCreacion.split("T");
+          let fechaEvidencia = fechaISOEvidencia[0];
 
-          console.log("23 ", part1Plazo);
-          console.log("24 ", part1Evidencia)
+          console.log("fechaPlazo: ", fechaPlazo);
+          console.log("fechaEvidencia: ", fechaEvidencia)
 
-          var first = new Date(part1Plazo);
-          var second = new Date(part1Evidencia);
+          var first = new Date(fechaPlazo);
+          var second = new Date(fechaEvidencia);
+          
           if (first < second) {
             console.log(first, "es menor que", second);
             obj.comentario = 'Se pasó de la fecha';
@@ -204,12 +203,12 @@ export class MisRequerimientosComponent implements OnInit {
             console.log(first, "es igual que", second);
             obj.comentario = 'Presentó evidencia dentro de la fecha';
           }
-
           obj.descripcionEvidencia = this.evidenciaDTO.descripcion;
           obj.porcentajeAvanceEvidencia = this.evidenciaDTO.porcentajeAvance;
-          obj.plazoTarea = part1Plazo;
+          obj.plazoTarea = fechaPlazo;
           listTarea.push(obj);
           obj = null;
+          reportePersonal.estadoEntregado = "Entregado";
 
         } else {
           this._notification.warning("No se encontró evidencia para la tarea: " + i.nombreTarea);
@@ -218,10 +217,11 @@ export class MisRequerimientosComponent implements OnInit {
           obj.nombreTarea = i.nombreTarea;
           obj.requerimientoDescripcion = element.requerimiento.nombre;
           obj.poi = element.poi.descripcion;
-          obj.plazoTarea = part1Plazo;
+          obj.plazoTarea = fechaPlazo;
           obj.porcentajeAvanceEvidencia = 0;
           obj.comentario = 'No presentó evidencia';
           listTarea.push(obj);
+          obj = null;
         }
 
       }

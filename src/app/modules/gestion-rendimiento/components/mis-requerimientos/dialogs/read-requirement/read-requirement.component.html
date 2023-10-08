@@ -85,8 +85,13 @@
         </table>
     </div>
 </mat-dialog-content>
+<br>
+<button mat-button *ngIf="estadoReq ==6" class="download-button" (click)="exportToExcel()">
+    <mat-icon>file_download</mat-icon>
+    Descargar Formato Excel
+</button>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button mat-dialog-close class="close-button">Cerrar</button>
     <!-- <button mat-raised-button color="primary" *ngIf="poiList.length != 0" [disabled]="form.valid == true"
         (click)="next()">Asignar</button> -->
 </mat-dialog-actions>

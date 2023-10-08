@@ -1,6 +1,5 @@
-<h3 mat-dialog-title>Datos del requerimiento</h3>
-<br>
 <mat-dialog-content>
+    <h3 mat-dialog-title>Datos del requerimiento</h3>
     <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px" [formGroup]="form">
         <mat-grid-tile [colspan]="6">
             <mat-form-field appearance="outline">
@@ -27,10 +26,7 @@
             </mat-form-field>
         </mat-grid-tile>
     </mat-grid-list>
-    <br>
-    <div style="text-align: center">
-        <h3>Tareas asignadas</h3>
-    </div>
+    <h3>Tareas asignadas</h3>
     <table mat-table [dataSource]="dataSource" style="width:100%">
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef width="100px">N°</th>
@@ -51,8 +47,8 @@
                     (click)="verEvidencia(element)">
                     <mat-icon>image</mat-icon>
                 </button>
-                <button mat-icon-button class="primary-button" matTooltip="Ver PDF"
-                    *ngIf="(element.tienePdf==1)" (click)="verPdf(element)">
+                <button mat-icon-button class="primary-button" matTooltip="Ver PDF" *ngIf="(element.tienePdf==1)"
+                    (click)="verPdf(element)">
                     <mat-icon>picture_as_pdf</mat-icon>
                 </button>
             </td>
