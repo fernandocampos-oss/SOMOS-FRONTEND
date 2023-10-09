@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { InscripcionRequest } from '@data/models/inscripcion/inscripcion.model';
 import { environment } from '@env';
 
 // const URL_BASE = `http://localhost/api/inscripciones`;
@@ -15,9 +16,9 @@ export class InscripcionService {
     return this._httpClient.get<any>(url);
   }
 
-  registerUserToInscripcion(idInscripcion: number){
-    const url = `${URL_BASE}/${idInscripcion}/guardar-respuesta`;
-    return this._httpClient.post<any>(url,{});
+  registerUserToInscripcion(model: InscripcionRequest){
+    const url = `${URL_BASE}/guardar-respuesta`;
+    return this._httpClient.post<any>(url,model);
   }
 
   getUsuariosInscritos(idInscripcion: number){

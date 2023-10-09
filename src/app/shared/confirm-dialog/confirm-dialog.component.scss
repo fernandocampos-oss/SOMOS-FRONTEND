@@ -11,6 +11,8 @@
     float: right;
     display: flex;
     flex-direction: row-reverse;
+    justify-content: space-between;
+    width: 100%;
   }
 
   &__button {

@@ -14,3 +14,11 @@ export class inscritosResponse {
   estadoActivo: boolean;
   fechaInscripcion: string
 }
+
+export class InscripcionRequest {
+  idInscripcion: number;
+  tipoInscripcion: number;
+  inscritos?: number[];
+  descripcion?: string;
+  imagenBase64?: string;
+}

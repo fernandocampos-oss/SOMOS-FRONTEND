@@ -48,7 +48,7 @@ export class SidenavComponent implements OnInit {
   ngOnInit(): void {
     this._initialize();
     this.user = this._authService.getUserSession();
-    console.log(this.user)
+    // console.log(JSON.parse(localStorage.getItem('RDTHRHRYHNYTN')!))
     this._userService.get(this.user.id).subscribe( data =>{
       this.email = data.correo;
       // this._zonaService.get(data.idZonaControl).subscribe(info=>{
