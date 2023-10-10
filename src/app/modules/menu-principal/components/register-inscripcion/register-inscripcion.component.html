@@ -37,14 +37,14 @@
     <mat-tab-group mat-align-tabs="center" mat-stretch-tabs="true">
         <mat-tab label="Datos">
             <div style="margin-top: 0.5rem;">
-                <h4>Descripcion</h4>
+                <h4>Nombre de grupo</h4>
                 <mat-form-field appearance="outline">
                     <input type="text" matInput [formControl]="descripcionControl">
                 </mat-form-field>
             </div>
             <div class="imageBox">
                 <div class="inputImageBox">
-                    <h4>Imagen representativa del grupo</h4>
+                    <h4>Imagen del periodico mural</h4>
                     <!-- <mat-error *ngIf="msgErrores && imagenGrupoField.hasError('required')">Debe añadir una imagen del grupo</mat-error> -->
                     <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix (click)="file.click()"
                             color="primary" *ngIf="!retrievedImage" [disabled]='estadoInscripcion'>
