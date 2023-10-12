@@ -18,7 +18,7 @@ export class PublicacionRequest{
 }
 
 export class PublicacionResponse{
-    idPublicacion: string;
+    idPublicacion: number;
     titulo: string;
     descripcion: string;
     imagenBase64: string;

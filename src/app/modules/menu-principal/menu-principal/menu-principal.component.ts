@@ -59,6 +59,7 @@ export class MenuPrincipalComponent implements OnInit {
     {descripcion:'Prueba 4',dia: new Date('01/01/2022 00:00:00')},
   ]
 
+  publicacionAnclada: PublicacionResponse = Object();
   publicaciones: PublicacionResponse[] = [];
   encuestaRespondida = false;
   encuestaNombre: string;
@@ -109,6 +110,12 @@ export class MenuPrincipalComponent implements OnInit {
     .subscribe( (data) => {
       console.log(data)
       this.publicaciones = data;
+
+      this.publicaciones.forEach((x)=>{
+        if (x.idPublicacion == 56) {
+          this.publicacionAnclada = x;
+        }
+      })
     }
     );
     this.convertirDiaMes(this.today.getDate(), this.today.getMonth()+1);

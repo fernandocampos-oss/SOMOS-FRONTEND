@@ -16,7 +16,7 @@ export class EncuestaSimpleComponent implements OnInit {
 
   // datosEncuesta: MenuEncuestaShow;
 
-  esHora = false;
+  esHora = true;
 
   candMap = [Object()];
 
