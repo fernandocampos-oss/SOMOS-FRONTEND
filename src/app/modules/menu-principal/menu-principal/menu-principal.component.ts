@@ -59,7 +59,7 @@ export class MenuPrincipalComponent implements OnInit {
     {descripcion:'Prueba 4',dia: new Date('01/01/2022 00:00:00')},
   ]
 
-  publicacionAnclada: PublicacionResponse = Object();
+  publicacionAnclada: PublicacionResponse;
   publicaciones: PublicacionResponse[] = [];
   encuestaRespondida = false;
   encuestaNombre: string;
