@@ -16,6 +16,16 @@ export class InscripcionService {
     return this._httpClient.get<any>(url);
   }
 
+  activarInscripcionPorId(idInscripcion: number, activarVotacion: boolean){
+    const url = `${URL_BASE}/${idInscripcion}/activar-votacion/${activarVotacion}`;
+    return this._httpClient.put<any>(url,{});
+  }
+
+  getInscripcionesVotacionesActivas(){
+    const url = `${URL_BASE}/votaciones`;
+    return this._httpClient.get<any>(url);
+  }
+
   registerUserToInscripcion(model: InscripcionRequest){
     const url = `${URL_BASE}/guardar-respuesta`;
     return this._httpClient.post<any>(url,model);

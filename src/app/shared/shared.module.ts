@@ -8,6 +8,7 @@ import { EnvironmentIndicatorComponent } from './environment-indicator/environme
 import { CrudComponent } from './crud/crud.component';
 import { TableComponent } from './table/table.component';
 import { NotificationDialogComponent } from './notification-dialog/notification-dialog.component';
+import { ImageOptionsComponent } from './image-options/image-options.component';
 
 const components = [
   ConfirmDialogComponent,
@@ -16,6 +17,7 @@ const components = [
   CrudComponent,
   NotificationDialogComponent,
   TableComponent,
+  ImageOptionsComponent
 ];
 
 @NgModule({

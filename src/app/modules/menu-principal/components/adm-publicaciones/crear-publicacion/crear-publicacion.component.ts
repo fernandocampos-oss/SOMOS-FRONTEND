@@ -153,6 +153,7 @@ export class CrearPublicacionComponent implements OnInit {
       frmDescripcion: [null, [Validators.required]],
       frmEnlace: [''],
       frmAnuncio: [],
+      frmVotacion: []
     });
   }
   removeImage() {
@@ -198,6 +199,7 @@ export class CrearPublicacionComponent implements OnInit {
       urlRedireccion: this.form.value.frmEnlace,
       alcance: 2,
       anuncio: this.form.value.frmAnuncio,
+      votacion: this.form.value.frmVotacion,
       redes: redes,
     };
   }
@@ -258,6 +260,7 @@ export class CrearPublicacionComponent implements OnInit {
       urlRedireccion: this.form.value.frmEnlace,
       alcance: this.selectedSave,
       anuncio: this.form.value.frmAnuncio,
+      votacion: this.form.value.frmVotacion,
       redes: redes,
     };
   }

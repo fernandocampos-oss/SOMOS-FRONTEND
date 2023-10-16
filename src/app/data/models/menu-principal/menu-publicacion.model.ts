@@ -14,6 +14,7 @@ export class PublicacionRequest{
     urlRedireccion: string;
     alcance: number;
     anuncio: boolean;
+    votacion: boolean;
     redes: string[];
 }
 
@@ -24,4 +25,5 @@ export class PublicacionResponse{
     imagenBase64: string;
     urlRedireccion: string;
     fechaCreacion: Date;
+    votoActivo: boolean;
 }

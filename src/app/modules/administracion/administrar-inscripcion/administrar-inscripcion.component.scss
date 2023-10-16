@@ -16,3 +16,48 @@
 .infoIns{
     align-self: center;
 }
+
+.containerGruposInsc{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: 1rem;
+    b{
+        margin-right: 10px;
+    }
+    mat-panel-description{
+        justify-content: right;
+    }
+    .infoGrupo{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 2rem;
+        .infoImagenGrupo{
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            img{
+                cursor: pointer;
+                --tamanioImg: 10rem;
+                width: var(--tamanioImg);
+                height: var(--tamanioImg);
+                border: var(--color-bordes);
+                border-style: solid;
+                border-radius: 11px;
+                border-width: 2.5px;
+            }
+        }
+        .infoIntegrantesGrupo{
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            .tablaIntegrantes{
+                width: 100%;
+                td{
+                    font-size: 13.5px !important;
+                }
+            }
+        }
+    }
+}

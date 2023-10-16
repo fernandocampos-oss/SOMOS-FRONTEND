@@ -23,7 +23,8 @@ import { EditarPublicacionComponent } from './components/adm-publicaciones/edita
 import { FormRenuevaEssaludComponent } from './components/form-renueva-essalud/form-renueva-essalud.component';
 import { DatosIntegranteComponent } from './components/form-renueva-essalud/datos-integrante/datos-integrante.component';
 import { ConfirmInscripcionComponent } from './components/form-renueva-essalud/confirm-inscripcion/confirm-inscripcion.component';
-import { RegisterInscripcionComponent } from './components/register-inscripcion/register-inscripcion.component';
+import { RegisterInscripcionComponent } from './components/inscripciones/register-inscripcion/register-inscripcion.component';
+import { RegisterVoteInscripcionComponent } from './components/inscripciones/register-vote-inscripcion/register-vote-inscripcion.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { RegisterInscripcionComponent } from './components/register-inscripcion/
     DatosIntegranteComponent,
     ConfirmInscripcionComponent,
     RegisterInscripcionComponent,
+    RegisterVoteInscripcionComponent,
 
   ],
   imports: [

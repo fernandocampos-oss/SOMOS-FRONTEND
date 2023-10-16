@@ -150,6 +150,7 @@ export class EditarPublicacionComponent implements OnInit {
       frmDescripcion: [null, [Validators.required]],
       frmEnlace: [''],
       frmAnuncio: [],
+      frmVotacion: []
     });
 
     this.form = this._fb.group({
@@ -157,6 +158,7 @@ export class EditarPublicacionComponent implements OnInit {
       frmDescripcion: [this.data.obj.descripcion, [Validators.required]],
       frmEnlace: [this.data.obj.urlRedireccion],
       frmAnuncio: [this.data.obj.anuncio],
+      frmVotacion: [this.data.obj.votacion],
     });
     this.retrievedImage = `data:image/jpeg;base64,${this.data.obj.imagenBase64}`;
 
@@ -219,6 +221,7 @@ export class EditarPublicacionComponent implements OnInit {
       urlRedireccion: this.form.value.frmEnlace,
       alcance: 2,
       anuncio: this.form.value.frmAnuncio,
+      votacion: this.form.value.frmVotacion,
       redes: redes,
     };
   }
@@ -263,6 +266,7 @@ export class EditarPublicacionComponent implements OnInit {
       urlRedireccion: this.form.value.frmEnlace,
       alcance: this.selectedSave,
       anuncio: this.form.value.frmAnuncio,
+      votacion: this.form.value.frmVotacion,
       redes: redes,
     };
   }

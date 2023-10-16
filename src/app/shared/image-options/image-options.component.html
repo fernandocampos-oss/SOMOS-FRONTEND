@@ -1,0 +1,7 @@
+
+<div class="contenedorImageOptions">
+    <b><span>{{data.encabezado}}</span></b> <!--Encabezado pop--up-->
+    <span>{{data.descripcion}}</span> <!--descripcion grupo-->
+    <img class="imgInfo boxBorde" src='data:image/jpeg;base64,{{data.imagenBase64}}' alt='{{data.descripcion}}'>
+    <button *ngIf="data.descargar" color="primary" mat-raised-button (click)="print()">Descargar</button>
+</div>

@@ -12,7 +12,10 @@ export class inscritosResponse {
   numeroCelular: string;
   correo: string;
   estadoActivo: boolean;
-  fechaInscripcion: string
+  fechaInscripcion: string;
+  descripcion?: string;
+  idLider?: number;
+  rutaImagen?: string;
 }
 
 export class InscripcionRequest {

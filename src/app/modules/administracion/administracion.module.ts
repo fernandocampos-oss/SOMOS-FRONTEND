@@ -10,6 +10,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AdministrarUsuariosComponent } from './administrar-usuarios/administrar-usuarios.component';
 import { AdministrarInscripcionComponent } from './administrar-inscripcion/administrar-inscripcion.component';
 import { VistaUsuariosComponent } from './administrar-usuarios/components/vista-usuarios/vista-usuarios.component';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { VistaUsuariosComponent } from './administrar-usuarios/components/vista-
     MatGridListModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    SharedModule
   ],
   providers:[
     TitleCasePipe 
