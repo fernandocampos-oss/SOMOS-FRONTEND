@@ -79,7 +79,7 @@ export class AdministrarInscripcionComponent implements OnInit {
             return a.fechaInscripcion.localeCompare(b.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
         });
         this.listInscritos.forEach((x)=>{
-          if(idGrupo != x.idLider){
+          if(idGrupo != x.idLider && x.idLider == x.idUsuario){
             idGrupo = x.idLider;
             this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, integrantes:[]});
           }
@@ -95,6 +95,7 @@ export class AdministrarInscripcionComponent implements OnInit {
             });
           }
         })
+        console.log(this.grupos)
       }
     })
   }
