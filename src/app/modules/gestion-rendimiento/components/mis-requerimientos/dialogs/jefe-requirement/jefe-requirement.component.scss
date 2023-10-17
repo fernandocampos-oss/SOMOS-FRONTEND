@@ -15,12 +15,12 @@
 }
 
 .mat-standard-chip {
-    min-height: 22px !important;
+    min-height: 20px !important;
 }
 
 .red-background {
     color: #fff;
-    background-color: rgb(255, 68, 68);
+    background-color: var(--color-warn);
 }
 
 .gren-background {
@@ -30,13 +30,6 @@
 
 table {
     width: 100%;
-}
-
-.btn-tarea {
-    margin-top: 10px;
-    width: 9em;
-    color: white;
-    background-color: var(--color-bordes);
 }
 
 .primary-button {

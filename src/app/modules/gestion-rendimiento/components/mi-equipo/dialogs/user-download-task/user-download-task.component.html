@@ -63,7 +63,7 @@
     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button mat-dialog-close class="close-button">Cerrar</button>
     <button mat-raised-button color="primary" *ngIf="flgJefe && idEstado==2" (click)="confirmAprobar()">
         <mat-icon>check</mat-icon>Aprobar</button>
     <button mat-raised-button color="warn" *ngIf="flgJefe && idEstado==2" (click)="showDialogRejectTasks()">

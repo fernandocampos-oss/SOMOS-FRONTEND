@@ -9,6 +9,7 @@ import { EvidenciaResponseDTO } from '@data/models/gestion-rendimiento/gestion-r
 import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimiento/reporte-finalizados';
 import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { RequerimientoRegisterUpdateComponent } from '@modules/mis-requerimientos/components/requerimiento-register-update/requerimiento-register-update.component';
 import { VerTareaComponent } from '@modules/mis-requerimientos/components/ver-tarea/ver-tarea.component';
 
 @Component({
@@ -94,6 +95,26 @@ export class JefeRequirementComponent implements OnInit {
       autoFocus: true,
       data: {
         // auto: true,
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTablePendiente();
+      this.loadTableFinalizado();
+      this.loadTableRechazado();
+    });
+  }
+
+  editarRequerimiento(element, es_editar) {
+    const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._matDialog.open(RequerimientoRegisterUpdateComponent, {
+      disableClose: false,
+      width: '600px',
+      //height: '780px',
+      autoFocus: false,
+      data: {
+        esEditar: es_editar,
+        esJefe: false,
         model: element
       }
     });

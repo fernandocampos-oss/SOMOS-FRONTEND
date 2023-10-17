@@ -56,7 +56,7 @@
                             <mat-chip-list>
                                 <mat-chip
                                     [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2}">
-                                    {{element.estadoRequerimiento.descripcion}}
+                                    {{element.estadoRequerimiento.descripcion | titlecase}}
                                 </mat-chip>
                             </mat-chip-list>
                         </td>
@@ -64,10 +64,15 @@
                     <ng-container matColumnDef="acciones">
                         <th mat-header-cell *matHeaderCellDef width="120px"> Acciones </th>
                         <td mat-cell *matCellDef="let element">
-                            <button mat-raised-button class="btn-tarea"
+                            <button mat-icon-button class="color-mensaje"
                                 [disabled]="(element.estadoRequerimiento.codigo == 1 ) ? true : false"
                                 (click)="verDetalleRequerimiento(element, false)">
-                                <mat-icon>library_books</mat-icon>&nbsp; Mis tareas
+                                <mat-icon>library_books</mat-icon>
+                            </button>
+                            <button mat-icon-button class="color-mensaje" matTooltip="Editar Requerimiento"
+                                *ngIf="element.estadoRequerimiento.codigo == 1"
+                                (click)="editarRequerimiento(element, true)">
+                                <mat-icon>edit</mat-icon>
                             </button>
                         </td>
                     </ng-container>

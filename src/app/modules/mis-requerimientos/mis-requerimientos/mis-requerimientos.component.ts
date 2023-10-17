@@ -55,6 +55,15 @@ export class MisRequerimientosComponent implements OnInit {
     this.loadTableRechazado();
   }
 
+  async actualizar() {
+    this.listDataPendientes = [];
+    this.listDataFinalizados = [];
+    this.listDataRechazados = [];
+    let pendientes = await this.loadTablePendiente();
+    let finalizados = await this.loadTableFinalizado();
+    let rechazados = await this.loadTableRechazado();
+  }
+
   registrarRequerimiento() {
     const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._matDialog.open(RequerimientoRegisterUpdateComponent, {
       disableClose: false,
@@ -190,7 +199,7 @@ export class MisRequerimientosComponent implements OnInit {
 
           var first = new Date(fechaPlazo);
           var second = new Date(fechaEvidencia);
-          
+
           if (first < second) {
             console.log(first, "es menor que", second);
             obj.comentario = 'Se pasó de la fecha';
@@ -209,10 +218,8 @@ export class MisRequerimientosComponent implements OnInit {
           listTarea.push(obj);
           obj = null;
           reportePersonal.estadoEntregado = "Entregado";
-
         } else {
-          this._notification.warning("No se encontró evidencia para la tarea: " + i.nombreTarea);
-
+          console.log("No se encontró evidencia para la tarea: " + i.nombreTarea);
           let obj = new ReporteEvidencia();
           obj.nombreTarea = i.nombreTarea;
           obj.requerimientoDescripcion = element.requerimiento.nombre;
@@ -223,7 +230,6 @@ export class MisRequerimientosComponent implements OnInit {
           listTarea.push(obj);
           obj = null;
         }
-
       }
       console.log("data excel", listTarea)
       let columnsName = ["String_1", "String_2"];

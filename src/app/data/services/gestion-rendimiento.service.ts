@@ -175,7 +175,8 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
-  async listarPersonalPorRed() {
+  async listarPersonalDesdeVotante() {
+    // const url = `${URL_BASE}/lideres-equipos/listar/votantes`;
     const url = `${URL_BASE}/requerimientosUsuarios/listar/personal/red`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
@@ -192,6 +193,12 @@ export class GestionRendimientoService {
     console.log(url, liderEquipoRequest);
     return await this.http.post(url, liderEquipoRequest).toPromise();
   }
+
+  // async findUsuarioByNumeroDocumento(numeroDocumento: string) {
+  //   const url = `${URL_BASE}/lideres-equipos/obtener/usuario/${numeroDocumento}`;
+  //   console.log(url);
+  //   return await this.http.get<Object>(url).toPromise();
+  // }
 
   finalizarTareaAdministrador(idRequerimientoUsuario: number) {
     const url = `${URL_BASE}/requerimientosUsuarios/finalizar/requerimiento?idRequerimientoUsuario=${idRequerimientoUsuario}`;

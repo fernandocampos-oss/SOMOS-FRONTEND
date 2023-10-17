@@ -32,6 +32,7 @@ export class MiEquipoComponent implements OnInit {
   listPersonal = [];
   filteredOptions: Observable<any[]>;
   personalSeleccionadoTmp: any;
+  usuarioObtenido: any;
 
   constructor(
     private dialog: MatDialog,
@@ -41,7 +42,7 @@ export class MiEquipoComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTable();
-    this.listarPersonalPorRed();
+    this.listarPersonalDesdeVotante();
 
     //filter
     this.filteredOptions = this.integranteControl.valueChanges
@@ -52,9 +53,9 @@ export class MiEquipoComponent implements OnInit {
       );
   }
 
-  async listarPersonalPorRed() {
-    let load = await this.services.listarPersonalPorRed().then((data: any) => {
-      if (data) {
+  async listarPersonalDesdeVotante() {
+    let load = await this.services.listarPersonalDesdeVotante().then((data: any) => {
+      if (data.length > 0) {
         this.listPersonal = data;
       } else {
         this._notification.warning("Lista de personal vacia");
@@ -110,12 +111,20 @@ export class MiEquipoComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.listEquipo);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      } 
+      }
     });
   }
 
   async agregarIntegrante() {
     if (this.personalSeleccionadoTmp != undefined) {
+
+      // let add = await this.services.findUsuarioByNumeroDocumento(this.personalSeleccionadoTmp.numeroDocumento).then((data: any) => {
+      //   if (data != null) {
+      //     this.usuarioObtenido = data;
+      //   } else {
+      //     this._notification.warning("El trabajador no se encuentra registrado como usuario");
+      //   }
+      // });
 
       if (this.listEquipo.find(x => x.integrante.idUsuario == Number(this.personalSeleccionadoTmp.idUsuario)) != undefined) {
         this._notification.warning("El integrante ya se encuentra inscrito en tu equipo");
@@ -126,6 +135,7 @@ export class MiEquipoComponent implements OnInit {
 
         let integranteModel = new Integrante();
         integranteModel.idUsuario = this.personalSeleccionadoTmp.idUsuario;
+        // integranteModel.idUsuario = this.usuarioObtenido.idUsuario;
 
         let liderEquipo = new LiderEquipoRequest();
         liderEquipo.lider = liderModel;
@@ -143,7 +153,7 @@ export class MiEquipoComponent implements OnInit {
         });
       }
     } else {
-      this._notification.warning('Debe seleccionar a un integrante');
+      this._notification.warning('Debe seleccionar un integrante');
     }
   }
 
@@ -159,6 +169,7 @@ export class MiEquipoComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.listEquipo = [];
       this.loadTable();
     });
   }

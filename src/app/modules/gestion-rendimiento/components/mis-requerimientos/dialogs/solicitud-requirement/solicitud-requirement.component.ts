@@ -41,6 +41,8 @@ export class SolicitudRequirementComponent implements OnInit {
     frmDateTarea: [''],
   });
 
+  porcentajeInicial: boolean = false;
+
   constructor(
     private dialogRef: MatDialog,
     private _notification: NotificationService,
@@ -50,9 +52,9 @@ export class SolicitudRequirementComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data.obj);
     this.listarPoi();
     // this.listarPersonalUnidad();
+    this.getPorcentajeInicialTarea();
   }
 
   async listarPoi() {
@@ -63,6 +65,17 @@ export class SolicitudRequirementComponent implements OnInit {
         this._notification.warning("Lista de actividades vacia");
       }
     });
+  }
+
+  getPorcentajeInicialTarea() {
+    if (this.data.obj.listTarea.length > 0) {
+      for (let i of this.data.obj.listTarea) {
+        if (i.porcentajeInicial == 80) {
+          this.porcentajeInicial = true;
+          console.log("estado 80% = ", this.porcentajeInicial);
+        }
+      }
+    }
   }
 
   // async listarPersonalUnidad() {
@@ -95,7 +108,7 @@ export class SolicitudRequirementComponent implements OnInit {
     this.table.renderRows();
   }
 
-  registrarTareas() {    
+  registrarTareas() {
     if (this.listTareas.length == 0) {
       this._notification.warning("Ingrese al menos una tarea para continuar");
     } else {
@@ -112,18 +125,28 @@ export class SolicitudRequirementComponent implements OnInit {
 
   private _getModel(): TareaDTO {
     let tareas: TareaResponse[] = [];
-    let porcentajeDefault = 90;
+    let porcentajeDefault = 80;
 
     for (let i of this.listTareas) {
       let t = new TareaResponse();
       t.nombreTarea = i.nombreTarea;
       t.plazo = i.plazo;
-      if (this.listTareas.length >= 2) {
-        t.porcentajeInicial = porcentajeDefault;
-        porcentajeDefault = 0;
+
+      if (this.porcentajeInicial == true) {
+        if (this.listTareas.length >= 2) {
+          t.porcentajeInicial = 0;
+        } else {
+          t.porcentajeInicial = 0;
+        }
       } else {
-        t.porcentajeInicial = 0;
+        if (this.listTareas.length >= 2) {
+          t.porcentajeInicial = porcentajeDefault;
+          porcentajeDefault = 0;
+        } else {
+          t.porcentajeInicial = 0;
+        }
       }
+
       tareas.push(t);
     }
 

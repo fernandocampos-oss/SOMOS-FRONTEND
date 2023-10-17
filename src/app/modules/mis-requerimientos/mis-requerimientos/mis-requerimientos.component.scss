@@ -15,12 +15,12 @@
 }
 
 .mat-standard-chip {
-    min-height: 22px !important;
+    min-height: 20px !important;
 }
 
 .red-background {
     color: #fff;
-    background-color: rgb(255, 68, 68);
+    background-color: var(--color-warn);
 }
 
 .gren-background {
@@ -28,21 +28,24 @@
     background-color: var(--color-success);
 }
 
-.nuevo-button {
-    size: 10px;
-    color: white;
-    background-color: var(--color-bordes);
-    border-radius: 4px;
-    width: 220px;
-}
+// .nuevo-button {
+//     size: 10px;
+//     color: white;
+//     background-color: var(--color-bordes);
+//     border-radius: 4px;
+//     width: 220px;
+// }
 
 table {
     width: 100%;
 }
 
 .primary-button {
-    color: white;
-    background-color: var(--color-bordes);
+    color: var(--color-bordes);
+}
+
+.has-success {
+    color: green;
 }
 
 .color-mensaje {

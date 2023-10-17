@@ -9,13 +9,13 @@
                     <!-- <textarea matInput formControlName="frmDescripcion" readonly></textarea> -->
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="1">
+            <mat-grid-tile [colspan]="2">
                 <mat-form-field appearance="outline">
                     <mat-label>Tipo ingreso</mat-label>
                     <input matInput formControlName="frmTipoIngreso" readonly>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="1">
+            <mat-grid-tile [colspan]="2">
                 <mat-form-field appearance="outline">
                     <mat-label>Avance (%)</mat-label>
                     <input matInput formControlName="frmporcentajeAvance" readonly>
@@ -89,5 +89,5 @@
 
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button mat-dialog-close class="close-button">Cerrar</button>
 </mat-dialog-actions>

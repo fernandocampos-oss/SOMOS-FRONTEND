@@ -2,25 +2,32 @@
   <div class="matero-page-header">
     <h1 class="matero-page-title"><mat-icon>description</mat-icon> Mis Requerimientos<br>
       <small class="mr-2">Aquí podrás solicitar o ver el estado de tus requerimientos</small><br>
-      <button mat-raised-button class="primary-button" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+      <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
     </h1>
   </div>
   <div class="page__body">
     <div class="card shadow">
       <mat-tab-group class="tab-group">
         <mat-tab label="Pendientes">
-          <br>
           <div style="text-align: left">
+            <button mat-icon-button class="primary-button" matTooltip="Actualizar" (click)="actualizar()">
+              <mat-icon>cached</mat-icon>
+            </button>
+            <button mat-icon-button class="has-success" matTooltip="Nuevo Requerimiento"
+              (click)="registrarRequerimiento()">
+              <mat-icon>add_circle</mat-icon>
+            </button>
+          </div>
+          <!-- <div style="text-align: left">
             <button mat-raised-button class="nuevo-button" (click)="registrarRequerimiento()">
               <mat-icon>add_circle</mat-icon>&nbsp; Nuevo Requerimiento
             </button>
-          </div>
-          <br>
+          </div> -->
           <div *ngIf="listDataPendientes.length == 0" style="text-align: center">
             <p class="color-mensaje">Aún no tienes requerimientos pendientes</p>
+            <br>
           </div>
           <div *ngIf="listDataPendientes.length !== 0">
-            <br>
             <table mat-table [dataSource]="dataSource" matSort>
               <ng-container matColumnDef="item">
                 <th mat-header-cell *matHeaderCellDef>N°</th>
@@ -60,7 +67,7 @@
                   <mat-chip-list>
                     <mat-chip
                       [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2}">
-                      {{element.estadoRequerimiento.descripcion}}
+                      {{element.estadoRequerimiento.descripcion | titlecase}}
                     </mat-chip>
                   </mat-chip-list>
                 </td>

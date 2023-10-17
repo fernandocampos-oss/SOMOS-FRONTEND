@@ -23,7 +23,7 @@ export class MisRequerimientosComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Item', 'nombre_requerimiento', 'integrante', 'fecha_creacion', 'porcentaje_avance', 'estado', 'acciones'];
+  displayedColumns: string[] = ['Item', 'nombre_requerimiento', 'trabajador', 'fecha_creacion', 'porcentaje_avance', 'estado', 'acciones'];
   // menuToggle = new EventEmitter<void>();
 
   constructor(
@@ -36,14 +36,19 @@ export class MisRequerimientosComponent implements OnInit {
     this.loadTable();
   }
 
+  async actualizar() {
+    this.listDataPendientes = [];
+    let listar = await this.loadTable();
+  }
+
   async loadTable() {
-    this.services.listarRequerimientoPrincipal().then((data) => {
+    let listar = await this.services.listarRequerimientoPrincipal().then((data) => {
       if (data.length > 0) {
         this.listDataPendientes = data;
         this.dataSource = new MatTableDataSource(this.listDataPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      } 
+      }
     });
   }
 
@@ -116,7 +121,7 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  nuevoRequerimientoJefe(){
+  nuevoRequerimientoJefe() {
     const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._dialog.open(RequerimientoRegisterUpdateComponent, {
       disableClose: false,
       width: '50%',
@@ -131,7 +136,7 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  listRequerimientosJefe(){
+  listRequerimientosJefe() {
     const dialogRef: MatDialogRef<JefeRequirementComponent> = this._dialog.open(JefeRequirementComponent, {
       disableClose: false,
       width: '80%',

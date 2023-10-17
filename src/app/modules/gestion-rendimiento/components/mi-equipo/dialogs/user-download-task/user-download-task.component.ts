@@ -33,6 +33,8 @@ export class UserDownloadTaskComponent implements OnInit {
   msj: string = "";
   numerador: number = 0;
 
+  estadoReq: number;
+
   constructor(
     private _dialogService: DialogService,
     private dialog: MatDialog,
@@ -45,8 +47,8 @@ export class UserDownloadTaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.idEstado=this.data.obj.idEstado;
-    // this.flgJefe=this.data.flg;
+    // console.log(this.data);
+    this.estadoReq = this.data.model.estadoRequerimiento.codigo;
     this.createForm();
     this.showMsj();
     this.loadTable();
@@ -154,7 +156,6 @@ export class UserDownloadTaskComponent implements OnInit {
   }
 
 }
-
 
 export class Aprobar {
   id: number

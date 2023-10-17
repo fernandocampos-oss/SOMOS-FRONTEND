@@ -1,14 +1,31 @@
-<div class="actions">
-    <button mat-raised-button class="nuevo-button" (click)="nuevoRequerimientoJefe()">
-        <mat-icon>add_circle</mat-icon>&nbsp; Nuevo Requerimiento</button>
-    <button mat-raised-button color="primary" (click)="listRequerimientosJefe()">
-        <mat-icon>library_books</mat-icon>&nbsp; Mis Requerimientos</button>
+<div style="text-align: left">
+    <br>
+    <button mat-icon-button class="primary-button" matTooltip="Actualizar" (click)="actualizar()">
+        <mat-icon>cached</mat-icon>
+    </button>
+    <button mat-icon-button class="has-success" matTooltip="Nuevo Requerimiento" (click)="nuevoRequerimientoJefe()">
+        <mat-icon>add_circle</mat-icon>
+    </button>
+    <button mat-icon-button class="primary-button" matTooltip="Mis Requerimientos" (click)="listRequerimientosJefe()">
+        <mat-icon>settings</mat-icon>
+    </button>
 </div>
-<br><br>
+
+<!-- <div class="actions">
+    <button mat-raised-button class="nuevo-button" (click)="nuevoRequerimientoJefe()">
+        <mat-icon>add_circle</mat-icon>
+        &nbsp; Nuevo Requerimiento
+    </button>
+    <button mat-raised-button color="primary" (click)="listRequerimientosJefe()">
+        <mat-icon>library_books</mat-icon>
+        &nbsp; Mis Requerimientos
+    </button>
+</div> -->
 <div *ngIf="listDataPendientes.length == 0" style="text-align: center">
+    <br>
     <p class="color-mensaje">Aún no tienes requerimientos de tu equipo</p>
 </div>
-<br>
+
 <div *ngIf="listDataPendientes.length !== 0">
     <table mat-table [dataSource]="dataSource" style="width:100%" matSort>
         <ng-container matColumnDef="Item">
@@ -21,9 +38,10 @@
             <td mat-cell *matCellDef="let element"> {{element.requerimiento.nombre}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="integrante">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header width="200px">Integrante</th>
-            <td mat-cell *matCellDef="let element"> {{element.usuario.nombres | titlecase}} {{element.usuario.apellidos | titlecase}}</td>
+        <ng-container matColumnDef="trabajador">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="200px">Trabajador</th>
+            <td mat-cell *matCellDef="let element"> {{element.usuario.nombres | titlecase}} {{element.usuario.apellidos
+                | titlecase}}</td>
         </ng-container>
 
         <ng-container matColumnDef="fecha_creacion">
@@ -46,10 +64,9 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px"> Estado </th>
             <td mat-cell *matCellDef="let element">
                 <mat-chip-list>
-                    <mat-chip
-                        [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2,
+                    <mat-chip [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2,
                         'finalizado-background':element.estadoRequerimiento.codigo== 6}">
-                        {{element.estadoRequerimiento.descripcion}}
+                        {{element.estadoRequerimiento.descripcion | titlecase}}
                     </mat-chip>
                 </mat-chip-list>
             </td>
@@ -72,14 +89,14 @@
                     matTooltip="Rechazar" (click)="aprobarRequerimiento(element, true)">
                     <mat-icon>cancel</mat-icon>
                 </button>
-                <button mat-icon-button class="primary-button"
+                <!-- <button mat-icon-button class="primary-button"
                     [disabled]="(element.estadoRequerimiento.descripcion == 'PENDIENTE' || element.estadoRequerimiento.descripcion == 'DERIVADO')? false:true"
                     matTooltip="Derivar a otra área" (click)="derivarRequerimiento(element)">
                     <mat-icon>subdirectory_arrow_right</mat-icon>
-                </button>
+                </button> -->
                 <button mat-icon-button class="primary-button"
-                    [disabled]="element.estadoRequerimiento.descripcion != 'APROBADO'" matTooltip="Asignar Tarea"
-                    (click)="registrarTareas(element)">
+                    [disabled]="(element.estadoRequerimiento.descripcion != 'APROBADO') || (element.requerimiento.porcentajeAvance ==100)"
+                    matTooltip="Asignar Tarea" (click)="registrarTareas(element)">
                     <mat-icon>settings</mat-icon>
                 </button>
             </td>

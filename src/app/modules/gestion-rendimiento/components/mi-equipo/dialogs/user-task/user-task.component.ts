@@ -9,6 +9,9 @@ import { UserDownloadTaskComponent } from '../user-download-task/user-download-t
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { DialogService, NotificationService } from '@core/services';
 import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.component';
+import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimiento/reporte-finalizados';
+import { EvidenciaResponseDTO } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 //import * as XLSX from 'xlsx';
 
 @Component({
@@ -17,6 +20,7 @@ import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.co
   styleUrls: ['./user-task.component.scss']
 })
 export class UserTaskComponent implements OnInit {
+  evidenciaDTO: EvidenciaResponseDTO;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -34,6 +38,7 @@ export class UserTaskComponent implements OnInit {
     private services: GestionRendimientoService,
     private _notification: NotificationService,
     private _dialogService: DialogService,
+    public _serviceExcel: ExportExcelGestionRendimientoService,
   ) { }
 
   ngOnInit(): void {
@@ -96,6 +101,90 @@ export class UserTaskComponent implements OnInit {
         this._notification.warning("El integrante no cuenta con requerimientos");
       }
     });
+  }
+
+  async exportToExcel(element) {
+    console.log("element", element)
+    if (element.idRequerimientoUsuario > 0) {
+      let reportePersonal = new ReportePersonal();
+      reportePersonal.apellidos = element.usuario.apellidos;
+      reportePersonal.nombres = element.usuario.nombres;
+      reportePersonal.cargo = element.usuario.cargo;
+
+      let listTarea: ReporteEvidencia[] = [];
+      for (let i of element.listTarea) {
+        let obj = new ReporteEvidencia();
+        obj.nombreTarea = i.nombreTarea;
+        obj.requerimientoDescripcion = element.requerimiento.nombre;
+        obj.poi = element.poi.descripcion;
+        obj.indicador = element.poi.indicador.descripcion;
+
+        let a = await this.services.getEvidenciaPorTarea(i.idTarea).then((data: any) => {
+          if (data != null) {
+            this.evidenciaDTO = data;
+            console.log("dto:", data);
+          } else {
+            this.evidenciaDTO = null;
+          }
+        });
+
+        //comparar fechas para el comentario en excel
+        let fechaISOPlazo = i.plazo.split("T");
+        let fechaPlazo = fechaISOPlazo[0];
+
+        if (this.evidenciaDTO.idEvidencia > 0) {
+          let fechaISOEvidencia = this.evidenciaDTO.fechaCreacion.split("T");
+          let fechaEvidencia = fechaISOEvidencia[0];
+
+          console.log("fechaPlazo: ", fechaPlazo);
+          console.log("fechaEvidencia: ", fechaEvidencia)
+
+          var first = new Date(fechaPlazo);
+          var second = new Date(fechaEvidencia);
+
+          if (first < second) {
+            console.log(first, "es menor que", second);
+            obj.comentario = 'Se pasó de la fecha';
+          }
+          else if (first > second) {
+            console.log(first, "es mayor que", second);
+            obj.comentario = 'Presentó evidencia dentro de la fecha';
+          }
+          else if (first == second) {
+            console.log(first, "es igual que", second);
+            obj.comentario = 'Presentó evidencia dentro de la fecha';
+          }
+          obj.descripcionEvidencia = this.evidenciaDTO.descripcion;
+          obj.porcentajeAvanceEvidencia = this.evidenciaDTO.porcentajeAvance;
+          obj.plazoTarea = fechaPlazo;
+          listTarea.push(obj);
+          obj = null;
+          reportePersonal.estadoEntregado = "Entregado";
+
+        } else {
+          this._notification.warning("No se encontró evidencia para la tarea: " + i.nombreTarea);
+
+          let obj = new ReporteEvidencia();
+          obj.nombreTarea = i.nombreTarea;
+          obj.requerimientoDescripcion = element.requerimiento.nombre;
+          obj.poi = element.poi.descripcion;
+          obj.plazoTarea = fechaPlazo;
+          obj.porcentajeAvanceEvidencia = 0;
+          obj.comentario = 'No presentó evidencia';
+          listTarea.push(obj);
+          obj = null;
+        }
+
+      }
+      console.log("data excel", listTarea)
+      let columnsName = ["String_1", "String_2"];
+      let reportData = {
+        data_personal: reportePersonal,
+        data_evidencia: listTarea,
+        headers: columnsName,
+      };
+      this._serviceExcel.exportExcel(reportData);
+    }
   }
 
 }
