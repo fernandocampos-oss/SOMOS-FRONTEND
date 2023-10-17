@@ -38,7 +38,7 @@ const data: MenuItem[] = [
     icon: 'settings',
     label:'Administracion',
     type: 3,
-    roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+    // roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
     children:[
       // {
       //   path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_USUARIOS}`,
@@ -50,7 +50,7 @@ const data: MenuItem[] = [
         path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
         icon: 'settings',
         label: 'Campañas Asignadas',
-        roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+        // roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
       },
     ]
   },

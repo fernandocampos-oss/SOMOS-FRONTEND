@@ -340,6 +340,21 @@ export class MenuPrincipalComponent implements OnInit {
           idInscripcion: publicacionData.idInscripcion
         }
       });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          const dialogRef2: MatDialogRef<RegisterVoteInscripcionComponent> = this.dialog.open(RegisterVoteInscripcionComponent, {
+            disableClose: false,
+            minWidth: '22em',
+            width: '1000px',
+            maxWidth:'40em',
+            autoFocus: false,
+            data:{
+              idInscripcion: publicacionData.idInscripcion
+            }
+            });
+        }
+      });
     }
     else{
       const dialogRef: MatDialogRef<RegisterInscripcionComponent> = this.dialog.open(RegisterInscripcionComponent, {

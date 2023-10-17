@@ -25,3 +25,8 @@ export class InscripcionRequest {
   descripcion?: string;
   imagenBase64?: string;
 }
+
+export class VotacionInscripcionRequest {
+  idInscripcion: number;
+  idCandidato: number;
+}

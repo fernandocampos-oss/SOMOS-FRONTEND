@@ -1,9 +1,9 @@
-<div *ngIf="wait" style="text-align: center;">
+<div *ngIf="wait && inscripcionVotacionElegida" style="text-align: center;">
     <h4>{{inscripcionVotacionElegida.descripcion}}</h4>
     <span>Elige una opción y vota</span>
     <div class="separacion" *ngIf="inscripcionVotacionElegida.candidatos.length < 5">
         <ng-container *ngFor="let candidato of inscripcionVotacionElegida.candidatos, index as i">
-            <div class="elementos" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
+            <div class="elementos" (click)="selectImageList(candidato)" [ngClass]="{'selected' : candidato == optSelected, 'noSelected': candidato != optSelected}">
                 <div class="candHeader">
                     <span>{{candidato.descripcion | titlecase}}</span>
                 </div>
@@ -38,6 +38,14 @@
     </div>
     <mat-dialog-actions style="justify-content: space-evenly;">
             <button mat-button mat-dialog-close>Cerrar</button>
-            <button mat-raised-button color="primary" [disabled]="!optSelected">Votar por esta Opción</button>
+            <button mat-raised-button color="primary" [disabled]="!optSelected" (click)="votar()">Votar por esta Opción</button>
+    </mat-dialog-actions>
+</div>
+
+<div class="dialogEncuesta encuestaHecha" *ngIf="wait && !inscripcionVotacionElegida">
+    <img src="assets/images/surveyCheck.png">
+    <h3>¡Gracias por participar de la elección!</h3>
+    <mat-dialog-actions align="center">
+            <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
     </mat-dialog-actions>
 </div>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { InscripcionRequest } from '@data/models/inscripcion/inscripcion.model';
+import { InscripcionRequest, VotacionInscripcionRequest } from '@data/models/inscripcion/inscripcion.model';
 import { environment } from '@env';
 
 // const URL_BASE = `http://localhost/api/inscripciones`;
@@ -34,5 +34,10 @@ export class InscripcionService {
   getUsuariosInscritos(idInscripcion: number){
     const url = `${URL_BASE}/${idInscripcion}/inscritos`;
     return this._httpClient.get<any>(url);
+  }
+
+  votarInscripcion(model: VotacionInscripcionRequest){
+    const url = `${URL_BASE}/registrar-voto`;
+    return this._httpClient.post<any>(url,model);
   }
 }
