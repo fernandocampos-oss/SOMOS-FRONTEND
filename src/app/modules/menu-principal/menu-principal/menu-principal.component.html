@@ -33,7 +33,7 @@
                   <img class="imgInfo" src='assets/images/p_Elecciones.jpg' alt='Elecciones 2023' (click)="showEncuestaSimple(pub)">
                 </div>
               </div> -->
-            <div *ngIf="publicacionAnclada">
+            <div *ngIf="publicacionAnclada && mostrarEleccion">
               <div class="boxPublicacion">
                 <div class="descrPub">
                   <span>{{publicacionAnclada.titulo}}</span>
