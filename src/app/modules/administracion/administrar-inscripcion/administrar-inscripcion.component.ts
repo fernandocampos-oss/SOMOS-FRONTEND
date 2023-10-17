@@ -81,18 +81,7 @@ export class AdministrarInscripcionComponent implements OnInit {
         this.listInscritos.forEach((x)=>{
           if(idGrupo != x.idLider && x.idLider == x.idUsuario){
             idGrupo = x.idLider;
-            this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, integrantes:[]});
-          }
-          if (x.idLider == idGrupo){
-            this.grupos.find((xs)=> {return xs.grupo == x.idLider}).integrantes.push({
-              idUsuario: x.idUsuario,
-              numeroDocumento: x.numeroDocumento,
-              nombreCompleto: x.nombreCompleto,
-              regimen: x.regimen,
-              numeroCelular: x.numeroCelular,
-              correo: x.correo,
-              fechaInscripcion: x.fechaInscripcion,
-            });
+            this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, integrantes:this.listInscritos.filter((z)=>{return x.idLider == z.idLider})});
           }
         })
         console.log(this.grupos)
