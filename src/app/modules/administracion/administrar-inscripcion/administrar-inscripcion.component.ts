@@ -58,7 +58,7 @@ export class AdministrarInscripcionComponent implements OnInit {
 
   getData(){
     this.inscripcionService.getUsuariosInscritos(this.tipo).subscribe((data)=>{
-      console.log(data)
+      // console.log(data)
       this.idIns = data.idInscripcion;
       this.descripcionInsc = data.descripcion;
       this.listInscritos = data.inscritos;
@@ -84,7 +84,7 @@ export class AdministrarInscripcionComponent implements OnInit {
             this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, integrantes:this.listInscritos.filter((z)=>{return x.idLider == z.idLider})});
           }
         })
-        console.log(this.grupos)
+        // console.log(this.grupos)
       }
     })
   }

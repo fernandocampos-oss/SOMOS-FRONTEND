@@ -33,7 +33,7 @@
                   <img class="imgInfo" src='assets/images/p_Elecciones.jpg' alt='Elecciones 2023' (click)="showEncuestaSimple(pub)">
                 </div>
               </div> -->
-            <div *ngIf="publicacionAnclada && mostrarEleccion">
+            <!-- <div *ngIf="publicacionAnclada && mostrarEleccion">
               <div class="boxPublicacion">
                 <div class="descrPub">
                   <span>{{publicacionAnclada.titulo}}</span>
@@ -41,13 +41,12 @@
                 </div>
                 <div class="containerImg" *ngIf="publicacionAnclada.imagenBase64">
                   <img class="imgInfo" src='data:image/jpeg;base64,{{publicacionAnclada.imagenBase64}}' alt='{{publicacionAnclada.titulo}}' (click)="showEncuestaSimple(publicacionAnclada)">
-                  <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
-                  <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
                 </div>
               </div>
-            </div>
+            </div> -->
             <div *ngFor="let pub of publicaciones">
-              <div class="boxPublicacion" *ngIf="pub.idPublicacion != 56">
+              <!-- <div class="boxPublicacion" *ngIf="pub.idPublicacion != 56"> -->
+              <div class="boxPublicacion">
                 <div class="descrPub">
                   <span>{{pub.titulo}}</span>
                   <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
