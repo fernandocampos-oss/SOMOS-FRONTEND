@@ -84,15 +84,19 @@ export class ExportExcelService {
   formatoContenido(wb: Worksheet, values, cantHeaders){
     if(values.some(x => x.idLider != null)){
       let identificador = 0;
-      let position;
+      // let position;
       for (let i = 0; i < values.length; i++) {
-        if(values[i].idLider != identificador || i + 1 == values.length){
+        if(values[i].idLider != identificador){
           identificador = values[i].idLider;
-          if(identificador != values[0].idLider){
-            let identity = (i + 1 == values.length ? i+1 : i)
-            wb.mergeCells(wb.getRow(position+6).getCell(1).address,wb.getRow(identity+5).getCell(1).address);
-          } //aqui poner el merge;
-          position = i;
+          // console.log(values[i].idLider)
+          // console.log(wb.getRow(i+6).getCell(1).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address)
+          // console.log(values.filter((z)=>{return values[i].idLider == z.idLider}))
+          wb.mergeCells(wb.getRow(i+6).getCell(1).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address);
+          // if(identificador != values[0].idLider){
+          //   let identity = (i + 1 == values.length ? i +1: i)
+          //   wb.mergeCells(wb.getRow(position+6).getCell(1).address,wb.getRow(identity+5).getCell(1).address);
+          // } //aqui poner el merge;
+          // position = i;
         }
       }
       for (let i = 0; i < values.length; i++) {
