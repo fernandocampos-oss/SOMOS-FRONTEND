@@ -1,4 +1,4 @@
-<div class="page" *ngIf="user.id == 12691"> 
+<div class="page" *ngIf="user.id == idUsuarioRequerido || idUsuarioRequerido == 0"> 
 <!-- <div class="page"> -->
     <div class="matero-page-header">
       <h1 class="matero-page-title"><mat-icon>how_to_reg</mat-icon> Administrar Inscripciones<br>
@@ -80,7 +80,10 @@
                   <b>Grupo:</b> {{grupo.descripcion}}
                 </mat-panel-title>
                 <mat-panel-description>
-                  Integrantes: {{grupo.integrantes.length}}
+                  <div class="descrpGrupo">
+                    <span *ngIf="esVotacion" class="votacionGrupo"><b>Votos:</b> {{grupo.cantVotos}}</span>
+                    <span>Integrantes: {{grupo.integrantes.length}}</span>
+                  </div>
                 </mat-panel-description>
               </mat-expansion-panel-header>
               <div class="infoGrupo">

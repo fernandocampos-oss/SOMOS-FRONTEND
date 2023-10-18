@@ -27,6 +27,13 @@
     }
     mat-panel-description{
         justify-content: right;
+        .descrpGrupo{
+            gap: 1rem;
+            display: flex;
+            .votacionGrupo{
+                color: black;
+            }
+        }
     }
     .infoGrupo{
         display: flex;

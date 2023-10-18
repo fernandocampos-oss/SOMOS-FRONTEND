@@ -32,10 +32,14 @@ export class AdministrarInscripcionComponent implements OnInit {
   listInscritos: inscritosResponse[] = [];
   grupos: any = [];
 
+  resultadosVotacion: any = [];
+
   displayedColumns: string[] = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
 
   headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
   
+  idUsuarioRequerido = 12691;
+
   tipo: number = 2;
 
   constructor(
@@ -48,7 +52,9 @@ export class AdministrarInscripcionComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this._authService.getUserSession();
-    this.getData();
+    if(this.user.id == this.idUsuarioRequerido || this.idUsuarioRequerido == 0){
+      this.getData();
+    }
     this.selectFormControl.valueChanges.subscribe((data)=>{
       this.grupos = [];
       this.tipo = data;
@@ -75,16 +81,22 @@ export class AdministrarInscripcionComponent implements OnInit {
 
       if(this.tipo == 2){
         let idGrupo = 0;
+        this.resultadosVotacion = data.votacionesResultado;
+        console.log(this.resultadosVotacion)
         this.listInscritos.sort(function (a, b) {
             return a.fechaInscripcion.localeCompare(b.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
         });
         this.listInscritos.forEach((x)=>{
           if(idGrupo != x.idLider && x.idLider == x.idUsuario){
+            let cantVotacion = 0;
             idGrupo = x.idLider;
-            this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, integrantes:this.listInscritos.filter((z)=>{return x.idLider == z.idLider})});
+            if(data.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == x.idLider})){
+              cantVotacion = data.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == x.idLider}).votos;
+            }
+            this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, cantVotos: cantVotacion, integrantes:this.listInscritos.filter((z)=>{return x.idLider == z.idLider})});
           }
         })
-        // console.log(this.grupos)
+        console.log(this.grupos)
       }
     })
   }
