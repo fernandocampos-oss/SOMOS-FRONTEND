@@ -19,7 +19,7 @@ export class ExportExcelService {
 
   constructor() { }
 
-  exportExcel(titulo, columnas: string[], inscritos :inscritosResponse[]) {
+  exportExcel(titulo, columnas: string[], inscritos :inscritosResponse[], esVotacion: any) {
     //Title, Header & Data
     // const regimen = excelData.regimen;
     // const header = excelData.headers;
@@ -42,7 +42,7 @@ export class ExportExcelService {
 
     this.formatoHeaders(worksheet,columnas);
 
-    this.formatoContenido(worksheet, inscritos, columnas.length);
+    this.formatoContenido(worksheet, inscritos, columnas.length, esVotacion);
 
     for (let i = 0; i < columnas.length; i++) {
       let maxLength = columnas[i].length;
@@ -81,7 +81,7 @@ export class ExportExcelService {
     }
   }
 
-  formatoContenido(wb: Worksheet, values, cantHeaders){
+  formatoContenido(wb: Worksheet, values, cantHeaders, esVotacion){
     if(values.some(x => x.idLider != null)){
       let identificador = 0;
       // let position;
@@ -92,6 +92,15 @@ export class ExportExcelService {
           // console.log(wb.getRow(i+6).getCell(1).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address)
           // console.log(values.filter((z)=>{return values[i].idLider == z.idLider}))
           wb.mergeCells(wb.getRow(i+6).getCell(1).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address);
+          if(esVotacion){
+            wb.mergeCells(wb.getRow(i+6).getCell(2).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(2).address);
+            if(esVotacion.find((votacionRes)=>{return votacionRes.idLider == identificador})){
+              wb.getRow(i+6).getCell(2).value = esVotacion.find((votacionRes)=>{return votacionRes.idLider == identificador}).votos;
+            }
+            else{
+              wb.getRow(i+6).getCell(2).value = 0;
+            }
+          }
           // if(identificador != values[0].idLider){
           //   let identity = (i + 1 == values.length ? i +1: i)
           //   wb.mergeCells(wb.getRow(position+6).getCell(1).address,wb.getRow(identity+5).getCell(1).address);
@@ -101,11 +110,20 @@ export class ExportExcelService {
       }
       for (let i = 0; i < values.length; i++) {
         wb.getRow(i+6).getCell('A').value = values[i].descripcion;
-        wb.getRow(i+6).getCell('B').value = values[i].numeroDocumento;
-        wb.getRow(i+6).getCell('C').value = values[i].nombreCompleto;
-        wb.getRow(i+6).getCell('D').value = values[i].regimen;
-        wb.getRow(i+6).getCell('E').value = values[i].numeroCelular;
-        wb.getRow(i+6).getCell('F').value = values[i].correo;
+        if(esVotacion){
+          wb.getRow(i+6).getCell('C').value = values[i].numeroDocumento;
+          wb.getRow(i+6).getCell('D').value = values[i].nombreCompleto;
+          wb.getRow(i+6).getCell('E').value = values[i].regimen;
+          wb.getRow(i+6).getCell('F').value = values[i].numeroCelular;
+          wb.getRow(i+6).getCell('G').value = values[i].correo;
+        }
+        else{
+          wb.getRow(i+6).getCell('B').value = values[i].numeroDocumento;
+          wb.getRow(i+6).getCell('C').value = values[i].nombreCompleto;
+          wb.getRow(i+6).getCell('D').value = values[i].regimen;
+          wb.getRow(i+6).getCell('E').value = values[i].numeroCelular;
+          wb.getRow(i+6).getCell('F').value = values[i].correo;
+        }
         for (let j = 0; j < cantHeaders; j++) {
           wb.getRow(i+6).getCell(j+1).font = {
             name: 'Calibri',

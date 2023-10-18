@@ -32,7 +32,7 @@ export class AdministrarInscripcionComponent implements OnInit {
   listInscritos: inscritosResponse[] = [];
   grupos: any = [];
 
-  resultadosVotacion: any = [];
+  resultadosVotacion: any;
 
   displayedColumns: string[] = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
 
@@ -124,11 +124,14 @@ export class AdministrarInscripcionComponent implements OnInit {
   exportar(){
     if(this.tipo == 2){
       this.headers.splice(0,0,'GRUPO');
+      if(this.esVotacion){
+        this.headers.splice(1,0,'VOTOS');
+      }
     }
     else{
       this.headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
     }
-    this._servicerExcel.exportExcel(this.descripcionInsc, this.headers, this.listInscritos)
+    this._servicerExcel.exportExcel(this.descripcionInsc, this.headers, this.listInscritos, this.resultadosVotacion)
   }
 
   activarVotacion(){
