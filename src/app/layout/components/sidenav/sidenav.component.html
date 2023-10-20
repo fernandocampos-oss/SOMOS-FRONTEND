@@ -29,7 +29,7 @@
             <mat-icon *ngIf ="item.svg" mat-list-icon svgIcon={{item.icon}} class="icon iconPopUp"></mat-icon>
             <span class="option" matLine>{{ item.label }} </span>
           </mat-list-item>
-          <mat-expansion-panel *ngIf="item.type==3 && user.id == 12691" [class.mat-elevation-z0]="true" class="subMenu">
+          <mat-expansion-panel *ngIf="item.type==3" [class.mat-elevation-z0]="true" class="subMenu">
             <mat-expansion-panel-header>
               <mat-icon *ngIf ="!item.svg" mat-list-icon>{{ item.icon }}</mat-icon>
               <mat-icon *ngIf ="item.svg" mat-list-icon svgIcon={{item.icon}} class="icon"></mat-icon>

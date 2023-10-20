@@ -38,20 +38,20 @@ const data: MenuItem[] = [
     icon: 'settings',
     label:'Administracion',
     type: 3,
-    // roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+    roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
     children:[
-      // {
-      //   path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_USUARIOS}`,
-      //   icon: 'settings',
-      //   label: 'Usuarios por Red',
-      //   roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
-      // },
       {
-        path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
+        path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_USUARIOS}`,
         icon: 'settings',
-        label: 'Campañas Asignadas',
-        // roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+        label: 'Usuarios por Red',
+        roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
       },
+      // {
+      //   path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
+      //   icon: 'settings',
+      //   label: 'Campañas Asignadas',
+      //   // roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+      // },
     ]
   },
   // {
