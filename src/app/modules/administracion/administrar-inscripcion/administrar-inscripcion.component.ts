@@ -38,7 +38,7 @@ export class AdministrarInscripcionComponent implements OnInit {
 
   headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
   
-  idUsuarioRequerido = 12691;
+  idUsuarioRequerido = 242;
 
   tipo: number = 2;
 

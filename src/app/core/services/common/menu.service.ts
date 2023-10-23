@@ -42,16 +42,22 @@ const data: MenuItem[] = [
     children:[
       {
         path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_USUARIOS}`,
-        icon: 'settings',
+        icon: 'insert_chart',
         label: 'Usuarios por Red',
         roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
       },
-      // {
-      //   path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
-      //   icon: 'settings',
-      //   label: 'Campañas Asignadas',
-      //   // roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
-      // },
+      {
+        path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_RENUEVA}`,
+        icon: 'library_books',
+        label: 'Proyectos de Renueva EsSalud',
+        roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+      },
+      {
+        path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
+        icon: 'settings',
+        label: 'Campañas Asignadas',
+        roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+      },
     ]
   },
   // {

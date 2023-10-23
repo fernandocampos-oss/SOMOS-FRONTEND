@@ -11,6 +11,7 @@ import { AdministrarUsuariosComponent } from './administrar-usuarios/administrar
 import { AdministrarInscripcionComponent } from './administrar-inscripcion/administrar-inscripcion.component';
 import { VistaUsuariosComponent } from './administrar-usuarios/components/vista-usuarios/vista-usuarios.component';
 import { SharedModule } from '@shared/shared.module';
+import { AdministrarProyectosComponent } from './administrar-proyectos/administrar-proyectos.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SharedModule } from '@shared/shared.module';
     AdministracionComponent,
     VistaUsuariosComponent,
     AdministrarUsuariosComponent,
-    AdministrarInscripcionComponent
+    AdministrarInscripcionComponent,
+    AdministrarProyectosComponent
   ],
   imports: [
     CommonModule,
