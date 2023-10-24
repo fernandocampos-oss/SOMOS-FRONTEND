@@ -15,7 +15,7 @@ const EXCEL_EXTENSION = '.xlsx';
   providedIn: 'root'
 })
 export class ExportExcelAdministracionesService {
-  fileName: string = "Inscripción Campaña";
+  fileName: string = "Somos EsSalud - Reporte Usuarios ";
 
   constructor() { }
 
@@ -26,7 +26,7 @@ export class ExportExcelAdministracionesService {
     let worksheet = workbook.addWorksheet('Usuarios Registrados');
 
     //Add Row and formatting
-    worksheet.mergeCells('A3', 'J3');
+    worksheet.mergeCells('A3', 'L3');
     let titleReport = worksheet.getCell('A3');
       titleReport.value = titulo;
       titleReport.font = {
@@ -52,7 +52,7 @@ export class ExportExcelAdministracionesService {
     //Generate & Save Excel File
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: EXCEL_TYPE, });
-      fs.saveAs(blob, this.fileName + EXCEL_EXTENSION);
+      fs.saveAs(blob, titulo + EXCEL_EXTENSION);
     });
   }
   
@@ -82,12 +82,14 @@ export class ExportExcelAdministracionesService {
       wb.getRow(i+6).getCell('C').value = values[i].nombres;
       wb.getRow(i+6).getCell('D').value = values[i].apellidos;
       wb.getRow(i+6).getCell('E').value = datePipe.transform(values[i].fechaCreacion, 'dd/MM/yyyy - hh:mm a');
-      wb.getRow(i+6).getCell('F').value = values[i].regimen;
-      wb.getRow(i+6).getCell('G').value = values[i].cargo;
-      wb.getRow(i+6).getCell('H').value = values[i].descripcionRed;
-      wb.getRow(i+6).getCell('I').value = values[i].descripcionUnidad;
-      wb.getRow(i+6).getCell('J').value = values[i].sexo;  
-      for (let j = 0; j < 10; j++) {
+      wb.getRow(i+6).getCell('F').value = values[i].correo;
+      wb.getRow(i+6).getCell('G').value = values[i].numeroCelular;
+      wb.getRow(i+6).getCell('H').value = values[i].regimen;
+      wb.getRow(i+6).getCell('I').value = values[i].cargo;
+      wb.getRow(i+6).getCell('J').value = values[i].descripcionRed;
+      wb.getRow(i+6).getCell('K').value = values[i].descripcionUnidad;
+      wb.getRow(i+6).getCell('L').value = values[i].sexo;  
+      for (let j = 0; j < 12; j++) {
         wb.getRow(i+6).getCell(j+1).font = {
           name: 'Calibri',
           size: 14,

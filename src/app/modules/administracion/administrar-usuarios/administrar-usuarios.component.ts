@@ -67,7 +67,7 @@ export class AdministrarUsuariosComponent implements OnInit {
         };
       })
       this.single = [...newArray];
-      console.log(newArray)
+      // console.log(newArray)
       this.cargaLista = true;
     });
     // if(this.authService.getRol() == 4){

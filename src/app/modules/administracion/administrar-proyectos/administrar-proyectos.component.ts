@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ExportPdfProyectosService } from '@data/services/pdf-export-services/export-pdf-proyectos.service';
 import { RenuevaEssaludService } from '@data/services/renueva-essalud.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class AdministrarProyectosComponent implements OnInit {
   constructor( private renuevaService       : RenuevaEssaludService,
                private _router              : Router,
                private route                : ActivatedRoute,
+               private pdfService           : ExportPdfProyectosService
                ) { }
 
   ngOnInit(): void {
@@ -29,5 +31,9 @@ export class AdministrarProyectosComponent implements OnInit {
 
   back() {
     this._router.navigate([''], { relativeTo: this.route });
+  }
+
+  getPdfProyecto(element){
+    this.pdfService.generatePDF(element);
   }
 }

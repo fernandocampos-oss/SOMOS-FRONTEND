@@ -1,0 +1,130 @@
+import { Injectable } from '@angular/core';
+import jsPDF, { TextOptionsLight } from 'jspdf';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ExportPdfProyectosService {
+
+  constructor() { }
+
+  generatePDF(projectInfo: any){
+    console.log(projectInfo)
+    const doc = new jsPDF();
+    var img = 'data:image/jpeg;base64,'+ projectInfo.grupo.imagenBase64;
+    var dimensionImage = 60;
+    doc.setFontSize(12);
+    doc.setFont('times')
+    let yPosition = 10;
+
+    let espacioSubTitulo = 0.5;
+    let espacioFinalTexto = 2;
+
+    var centerX = doc.internal.pageSize.getWidth() / 2;
+    doc.addImage(img, 'PNG', centerX - (dimensionImage/2), yPosition, dimensionImage, dimensionImage);
+
+    yPosition +=dimensionImage+10;
+
+    let lider = projectInfo.grupo.miembros.find((x)=>{ return x.idUsuario == projectInfo.idUsuario});
+
+    function addTextToPdf(text: string, espacioExtra: number, negrita: boolean) {
+      var configParrafos: TextOptionsLight = {
+        align: 'justify', 
+        maxWidth: 180,
+        
+      }
+      let linesOfText = doc.splitTextToSize(text, configParrafos.maxWidth).length;
+      doc.setFont('times', negrita == true ? 'bold' : null)
+      if(yPosition + linesOfText*4 > doc.internal.pageSize.height){
+        doc.addPage();
+        yPosition = 10;
+      }
+      doc.text(text, 10, yPosition, configParrafos);
+      yPosition += linesOfText*4 + espacioExtra*4;
+    }
+
+    addTextToPdf('Perfil del líder y equipo',0, true);
+    addTextToPdf('Lista de archivos subidos al momento de enviar la ficha de registros',1, false);
+    addTextToPdf('INFORMACIÓN DEL EQUIPO',1, true);
+    addTextToPdf('Nombre del grupo',0, true);
+    addTextToPdf(projectInfo.grupo.nombre,2, false);
+    addTextToPdf('Ficha de registro',1, true);
+
+    addTextToPdf('A. Categoría a la que participan (Marcar solo una categoría):',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.grupo.categoria,espacioFinalTexto, false);
+
+    addTextToPdf('B. Red, Hospital, Área asistencial o administrativa a la que pertenecen:',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.grupo.sede,espacioFinalTexto, false);
+
+    addTextToPdf('D. Datos de contacto del Líder:',espacioSubTitulo, true);
+    addTextToPdf('N° de celular:',espacioSubTitulo, true);
+    addTextToPdf(lider.numeroCelular,1.25, false);
+    addTextToPdf('Email:',espacioSubTitulo, true);
+    addTextToPdf(lider.correo,1.25, false);
+    addTextToPdf('Nombre completo del Jefe de Red Prestacional, Asistencial, IPRESS, Establecimiento de Salud o Área administrativa a la que pertenece:',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.grupo.jefe,1.25, false);
+    
+    addTextToPdf('E. Describir la motivación por la cual postulan:',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.descripcion.motivo,espacioFinalTexto, false);
+    
+    addTextToPdf('F. Indicar desde qué fecha se ha implementado la acción innovadora:',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.descripcion.fecha,espacioFinalTexto, false);
+    
+    addTextToPdf('G. Descripción general de la acción innovadora:',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.descripcion.descripcion,espacioFinalTexto, false);
+    
+    addTextToPdf('H. Describir el contexto inicial (la situación inicial antes de implementar la acción innovadora):',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.descripcion.contexto,espacioFinalTexto, false);
+    
+    addTextToPdf('I. ¿Qué es lo innovador de esta acción implementada?:',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.descripcion.innovacion,espacioFinalTexto, false);
+    
+    addTextToPdf('J. Mencionar los principales indicadores de medición de resultados y/o impacto (máximo seis indicadores que miden el cambio o beneficio generado):',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.descripcion.indicador,espacioFinalTexto, false);
+    
+    addTextToPdf('K. Indicar los principales resultados e impacto, luego de implementada la acción innovadora:',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.implementacion.resultado,espacioFinalTexto, false);
+    
+    addTextToPdf('L. ¿La acción innovadora es sostenible?:',espacioSubTitulo, true);
+    if(projectInfo.implementacion.sostenible === 'Si'){
+      addTextToPdf(projectInfo.implementacion.sostenible, 0, false);
+      addTextToPdf('¿Por qué?:', 0, false);
+      addTextToPdf(projectInfo.implementacion.sostenibleFundamento, espacioFinalTexto, false);
+    }
+    else{
+      addTextToPdf(projectInfo.implementacion.sostenible, espacioFinalTexto, false);
+    }
+    
+    addTextToPdf('M. ¿La acción innovadora es replicable?:',espacioSubTitulo, true);
+    if(projectInfo.implementacion.replicable === 'Si'){
+      addTextToPdf(projectInfo.implementacion.replicable, 0, false);
+      addTextToPdf('Indicar las condiciones para la replicabilidad de la acción innovadora:', 0, false);
+      addTextToPdf(projectInfo.implementacion.replicableFundamento, espacioFinalTexto, false);
+    }
+    else{
+      addTextToPdf(projectInfo.implementacion.replicable, espacioFinalTexto, false);
+    }
+    
+    addTextToPdf('N. ¿La acción innovadora utiliza la tecnología?:',espacioSubTitulo, true);
+    if(projectInfo.implementacion.tecnologia === 'Si'){
+      addTextToPdf(projectInfo.implementacion.tecnologia, 0, false);
+      addTextToPdf('¿Qué tipo de tecnología y de qué manera se utiliza?', 0, false);
+      addTextToPdf(projectInfo.implementacion.tecnologiaFundamento, espacioFinalTexto, false);
+    }
+    else{
+      addTextToPdf(projectInfo.implementacion.tecnologia, espacioFinalTexto, false);
+    }
+    
+    addTextToPdf('O. ¿Indicar a qué servicios dentro de Essalud beneficia la acción innovadora?:',espacioSubTitulo, true);
+    addTextToPdf(projectInfo.implementacion.beneficio,espacioFinalTexto, false);
+    
+    addTextToPdf('P. Indicar si la acción innovadora involucra alguno o varios de estos enfoques: (Marcar una o varias alternativas):',espacioSubTitulo, true);
+    // addTextToPdf(projectInfo.implementacion.beneficio,espacioFinalTexto, false);
+
+    // var array = [{x: '1', y: '1'}, {x: '2', y: '2'}, {x: '3', y: '3'}, {x: '4', y: '4'}];
+
+    // doc.table(60,70,array,['x','y'],null)
+
+    doc.save('exported-document.pdf');
+  }
+}

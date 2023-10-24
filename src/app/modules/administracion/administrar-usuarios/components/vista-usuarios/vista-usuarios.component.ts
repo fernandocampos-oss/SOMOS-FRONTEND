@@ -23,7 +23,7 @@ export class VistaUsuariosComponent implements OnInit{
   dataSource: MatTableDataSource<UsuarioInformacionResponseDto>;
   displayedColumns: string[] = ['item','dni','codPlanilla','nombre','fechaCrea','regimen','cargo','red','unidad','sexo'];
 
-  headers = ['Nro. Documento','Cod. Planilla','Nombres','Apellidos','Fecha Registro','Regimen','Cargo','Red','Unidad Orgánica','Sexo']
+  headers = ['Nro. Documento','Cod. Planilla','Nombres','Apellidos','Fecha Registro','Correo','Celular','Regimen','Cargo','Red','Unidad Orgánica','Sexo']
 
   redesAsignadas: RedPersonal[] = [];
   
@@ -41,6 +41,7 @@ export class VistaUsuariosComponent implements OnInit{
 
   actualizarTabla(){
     this._adminServ.getUsuariosRedes(this.getRequest(10)).subscribe((data)=>{
+      // console.log(data)
       if(data.usuarios.length != 0){
         this.redesAsignadas = data.redes;
         this.dataSource = new MatTableDataSource(data.usuarios);
