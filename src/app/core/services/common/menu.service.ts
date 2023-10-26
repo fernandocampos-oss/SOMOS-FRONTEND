@@ -50,7 +50,7 @@ const data: MenuItem[] = [
         path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_RENUEVA}`,
         icon: 'library_books',
         label: 'Proyectos de Renueva EsSalud',
-        roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+        roles: [Role.ADMIN_CENTRAL],
       },
       // {
       //   path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,

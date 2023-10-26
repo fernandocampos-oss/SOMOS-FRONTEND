@@ -36,8 +36,8 @@
               <span class="option" matLine>{{ item.label }} </span>
             </mat-expansion-panel-header>
             <mat-nav-list>
-              <ng-container>
-              <mat-list-item *ngFor="let subItem of item.children" routerLinkActive="active" [routerLink]="['/' + subItem.path]" [routerLinkActiveOptions]="{ exact: true }">
+              <ng-container *ngFor="let subItem of item.children">
+              <mat-list-item *ngIf="subItem.roles.includes(user.idRol)" routerLinkActive="active" [routerLink]="['/' + subItem.path]" [routerLinkActiveOptions]="{ exact: true }">
                 <mat-icon *ngIf ="!subItem.svg" mat-list-icon>{{ subItem.icon }}</mat-icon>
                 <mat-icon *ngIf ="subItem.svg" mat-list-icon svgIcon={{subItem.icon}} class="icon"></mat-icon>
                 <span class="option" matLine>{{ subItem.label }} </span>
@@ -45,14 +45,10 @@
             </mat-nav-list>
           </mat-expansion-panel>
         </div>
-        <!-- <mat-list-item *ngIf="user.id == 254"
-          routerLinkActive="active"
-          [routerLink]="['/administracion/inscripciones']"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <mat-icon mat-list-icon>how_to_reg</mat-icon>
-          <span class="option" matLine>Administrar Inscripciones </span>
-        </mat-list-item> -->
+        <mat-list-item *ngIf="user.id == 291 || user.id == 12560" routerLinkActive="active" [routerLink]="['/administracion/renueva-proyectos']" [routerLinkActiveOptions]="{ exact: true }">
+          <mat-icon mat-list-icon>library_books</mat-icon>
+          <span class="option" matLine>Proyectos de Renueva EsSalud </span>
+        </mat-list-item>
       </ng-container>
     </mat-nav-list>
   </div>

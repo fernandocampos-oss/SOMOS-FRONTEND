@@ -4,6 +4,8 @@ import { ExportPdfProyectosService } from '@data/services/pdf-export-services/ex
 import { RenuevaEssaludService } from '@data/services/renueva-essalud.service';
 import { VistaPreviaProyectoComponent } from './vista-previa-proyecto/vista-previa-proyecto.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '@data/services';
+import { NotificationService } from '@core/services';
 
 @Component({
   selector: 'app-administrar-proyectos',
@@ -20,12 +22,21 @@ export class AdministrarProyectosComponent implements OnInit {
   constructor( private renuevaService       : RenuevaEssaludService,
                private _router              : Router,
                private dialogRef            : MatDialog,
+               private notificationService  : NotificationService,
+               private authService          : AuthService,
                private route                : ActivatedRoute,
                private pdfService           : ExportPdfProyectosService
                ) { }
 
   ngOnInit(): void {
-    this.filtrar(0);
+    if(this.authService.getUserSession().idRol == 4 || this.authService.getUserSession().id == 291 || this.authService.getUserSession().id == 12560){
+      this.filtrar(0);
+    }
+    else{
+      this.authService.logout();
+      this.notificationService.error('Acceso no autorizado')
+      sessionStorage.removeItem("_roles");
+    }
   }
 
   filtrar(opt: number){
