@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExportPdfProyectosService } from '@data/services/pdf-export-services/export-pdf-proyectos.service';
 import { RenuevaEssaludService } from '@data/services/renueva-essalud.service';
+import { VistaPreviaProyectoComponent } from './vista-previa-proyecto/vista-previa-proyecto.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-administrar-proyectos',
@@ -11,23 +13,39 @@ import { RenuevaEssaludService } from '@data/services/renueva-essalud.service';
 export class AdministrarProyectosComponent implements OnInit {
 
   proyectos: any[] = [];
+  dataProyectos = Object();
 
   displayedColumns: string[] = ['dni', 'nombres', 'cargo', 'celular', 'correo'];
 
   constructor( private renuevaService       : RenuevaEssaludService,
                private _router              : Router,
+               private dialogRef            : MatDialog,
                private route                : ActivatedRoute,
                private pdfService           : ExportPdfProyectosService
                ) { }
 
   ngOnInit(): void {
-
-    this.renuevaService.getRenuevaReporteProyectos().subscribe((data)=>{
-      console.log(data)
-      this.proyectos = data.proyectos;
-    })
+    this.filtrar(0);
   }
 
+  filtrar(opt: number){
+    this.renuevaService.getRenuevaReporteProyectos().subscribe((data)=>{
+      this.dataProyectos = {
+        total: data.total,
+        enviados: data.enviados,
+        pendientes: data.pendientesEnvio
+      }
+      if(opt == 0){
+        this.proyectos = data.proyectos;
+      }
+      else if(opt == 1){
+        this.proyectos = data.proyectos.filter((x)=>{return x.enviado == true});
+      }
+      else if(opt == 2){
+        this.proyectos = data.proyectos.filter((x)=>{return x.enviado == false});
+      }
+    })
+  }
 
   back() {
     this._router.navigate([''], { relativeTo: this.route });
@@ -35,5 +53,17 @@ export class AdministrarProyectosComponent implements OnInit {
 
   getPdfProyecto(element){
     this.pdfService.generatePDF(element);
+  }
+
+  showProject(element){
+    const dialogRef: MatDialogRef<VistaPreviaProyectoComponent> = this.dialogRef.open(VistaPreviaProyectoComponent, {
+      disableClose: false,
+      autoFocus: false,
+      width: '70%',
+      maxHeight: '80vh',
+      data:{
+        projectInfo: element
+      }
+    });
   }
 }

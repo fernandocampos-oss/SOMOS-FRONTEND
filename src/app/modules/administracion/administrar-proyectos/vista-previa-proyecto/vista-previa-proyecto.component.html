@@ -1,0 +1,148 @@
+<div class="headerProject">
+    <div>
+        <span><b>Inscrito #{{data.projectInfo.idProyecto}} - Grupo: </b></span><span [ngClass]="data.projectInfo.grupo.nombre ? null : 'dataFaltante'">{{data.projectInfo.grupo.nombre ? data.projectInfo.grupo.nombre : 'Sin Nombre' }}</span>
+    </div>
+    <div>
+        <span><b class="votacionGrupo">Estado:</b><span [ngStyle]="{'color': data.projectInfo.enviado ? 'green' : 'red'}"> {{data.projectInfo.enviado ? 'Enviado':'Falta Enviar'}}</span></span>
+    </div>
+</div>
+
+<mat-stepper [linear]="false" [orientation]="(stepperOrientation | async)!" class="stepperVitaProyectos">
+
+    <!---------------------------------------------------- Primer paso: Descripción de los datos del grupo e integrantes --------------------------------------------------->
+    <mat-step label="Datos del Grupo" state="group">
+        <div class="grupo">
+            <div class="grupoImgCont">
+                <h4>Imagen del grupo:</h4>
+                <img *ngIf="!data.projectInfo.grupo.imagenBase64" class="faltaImg" src="assets/images/imgPlaceholder.png"/>
+                <img *ngIf="data.projectInfo.grupo.imagenBase64" src='data:image/jpeg;base64,{{data.projectInfo.grupo.imagenBase64}}' alt='{{data.projectInfo.grupo.nombre}}'>
+            </div>
+            <div class="datosGrupo">
+                <span><b>Red, Hospital, Área asistencial o administrativa a la que pertenecen</b></span>
+                <span>{{data.projectInfo.grupo.sede | titlecase}}</span>
+                <span><b>Nombre completo del Jefe de Red Prestacional, Asistencial, IPRESS, Establecimiento de Salud o Área administrativa a la que pertenece</b></span>
+                <span [ngClass]="data.projectInfo.grupo.jefe ? null : 'dataFaltante'">{{(data.projectInfo.grupo.jefe ? data.projectInfo.grupo.jefe : 'Sin Jefe Definido') | titlecase}}</span>
+                <span><b>Categoría a la que participan</b></span>
+                <span [ngClass]="data.projectInfo.grupo.categoria ? null : 'dataFaltante'">{{data.projectInfo.grupo.categoria ? data.projectInfo.grupo.categoria : 'No se ha definido categoría'}}</span>
+            </div>
+        </div>
+        <div class="grupoDatosMiembros">
+            <span><b>Miembros del grupo</b></span>
+            <table mat-table [dataSource]="data.projectInfo.grupo.miembros" class="tablaIntegrantes">
+                  
+                <ng-container matColumnDef="dni">
+                    <th mat-header-cell *matHeaderCellDef  width="3%"> DNI </th>
+                    <td mat-cell *matCellDef="let element"> {{element.numeroDocumento}} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="nombres">
+                    <th mat-header-cell *matHeaderCellDef  width="14%"> Apellidos y Nombres </th>
+                    <td mat-cell *matCellDef="let element">{{element.nombres | titlecase}} {{element.apellidos | titlecase}} {{element.idUsuario == data.projectInfo.idUsuario ? '(Líder)':''}}</td>
+                </ng-container>
+                    
+                <ng-container matColumnDef="cargo">
+                    <th mat-header-cell *matHeaderCellDef  width="5%"> Cargo </th>
+                    <td mat-cell *matCellDef="let element" style="padding-right: 10px;"> {{element.cargo | titlecase}} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="celular">
+                  <th mat-header-cell *matHeaderCellDef  width="4%"> Celular </th>
+                  <td mat-cell *matCellDef="let element"> {{element.numeroCelular}} </td>
+                </ng-container>
+          
+                <ng-container matColumnDef="correo">
+                  <th mat-header-cell *matHeaderCellDef  width="8%"> Correo </th>
+                  <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+                </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+        </div>
+    </mat-step>
+    <mat-step label="Descripción del Proyecto" state="description">
+        <div [ngClass]="vistaCelular ? 'grupoAjustarAltura' : null" [formGroup]="formDatosProyecto">
+            <h4>Indicar desde qué fecha se ha implementado la acción innovadora</h4>
+            <mat-form-field appearance="outline" [ngClass]="data.projectInfo.descripcion.fecha ? null : 'dataFaltante'">
+                <input matInput readonly formControlName="ctrlFechaImplementacion"/>
+            </mat-form-field>
+            <h4>Describir la motivación por la cual postulan</h4>
+            <mat-form-field appearance="outline" [ngClass]="data.projectInfo.descripcion.motivo ? null : 'dataFaltante'">
+                <textarea matInput readonly formControlName="ctrlMotivacion"></textarea>
+            </mat-form-field>
+            <h4>Descripción general de la acción innovadora</h4>
+            <mat-form-field appearance="outline" [ngClass]="data.projectInfo.descripcion.descripcion ? null : 'dataFaltante'">
+                <textarea matInput readonly formControlName="ctrlAccionInnovadora"></textarea>
+            </mat-form-field>
+            <h4>Describir el contexto inicial</h4>
+            <mat-form-field appearance="outline" [ngClass]="data.projectInfo.descripcion.contexto ? null : 'dataFaltante'">
+                <textarea matInput readonly formControlName="ctrlContextoInicial"></textarea>
+            </mat-form-field>
+            <h4>¿Qué es lo innovador de esta acción implementada?</h4>
+            <mat-form-field appearance="outline" [ngClass]="data.projectInfo.descripcion.innovacion ? null : 'dataFaltante'">
+                <textarea matInput readonly formControlName="ctrlInnovador"></textarea>
+            </mat-form-field>
+            <h4>Mencionar los principales indicadores de medición de resultados y/o impacto (máximo seis indicadores que miden el cambio o beneficio generado)</h4>
+            <mat-form-field appearance="outline" [ngClass]="data.projectInfo.descripcion.indicador ? null : 'dataFaltante'">
+                <textarea matInput readonly formControlName="ctrlIndicadores"></textarea>
+            </mat-form-field>
+        </div>
+    </mat-step>
+    <mat-step label="Implementación" state="build">
+        <div [ngClass]="vistaCelular ? 'grupoAjustarAltura' : null" [formGroup]="formImplementacion">
+            <h4>Indicar los principales resultados e impacto, luego de implementada la acción innovadora.</h4>
+            <mat-form-field appearance="outline" [ngClass]="data.projectInfo.implementacion.resultado ? null : 'dataFaltante'">
+                <textarea matInput readonly formControlName="ctrlResultado"></textarea>
+            </mat-form-field>
+            <h4>¿La acción innovadora es sostenible?</h4>
+            <span [ngClass]="data.projectInfo.implementacion.sostenible ? null : 'dataFaltante'">{{(data.projectInfo.implementacion.sostenible ? data.projectInfo.implementacion.sostenible : 'No se ha definido') | titlecase}}</span>
+            <div *ngIf="data.projectInfo.implementacion.sostenible === 'Si'" class="optExtraExplanation">
+                <h4>¿Por qué?</h4>
+                <mat-form-field appearance="outline" [ngClass]="data.projectInfo.implementacion.sostenibleFundamento ? null : 'dataFaltante'">
+                    <textarea matInput readonly formControlName="ctrlSostenibleFundamento"></textarea>
+                </mat-form-field>
+            </div>
+            <h4 [ngClass]="data.projectInfo.implementacion.sostenible !== 'Si' ? 'margenSuperior' : null">¿La acción innovadora es replicable?</h4>
+            <span [ngClass]="data.projectInfo.implementacion.replicable ? null : 'dataFaltante'">{{(data.projectInfo.implementacion.replicable ? data.projectInfo.implementacion.replicable : 'No se ha definido') | titlecase}}</span>
+            <div *ngIf="data.projectInfo.implementacion.replicable === 'Si'" class="optExtraExplanation">
+                <h4>Indicar las condiciones para la replicabilidad de la acción innovadora</h4>
+                <mat-form-field appearance="outline" [ngClass]="data.projectInfo.implementacion.replicableFundamento ? null : 'dataFaltante'">
+                    <textarea matInput readonly formControlName="ctrlReplicableFundamento"></textarea>
+                </mat-form-field>
+            </div>
+            <h4 [ngClass]="data.projectInfo.implementacion.replicable !== 'Si' ? 'margenSuperior' : null">¿La acción innovadora utiliza la tecnología?</h4>
+            <span [ngClass]="data.projectInfo.implementacion.tecnologia ? null : 'dataFaltante'">{{(data.projectInfo.implementacion.tecnologia ? data.projectInfo.implementacion.tecnologia : 'No se ha definido') | titlecase}}</span>
+            <div *ngIf="data.projectInfo.implementacion.tecnologia === 'Si'" class="optExtraExplanation">
+                <h4>¿Qué tipo de tecnología y de qué manera se utiliza?</h4>
+                <mat-form-field appearance="outline" [ngClass]="data.projectInfo.implementacion.tecnologiaFundamento ? null : 'dataFaltante'">
+                    <textarea matInput readonly formControlName="ctrlTecnologiaFundamento"></textarea>
+                </mat-form-field>
+            </div>
+            <h4 [ngClass]="data.projectInfo.implementacion.tecnologia !== 'Si' ? 'margenSuperior' : null">¿Indicar a qué servicios dentro de Essalud beneficia la acción innovadora?</h4>
+            <mat-form-field appearance="outline" [ngClass]="data.projectInfo.implementacion.beneficio ? null : 'dataFaltante'">
+                <textarea matInput readonly formControlName="ctrlBeneficio"></textarea>
+            </mat-form-field>
+            <h4>Indicar si la acción innovadora involucra alguno o varios de estos enfoques:</h4>
+            <span *ngIf="data.projectInfo.implementacion.enfoques.length == 0" class="dataFaltante">No se ha seleccionado alguna opción</span>
+            <div class="opcionesMultiples" *ngIf="data.projectInfo.implementacion.enfoques.length > 0">
+                <span *ngFor="let opt of data.projectInfo.implementacion.enfoques, index as i">{{i+1}}. {{opt}}</span>
+            </div>
+            <h4 class="margenSuperior">Evidencia de la Implementación</h4>
+            <div style="margin-bottom: 1rem;">
+                <button *ngIf="data.projectInfo.implementacion.archivoBase64" mat-raised-button color="warn" (click)="showPdf()"><mat-icon>picture_as_pdf</mat-icon> Ver Evidencia</button>
+                <span *ngIf="!data.projectInfo.implementacion.archivoBase64" class="dataFaltante">No se ha adjuntado alguna evidencia</span>
+            </div>
+        </div>
+    </mat-step>
+
+    <!-- Icon overrides. -->
+    <ng-template matStepperIcon="group">
+    <mat-icon>group</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="description">
+    <mat-icon>description</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="build">
+    <mat-icon>build</mat-icon>
+    </ng-template>
+</mat-stepper>

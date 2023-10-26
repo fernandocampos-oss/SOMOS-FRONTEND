@@ -12,6 +12,7 @@ import { AdministrarInscripcionComponent } from './administrar-inscripcion/admin
 import { VistaUsuariosComponent } from './administrar-usuarios/components/vista-usuarios/vista-usuarios.component';
 import { SharedModule } from '@shared/shared.module';
 import { AdministrarProyectosComponent } from './administrar-proyectos/administrar-proyectos.component';
+import { VistaPreviaProyectoComponent } from './administrar-proyectos/vista-previa-proyecto/vista-previa-proyecto.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AdministrarProyectosComponent } from './administrar-proyectos/administr
     VistaUsuariosComponent,
     AdministrarUsuariosComponent,
     AdministrarInscripcionComponent,
-    AdministrarProyectosComponent
+    AdministrarProyectosComponent,
+    VistaPreviaProyectoComponent
   ],
   imports: [
     CommonModule,

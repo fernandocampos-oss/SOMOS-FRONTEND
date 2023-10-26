@@ -7,6 +7,11 @@
     </div>
     <div class="page__body">
         <div class="card shadow contieneInscripcion">
+          <div class="opcionesFiltrado">
+            <button mat-raised-button color="primary" (click)="filtrar(0)"><mat-icon>insert_drive_file</mat-icon> Mostrar todos [{{dataProyectos.total}}]</button>
+            <button mat-raised-button style="background: #3cb371;" color="primary" (click)="filtrar(1)"><mat-icon>check</mat-icon> Mostrar Enviados [{{dataProyectos.enviados}}]</button>
+            <button mat-raised-button color="warn" (click)="filtrar(2)"><mat-icon>close</mat-icon> Mostrar Faltantes [{{dataProyectos.pendientes}}]</button>
+          </div>
             <div class="containerGruposInsc">
               <mat-accordion class="example-headers-align" multi *ngFor="let proyecto of proyectos">
                 <mat-expansion-panel>
@@ -21,14 +26,19 @@
                       </div>
                     </mat-panel-description>
                   </mat-expansion-panel-header>
-                  <div class="infoGrupo">
+                  <div class="opcionesProyecto">
                     <div>
-                      <button mat-raised-button color="primary" class="search" (click)="getPdfProyecto(proyecto)"><mat-icon>reply</mat-icon> Regresar</button>
+                      <button mat-raised-button color="primary" class="search" (click)="showProject(proyecto)">Ver datos del Proyecto</button>
                     </div>
+                    <div>
+                      <button mat-raised-button *ngIf="proyecto.enviado" color="warn" class="search" (click)="getPdfProyecto(proyecto)"><mat-icon>picture_as_pdf</mat-icon> Exportar PDF</button>
+                    </div>
+                  </div>
+                  <div class="infoGrupo">
                     <div class="infoImagenGrupo">
                       <h3>Imagen del grupo:</h3>
                       <img *ngIf="!proyecto.grupo.imagenBase64" class="faltaImg" src="assets/images/imgPlaceholder.png"/>
-                      <img *ngIf="proyecto.grupo.imagenBase64" src='data:image/jpeg;base64,{{proyecto.grupo.imagenBase64}}' alt='{{proyecto.grupo.nombre}}' (click)="showImg(proyecto)">
+                      <img *ngIf="proyecto.grupo.imagenBase64" src='data:image/jpeg;base64,{{proyecto.grupo.imagenBase64}}' alt='{{proyecto.grupo.nombre}}'>
                     </div>
                     <div class="infoIntegrantesGrupo">
                       <h3>Integrantes del grupo:</h3>

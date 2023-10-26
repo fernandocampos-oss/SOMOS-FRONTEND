@@ -1,4 +1,8 @@
-
+.opcionesFiltrado{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
 .containerGruposInsc{
     display: flex;
     flex-direction: column;
@@ -17,6 +21,12 @@
             }
         }
     }
+    .opcionesProyecto{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
     .infoGrupo{
         display: flex;
         flex-direction: row;
@@ -31,7 +41,6 @@
             flex-direction: column;
             justify-content: left;
             img{
-                cursor: pointer;
                 --tamanioImg: 10rem;
                 width: var(--tamanioImg);
                 height: var(--tamanioImg);
