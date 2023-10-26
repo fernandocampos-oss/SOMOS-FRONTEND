@@ -66,6 +66,61 @@ export class ExportExcelAdministracionesService {
     });
   }
   
+  exportExcelRenueva(titulo, columnas: string[], proyectosRegistros: any[]) {
+    //Create a workbook with a worksheet
+    let workbook = new Workbook();
+    let worksheet = workbook.addWorksheet('Registros Renueva EsSalud V');
+
+    worksheet.mergeCells(worksheet.getRow(3).getCell(1).address,worksheet.getRow(3).getCell(columnas.length).address);
+  
+    let titleReport = worksheet.getCell(worksheet.getRow(3).getCell(1).address);
+    titleReport.value = titulo;
+    titleReport.font = {
+      name:'Times New Roman',
+      size: 16,
+      bold:true,
+    }
+    titleReport.alignment = { horizontal: 'center'};
+
+    this.formatoHeaders(worksheet,columnas);
+    
+    console.log(proyectosRegistros)
+
+    let contadorFilaMerge = 6;
+    for (let i = 0; i < proyectosRegistros.length; i++) {
+      worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(1).address,worksheet.getRow(contadorFilaMerge + proyectosRegistros[i].grupo.miembros.length - 1).getCell(1).address);
+      worksheet.getRow(contadorFilaMerge).getCell(1).value = proyectosRegistros[i].grupo.nombre;
+      worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(2).address,worksheet.getRow(contadorFilaMerge + proyectosRegistros[i].grupo.miembros.length - 1).getCell(2).address);
+      worksheet.getRow(contadorFilaMerge).getCell(2).value = proyectosRegistros[i].grupo.categoria;
+      worksheet.getRow(contadorFilaMerge).getCell(1).alignment = { horizontal: 'center', vertical: 'middle'};
+      worksheet.getRow(contadorFilaMerge).getCell(2).alignment = { horizontal: 'center', vertical: 'middle'};
+      this.formatoMiembro(worksheet, proyectosRegistros[i].grupo.miembros, contadorFilaMerge, columnas.length)
+      contadorFilaMerge += proyectosRegistros[i].grupo.miembros.length;
+    }
+
+    for (let i = 0; i < columnas.length; i++) {
+      let maxLength = columnas[i].length;
+      for (let j = 0; j < (contadorFilaMerge - 6); j++) {
+        if (worksheet.getRow(j+6).getCell(i+1).value) {
+          if(worksheet.getRow(j+6).getCell(i+1).value.toString().length > maxLength)
+            maxLength = worksheet.getRow(j+6).getCell(i+1).value.toString().length;
+        }
+      }
+      if(i < 2){
+        worksheet.getColumn(i+1).width = maxLength + maxLength*0.2;
+      }
+      else{
+        worksheet.getColumn(i+1).width = maxLength + maxLength*0.6;
+      }
+    }
+    
+    //Generate & Save Excel File
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: EXCEL_TYPE, });
+      fs.saveAs(blob, titulo + EXCEL_EXTENSION);
+    });
+  }
+
   formatoHeaders(wb: Worksheet, value){
     for (let i = 0; i < value.length; i++) {
       wb.getRow(5).getCell(i+1).value = value[i];
@@ -105,6 +160,29 @@ export class ExportExcelAdministracionesService {
           size: 14,
         }
         wb.getRow(i+6).getCell(j+1).border = {
+          top: {style:'thin'},
+          left: {style:'thin'},
+          bottom: {style:'thin'},
+          right: {style:'thin'}
+        }        
+      }
+    }
+  }
+
+  formatoMiembro(wb: Worksheet, values, position, cantHeaders){
+    for (let i = 0; i < values.length; i++) {
+      wb.getRow(i+position).getCell('C').value = values[i].numeroDocumento;
+      wb.getRow(i+position).getCell('D').value = values[i].nombres + ' ' + values[i].apellidos;
+      wb.getRow(i+position).getCell('E').value = values[i].numeroCelular;
+      wb.getRow(i+position).getCell('F').value = values[i].correo;
+      wb.getRow(i+position).getCell('G').value = values[i].red;
+      wb.getRow(i+position).getCell('H').value = values[i].unidad;
+      for (let j = 0; j < cantHeaders; j++) {
+        wb.getRow(i+position).getCell(j+1).font = {
+          name: 'Calibri',
+          size: 14,
+        }
+        wb.getRow(i+position).getCell(j+1).border = {
           top: {style:'thin'},
           left: {style:'thin'},
           bottom: {style:'thin'},

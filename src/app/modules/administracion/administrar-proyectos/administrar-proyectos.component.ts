@@ -6,6 +6,7 @@ import { VistaPreviaProyectoComponent } from './vista-previa-proyecto/vista-prev
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '@data/services';
 import { NotificationService } from '@core/services';
+import { ExportExcelAdministracionesService } from '@data/services/excel-export-services/export-excel-administraciones.service';
 
 @Component({
   selector: 'app-administrar-proyectos',
@@ -18,12 +19,14 @@ export class AdministrarProyectosComponent implements OnInit {
   dataProyectos = Object();
 
   displayedColumns: string[] = ['dni', 'nombres', 'cargo', 'celular', 'correo'];
+  headers = ['Nombre Grupo','Categoría','Nro. Documento','Nombre Persona','Nro. Celular','Correo','Red','Unidad']
 
   constructor( private renuevaService       : RenuevaEssaludService,
                private _router              : Router,
                private dialogRef            : MatDialog,
                private notificationService  : NotificationService,
                private authService          : AuthService,
+               private excelService         : ExportExcelAdministracionesService,
                private route                : ActivatedRoute,
                private pdfService           : ExportPdfProyectosService
                ) { }
@@ -76,5 +79,9 @@ export class AdministrarProyectosComponent implements OnInit {
         projectInfo: element
       }
     });
+  }
+
+  printProyectos(){
+    this.excelService.exportExcelRenueva('Inscritos - Renueva EsSalud V', this.headers, this.proyectos)
   }
 }
