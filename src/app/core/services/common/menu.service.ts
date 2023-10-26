@@ -52,12 +52,12 @@ const data: MenuItem[] = [
         label: 'Proyectos de Renueva EsSalud',
         roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
       },
-      {
-        path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
-        icon: 'settings',
-        label: 'Campañas Asignadas',
-        roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
-      },
+      // {
+      //   path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
+      //   icon: 'settings',
+      //   label: 'Campañas Asignadas',
+      //   roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
+      // },
     ]
   },
   // {

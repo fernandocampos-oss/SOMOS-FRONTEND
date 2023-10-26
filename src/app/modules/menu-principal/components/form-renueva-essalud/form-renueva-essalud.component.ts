@@ -182,14 +182,12 @@ export class FormRenuevaEssaludComponent implements OnInit {
       );
     // jefe
     this.jefeControl.valueChanges.subscribe((data)=>{
-      if(typeof data === 'string' && data.trim().length == 0){
-        this.formDatosGenerales.controls.ctrlJefeNombre.reset()
-      }
+      this.formDatosGenerales.controls.ctrlJefeNombre.setValue(data)
     })
     this.filteredOptionsJefe = this.jefeControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
+        map(value => typeof value === 'string' ? value : (value)),
         map(nombresCompletos => nombresCompletos ? this._filterJefe(nombresCompletos) : this.listaPosiblesJefes.slice())
       );
   }
@@ -210,10 +208,14 @@ export class FormRenuevaEssaludComponent implements OnInit {
     this.formDatosGenerales.controls.ctrlCategoria.setValue(data.grupo.categoria);
     // this.formDatosGenerales.controls.ctrlImgGrupo64.setValue(data.grupo.imagenBase64);
     if(data.grupo.jefe){
-      const jefesFiltrados: any[] = this._filterJefe(data.grupo.jefe ? data.grupo.jefe : undefined);
-      if (jefesFiltrados.length > 0) {
-        this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
-      }
+      this.jefeControl.setValue(data.grupo.jefe);
+      // const jefesFiltrados: any[] = this._filterJefe(data.grupo.jefe ? data.grupo.jefe : undefined);
+      // if (jefesFiltrados.length > 0) {
+      //   this.jefeControl.setValue({ nombres: jefesFiltrados[0].nombres, apellidos: jefesFiltrados[0].apellidos });
+      // }
+      // else{
+      //   this.jefeControl.setValue(data.grupo.jefe);
+      // }
     }
     if (this.authService.getUserSession().id === this.idLider) {
       data.grupo.miembros.forEach(m => {
@@ -324,7 +326,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
     const listPersonal = await this.renuevaService.getUsuariosMismaRed().then((data) => {
       if (data) {
         this.listaUsuariosRed = data;
-        this.listaPosiblesJefes = data;
+        this.listaPosiblesJefes = data.map((x)=>{return x.nombres + ' ' + x.apellidos});
       }
     });
   }
@@ -341,14 +343,15 @@ export class FormRenuevaEssaludComponent implements OnInit {
 
   // Jefe
   private _filterJefe(value: string) {
-    return this.listaPosiblesJefes.filter(persona => (persona.nombres + ' ' + persona.apellidos).toLowerCase().includes(value.toLowerCase()));
+    return this.listaPosiblesJefes.filter(persona => (persona).toLowerCase().includes(value.toLowerCase()));
   }
   displayFnJefe(selectedpersona) {
-    return selectedpersona ? (selectedpersona.nombres + ' ' + selectedpersona.apellidos) : undefined;
+    return selectedpersona ? (selectedpersona) : undefined;
   }
   onSelectionChangeJefe(event: any) {
     this.jefeSeleccionadoTmp = event.option.value;
-    this.formDatosGenerales.controls.ctrlJefeNombre.setValue((event.option.value.nombres + ' ' + event.option.value.apellidos));
+    this.formDatosGenerales.controls.ctrlJefeNombre.setValue((event.option.value));
+    // this.formDatosGenerales.controls.ctrlJefeNombre.setValue((event.option.value.nombres + ' ' + event.option.value.apellidos));
   }
 
   aniadirIntegrante(){ // Añade integrantes al listado visual del equipo
@@ -462,6 +465,7 @@ export class FormRenuevaEssaludComponent implements OnInit {
   }
 
   guardaCambios1ro(){
+    console.log(this.getInscripcion())
     this.renuevaService.saveProyecto(this.getInscripcion()).subscribe((proyecto: any) => {
       this._notification.info('Se guardaron los cambios hechos en los datos del grupo');
       this.idProyecto = proyecto.idProyecto;

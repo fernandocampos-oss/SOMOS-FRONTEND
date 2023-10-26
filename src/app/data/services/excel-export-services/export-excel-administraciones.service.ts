@@ -39,15 +39,25 @@ export class ExportExcelAdministracionesService {
       this.formatoHeaders(worksheet,columnas);
       
       this.formatoContenido(worksheet, respuesta);
-
     for (let i = 0; i < columnas.length; i++) {
-      if( i > 1){
-        worksheet.getColumn(i+1).width = columnas[i].length + 2*columnas[i].length;
+      let maxLength = columnas[i].length;
+      for (let j = 0; j < respuesta.length; j++) {
+        if (worksheet.getRow(j+6).getCell(i+1).value) {
+          if(worksheet.getRow(j+6).getCell(i+1).value.toString().length > maxLength)
+            maxLength = worksheet.getRow(j+6).getCell(i+1).value.toString().length;
+        }
       }
-      else{
-        worksheet.getColumn(i+1).width = columnas[i].length + columnas[i].length;
-      }
+      worksheet.getColumn(i+1).width = maxLength + maxLength*0.6;
+      // worksheet.getColumn(i+1).alignment = { wrapText:true};
     }
+    // for (let i = 0; i < columnas.length; i++) {
+    //   if( i > 1){
+    //     worksheet.getColumn(i+1).width = columnas[i].length + 2*columnas[i].length;
+    //   }
+    //   else{
+    //     worksheet.getColumn(i+1).width = columnas[i].length + columnas[i].length;
+    //   }
+    // }
     
     //Generate & Save Excel File
     workbook.xlsx.writeBuffer().then((data) => {

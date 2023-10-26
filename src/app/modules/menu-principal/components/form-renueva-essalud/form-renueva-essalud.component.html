@@ -73,8 +73,8 @@
                               <input type="text" required matInput [formControl]="jefeControl" name="nombreJefe" [matAutocomplete]="autoJefe">
                               <mat-autocomplete #autoJefe="matAutocomplete" [displayWith]="displayFnJefe"
                                 (optionSelected)="onSelectionChangeJefe($event)">
-                                <mat-option *ngFor="let persona of filteredOptionsJefe | async" [value]="persona">
-                                  {{persona.nombres}} {{(persona.apellidos)}}
+                                <mat-option *ngFor="let persona of filteredOptionsJefe | async" [value]="(persona)">
+                                  {{persona}}
                                 </mat-option>
                               </mat-autocomplete>
                             </mat-form-field>
