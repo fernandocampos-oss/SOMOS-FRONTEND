@@ -21,13 +21,31 @@ export class ExportPdfProyectosService {
         align: 'left', 
         maxWidth: 180,
       }
+      let posibleSalto;
       let linesOfText = doc.splitTextToSize(text, configParrafos.maxWidth).length;
-      doc.setFont('Times', negrita == true ? 'bold' : null)
-      if(yPosition + linesOfText*4 > doc.internal.pageSize.height - 10 || forceSaltoPag){
-        doc.addPage();
-        yPosition = 10;
+      if (linesOfText > 4){
+        let pseudoPosition = yPosition;
+        for (let i = 0; i < linesOfText; i++) {
+          doc.setFont('Times', negrita == true ? 'bold' : null)
+          if(pseudoPosition + 4 > doc.internal.pageSize.height - 10){
+            doc.addPage();
+            pseudoPosition = 10;
+            yPosition = 10;
+            posibleSalto = linesOfText - i - 2;
+          }
+          doc.text(doc.splitTextToSize(text, configParrafos.maxWidth)[i] ? doc.splitTextToSize(text, configParrafos.maxWidth)[i] : '', 10, pseudoPosition, configParrafos);
+          pseudoPosition += 4;
+        }
       }
-      doc.text(text, 10, yPosition, configParrafos);
+      else{
+        doc.setFont('Times', negrita == true ? 'bold' : null)
+        if(yPosition + linesOfText*4 > doc.internal.pageSize.height - 10 || forceSaltoPag){
+          doc.addPage();
+          yPosition = 10;
+        }
+        doc.text(text ? text : '', 10, yPosition, configParrafos);
+      }
+      console.log(doc.splitTextToSize(text, configParrafos.maxWidth))
       if(where){
         let distanciaMedio = centerX - (dimensionImage/1.5);
         let distanciaTercerColumna = centerX + (dimensionImage/1.75) - (dimensionImage/1.75);
@@ -73,7 +91,20 @@ export class ExportPdfProyectosService {
             break;
         }
       }
-      yPosition += linesOfText*4 + espacioExtra*4;
+      if (posibleSalto) {
+        console.log(posibleSalto)
+        // doc.text('--------------------------------------------------------------------------------------------------------', 10, yPosition + posibleSalto*4 + espacioExtra*4, configParrafos);
+        // for (let l = 0; l < posibleSalto; l++) {
+        //   doc.text(l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString()+l.toString(), 10, l*4+10, configParrafos);
+        
+        // }
+        // doc.text('--------------------------------------------------------------------------------------------------------', 10, yPosition + posibleSalto*4 + espacioExtra*4, configParrafos);
+        yPosition += posibleSalto*4 + espacioExtra*4;
+        console.log(yPosition)
+      }
+      else{
+        yPosition += linesOfText*4 + espacioExtra*4;
+      }
     }
 
     const doc = new jsPDF();
@@ -90,11 +121,12 @@ export class ExportPdfProyectosService {
 
     addTextToPdf('Inscrito #'+projectInfo.idProyecto,espacioSubTitulo, true);
 
-    console.log(doc.getFontList())
 
-    doc.addImage(img, 'PNG', centerX - (dimensionImage/2), yPosition, dimensionImage, dimensionImage);
-
-    yPosition +=dimensionImage+10;
+    if(projectInfo.grupo.imagenBase64){
+      doc.addImage(img, 'PNG', centerX - (dimensionImage/2), yPosition, dimensionImage, dimensionImage);
+  
+      yPosition +=dimensionImage+10;
+    }
 
     let lider = projectInfo.grupo.miembros.find((x)=>{ return x.idUsuario == projectInfo.idUsuario});
 
@@ -203,3 +235,4 @@ export class ExportPdfProyectosService {
     doc.save( 'Renueva Essalud - Inscrito #' + projectInfo.idProyecto + '.pdf');
   }
 }
+
