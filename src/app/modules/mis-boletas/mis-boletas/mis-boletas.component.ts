@@ -87,7 +87,7 @@ export class MisBoletasComponent implements OnInit {
     this.listAcciones.push({
       periodo: element.periodo,
       descripcion: element.descripcion,
-      fecha: this.today,
+      fecha: new Date(),
       tipo: element.tipo,
       accion: "Visualización"
     })
@@ -98,7 +98,7 @@ export class MisBoletasComponent implements OnInit {
     this.listAcciones.push({
       periodo: element.periodo,
       descripcion: element.descripcion,
-      fecha: this.today,
+      fecha: new Date(),
       tipo: element.tipo,
       accion: "Descarga"
     })

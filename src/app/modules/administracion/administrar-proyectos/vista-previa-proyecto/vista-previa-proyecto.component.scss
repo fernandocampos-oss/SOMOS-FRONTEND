@@ -1,0 +1,83 @@
+.dataFaltante{
+    color: rgb(203 203 203);
+}
+mat-form-field{
+    width: 100%;
+}
+.headerProject{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.grupo{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    .grupoImgCont{
+        flex-shrink: 0;
+        .faltaImg{
+            background: #e7e6e6;
+            border-style: none !important;
+        }
+        img{
+            --tamanioImg: 12rem;
+            width: var(--tamanioImg);
+            height: var(--tamanioImg);
+            border: var(--color-bordes);
+            border-style: solid;
+            border-radius: 11px;
+            border-width: 2.5px;
+        }
+    }
+    .datosGrupo{
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+    }
+}
+.grupoDatosMiembros{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type{
+        padding: 0;
+    }
+}
+
+.grupoAjustarAltura{
+    max-height: 561.17px;
+    overflow: auto;
+}
+
+.margenSuperior{
+    margin-top: 1.5rem;
+}
+
+.optExtraExplanation{
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+}
+.opcionesMultiples{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: justify;
+}
+
+@media screen and (max-width: 800px) {
+    .stepperVitaProyectos{
+        ::ng-deep.mat-vertical-stepper-header{
+            padding-left: 0 !important;
+        }
+        ::ng-deep.mat-vertical-content-container {
+            margin-left: 0 !important;
+        }
+    }
+}
+@media screen and (max-width: 827px) {
+    .grupo{
+        flex-direction: column;
+    }
+}

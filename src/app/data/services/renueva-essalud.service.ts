@@ -44,4 +44,9 @@ export class RenuevaEssaludService {
       map(message => message.sort((a1: miembroGrupo, a2: miembroGrupo) => a1.idUsuario - a2.idUsuario))
     ).toPromise();
   }
+  
+  getRenuevaReporteProyectos(){
+    const url = `${URL_BASE}/bandeja`;
+    return this._httpClient.get<any>(url);
+  }
 }

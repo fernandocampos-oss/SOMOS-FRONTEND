@@ -13,14 +13,17 @@ export class PublicacionRequest{
     imagenBase64: string;
     urlRedireccion: string;
     alcance: number;
+    anuncio: boolean;
+    votacion: boolean;
     redes: string[];
 }
 
 export class PublicacionResponse{
-    idPublicacion: string;
+    idPublicacion: number;
     titulo: string;
     descripcion: string;
     imagenBase64: string;
     urlRedireccion: string;
     fechaCreacion: Date;
+    votoActivo: boolean;
 }

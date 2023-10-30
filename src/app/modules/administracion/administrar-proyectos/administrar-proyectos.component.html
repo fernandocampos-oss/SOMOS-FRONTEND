@@ -1,0 +1,90 @@
+<div class="page"> 
+    <div class="matero-page-header">
+        <h1 class="matero-page-title"><mat-icon>library_books</mat-icon> Proyectos inscritos en Renueva EsSalud<br>
+        <small class="mr-2">Visualiza los proyectos registrados</small><br>
+        <div class="optionsBar">
+          <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+          <button mat-raised-button style="background: #3cb371;" color="primary" (click)="printProyectos()"><mat-icon>assignment_ind</mat-icon> Ver reporte de inscritos</button>
+        </div>
+        </h1>
+    </div>
+    <div class="page__body">
+        <div class="card shadow contieneInscripcion">
+          <div class="opcionesFiltrado">
+            <button mat-raised-button color="primary" (click)="filtrar(0)"><mat-icon>insert_drive_file</mat-icon> Mostrar todos [{{dataProyectos.total}}]</button>
+            <button mat-raised-button style="background: #3cb371;" color="primary" (click)="filtrar(1)"><mat-icon>check</mat-icon> Mostrar Enviados [{{dataProyectos.enviados}}]</button>
+            <button mat-raised-button color="warn" (click)="filtrar(2)"><mat-icon>close</mat-icon> Mostrar Faltantes [{{dataProyectos.pendientes}}]</button>
+          </div>
+            <div class="containerGruposInsc">
+              <mat-accordion class="example-headers-align" multi *ngFor="let proyecto of proyectos">
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <b>Grupo:</b> <span [ngStyle]="{'color': proyecto.grupo.nombre ? null : 'rgb(203 203 203)'}">{{proyecto.grupo.nombre ? proyecto.grupo.nombre : 'Falta Nombre'}}</span>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      <div class="descrpGrupo">
+                        <span [ngStyle]="{'color': proyecto.enviado ? 'green' : 'red'}"><b class="votacionGrupo">Estado:</b> {{proyecto.enviado ? 'Enviado':'Falta Enviar'}}</span>
+                        <span>Integrantes: {{proyecto.grupo.miembros.length}}</span>
+                      </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div class="opcionesProyecto">
+                    <div>
+                      <button mat-raised-button color="primary" class="search" (click)="showProject(proyecto)">Ver datos del Proyecto</button>
+                    </div>
+                    <div>
+                      <button mat-raised-button *ngIf="proyecto.enviado" color="warn" class="search" (click)="getPdfProyecto(proyecto)"><mat-icon>picture_as_pdf</mat-icon> Exportar PDF</button>
+                    </div>
+                  </div>
+                  <div class="infoGrupo">
+                    <div class="infoImagenGrupo">
+                      <h3>Imagen del grupo:</h3>
+                      <img *ngIf="!proyecto.grupo.imagenBase64" class="faltaImg" src="assets/images/imgPlaceholder.png"/>
+                      <img *ngIf="proyecto.grupo.imagenBase64" src='data:image/jpeg;base64,{{proyecto.grupo.imagenBase64}}' alt='{{proyecto.grupo.nombre}}'>
+                    </div>
+                    <div class="infoIntegrantesGrupo">
+                      <h3>Integrantes del grupo:</h3>
+                      <table mat-table [dataSource]="proyecto.grupo.miembros" class="tablaIntegrantes">
+                  
+                        <ng-container matColumnDef="dni">
+                            <th mat-header-cell *matHeaderCellDef  width="3%"> DNI </th>
+                            <td mat-cell *matCellDef="let element"> {{element.numeroDocumento}} </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="nombres">
+                            <th mat-header-cell *matHeaderCellDef  width="14%"> Apellidos y Nombres </th>
+                            <td mat-cell *matCellDef="let element">{{element.nombres | titlecase}} {{element.apellidos | titlecase}} {{element.idUsuario == proyecto.idUsuario ? '(Líder)':''}}</td>
+                        </ng-container>
+                            
+                        <ng-container matColumnDef="cargo">
+                            <th mat-header-cell *matHeaderCellDef  width="5%"> Cargo </th>
+                            <td mat-cell *matCellDef="let element" style="padding-right: 10px;"> {{element.cargo | titlecase}} </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="celular">
+                          <th mat-header-cell *matHeaderCellDef  width="4%"> Celular </th>
+                          <td mat-cell *matCellDef="let element"> {{element.numeroCelular}} </td>
+                        </ng-container>
+                  
+                        <ng-container matColumnDef="correo">
+                          <th mat-header-cell *matHeaderCellDef  width="8%"> Correo </th>
+                          <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+                        </ng-container>
+                  
+                        <!-- <ng-container matColumnDef="fechaInscripcion">
+                          <th mat-header-cell *matHeaderCellDef  width="5%"> Fecha Inscripción </th>
+                          <td mat-cell *matCellDef="let element"> {{element.fechaInscripcion | date: 'dd/MM/yyyy'}} </td>
+                        </ng-container> -->
+                
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+        </div>
+    </div>
+</div>

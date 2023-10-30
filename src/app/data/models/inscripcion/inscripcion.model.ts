@@ -12,5 +12,21 @@ export class inscritosResponse {
   numeroCelular: string;
   correo: string;
   estadoActivo: boolean;
-  fechaInscripcion: string
+  fechaInscripcion: string;
+  descripcion?: string;
+  idLider?: number;
+  rutaImagen?: string;
+}
+
+export class InscripcionRequest {
+  idInscripcion: number;
+  tipoInscripcion: number;
+  inscritos?: number[];
+  descripcion?: string;
+  imagenBase64?: string;
+}
+
+export class VotacionInscripcionRequest {
+  idInscripcion: number;
+  idCandidato: number;
 }

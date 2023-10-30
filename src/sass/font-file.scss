@@ -13,6 +13,12 @@
 
 @font-face {
   font-style: normal;
+  font-family: 'Nunito';
+  src: local('Nunito'), local('Nunito-VariableFont_wght'),url('../assets/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-style: normal;
   font-weight: bold;
   font-family: 'HelveticaBd';
   src: local('HelveticaBd'), url('../assets/fonts/HelveticaBd.ttf') format('truetype');

@@ -35,7 +35,6 @@
                 <input matInput formControlName="frmEnlace" />
             </mat-form-field>
         </mat-grid-tile>
-
         <!-- rol 3 y 4 -->
         <div *ngIf="rolRed == rolTemporal_3 && rolCentral == rolTemporal_4">
             <mat-grid-tile class="boxEspaciado" [colspan]="4" [rowspan]="4">
@@ -93,6 +92,11 @@
                 </mat-form-field>
             </mat-grid-tile>
         </div>
+
+        <mat-grid-tile class="boxEspaciado opcionesExtraCampania" [colspan]="4">
+            <p style="width: 100%;"><mat-checkbox formControlName="frmAnuncio">¿Es una campaña?</mat-checkbox></p>
+            <p style="width: 100%;" *ngIf="form.value.frmAnuncio"><mat-checkbox formControlName="frmVotacion">¿Es votación?</mat-checkbox></p>
+        </mat-grid-tile>
 
     </mat-grid-list>
     <mat-dialog-actions align="end">

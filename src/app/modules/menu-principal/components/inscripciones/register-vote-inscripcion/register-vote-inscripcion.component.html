@@ -1,0 +1,51 @@
+<div *ngIf="wait && inscripcionVotacionElegida" style="text-align: center;">
+    <h4>{{inscripcionVotacionElegida.descripcion}}</h4>
+    <span>Elige una opción y vota</span>
+    <div class="separacion" *ngIf="inscripcionVotacionElegida.candidatos.length < 5">
+        <ng-container *ngFor="let candidato of inscripcionVotacionElegida.candidatos, index as i">
+            <div class="elementos" (click)="selectImageList(candidato)" [ngClass]="{'selected' : candidato == optSelected, 'noSelected': candidato != optSelected}">
+                <div class="candHeader">
+                    <span>{{candidato.descripcion | titlecase}}</span>
+                </div>
+                <div class="candBody">
+                    <img src='data:image/jpeg;base64,{{candidato.imagenBase64}}' alt='{{candidato.descripcion}}'>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div *ngIf="inscripcionVotacionElegida.candidatos.length >= 5" class="contenedorInsVotoLista">
+        <div class="listadoOpciones">
+            <div *ngFor="let candidato of inscripcionVotacionElegida.candidatos, index as i" class="optListaIns">
+                <div (click)="selectImageList(candidato)" class="elementoListaIns" [ngStyle]="{'background-color': candidato == optSelected ? 'rgb(128 255 128)' : '#e6effa', 'font-weight': candidato == optSelected ? '600' : '400'}">
+                    <span>{{candidato.descripcion}}</span>
+                </div>
+            </div>
+            <!-- <div *ngFor="let candidato of inscripcionVotacionElegida.candidatos, index as i" class="optListaIns">
+                <div (click)="selectImageList(candidato)" class="elementoListaIns" [ngStyle]="{'background-color': candidato == optSelected ? 'rgb(128 255 128)' : '#e6effa', 'font-weight': candidato == optSelected ? '600' : '400'}">
+                    <span>{{candidato.descripcion}}</span>
+                </div>
+            </div> -->
+        </div>
+        <div class="imgElegida">
+            <div *ngIf="!optSelected" class="noSelectOpcion">
+                <img class="todaviaSinImagen" src="assets/svg/empty-data.svg" alt="">
+                <span>No se ha seleccionado una opción aún</span>
+            </div>
+            <div *ngIf="optSelected" style="height: 100%;">
+                <img class="estaSiEsLaImagen" src='data:image/jpeg;base64,{{optSelected.imagenBase64}}' alt='{{optSelected.descripcion}}'>
+            </div>
+        </div>
+    </div>
+    <mat-dialog-actions style="justify-content: space-evenly;">
+            <button mat-button mat-dialog-close>Cerrar</button>
+            <button mat-raised-button color="primary" [disabled]="!optSelected" (click)="votar()">Votar por esta Opción</button>
+    </mat-dialog-actions>
+</div>
+
+<div class="dialogEncuesta encuestaHecha" *ngIf="wait && !inscripcionVotacionElegida">
+    <img src="assets/images/surveyCheck.png">
+    <h3>¡Gracias por participar de la elección!</h3>
+    <mat-dialog-actions align="center">
+            <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
+    </mat-dialog-actions>
+</div>
