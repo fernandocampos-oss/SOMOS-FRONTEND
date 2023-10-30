@@ -143,7 +143,7 @@ export class MiEquipoComponent implements OnInit {
 
         let add = await this.services.agregarIntegrante(liderEquipo).then((data: any) => {
           if (data = 1) {
-            this._notification.success("Integrante agregado correctamente");
+            this._notification.success("El trabajador fue agregado correctamente");
             this.integranteControl.reset('');
             this.personalSeleccionadoTmp = null;
             this.loadTable();

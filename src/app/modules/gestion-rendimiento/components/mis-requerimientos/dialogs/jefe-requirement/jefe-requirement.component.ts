@@ -27,7 +27,7 @@ export class JefeRequirementComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance', 'estado', 'acciones'];
+  displayedColumns: string[] = ['item', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance', 'estado', 'acciones'];
 
   @ViewChild(MatSort) sort_finalizado: MatSort;
   @ViewChild(MatPaginator) paginator_finalizado: MatPaginator;
@@ -51,7 +51,7 @@ export class JefeRequirementComponent implements OnInit {
   ngOnInit(): void {
     this.loadTablePendiente();
     this.loadTableFinalizado();
-    this.loadTableRechazado();
+    // this.loadTableRechazado();
   }
 
   async loadTablePendiente() {
@@ -76,16 +76,16 @@ export class JefeRequirementComponent implements OnInit {
     });
   }
 
-  async loadTableRechazado() {
-    let listRechazado = await this._requerimientoService.listarRequerimientoRechazado().then((data) => {
-      if (data.length > 0) {
-        this.listDataRechazados = data;
-        this.dataSource_rechazado = new MatTableDataSource(this.listDataRechazados);
-        this.dataSource_rechazado.paginator = this.paginator_rechazado;
-        this.dataSource_rechazado.sort = this.sort_rechazado;
-      }
-    });
-  }
+  // async loadTableRechazado() {
+  //   let listRechazado = await this._requerimientoService.listarRequerimientoRechazado().then((data) => {
+  //     if (data.length > 0) {
+  //       this.listDataRechazados = data;
+  //       this.dataSource_rechazado = new MatTableDataSource(this.listDataRechazados);
+  //       this.dataSource_rechazado.paginator = this.paginator_rechazado;
+  //       this.dataSource_rechazado.sort = this.sort_rechazado;
+  //     }
+  //   });
+  // }
 
   verDetalleRequerimiento(element) {
     const dialogRef: MatDialogRef<VerTareaComponent> = this._matDialog.open(VerTareaComponent, {
@@ -102,7 +102,7 @@ export class JefeRequirementComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadTablePendiente();
       this.loadTableFinalizado();
-      this.loadTableRechazado();
+      // this.loadTableRechazado();
     });
   }
 
@@ -122,7 +122,22 @@ export class JefeRequirementComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadTablePendiente();
       this.loadTableFinalizado();
-      this.loadTableRechazado();
+      // this.loadTableRechazado();
+    });
+  }
+
+  nuevoRequerimientoJefe() {
+    const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._matDialog.open(RequerimientoRegisterUpdateComponent, {
+      disableClose: false,
+      width: '50%',
+      //height: '780px',
+      autoFocus: false,
+      data: {
+        esJefe: true,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 
@@ -185,8 +200,7 @@ export class JefeRequirementComponent implements OnInit {
           obj = null;
 
         } else {
-          this._notification.warning("No se encontró evidencia para la tarea: " + i.nombreTarea);
-
+          // this._notification.warning("No se encontró evidencia para la tarea: " + i.nombreTarea);
           let obj = new ReporteEvidencia();
           obj.nombreTarea = i.nombreTarea;
           obj.requerimientoDescripcion = element.requerimiento.nombre;

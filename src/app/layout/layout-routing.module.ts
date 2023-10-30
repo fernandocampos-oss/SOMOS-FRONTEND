@@ -150,6 +150,13 @@ export const ROUTES: Routes = [
             (m) => m.AdministrarRolRedModule
           ),
       },
+      {
+        path: AppRoute.REPORTES,
+        loadChildren: () => 
+          import('../modules/reportes/reportes.module').then(
+            (m) => m.ReportesModule
+          ),
+      },
     ],
   },
 ];

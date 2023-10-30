@@ -96,11 +96,11 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
-  async listarRequerimientoRechazado() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/rechazado`;
-    console.log(url);
-    return await this.http.get<Object[]>(url).toPromise();
-  }
+  // async listarRequerimientoRechazado() {
+  //   const url = `${URL_BASE}/requerimientosUsuarios/listar/rechazado`;
+  //   console.log(url);
+  //   return await this.http.get<Object[]>(url).toPromise();
+  // }
 
   async registrarRequerimiento(requerimiento: RequerimientoRequest) {
     const url = `${URL_BASE}/requerimientosUsuarios/registrar/requerimiento`;
@@ -126,11 +126,11 @@ export class GestionRendimientoService {
     return this.http.get<any[]>(url);
   }
 
-  rechazarRequerimiento(estado: number, motivo: string, idRequerimientoUsuario: number) {
-    const url = `${URL_BASE}/requerimientosUsuarios/rechazar?estado=${estado}&motivo=${motivo}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
-    console.log(url);
-    return this.http.get<any[]>(url);
-  }
+  // rechazarRequerimiento(estado: number, motivo: string, idRequerimientoUsuario: number) {
+  //   const url = `${URL_BASE}/requerimientosUsuarios/rechazar?estado=${estado}&motivo=${motivo}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
+  //   console.log(url);
+  //   return this.http.get<any[]>(url);
+  // }
 
   derivarRequerimiento(estado: number, motivo: string, codUnidadReceptor: string, idRequerimientoUsuario: number) {
     const url = `${URL_BASE}/requerimientosUsuarios/derivar?estado=${estado}&motivo=${motivo}&codUnidadReceptor=${codUnidadReceptor}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
@@ -224,8 +224,16 @@ export class GestionRendimientoService {
     return await this.http.get<TipoIngreso[]>(url).toPromise();
   }
 
-  // eliminarArchivo(estado: boolean, idEvidenciaArchivo: number) {
-  //   return this.http.get(`${URL_BASE}/evidenciasArchivos/eliminar/estado/${estado}/id/${idEvidenciaArchivo}`);
-  // }
+  async reporteGeneralRequerimientos(anio: number) {
+    const url = `${URL_BASE}/requerimientosUsuarios/reporte/excel/anio/${anio}`;
+    console.log(url);
+    return await this.http.get<Object[]>(url).toPromise();
+  }
+
+  async listarValorMeta() {
+    const url = `${URL_BASE}/requerimientosUsuarios/listar/tipoValorMeta`;
+    console.log(url);
+    return await this.http.get<Object[]>(url).toPromise();
+  }
 
 }

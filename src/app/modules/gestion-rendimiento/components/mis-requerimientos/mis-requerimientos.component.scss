@@ -1,17 +1,17 @@
-// :host {
-//     .actions {
-//         display: flex;
-//         align-items: center;
-//         justify-content: flex-end;
-//         column-gap: 0.5rem;
-//         padding-top: 1rem;
-//         flex-wrap: wrap;
+:host {
+    .actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        column-gap: 0.5rem;
+        padding-top: 1rem;
+        flex-wrap: wrap;
 
-//         &__separator {
-//             flex: 1;
-//         }
-//     }
-// }
+        &__separator {
+            flex: 1;
+        }
+    }
+}
 
 ::ng-deep .mat-progress-bar-fill::after {
     background-color: var(--color-bordes);
@@ -54,16 +54,6 @@
 
 .primary-button {
     color: var(--color-bordes);
-}
-
-.nuevo-button {
-    size: 24px;
-    color: white;
-    // background: #009EAD;
-    background: rgb(74, 161, 74);
-    border-radius: 4px;
-    // min-width: 260px !important;
-    // min-height: 37px !important;
 }
 
 .color-mensaje {

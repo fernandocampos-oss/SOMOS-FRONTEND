@@ -105,13 +105,6 @@ const data: MenuItem[] = [
   //   label: 'Configuraciones',
   //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
   // },
-  {
-    path: AppRoute.GESTION_RENDIMIENTO,
-    icon: 'remote_menu',
-    svg: true,
-    label: 'Gestion del Rendimiento',
-    roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
-  },
   // // {
   // //   path : AppRoute.DDJJ_CONFLICTO,
   // //   icon : 'ddjj',
@@ -119,11 +112,69 @@ const data: MenuItem[] = [
   // //   label : 'DD.JJ'
   // // }
   {
-    path: AppRoute.MIS_REQUERIMIENTOS,
-    icon: 'description',
-    label: 'Mis Requerimientos',
+    icon: 'settings',
+    label:'Gestión del rendimiento', //trabajador
+    type: 3,
     roles: [Role.TRABAJADOR],
+    children:[
+      {
+        path: AppRoute.MIS_REQUERIMIENTOS,
+        icon: 'description',
+        label: 'Módulo de Planificación',
+        roles: [Role.TRABAJADOR],
+      },
+      {
+        path: '',
+        icon: 'description',
+        label: 'Módulo de Seguimiento',
+        roles: [Role.TRABAJADOR],
+      },
+      {
+        path: '',
+        icon: 'description',
+        label: 'Módulo de Evaluacion',
+        roles: [Role.TRABAJADOR],
+      },
+      // {
+      //   path: AppRoute.REPORTES,
+      //   icon: 'assignment',
+      //   label: 'Reportes',
+      //   roles: [Role.ADMIN_CENTRAL],
+      // },
+    ]
   },
+  {
+    icon: 'settings',
+    label:'Gestión del rendimiento', //jefe
+    type: 3,
+    roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+    children:[
+      {
+        path: AppRoute.GESTION_RENDIMIENTO,
+        icon: 'description',
+        label: 'Módulo de planificación',
+        roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+      },
+      {
+        path: '',
+        icon: 'description',
+        label: 'Módulo de Seguimiento',
+        roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+      },
+      {
+        path: '',
+        icon: 'description',
+        label: 'Módulo de Evaluacion',
+        roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+      },
+      // {
+      //   path: AppRoute.REPORTES,
+      //   icon: 'assignment',
+      //   label: 'Reportes',
+      //   roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
+      // },
+    ]
+  }
 ];
 
 @Injectable({ providedIn: 'root' })

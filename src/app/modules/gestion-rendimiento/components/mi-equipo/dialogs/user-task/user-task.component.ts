@@ -98,7 +98,7 @@ export class UserTaskComponent implements OnInit {
         this.dataSource.sort = this.sort;
       } else {
         this.dataSource = null;
-        this._notification.warning("El integrante no cuenta con requerimientos");
+        this._notification.warning("El integrante no cuenta con indicadores/productos");
       }
     });
   }

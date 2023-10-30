@@ -11,6 +11,7 @@ import { ReadRequirementComponent } from './dialogs/read-requirement/read-requir
 import { SolicitudRequirementComponent } from './dialogs/solicitud-requirement/solicitud-requirement.component';
 import { RequerimientoRegisterUpdateComponent } from '@modules/mis-requerimientos/components/requerimiento-register-update/requerimiento-register-update.component';
 import { JefeRequirementComponent } from './dialogs/jefe-requirement/jefe-requirement.component';
+import { MiEquipoComponent } from '../mi-equipo/mi-equipo.component';
 
 @Component({
   selector: 'gestion-rendimiento-mis-requerimientos',
@@ -121,20 +122,20 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  nuevoRequerimientoJefe() {
-    const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._dialog.open(RequerimientoRegisterUpdateComponent, {
-      disableClose: false,
-      width: '50%',
-      //height: '780px',
-      autoFocus: false,
-      data: {
-        esJefe: true,
-      }
-    });
+  // nuevoRequerimientoJefe() {
+  //   const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._dialog.open(RequerimientoRegisterUpdateComponent, {
+  //     disableClose: false,
+  //     width: '50%',
+  //     //height: '780px',
+  //     autoFocus: false,
+  //     data: {
+  //       esJefe: true,
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //   });
+  // }
 
   listRequerimientosJefe() {
     const dialogRef: MatDialogRef<JefeRequirementComponent> = this._dialog.open(JefeRequirementComponent, {
@@ -149,6 +150,23 @@ export class MisRequerimientosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  modalMiEquipo() {
+    const dialogRef: MatDialogRef<MiEquipoComponent> = this._dialog.open(MiEquipoComponent, {
+      disableClose: false,
+      width: '80%',
+      //height: '780px',
+      autoFocus: false,
+      data: {
+        // esJefe: false,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+
   }
 
 }

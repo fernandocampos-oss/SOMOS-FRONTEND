@@ -1,18 +1,22 @@
 <div class="page">
     <div class="matero-page-header">
-      <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon> Gestión del Rendimiento<br>
-      <small class="mr-2">Gestiona los requerimientos y tareas tu equipo</small><br>
+      <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon>Módulo de planificación<br>
+      <small class="mr-2">Aqui podrás registrar tus indicadores / productos y gestionar tus trabajadores</small><br><br>
       <button mat-raised-button class="primary-button" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
       </h1>
     </div>
     <div class="page__body">
       <div class="card shadow">
         <mat-tab-group>
-          <mat-tab label="Requerimientos del área" *ngIf="rol != trabajador">
+          <mat-tab label="Indicadores / productos del área" *ngIf="rol != trabajador">
             <gestion-rendimiento-mis-requerimientos></gestion-rendimiento-mis-requerimientos>
           </mat-tab>
-          <mat-tab label="Mi Equipo" *ngIf="rol != trabajador">
+          <!-- <mat-tab label="Mi Equipo" *ngIf="rol != trabajador">
             <gestion-rendimiento-mi-equipo></gestion-rendimiento-mi-equipo>
+          </mat-tab> -->
+          <br>
+          <mat-tab label="Mis indicadores / productos" *ngIf="rol != trabajador">
+            <app-jefe-requirement></app-jefe-requirement>
           </mat-tab>
           <!-- <mat-tab label="Mis Tareas">
             <gestion-rendimiento-mis-tareas></gestion-rendimiento-mis-tareas>

@@ -70,7 +70,7 @@ export class SolicitudRequirementComponent implements OnInit {
   getPorcentajeInicialTarea() {
     if (this.data.obj.listTarea.length > 0) {
       for (let i of this.data.obj.listTarea) {
-        if (i.porcentajeInicial == 80) {
+        if (i.porcentajeInicial == 90) {
           this.porcentajeInicial = true;
           console.log("estado 80% = ", this.porcentajeInicial);
         }
@@ -125,7 +125,7 @@ export class SolicitudRequirementComponent implements OnInit {
 
   private _getModel(): TareaDTO {
     let tareas: TareaResponse[] = [];
-    let porcentajeDefault = 80;
+    let porcentajeDefault = 90;
 
     for (let i of this.listTareas) {
       let t = new TareaResponse();

@@ -1,0 +1,21 @@
+<div class="page">
+    <div class="matero-page-header">
+      <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon>Reportes<br>
+      <small class="mr-2">Aquí podrás generar reportes del modulo de gestión del rendimiento</small><br><br>
+      <button mat-raised-button class="primary-button" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+      </h1>
+    </div>
+    <div class="page__body">
+      <div class="card shadow">
+        <mat-tab-group>
+          <mat-tab label="Reporte de indicadores / productos por trabajador">
+            <reportes-reporte-requerimientos></reportes-reporte-requerimientos>
+          </mat-tab>
+          <!-- <mat-tab label="Reporte 2" *ngIf="rol != trabajador">
+            <gestion-rendimiento-mi-equipo></gestion-rendimiento-mi-equipo>
+          </mat-tab> -->
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+  

@@ -53,7 +53,7 @@ import { JefeRequirementComponent } from './components/mis-requerimientos/dialog
     EditUserSelectedComponent,
     UpdateTareaComponent,
     DeleteDialogComponent,
-    JefeRequirementComponent
+    JefeRequirementComponent,
   ],
   imports: [
     CommonModule,

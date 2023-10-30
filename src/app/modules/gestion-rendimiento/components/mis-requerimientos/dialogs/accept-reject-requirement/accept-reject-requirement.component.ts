@@ -48,16 +48,15 @@ export class AcceptRejectRequirementComponent implements OnInit {
     });
   }
 
-  rechazarRequerimiento() {
-    this.data.obj.motivo = this.form.value.frmMotivo;
-    this.services.rechazarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_RECHAZADO, this.data.obj.motivo, this.data.obj.idRequerimientoUsuario).subscribe(data => {
-      if (data) {
-        this._notification.success("Requerimiento rechazado");
-      } else {
-        this._notification.error("Error al rechazar requerimento")
-      }
-    });
-
-  }
+  // rechazarRequerimiento() {
+  //   this.data.obj.motivo = this.form.value.frmMotivo;
+  //   this.services.rechazarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_RECHAZADO, this.data.obj.motivo, this.data.obj.idRequerimientoUsuario).subscribe(data => {
+  //     if (data) {
+  //       this._notification.success("Requerimiento rechazado");
+  //     } else {
+  //       this._notification.error("Error al rechazar requerimento")
+  //     }
+  //   });
+  // }
 
 }

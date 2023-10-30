@@ -1,3 +1,19 @@
+:host {
+    .actions {
+        display: flex;
+        align-items: center;
+        // justify-content: flex-end;
+        justify-content: flex-start;
+        column-gap: 0.5rem;
+        padding-top: 1rem;
+        flex-wrap: wrap;
+
+        &__separator {
+            flex: 1;
+        }
+    }
+}
+
 ::ng-deep .mat-progress-bar-fill::after {
     background-color: var(--color-bordes);
 }
@@ -28,25 +44,25 @@
     background-color: var(--color-success);
 }
 
-// .nuevo-button {
-//     size: 10px;
-//     color: white;
-//     background-color: var(--color-bordes);
-//     border-radius: 4px;
-//     width: 220px;
-// }
+.nuevo-button {
+    size: 10px;
+    color: white;
+    background-color: var(--color-bordes);
+    border-radius: 4px;
+    width: 250px;
+}
 
 table {
     width: 100%;
 }
 
-.primary-button {
-    color: var(--color-bordes);
-}
+// .primary-button {
+//     color: var(--color-bordes);
+// }
 
-.has-success {
-    color: green;
-}
+// .has-success {
+//     color: green;
+// }
 
 .color-mensaje {
     color: var(--color-bordes);

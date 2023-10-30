@@ -1,10 +1,10 @@
-<h2 matDialogTitle>{{this.data.esEditar == true ? 'Editar Requerimiento':'Nuevo Requerimiento'}}</h2>
+<h2 matDialogTitle>{{this.data.esEditar == true ? 'Editar Indicador/Producto':'Registrar Indicador/Producto'}}</h2>
 <form [formGroup]="form">
     <mat-dialog-content>
         <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
                 <mat-form-field appearance="outline">
-                    <mat-label>Titulo</mat-label>
+                    <mat-label>Título</mat-label>
                     <input matInput required formControlName="frmNombre" maxlength="250" />
                 </mat-form-field>
             </mat-grid-tile>
@@ -16,20 +16,33 @@
             </mat-grid-tile>
             <mat-grid-tile [colspan]="3">
                 <mat-form-field appearance="outline">
-                    <mat-label>Medio de ingreso</mat-label>
-                    <mat-select [(value)]="idTipoIngresoSeleccionado" formControlName="frmMedio">
+                    <mat-label>Tipo de ingreso</mat-label>
+                    <mat-select [(value)]="idTipoIngresoSeleccionado" formControlName="frmTipoIngreso">
                         <mat-option *ngFor="let t of listTipoIngreso" [value]="t.idTipoIngreso">
-                            {{t.descripcion}}
+                            {{t.descripcion | titlecase}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile [colspan]="3">
                 <mat-form-field appearance="outline">
-                    <mat-label>Identificador del requerimiento</mat-label>
-                    <input matInput required formControlName="frmIdentificador" maxlength="20" />
+                    <mat-label>Tipo de valor meta</mat-label>
+                    <mat-select [(value)]="idValorMetaSeleccionado" formControlName="frmTipoValorMeta"
+                        (selectionChange)="onSelectionChange($event)">
+                        <mat-option *ngFor="let m of listValorMeta" [value]="m.idTipoValorMeta">
+                            {{m.descripcion | titlecase}}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
+            <div *ngIf="onChangeValue==2">
+                <mat-grid-tile [colspan]="3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Ingrese dato numérico</mat-label>
+                        <input matInput formControlName="frmValorMeta" maxlength="3" required/>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </div>
         </mat-grid-list>
     </mat-dialog-content>
 </form>

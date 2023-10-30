@@ -1,0 +1,13 @@
+<br>
+<form [formGroup]="form" (ngSubmit)="generarReporte()">
+    <mat-form-field appearance="outline">
+        <mat-label>Seleccione año</mat-label>
+        <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
+            <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-icon-button class="primary-button" matTooltip="Reporte general" type="submit">
+        <mat-icon>search</mat-icon>
+      </button>
+</form>

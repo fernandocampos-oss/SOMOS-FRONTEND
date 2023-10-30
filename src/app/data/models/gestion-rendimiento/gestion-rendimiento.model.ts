@@ -2,20 +2,19 @@ export class RequerimientoResponse {
   idRequerimiento?: number;
   nombre?: string;
   descripcion?: string;
-  identificador?: string;
   motivo?: string;
-  porcentajeAvance?: number;
+  valorMeta?: number;
   tipoIngreso?: TipoIngreso;
   esJefe?: boolean;
+  tipoValorMeta?: TipoValorMeta;
 }
 
 export class RequerimientoRequest {
   idRequerimiento?: number;
   nombre?: string;
   descripcion?: string;
-  identificador?: string;
   motivo?: string;
-  porcentajeAvance?: number;
+  valorMeta?: number;
   tipoIngreso?: TipoIngreso;
 }
 
@@ -30,8 +29,9 @@ export class EstadoRequerimiento {
   estado?: boolean;
 }
 
-export class Indicador {
-  idIndicador?: number;
+export class TipoValorMeta {
+  idTipoValorMeta?: number;
+  codigo?: number;
   descripcion?: string;
   estado?: boolean;
 }
@@ -39,7 +39,6 @@ export class Indicador {
 export class Poi {
   idPoi?: number;
   descripcion?: string;
-  indicador?: Indicador;
   estado?: boolean;
 }
 
@@ -95,13 +94,3 @@ export class Lider {
 export class Integrante {
   idUsuario?: number;
 }
-
-// export class ArchivoNew {
-//   idArchivo: number;
-//   nombre: string;
-//   nombreRegistro: string;
-//   ruta: string;
-//   tipo: string;
-//   extension: string;
-//   estado: boolean;
-// }
