@@ -12,13 +12,13 @@ const routes: Routes = [
       title: ' Menú Principal'
     }
   },
-  {
-    path: AppRoute.RENUEVA_ESSALUD,
-    component: FormRenuevaEssaludComponent,
-    data: {
-      title: 'Renueva EsSalud'
-    }
-  },
+  // {
+  //   path: AppRoute.RENUEVA_ESSALUD,
+  //   component: FormRenuevaEssaludComponent,
+  //   data: {
+  //     title: 'Renueva EsSalud'
+  //   }
+  // },
 ];
 
 @NgModule({
