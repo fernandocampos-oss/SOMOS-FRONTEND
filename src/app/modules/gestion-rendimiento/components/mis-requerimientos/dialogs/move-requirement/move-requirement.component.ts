@@ -34,11 +34,9 @@ export class MoveRequirementComponent implements OnInit {
   ngOnInit(): void {
     // console.log(this.data)
     this.createForm();
-    this.listarTodosUnidadOrganizativa();
-
+    // this.listarTodosUnidadOrganizativa();
   }
 
-  //Unidad Org.
   private _filter(value: string) {
     if (value != undefined) {
       return this.listUnidades.filter(u => u.descripcion.toLowerCase().includes(value.toLowerCase()));
@@ -53,26 +51,24 @@ export class MoveRequirementComponent implements OnInit {
     console.log(this.unidadSeleccionadoTmp);
   }
 
-  async listarTodosUnidadOrganizativa() {
-    let listarUnidad = await this.services.listarTodosUnidadOrganizativa().then((data) => {
-      if (data) {
-        this.listUnidades = data;
+  // async listarTodosUnidadOrganizativa() {
+  //   let listarUnidad = await this.services.listarTodosUnidadOrganizativa().then((data) => {
+  //     if (data) {
+  //       this.listUnidades = data;
+  //       if (this.listUnidades.length > 0) {
+  //         this.filteredOptionsUnidad = this.myControlUnidad.valueChanges
+  //           .pipe(
+  //             startWith(''),
+  //             map(value => typeof value === 'string' ? value : value.descripcion),
+  //             map(descripcion => descripcion ? this._filter(descripcion) : this.listUnidades.slice())
+  //           );
+  //       }
 
-        //Unidad Org
-        if (this.listUnidades.length > 0) {
-          this.filteredOptionsUnidad = this.myControlUnidad.valueChanges
-            .pipe(
-              startWith(''),
-              map(value => typeof value === 'string' ? value : value.descripcion),
-              map(descripcion => descripcion ? this._filter(descripcion) : this.listUnidades.slice())
-            );
-        }
-
-      } else {
-        this._notification.warning("Lista de unidades organizacionales vacia")
-      }
-    });
-  }
+  //     } else {
+  //       this._notification.warning("Lista de unidades organizacionales vacia")
+  //     }
+  //   });
+  // }
 
   createForm() {
     this.form_cambio = this._formBuilder.group({
@@ -81,15 +77,14 @@ export class MoveRequirementComponent implements OnInit {
     });
   }
 
-  derivarRequiremento() {
-    this.data.obj.motivo = this.form_cambio.value.frmMotivo;
-    // this.data.obj.gerenciaReceptor = this.form_cambio.value.frmArea;
-    this.services.derivarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_DERIVADO, this.data.obj.motivo, this.unidadSeleccionadoTmp.codUnidad, this.data.obj.idRequerimientoUsuario).subscribe(data => {
-      if (data) {
-        this._notification.success("Requerimiento derivado correctamente");
-      } else {
-        this._notification.error("Error al derivar requerimento")
-      }
-    });
-  }
+  // derivarRequiremento() {
+  //   this.data.obj.motivo = this.form_cambio.value.frmMotivo;
+  //   this.services.derivarRequerimiento(ConstantesGr.ESTADO_REQUERIMIENTO_DERIVADO, this.data.obj.motivo, this.unidadSeleccionadoTmp.codUnidad, this.data.obj.idRequerimientoUsuario).subscribe(data => {
+  //     if (data) {
+  //       this._notification.success("Requerimiento derivado correctamente");
+  //     } else {
+  //       this._notification.error("Error al derivar requerimento")
+  //     }
+  //   });
+  // }
 }

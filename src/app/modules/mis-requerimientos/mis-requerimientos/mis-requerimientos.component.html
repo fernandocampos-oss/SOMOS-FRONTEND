@@ -8,11 +8,11 @@
   <div class="page__body">
     <div class="card shadow">
       <mat-tab-group class="tab-group">
-        <mat-tab label="Indicador/producto pendientes">
+        <mat-tab label="Indicador / Producto Pendientes">
           <div class="actions">
-            <button mat-raised-button class="nuevo-button" (click)="registrarRequerimiento()">
+            <button mat-raised-button class="nuevo-button" (click)="registrarIndicador()">
               <mat-icon>add_circle</mat-icon>
-              &nbsp; Registrar Indicador/Producto
+              &nbsp; Registrar Indicador / Producto
             </button>
             <button mat-raised-button color="primary" (click)="actualizar()" *ngIf="listDataPendientes.length !== 0">
               <mat-icon>cached</mat-icon>
@@ -21,7 +21,7 @@
           </div>
           <br>
           <div *ngIf="listDataPendientes.length == 0" style="text-align: center">
-            <p class="color-mensaje">Aún no tienes indicadores/productos pendientes</p>
+            <p class="color-mensaje">Aún no tienes indicadores / productos pendientes</p>
             <br>
           </div>
           <div *ngIf="listDataPendientes.length !== 0">
@@ -103,7 +103,7 @@
           </div>
         </mat-tab>
 
-        <mat-tab label="Indicador/producto finalizados">
+        <mat-tab label="Indicador / Producto Finalizados">
           <br>
           <div *ngIf="listDataFinalizados.length == 0" style="text-align: center">
             <p class="color-mensaje">Aún no tienes indicadores / productos finalizados</p>

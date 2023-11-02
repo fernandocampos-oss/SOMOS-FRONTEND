@@ -21,7 +21,7 @@ import { EvidenciaResponseDTO } from '@data/models/gestion-rendimiento/gestion-r
 })
 export class MisRequerimientosComponent implements OnInit {
   evidenciaDTO: EvidenciaResponseDTO;
-  listDataRechazados: any[] = [];
+  // listDataRechazados: any[] = [];
   listDataFinalizados: any[] = [];
   listDataPendientes: any[] = [];
 
@@ -59,14 +59,14 @@ export class MisRequerimientosComponent implements OnInit {
   async actualizar() {
     this.listDataPendientes = [];
     this.listDataFinalizados = [];
-    this.listDataRechazados = [];
+    // this.listDataRechazados = [];
     let pendientes = await this.loadTablePendiente();
     let finalizados = await this.loadTableFinalizado();
     // let rechazados = await this.loadTableRechazado();
     this._snackbar.success("La lista se encuentra actualizada");
   }
 
-  registrarRequerimiento() {
+  registrarIndicador() {
     const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._matDialog.open(RequerimientoRegisterUpdateComponent, {
       disableClose: false,
       width: '50%',
@@ -86,7 +86,7 @@ export class MisRequerimientosComponent implements OnInit {
   }
 
   async loadTablePendiente() {
-    let listPendiente = await this._requerimientoService.listarRequerimientoPendiente().then((data) => {
+    let listPendiente = await this._requerimientoService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
         this.listDataPendientes = data;
         console.log("rr",this.listDataPendientes)

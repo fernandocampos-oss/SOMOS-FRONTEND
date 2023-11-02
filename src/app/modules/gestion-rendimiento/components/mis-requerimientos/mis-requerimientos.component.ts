@@ -19,13 +19,14 @@ import { MiEquipoComponent } from '../mi-equipo/mi-equipo.component';
   styleUrls: ['./mis-requerimientos.component.scss']
 })
 export class MisRequerimientosComponent implements OnInit {
-  listDataPendientes: any[] = [];
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Item', 'nombre_requerimiento', 'trabajador', 'fecha_creacion', 'porcentaje_avance', 'estado', 'acciones'];
+  // @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  // dataSource: MatTableDataSource<any>;
+  displayedColumns: string[] = ['poi', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'comentario', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'acciones'];
   // menuToggle = new EventEmitter<void>();
+
+  listDataPendientes: any[] = [];
+  listRequerimientos: any[] = [];
 
   constructor(
     private _dialog: MatDialog,
@@ -46,9 +47,10 @@ export class MisRequerimientosComponent implements OnInit {
     let listar = await this.services.listarRequerimientoPrincipal().then((data) => {
       if (data.length > 0) {
         this.listDataPendientes = data;
-        this.dataSource = new MatTableDataSource(this.listDataPendientes);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        console.log("<<<<<<<<<<<<<<<", this.listDataPendientes)
+        // this.dataSource = new MatTableDataSource(this.listDataPendientes);
+        // this.dataSource.paginator = this.paginator;
+        // this.dataSource.sort = this.sort;
       }
     });
   }
@@ -107,20 +109,20 @@ export class MisRequerimientosComponent implements OnInit {
     });
   }
 
-  derivarRequerimiento(element) {
-    const dialogRef: MatDialogRef<MoveRequirementComponent> = this._dialog.open(MoveRequirementComponent, {
-      disableClose: false,
-      width: '35%',
-      autoFocus: false,
-      data: {
-        obj: element,
-      }
-    });
+  // derivarRequerimiento(element) {
+  //   const dialogRef: MatDialogRef<MoveRequirementComponent> = this._dialog.open(MoveRequirementComponent, {
+  //     disableClose: false,
+  //     width: '35%',
+  //     autoFocus: false,
+  //     data: {
+  //       obj: element,
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadTable();
+  //   });
+  // }
 
   // nuevoRequerimientoJefe() {
   //   const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._dialog.open(RequerimientoRegisterUpdateComponent, {
@@ -166,7 +168,18 @@ export class MisRequerimientosComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
 
     });
+  }
 
+  async loadIndicadores(idUsuario: Number) {
+    let load = await this.services.listarRequerimientosPorPersonal(idUsuario).then((data: any) => {
+      if (data.length > 0) {
+        console.log("## listRequerimientos", data)
+        this.listRequerimientos = data;
+        // this.dataSource = new MatTableDataSource(data);
+        // this.dataSource.paginator = this.paginator;
+        // this.dataSource.sort = this.sort;
+      }
+    });
   }
 
 }

@@ -118,26 +118,26 @@ const data: MenuItem[] = [
   // //   label : 'DD.JJ'
   // // }
   {
-    icon: 'settings',
+    icon: 'description',
     label:'Gestión del rendimiento', //trabajador
     type: 3,
     roles: [Role.TRABAJADOR],
     children:[
       {
         path: AppRoute.MIS_REQUERIMIENTOS,
-        icon: 'description',
+        icon: 'folder_open',
         label: 'Módulo de Planificación',
         roles: [Role.TRABAJADOR],
       },
       {
         path: '',
-        icon: 'description',
+        icon: 'folder_open',
         label: 'Módulo de Seguimiento',
         roles: [Role.TRABAJADOR],
       },
       {
         path: '',
-        icon: 'description',
+        icon: 'folder_open',
         label: 'Módulo de Evaluacion',
         roles: [Role.TRABAJADOR],
       },
@@ -150,26 +150,26 @@ const data: MenuItem[] = [
     ]
   },
   {
-    icon: 'settings',
+    icon: 'description',
     label:'Gestión del rendimiento', //jefe
     type: 3,
     roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
     children:[
       {
         path: AppRoute.GESTION_RENDIMIENTO,
-        icon: 'description',
+        icon: 'folder_open',
         label: 'Módulo de planificación',
         roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
       },
       {
         path: '',
-        icon: 'description',
+        icon: 'folder_open',
         label: 'Módulo de Seguimiento',
         roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
       },
       {
         path: '',
-        icon: 'description',
+        icon: 'folder_open',
         label: 'Módulo de Evaluacion',
         roles: [Role.ADMIN_CENTRAL, Role.ADMIN_SEDE],
       },

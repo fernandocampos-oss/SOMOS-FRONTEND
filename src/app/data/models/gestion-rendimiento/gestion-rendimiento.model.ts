@@ -1,5 +1,5 @@
-export class RequerimientoResponse {
-  idRequerimiento?: number;
+export class IndicadorResponse {
+  idIndicador?: number;
   nombre?: string;
   descripcion?: string;
   motivo?: string;
@@ -9,13 +9,25 @@ export class RequerimientoResponse {
   tipoValorMeta?: TipoValorMeta;
 }
 
-export class RequerimientoRequest {
-  idRequerimiento?: number;
+export class IndicadorRequest {
+  // idIndicador?: number;
   nombre?: string;
   descripcion?: string;
-  motivo?: string;
-  valorMeta?: number;
   tipoIngreso?: TipoIngreso;
+  tipoValorMeta?: TipoValorMeta
+  valorMeta?: number;
+}
+export class TipoIngreso {
+  idTipoIngreso?: number;
+  codigo?: string;
+  descripcion?: string;
+  estado?: boolean;
+}
+export class TipoValorMeta {
+  idTipoValorMeta?: number;
+  codigo?: string;
+  descripcion?: string;
+  estado?: boolean;
 }
 
 export class RequerimientoUsuario {
@@ -29,13 +41,6 @@ export class EstadoRequerimiento {
   estado?: boolean;
 }
 
-export class TipoValorMeta {
-  idTipoValorMeta?: number;
-  codigo?: number;
-  descripcion?: string;
-  estado?: boolean;
-}
-
 export class Poi {
   idPoi?: number;
   descripcion?: string;
@@ -45,12 +50,6 @@ export class Poi {
 export class UnidadOrganizativa {
   codUnidad?: string;
   descripcion?: string;
-}
-
-export class TipoIngreso {
-  idTipoIngreso?: number;
-  descripcion?: string;
-  estado?: boolean;
 }
 
 export class Personal {
@@ -82,15 +81,13 @@ export class Tarea {
   idTarea?: number;
 }
 
-export class LiderEquipoRequest {
-  lider?: Lider;
+export class EquipoRequest {
+  jefe?: Jefe;
   integrante?: Integrante;
 }
-
-export class Lider {
-  idUsuario?: number;
+export class Jefe {
+  idVotante?: number;
 }
-
 export class Integrante {
-  idUsuario?: number;
+  idVotante?: number;
 }

@@ -55,7 +55,7 @@ export class JefeRequirementComponent implements OnInit {
   }
 
   async loadTablePendiente() {
-    let listPendiente = await this._requerimientoService.listarRequerimientoPendiente().then((data) => {
+    let listPendiente = await this._requerimientoService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
         this.listDataPendientes = data;
         this.dataSource = new MatTableDataSource(this.listDataPendientes);

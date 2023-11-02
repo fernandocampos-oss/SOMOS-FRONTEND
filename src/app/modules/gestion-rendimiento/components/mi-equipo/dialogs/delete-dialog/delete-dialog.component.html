@@ -1,6 +1,6 @@
 <!-- <div *ngIf="data.funcion == 3"> -->
 <div class="alert">
-    <h2>¿Estás seguro de eliminar a {{titleNombres | titlecase}}?</h2>
+    <h2>¿Estás seguro de eliminar el trabajador?</h2>
     <span>Una vez eliminado, no se podrá deshacer</span><br>
 </div>
 <br>
@@ -9,7 +9,7 @@
         <button mat-button matDialogClose class="close-button">No</button>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1" class="grid">
-        <button mat-raised-button (click)="deleteIntegrante()" color="warn" class="boton">Si</button>
+        <button mat-raised-button (click)="deleteTrabajador()" color="warn" class="boton">Si</button>
     </mat-grid-tile>
 </mat-grid-list>
 <!-- </div> -->

@@ -20,16 +20,14 @@ export class DeleteDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.titleNombres=this.data.model.integrante.nombres;
   }
 
-  async deleteIntegrante() {
-    const idIntegrante = this.data.model.integrante.idUsuario;
-    let revoke = await this._services.eliminarIntegrante(idIntegrante).then((data: any) => {
+  async deleteTrabajador() {
+    let revoke = await this._services.eliminarTrabajador(this.data.model.idEquipo).then((data: any) => {
       if (data = 1) {
-        this._notification.success("Integrante eliminado");
+        this._notification.success("Trabajdor eliminado");
       } else {
-        this._notification.warning("Eliminar integrante: Se produjo un error");
+        this._notification.warning("Eliminar trabajador: Se produjo un error");
       }
     });
     this.dialogRef.close();

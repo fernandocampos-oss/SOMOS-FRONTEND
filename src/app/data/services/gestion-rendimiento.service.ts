@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
-import { EvidenciaRequest, EvidenciaResponseDTO, LiderEquipoRequest, Personal, Poi, RequerimientoRequest, TipoIngreso, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { EquipoRequest, EvidenciaRequest, EvidenciaResponseDTO, IndicadorRequest, Poi, TipoIngreso, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { TareaDTO } from '@data/models/gestion-rendimiento/tarea-model';
 
 const URL_BASE = `${environment.apiUrl}`;
@@ -83,60 +83,60 @@ export class GestionRendimientoService {
   // }
 
 
-  //Requerimientos
-  async listarRequerimientoPendiente() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/pendiente`;
+  //Indicadores
+  async listarIndicadorPendiente() {
+    const url = `${URL_BASE}/indicadores-usuarios/listar/pendiente`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async listarRequerimientoFinalizado() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/finalizado`;
+    const url = `${URL_BASE}/indicadores-usuarios/listar/finalizado`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   // async listarRequerimientoRechazado() {
-  //   const url = `${URL_BASE}/requerimientosUsuarios/listar/rechazado`;
+  //   const url = `${URL_BASE}/indicadores-usuarios/listar/rechazado`;
   //   console.log(url);
   //   return await this.http.get<Object[]>(url).toPromise();
   // }
 
-  async registrarRequerimiento(requerimiento: RequerimientoRequest) {
-    const url = `${URL_BASE}/requerimientosUsuarios/registrar/requerimiento`;
+  async registrarIndicador(requerimiento: IndicadorRequest) {
+    const url = `${URL_BASE}/indicadores-usuarios/registrar/indicador`;
     console.log(url, requerimiento);
     return await this.http.post(url, requerimiento).toPromise();
   }
 
-  async updateRequerimiento(idRequerimiento: number, model: RequerimientoRequest) {
-    const url = `${URL_BASE}/requerimientosUsuarios/modificar/requerimiento/${idRequerimiento}`;
+  async updateIndicador(idIndicador: number, model: IndicadorRequest) {
+    const url = `${URL_BASE}/indicadores-usuarios/modificar/indicador/${idIndicador}`;
     console.log(url, model);
     return await this.http.put(url, model).toPromise();
   }
 
   async listarRequerimientoPrincipal() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/principal`;
+    const url = `${URL_BASE}/indicadores-usuarios/listar/principal`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   aprobarRequerimiento(estado: number, idRequerimientoUsuario: number) {
-    const url = `${URL_BASE}/requerimientosUsuarios/aprobar?estado=${estado}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
+    const url = `${URL_BASE}/indicadores-usuarios/aprobar?estado=${estado}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
     console.log(url);
     return this.http.get<any[]>(url);
   }
 
   // rechazarRequerimiento(estado: number, motivo: string, idRequerimientoUsuario: number) {
-  //   const url = `${URL_BASE}/requerimientosUsuarios/rechazar?estado=${estado}&motivo=${motivo}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
+  //   const url = `${URL_BASE}/indicadores-usuarios/rechazar?estado=${estado}&motivo=${motivo}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
   //   console.log(url);
   //   return this.http.get<any[]>(url);
   // }
 
-  derivarRequerimiento(estado: number, motivo: string, codUnidadReceptor: string, idRequerimientoUsuario: number) {
-    const url = `${URL_BASE}/requerimientosUsuarios/derivar?estado=${estado}&motivo=${motivo}&codUnidadReceptor=${codUnidadReceptor}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
-    console.log(url);
-    return this.http.get<any[]>(url);
-  }
+  // derivarRequerimiento(estado: number, motivo: string, codUnidadReceptor: string, idRequerimientoUsuario: number) {
+  //   const url = `${URL_BASE}/indicadores-usuarios/derivar?estado=${estado}&motivo=${motivo}&codUnidadReceptor=${codUnidadReceptor}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
+  //   console.log(url);
+  //   return this.http.get<any[]>(url);
+  // }
 
   async listarPoi() {
     const url = `${URL_BASE}/tareas/listar/pois`;
@@ -144,17 +144,11 @@ export class GestionRendimientoService {
     return await this.http.get<Poi[]>(url).toPromise();
   }
 
-  async listarTodosUnidadOrganizativa() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/unidadOrganizacion`;
-    console.log(url);
-    return await this.http.get<UnidadOrganizativa[]>(url).toPromise();
-  }
-
-  async listarIntegrantesPorLider() {
-    const url = `${URL_BASE}/lideres-equipos/listar/equipo`;
-    console.log(url);
-    return await this.http.get<Personal[]>(url).toPromise();
-  }
+  // async listarTodosUnidadOrganizativa() {
+  //   const url = `${URL_BASE}/indicadores-usuarios/listar/unidadOrganizacion`;
+  //   console.log(url);
+  //   return await this.http.get<UnidadOrganizativa[]>(url).toPromise();
+  // }
 
   async registrarTareas(modelDTO: TareaDTO) {
     const url = `${URL_BASE}/tareas/registrar`;
@@ -168,30 +162,36 @@ export class GestionRendimientoService {
     return await this.http.get<any[]>(url).toPromise();
   }
 
-  //Equipo
   async listarRequerimientosPorPersonal(idUsuario) {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/requerimientos/${idUsuario}/personal`;
+    const url = `${URL_BASE}/indicadores-usuarios/listar/requerimientos/${idUsuario}/personal`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
-  async listarPersonalDesdeVotante() {
-    // const url = `${URL_BASE}/lideres-equipos/listar/votantes`;
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/personal/red`;
+  //Equipo
+  async listarIntegrantesPorLider() {
+    const url = `${URL_BASE}/equipos/listar`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
-  async eliminarIntegrante(idIntegrante: number) {
-    const url = `${URL_BASE}/lideres-equipos/integrante/eliminar?idIntegrante=${idIntegrante}`;
+  async listarVotantes() {
+    const url = `${URL_BASE}/equipos/listar/votantes`;
+    // const url = `${URL_BASE}/indicadores-usuarios/listar/personal/red`;
+    console.log(url);
+    return await this.http.get<Object[]>(url).toPromise();
+  }
+
+  async eliminarTrabajador(idEquipo: number) {
+    const url = `${URL_BASE}/equipos/eliminar?idEquipo=${idEquipo}`;
     console.log(url);
     return await this.http.get(url).toPromise();
   }
 
-  async agregarIntegrante(liderEquipoRequest: LiderEquipoRequest) {
-    const url = `${URL_BASE}/lideres-equipos/integrante/agregar`;
-    console.log(url, liderEquipoRequest);
-    return await this.http.post(url, liderEquipoRequest).toPromise();
+  async registrarTrabajador(equipoRequest: EquipoRequest) {
+    const url = `${URL_BASE}/equipos/registrar`;
+    console.log(url, equipoRequest);
+    return await this.http.post(url, equipoRequest).toPromise();
   }
 
   // async findUsuarioByNumeroDocumento(numeroDocumento: string) {
@@ -200,8 +200,9 @@ export class GestionRendimientoService {
   //   return await this.http.get<Object>(url).toPromise();
   // }
 
+  //Indicador
   finalizarTareaAdministrador(idRequerimientoUsuario: number) {
-    const url = `${URL_BASE}/requerimientosUsuarios/finalizar/requerimiento?idRequerimientoUsuario=${idRequerimientoUsuario}`;
+    const url = `${URL_BASE}/indicadores-usuarios/finalizar/requerimiento?idRequerimientoUsuario=${idRequerimientoUsuario}`;
     console.log(url);
     return this.http.get<any[]>(url);
   }
@@ -219,19 +220,19 @@ export class GestionRendimientoService {
   }
 
   async listarTipoIngreso() {
-    const url = `${URL_BASE}/tareas/listar/tipoIngreso`;
+    const url = `${URL_BASE}/indicadores-usuarios/listar/tipoIngreso`;
     console.log(url);
     return await this.http.get<TipoIngreso[]>(url).toPromise();
   }
 
   async reporteGeneralRequerimientos(anio: number) {
-    const url = `${URL_BASE}/requerimientosUsuarios/reporte/excel/anio/${anio}`;
+    const url = `${URL_BASE}/indicadores-usuarios/reporte/excel/anio/${anio}`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
-  async listarValorMeta() {
-    const url = `${URL_BASE}/requerimientosUsuarios/listar/tipoValorMeta`;
+  async listarTipoValorMeta() {
+    const url = `${URL_BASE}/indicadores-usuarios/listar/tipoValorMeta`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }

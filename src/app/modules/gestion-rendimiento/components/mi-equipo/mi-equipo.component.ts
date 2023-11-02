@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { startWith, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,7 +12,7 @@ import { NotificationService } from '@core/services';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
-import { Integrante, Lider, LiderEquipoRequest } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { EquipoRequest, Integrante, Jefe } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { EditUserSelectedComponent } from './dialogs/edit-user-selected/edit-user-selected.component';
 
 @Component({
@@ -29,9 +30,9 @@ export class MiEquipoComponent implements OnInit {
   listEquipo: any[] = [];
 
   integranteControl = new FormControl('');
-  listPersonal = [];
+  listTrabajador = [];
   filteredOptions: Observable<any[]>;
-  personalSeleccionadoTmp: any;
+  trabajadorSeleccionadoTmp: any;
   usuarioObtenido: any;
 
   constructor(
@@ -42,35 +43,35 @@ export class MiEquipoComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTable();
-    this.listarPersonalDesdeVotante();
+    this.listarVotantes();
 
     //filter
     this.filteredOptions = this.integranteControl.valueChanges
       .pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
-        map(nombresCompletos => nombresCompletos ? this._filterPersonal(nombresCompletos) : this.listPersonal.slice())
+        map(nombresCompletos => nombresCompletos ? this._filterTrabajador(nombresCompletos) : this.listTrabajador.slice())
       );
   }
 
-  async listarPersonalDesdeVotante() {
-    let load = await this.services.listarPersonalDesdeVotante().then((data: any) => {
+  async listarVotantes() {
+    let load = await this.services.listarVotantes().then((data: any) => {
       if (data.length > 0) {
-        this.listPersonal = data;
+        this.listTrabajador = data;
       } else {
-        this._notification.warning("Lista de personal vacia");
+        this._notification.warning("Lista de trabajadores vacia");
       }
     });
   }
 
-  private _filterPersonal(value: string) {
-    return this.listPersonal.filter(persona => (persona.nombres + ' ' + persona.apellidos).toLowerCase().includes(value.toLowerCase()));
+  private _filterTrabajador(value: string) {
+    return this.listTrabajador.filter(persona => (persona.nombres + ' ' + persona.apellidos).toLowerCase().includes(value.toLowerCase()));
   }
-  displayFnPersonal(selectedpersona) {
-    return selectedpersona ? (selectedpersona.nombres + ' ' + selectedpersona.apellidos) : undefined;
+  displayFnTrabajador(selectedtrabajador) {
+    return selectedtrabajador ? (selectedtrabajador.nombres + ' ' + selectedtrabajador.apellidos) : undefined;
   }
   onSelectionChangePersonal(event: any) {
-    this.personalSeleccionadoTmp = event.option.value;
+    this.trabajadorSeleccionadoTmp = event.option.value;
   }
 
   showDialogUser(onDelete: boolean) {
@@ -108,6 +109,7 @@ export class MiEquipoComponent implements OnInit {
     let listPersonal = await this.services.listarIntegrantesPorLider().then((data) => {
       if (data.length > 0) {
         this.listEquipo = data;
+        console.log(">>>>>listEquipo",this.listEquipo)
         this.dataSource = new MatTableDataSource(this.listEquipo);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -115,49 +117,39 @@ export class MiEquipoComponent implements OnInit {
     });
   }
 
-  async agregarIntegrante() {
-    if (this.personalSeleccionadoTmp != undefined) {
-
-      // let add = await this.services.findUsuarioByNumeroDocumento(this.personalSeleccionadoTmp.numeroDocumento).then((data: any) => {
-      //   if (data != null) {
-      //     this.usuarioObtenido = data;
-      //   } else {
-      //     this._notification.warning("El trabajador no se encuentra registrado como usuario");
-      //   }
-      // });
-
-      if (this.listEquipo.find(x => x.integrante.idUsuario == Number(this.personalSeleccionadoTmp.idUsuario)) != undefined) {
-        this._notification.warning("El integrante ya se encuentra inscrito en tu equipo");
+  async registrarTrabajador() {
+    if (this.trabajadorSeleccionadoTmp != undefined) {
+      if (this.listEquipo.find(x => x.integrante.idVotante == Number(this.trabajadorSeleccionadoTmp.idVotante)) != undefined) {
+        this._notification.warning("El trabajador ya existe");
         return;
       } else {
-        let liderModel = new Lider();
-        liderModel.idUsuario = 0;
+        let jefeModel = new Jefe();
+        jefeModel.idVotante = 0;
 
         let integranteModel = new Integrante();
-        integranteModel.idUsuario = this.personalSeleccionadoTmp.idUsuario;
-        // integranteModel.idUsuario = this.usuarioObtenido.idUsuario;
+        integranteModel.idVotante = this.trabajadorSeleccionadoTmp.idVotante;
 
-        let liderEquipo = new LiderEquipoRequest();
-        liderEquipo.lider = liderModel;
-        liderEquipo.integrante = integranteModel;
+        let equipo = new EquipoRequest();
+        equipo.jefe = jefeModel;
+        equipo.integrante = integranteModel;
 
-        let add = await this.services.agregarIntegrante(liderEquipo).then((data: any) => {
+        let add = await this.services.registrarTrabajador(equipo).then((data: any) => {
           if (data = 1) {
-            this._notification.success("El trabajador fue agregado correctamente");
+            this._notification.success("Trabajador agregado correctamente");
             this.integranteControl.reset('');
-            this.personalSeleccionadoTmp = null;
+            this.trabajadorSeleccionadoTmp = null;
             this.loadTable();
           } else {
-            this._notification.warning("Agregar integrante: Se produjo un error");
+            this._notification.warning("Agregar trabajador: Se produjo un error");
           }
         });
       }
     } else {
-      this._notification.warning('Debe seleccionar un integrante');
+      this._notification.warning('Debe seleccionar un trabajador');
     }
   }
 
-  eliminarColaborador(element) {
+  eliminarTrabajador(element) {
     const dialogRef: MatDialogRef<DeleteDialogComponent> = this.dialog.open(DeleteDialogComponent, {
       disableClose: false,
       width: '30%',
@@ -178,19 +170,19 @@ export class MiEquipoComponent implements OnInit {
     this.dataSource.filter = value.trim().toUpperCase();
   }
 
-  datosIntegrante(item) {
-    const dialogRef: MatDialogRef<EditUserSelectedComponent> = this.dialog.open(EditUserSelectedComponent, {
-      disableClose: false,
-      width: '60%',
-      autoFocus: false,
-      data: {
-        model: item,
-      }
-    });
+  // datosTrabajador(element) {
+  //   const dialogRef: MatDialogRef<EditUserSelectedComponent> = this.dialog.open(EditUserSelectedComponent, {
+  //     disableClose: false,
+  //     width: '60%',
+  //     autoFocus: false,
+  //     data: {
+  //       model: element,
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadTable();
+  //   });
+  // }
 
 }

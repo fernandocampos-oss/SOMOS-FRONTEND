@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { UserSession } from '@data/models';
-import { RequerimientoResponse, TipoIngreso, TipoValorMeta } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { IndicadorRequest, TipoIngreso, TipoValorMeta } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
@@ -18,9 +18,9 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
   listTipoIngreso: TipoIngreso[] = [];
   idTipoIngresoSeleccionado: number;
 
-  listValorMeta: any[] = [];
+  listTipoValorMeta: any[] = [];
   idValorMetaSeleccionado: number;
-  onChangeValue: number;
+  onChangeValueTipoValorMeta: number;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,7 +35,7 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
     console.log(this.data)
     this._createForm();
     this.listarTipoIngreso();
-    this.listarValorMeta();
+    this.listarTipoValorMeta();
   }
 
   async listarTipoIngreso() {
@@ -48,12 +48,12 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
     });
   }
 
-  async listarValorMeta() {
-    let listarValorMeta = await this._requerimientoService.listarValorMeta().then((data) => {
+  async listarTipoValorMeta() {
+    let listarTipoValorMeta = await this._requerimientoService.listarTipoValorMeta().then((data) => {
       if (data.length > 0) {
-        this.listValorMeta = data;
+        this.listTipoValorMeta = data;
       } else {
-        this._notification.warning("Lista de valor meta vacio");
+        this._notification.warning("Lista de tipo valor meta vacio");
       }
     });
   }
@@ -80,27 +80,27 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
     }
   }
 
-  onSelectionChange(event: any) {
-    // console.log(event);
-    this.onChangeValue = event.value;
+  onSelectionChangeTipoValorMeta(event: any) {
+    console.log(event.value);
+    this.onChangeValueTipoValorMeta = event.value;
   }
 
-  async registrarActualizarRequerimiento() {
+  async registrarActualizarIndicador() {
     const model = this._getModel();
     if (this.data.esEditar == true) {
-      let modificar = await this._requerimientoService.updateRequerimiento(this.data.model.requerimiento.idRequerimiento, model).then((data) => {
+      let modificar = await this._requerimientoService.updateIndicador(this.data.model.requerimiento.idRequerimiento, model).then((data) => {
         this._notification.success("Requerimiento actualizado correctamente")
         this.dialogRef.closeAll();
       });
     } else {
-      let registrar = await this._requerimientoService.registrarRequerimiento(model).then((data) => {
+      let registrar = await this._requerimientoService.registrarIndicador(model).then((data) => {
         this._notification.success("Requerimiento registrado correctamente")
         this.dialogRef.closeAll();
       });
     }
   }
 
-  private _getModel(): RequerimientoResponse {
+  private _getModel(): IndicadorRequest {
     let modelTipoIngreso = new TipoIngreso();
     modelTipoIngreso.idTipoIngreso = this.form.value.frmTipoIngreso;
 
@@ -108,7 +108,7 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
     modelTipoValorMeta.idTipoValorMeta = this.form.value.frmTipoValorMeta;
 
     let valorMetaTemp;
-    if (this.form.value.frmTipoValorMeta == 1) {
+    if (this.form.value.frmTipoValorMeta == 3) {
       valorMetaTemp = 100;
     } else {
       valorMetaTemp = this.form.value.frmValorMeta;
@@ -118,7 +118,6 @@ export class RequerimientoRegisterUpdateComponent implements OnInit {
       nombre: this.form.value.frmNombre,
       descripcion: this.form.value.frmDescripcion,
       tipoIngreso: modelTipoIngreso,
-      esJefe: this.data.esJefe,
       tipoValorMeta: modelTipoValorMeta,
       valorMeta: valorMetaTemp,
     };
