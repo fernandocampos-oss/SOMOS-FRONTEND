@@ -52,10 +52,17 @@ export class RegisterInscripcionComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(this.data)
+    // let arraytest = new Array<string>(3);
+    // arraytest.splice(2, 0, "prueba")
+    // console.log(arraytest)
+
     this.inscripcionService.getInscripcionPorId(this.data.obj).subscribe((data)=>{
-      // console.log(data)
+      console.log(data)
       this.infoDialog = data;
       if(data.enviado != true){
+        this.inscripcionService.getDatosInscripcionPorId(this.data.obj).subscribe((datos)=>{
+          console.log(datos)
+        })
         if(this.tipoInscripcion == 2){
           this.idLider = this.authService.getUserSession().id;
           this.cargarLider();

@@ -30,3 +30,14 @@ export class VotacionInscripcionRequest {
   idInscripcion: number;
   idCandidato: number;
 }
+
+export class CreateInscripcionRequest {
+  imagenActiva: boolean ;
+  imagenDescripcion: string ;
+  textoActivo: boolean ;
+  textoDescripcion: string ;
+  grupoActivo: boolean ;
+  grupoLongitud: string ;
+  esVotacion: boolean ;
+  usuarios: number[] ;
+}

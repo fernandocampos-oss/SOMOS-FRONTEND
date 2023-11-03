@@ -1,11 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { Role } from '@data/enums';
 import { PublicacionRequest } from '@data/models/menu-principal/menu-publicacion.model';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol-sectorizacion.service';
+import { InscripcionService } from '@data/services/inscripcion.service';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { CreateInscripcionRequest } from '@data/models/inscripcion/inscripcion.model';
 
 @Component({
   selector: 'app-editar-publicacion',
@@ -66,6 +70,36 @@ export class EditarPublicacionComponent implements OnInit {
     { codRed: '0210', descripcion: 'RED ASISTENCIAL HUARAZ' },
     { codRed: '0209', descripcion: 'RED ASISTENCIAL MOQUEGUA' },
   ];
+
+  
+  ctrlCampania = new FormControl(false);
+  ctrlCaracteristicas = new FormControl([]);
+
+  showExtraCampania = false;
+  
+  opcionesCampania = [
+    {nombre: '¿Pide imagen?'},
+    {nombre: '¿Requiere un texto?'},
+    {nombre: '¿Habrá inscripción grupal?'},
+    {nombre: '¿Se realizarán votaciones?'},
+  ]
+  
+  showHelpImagen = false;
+  showHelpDescripcion = false;
+
+  formDatosCampania = this._fb.group({
+    frmTxtImagen:['Imagen'],
+    frmTxtDescripcion:['Descripcion'],
+    frmLimitGrupo:[2]
+  });  
+
+  myControlPersonal = new FormControl();
+  filteredOptionsPersonal: Observable<any[]>;
+  listPersonal = [];
+  personalSeleccionadoTmp: any;
+  
+  personasResponsablesInscr = [];
+
   // selectedItems: any[] = [];
   listRedesAsignadas = [];
   redItemSeleccionadoRol_3: any = [];
@@ -77,11 +111,54 @@ export class EditarPublicacionComponent implements OnInit {
     private _notification: NotificationService,
     private _fb: FormBuilder,
     private _menuService: MenuPrincipalService,
+    private inscripcionService: InscripcionService,
     private _sectorizacionService: AsignacionRolSectorizacionService
   ) { }
 
   ngOnInit(): void {
     console.log(this.data)
+    if(this.data.funcion == 2){
+      this.ctrlCampania.valueChanges.subscribe((data)=>{
+        this.showExtraCampania = data;
+        if (this.showExtraCampania) {
+          this.setListenerCampania();
+          this.getListPersonal();
+
+          if (this.data.obj.idInscripcion != 0) {
+            this.inscripcionService.getDatosInscripcionPorId(this.data.obj.idInscripcion).subscribe((datos)=>{
+              let caracteristicas = [];
+              if(datos.imagenActiva){
+                caracteristicas.push(0);
+                this.formDatosCampania.controls.frmTxtImagen.setValue(datos.imagenDescripcion);
+              } 
+              if(datos.textoActivo){
+                caracteristicas.push(1);
+                this.formDatosCampania.controls.frmTxtDescripcion.setValue(datos.textoDescripcion);
+              }
+              if(datos.grupoActivo){
+                caracteristicas.push(2);
+                this.formDatosCampania.controls.frmLimitGrupo.setValue(datos.grupoLongitud);
+              } 
+              if(this.data.obj.votacion) caracteristicas.push(3);
+              this.ctrlCaracteristicas.setValue(caracteristicas);
+              this.personasResponsablesInscr = [];
+              for (let i = 0; i < datos.responsables.length; i++) {
+                this.personasResponsablesInscr.push(this.listPersonal.find((x)=>{return x.idUsuario == datos.responsables[i]}))
+              }
+            })
+          }
+          
+          this.filteredOptionsPersonal = this.myControlPersonal.valueChanges
+          .pipe(
+            startWith(''),
+            map(value => typeof value === 'string' ? value : value.nombresCompletos),
+            map(nombresCompletos => nombresCompletos ? this._filterPersonal(nombresCompletos) : this.listPersonal.slice())
+          );
+        }
+      })
+      this.ctrlCampania.setValue(this.data.obj.anuncio);
+  
+    }
     this._createForm();
     // console.log(this.selected);
     this.getRoles();
@@ -184,6 +261,77 @@ export class EditarPublicacionComponent implements OnInit {
     this.applicationFile = null;
     this.isImageUpdate = true;
   }
+  //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  setListenerCampania(){
+    this.ctrlCaracteristicas.valueChanges.subscribe((data)=>{
+      if(data.includes(0)){
+        this.formDatosCampania.controls.frmTxtImagen.setValidators([Validators.required]);
+      }
+      else{
+        this.formDatosCampania.controls.frmTxtImagen.setValidators([]);
+        this.formDatosCampania.controls.frmTxtImagen.reset('Imagen');
+      }
+      this.formDatosCampania.controls['frmTxtImagen'].updateValueAndValidity();
+
+      if(data.includes(1)){
+        this.formDatosCampania.controls.frmTxtDescripcion.setValidators([Validators.required]);
+      }
+      else{
+        this.formDatosCampania.controls.frmTxtDescripcion.setValidators([]);
+        this.formDatosCampania.controls.frmTxtDescripcion.reset('Descripcion');
+      }
+      this.formDatosCampania.controls['frmTxtDescripcion'].updateValueAndValidity();
+
+      if(data.includes(2)){
+        this.formDatosCampania.controls.frmLimitGrupo.setValidators([Validators.required]);
+      }
+      else{
+        this.formDatosCampania.controls.frmLimitGrupo.setValidators([]);
+        this.formDatosCampania.controls.frmLimitGrupo.reset(2);
+      }
+      this.formDatosCampania.controls['frmLimitGrupo'].updateValueAndValidity();
+    })
+  }
+  
+  async getListPersonal() {
+    let listPersonal = await this._sectorizacionService.getListPersonal().then((data) => {
+      if (data) {
+        this.listPersonal = data;
+      } 
+    });
+  }
+  private _filterPersonal(value: string) {
+    return this.listPersonal.filter(persona => persona.nombresCompletos.toLowerCase().includes(value.toLowerCase()));
+  }
+  displayFnPersonal(selectedpersona) {
+    return selectedpersona ? selectedpersona.nombresCompletos : undefined;
+  }
+  onSelectionChangePersonal(event: any) {
+    this.personalSeleccionadoTmp = event.option.value;
+  }
+
+  showEnter(){
+    if (typeof this.myControlPersonal.value != 'object' || this.myControlPersonal.value == null) {
+      this._notification.warning(`Seleccione una de las opciones desplegables`);
+    }
+    else{
+      if (!this.personasResponsablesInscr.includes(this.personalSeleccionadoTmp)) {
+        this.personasResponsablesInscr.push(this.personalSeleccionadoTmp);
+        this.personalSeleccionadoTmp = null;
+        this.myControlPersonal.reset('');
+      }
+      else{
+        this._notification.warning(`La persona ${this.personalSeleccionadoTmp.nombresCompletos} ya se encuentra asignada`);
+        this.myControlPersonal.reset('');
+      }
+    }
+  }
+
+  deleteMiembro(miembroIndex: number) {
+    this.personasResponsablesInscr.splice(miembroIndex, 1);
+  }
+
 
   UpdatePublicacion_rol_3() {
     if (this.retrievedImage == undefined || !this.form.valid) {
@@ -220,8 +368,8 @@ export class EditarPublicacionComponent implements OnInit {
       imagenBase64: this.retrievedImage.split(',')[1],
       urlRedireccion: this.form.value.frmEnlace,
       alcance: 2,
-      anuncio: this.form.value.frmAnuncio,
-      votacion: this.form.value.frmVotacion,
+      anuncio: this.ctrlCampania.value,
+      inscripcionRequest: this.crearDatosInscripcion(),
       redes: redes,
     };
   }
@@ -265,8 +413,8 @@ export class EditarPublicacionComponent implements OnInit {
       imagenBase64: this.retrievedImage.split(',')[1],
       urlRedireccion: this.form.value.frmEnlace,
       alcance: this.selectedSave,
-      anuncio: this.form.value.frmAnuncio,
-      votacion: this.form.value.frmVotacion,
+      anuncio: this.ctrlCampania.value,
+      inscripcionRequest: this.crearDatosInscripcion(),
       redes: redes,
     };
   }
@@ -284,6 +432,51 @@ export class EditarPublicacionComponent implements OnInit {
       this.selectedSave = 1;
     } else {
       this.selectedSave = 2;
+    }
+  }
+
+  crearDatosInscripcion(): CreateInscripcionRequest{
+    if(this.ctrlCampania.value){
+      let inscripcionRequest: CreateInscripcionRequest = Object();
+      if (this.ctrlCaracteristicas.value.includes(0)){
+        inscripcionRequest.imagenActiva = true;
+        inscripcionRequest.imagenDescripcion = this.formDatosCampania.controls.frmTxtImagen.value;
+      }
+      else{
+        inscripcionRequest.imagenActiva = false;
+        inscripcionRequest.imagenDescripcion = null;
+      }
+      if (this.ctrlCaracteristicas.value.includes(1)){
+        inscripcionRequest.textoActivo = true;
+        inscripcionRequest.textoDescripcion = this.formDatosCampania.controls.frmTxtDescripcion.value;
+      }
+      else{
+        inscripcionRequest.textoActivo = false;
+        inscripcionRequest.textoDescripcion = null;
+      }
+      if (this.ctrlCaracteristicas.value.includes(2)){
+        inscripcionRequest.grupoActivo = true;
+        inscripcionRequest.grupoLongitud = this.formDatosCampania.controls.frmLimitGrupo.value;
+      }
+      else{
+        inscripcionRequest.grupoActivo = false;
+        inscripcionRequest.grupoLongitud = null;
+      }
+      if (this.ctrlCaracteristicas.value.includes(3)){
+        inscripcionRequest.esVotacion = true;
+      }
+      else{
+        inscripcionRequest.esVotacion = false;
+      }
+      inscripcionRequest.usuarios = [];
+      for (let i = 0; i < this.personasResponsablesInscr.length; i++) {
+        inscripcionRequest.usuarios.push(this.personasResponsablesInscr[i].idUsuario) 
+      }
+  
+      return inscripcionRequest;
+    }
+    else{
+      return null;
     }
   }
 

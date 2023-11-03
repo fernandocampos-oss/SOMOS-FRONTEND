@@ -16,6 +16,11 @@ export class InscripcionService {
     return this._httpClient.get<any>(url);
   }
 
+  getDatosInscripcionPorId(idInscripcion: number){
+    const url = `${URL_BASE}/datos/${idInscripcion}`;
+    return this._httpClient.get<any>(url);
+  }
+
   activarInscripcionPorId(idInscripcion: number, activarVotacion: boolean){
     const url = `${URL_BASE}/${idInscripcion}/activar-votacion/${activarVotacion}`;
     return this._httpClient.put<any>(url,{});

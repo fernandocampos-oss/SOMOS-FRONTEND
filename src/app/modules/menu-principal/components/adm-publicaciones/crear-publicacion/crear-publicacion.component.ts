@@ -1,4 +1,4 @@
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Role } from '@data/enums';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -6,6 +6,9 @@ import { NotificationService } from '@core/services';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { PublicacionRequest } from '@data/models/menu-principal/menu-publicacion.model';
 import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol-sectorizacion.service';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { CreateInscripcionRequest } from '@data/models/inscripcion/inscripcion.model';
 
 @Component({
   selector: 'app-crear-publicacion',
@@ -30,6 +33,34 @@ export class CrearPublicacionComponent implements OnInit {
 
   selected = 'opcion_1';
   selectedSave = 1;
+
+  ctrlCampania = new FormControl(false);
+  ctrlCaracteristicas = new FormControl([]);
+
+  showExtraCampania = false;
+  
+  opcionesCampania = [
+    {nombre: '¿Pide imagen?'},
+    {nombre: '¿Requiere un texto?'},
+    {nombre: '¿Habrá inscripción grupal?'},
+    {nombre: '¿Se realizarán votaciones?'},
+  ]
+  
+  showHelpImagen = false;
+  showHelpDescripcion = false;
+
+  formDatosCampania = this._fb.group({
+    frmTxtImagen:['Imagen'],
+    frmTxtDescripcion:['Descripcion'],
+    frmLimitGrupo:[2]
+  });  
+
+  myControlPersonal = new FormControl();
+  filteredOptionsPersonal: Observable<any[]>;
+  listPersonal = [];
+  personalSeleccionadoTmp: any;
+  
+  personasResponsablesInscr = [];
 
   listRedes: any[] = [
     { codRed: '0221', descripcion: 'RED ASISTENCIAL HUÁNUCO' },
@@ -82,8 +113,93 @@ export class CrearPublicacionComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm();
+    
+    this.ctrlCampania.valueChanges.subscribe((data)=>{
+      this.showExtraCampania = data;
+      if (this.showExtraCampania) {
+        this.setListenerCampania();
+        this.getListPersonal();
+        
+        this.filteredOptionsPersonal = this.myControlPersonal.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => typeof value === 'string' ? value : value.nombresCompletos),
+          map(nombresCompletos => nombresCompletos ? this._filterPersonal(nombresCompletos) : this.listPersonal.slice())
+        );
+      }
+    })
+
     this.getRoles();
     this.getListRedesAsignadas();
+  }
+
+  setListenerCampania(){
+    this.ctrlCaracteristicas.valueChanges.subscribe((data)=>{
+      if(data.includes(0)){
+        this.formDatosCampania.controls.frmTxtImagen.setValidators([Validators.required]);
+      }
+      else{
+        this.formDatosCampania.controls.frmTxtImagen.setValidators([]);
+        this.formDatosCampania.controls.frmTxtImagen.reset('Imagen');
+      }
+      this.formDatosCampania.controls['frmTxtImagen'].updateValueAndValidity();
+
+      if(data.includes(1)){
+        this.formDatosCampania.controls.frmTxtDescripcion.setValidators([Validators.required]);
+      }
+      else{
+        this.formDatosCampania.controls.frmTxtDescripcion.setValidators([]);
+        this.formDatosCampania.controls.frmTxtDescripcion.reset('Descripcion');
+      }
+      this.formDatosCampania.controls['frmTxtDescripcion'].updateValueAndValidity();
+
+      if(data.includes(2)){
+        this.formDatosCampania.controls.frmLimitGrupo.setValidators([Validators.required]);
+      }
+      else{
+        this.formDatosCampania.controls.frmLimitGrupo.setValidators([]);
+        this.formDatosCampania.controls.frmLimitGrupo.reset(2);
+      }
+      this.formDatosCampania.controls['frmLimitGrupo'].updateValueAndValidity();
+    })
+  }
+  
+  async getListPersonal() {
+    let listPersonal = await this._sectorizacionService.getListPersonal().then((data) => {
+      if (data) {
+        this.listPersonal = data;
+      } 
+    });
+  }
+  private _filterPersonal(value: string) {
+    return this.listPersonal.filter(persona => persona.nombresCompletos.toLowerCase().includes(value.toLowerCase()));
+  }
+  displayFnPersonal(selectedpersona) {
+    return selectedpersona ? selectedpersona.nombresCompletos : undefined;
+  }
+  onSelectionChangePersonal(event: any) {
+    this.personalSeleccionadoTmp = event.option.value;
+  }
+
+  showEnter(){
+    if (typeof this.myControlPersonal.value != 'object' || this.myControlPersonal.value == null) {
+      this._notification.warning(`Seleccione una de las opciones desplegables`);
+    }
+    else{
+      if (!this.personasResponsablesInscr.includes(this.personalSeleccionadoTmp)) {
+        this.personasResponsablesInscr.push(this.personalSeleccionadoTmp);
+        this.personalSeleccionadoTmp = null;
+        this.myControlPersonal.reset('');
+      }
+      else{
+        this._notification.warning(`La persona ${this.personalSeleccionadoTmp.nombresCompletos} ya se encuentra asignada`);
+        this.myControlPersonal.reset('');
+      }
+    }
+  }
+
+  deleteMiembro(miembroIndex: number) {
+    this.personasResponsablesInscr.splice(miembroIndex, 1);
   }
 
   // async getListRed() {
@@ -152,7 +268,6 @@ export class CrearPublicacionComponent implements OnInit {
       frmTitulo: [null, [Validators.required]],
       frmDescripcion: [null, [Validators.required]],
       frmEnlace: [''],
-      frmAnuncio: [],
       frmVotacion: []
     });
   }
@@ -198,8 +313,8 @@ export class CrearPublicacionComponent implements OnInit {
       imagenBase64: this.retrievedImage.split(',')[1],
       urlRedireccion: this.form.value.frmEnlace,
       alcance: 2,
-      anuncio: this.form.value.frmAnuncio,
-      votacion: this.form.value.frmVotacion,
+      anuncio: this.ctrlCampania.value,
+      inscripcionRequest: this.crearDatosInscripcion(),
       redes: redes,
     };
   }
@@ -213,7 +328,6 @@ export class CrearPublicacionComponent implements OnInit {
     }
     else {
       const model = this._getModel_rol_4_3();
-
       if(model.alcance == 2 && model.redes.length == 0){
         this._notification.warning('Seleccione una Red Asistencial para este tipo de alcance');
       }
@@ -259,8 +373,8 @@ export class CrearPublicacionComponent implements OnInit {
       imagenBase64: this.retrievedImage.split(',')[1],
       urlRedireccion: this.form.value.frmEnlace,
       alcance: this.selectedSave,
-      anuncio: this.form.value.frmAnuncio,
-      votacion: this.form.value.frmVotacion,
+      anuncio: this.ctrlCampania.value,
+      inscripcionRequest: this.crearDatosInscripcion(),
       redes: redes,
     };
   }
@@ -270,6 +384,51 @@ export class CrearPublicacionComponent implements OnInit {
       this.selectedSave = 1;
     } else {
       this.selectedSave = 2;
+    }
+  }
+
+  crearDatosInscripcion(): CreateInscripcionRequest{
+    if(this.ctrlCampania.value){
+      let inscripcionRequest: CreateInscripcionRequest = Object();
+      if (this.ctrlCaracteristicas.value.includes(0)){
+        inscripcionRequest.imagenActiva = true;
+        inscripcionRequest.imagenDescripcion = this.formDatosCampania.controls.frmTxtImagen.value;
+      }
+      else{
+        inscripcionRequest.imagenActiva = false;
+        inscripcionRequest.imagenDescripcion = null;
+      }
+      if (this.ctrlCaracteristicas.value.includes(1)){
+        inscripcionRequest.textoActivo = true;
+        inscripcionRequest.textoDescripcion = this.formDatosCampania.controls.frmTxtDescripcion.value;
+      }
+      else{
+        inscripcionRequest.textoActivo = false;
+        inscripcionRequest.textoDescripcion = null;
+      }
+      if (this.ctrlCaracteristicas.value.includes(2)){
+        inscripcionRequest.grupoActivo = true;
+        inscripcionRequest.grupoLongitud = this.formDatosCampania.controls.frmLimitGrupo.value;
+      }
+      else{
+        inscripcionRequest.grupoActivo = false;
+        inscripcionRequest.grupoLongitud = null;
+      }
+      if (this.ctrlCaracteristicas.value.includes(3)){
+        inscripcionRequest.esVotacion = true;
+      }
+      else{
+        inscripcionRequest.esVotacion = false;
+      }
+      inscripcionRequest.usuarios = [];
+      for (let i = 0; i < this.personasResponsablesInscr.length; i++) {
+        inscripcionRequest.usuarios.push(this.personasResponsablesInscr[i].idUsuario) 
+      }
+  
+      return inscripcionRequest;
+    }
+    else{
+      return null;
     }
   }
 
