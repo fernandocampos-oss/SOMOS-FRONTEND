@@ -25,7 +25,7 @@ export class MiEquipoComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'numero_documento', 'nombres_persona', 'apellidos_persona', 'fecha_creacion', 'acciones'];
+  displayedColumns: string[] = ['item', 'trabajador', 'numero_documento', 'fecha_creacion', 'acciones'];
 
   listEquipo: any[] = [];
 
@@ -90,26 +90,25 @@ export class MiEquipoComponent implements OnInit {
     });
   }
 
-  verRequerimientos(element) {
-    const dialogRef: MatDialogRef<UserTaskComponent> = this.dialog.open(UserTaskComponent, {
-      disableClose: false,
-      width: '70%',
-      autoFocus: false,
-      data: {
-        model: element,
-      }
-    });
+  // verRequerimientos(element) {
+  //   const dialogRef: MatDialogRef<UserTaskComponent> = this.dialog.open(UserTaskComponent, {
+  //     disableClose: false,
+  //     width: '70%',
+  //     autoFocus: false,
+  //     data: {
+  //       model: element,
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadTable();
+  //   });
+  // }
 
   async loadTable() {
-    let listPersonal = await this.services.listarIntegrantesPorLider().then((data) => {
+    let listtrabajadores = await this.services.listarIntegrantesPorLider().then((data) => {
       if (data.length > 0) {
         this.listEquipo = data;
-        console.log(">>>>>listEquipo",this.listEquipo)
         this.dataSource = new MatTableDataSource(this.listEquipo);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

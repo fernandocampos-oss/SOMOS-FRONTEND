@@ -7,8 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimiento/reporte-finalizados';
-import { EvidenciaResponseDTO } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
+import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 interface Año {
   anio: number;
@@ -28,7 +28,7 @@ export class ReporteRequerimientosComponent implements OnInit {
   ];
   anioElegido: number;
   listData: any[] = [];
-  evidenciaDTO: EvidenciaResponseDTO;
+  evidenciaResponseDto: EvidenciaResponseDto;
 
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -92,10 +92,10 @@ export class ReporteRequerimientosComponent implements OnInit {
 
       let a = await this._requerimientoService.getEvidenciaPorTarea(i.idTarea).then((data: any) => {
         if (data != null) {
-          this.evidenciaDTO = data;
+          this.evidenciaResponseDto = data;
           console.log("dto:", data);
         } else {
-          this.evidenciaDTO = null;
+          this.evidenciaResponseDto = null;
         }
       });
 
@@ -103,8 +103,8 @@ export class ReporteRequerimientosComponent implements OnInit {
       let fechaISOPlazo = i.plazo.split("T");
       let fechaPlazo = fechaISOPlazo[0];
 
-      if (this.evidenciaDTO.idEvidencia > 0) {
-        let fechaISOEvidencia = this.evidenciaDTO.fechaCreacion.split("T");
+      if (this.evidenciaResponseDto.evidenciaFechaRegistro !='') {
+        let fechaISOEvidencia = this.evidenciaResponseDto.evidenciaFechaRegistro.split("T");
         let fechaEvidencia = fechaISOEvidencia[0];
 
         console.log("fechaPlazo: ", fechaPlazo);
@@ -125,8 +125,8 @@ export class ReporteRequerimientosComponent implements OnInit {
           console.log(first, "es igual que", second);
           obj.comentario = 'Presentó evidencia dentro de la fecha';
         }
-        obj.descripcionEvidencia = this.evidenciaDTO.descripcion;
-        obj.porcentajeAvanceEvidencia = this.evidenciaDTO.porcentajeAvance;
+        obj.descripcionEvidencia = this.evidenciaResponseDto.evidenciaDescripcion;
+        // obj.porcentajeAvanceEvidencia = this.evidenciaResponseDto.porcentajeAvance;
         obj.plazoTarea = fechaPlazo;
         listTarea.push(obj);
         obj = null;

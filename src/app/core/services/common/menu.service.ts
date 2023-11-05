@@ -124,7 +124,7 @@ const data: MenuItem[] = [
     roles: [Role.TRABAJADOR],
     children:[
       {
-        path: AppRoute.MIS_REQUERIMIENTOS,
+        path: AppRoute.INDICADORES_TRABAJADORES,
         icon: 'folder_open',
         label: 'Módulo de Planificación',
         roles: [Role.TRABAJADOR],

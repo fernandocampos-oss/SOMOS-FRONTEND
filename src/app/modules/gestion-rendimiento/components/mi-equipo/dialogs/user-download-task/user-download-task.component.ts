@@ -11,7 +11,7 @@ import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { filter } from 'rxjs/operators';
 import { TaskRejectComponent } from '../task-reject/task-reject.component';
-import { PdfComponent } from '../pdf/pdf.component';
+import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
 
 @Component({
   providers: [DatePipe],
@@ -100,7 +100,7 @@ export class UserDownloadTaskComponent implements OnInit {
   }
 
   verPdf(element) {
-    const dialogRef: MatDialogRef<PdfComponent> = this.dialog.open(PdfComponent, {
+    const dialogRef: MatDialogRef<VerEvidenciaPdfComponent> = this.dialog.open(VerEvidenciaPdfComponent, {
       disableClose: false,
       width: '50%',
       //height: '780px',

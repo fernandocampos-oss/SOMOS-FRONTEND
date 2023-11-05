@@ -10,8 +10,8 @@ import { GestionRendimientoService } from '../../../../../../data/services/gesti
 import { DialogService, NotificationService } from '@core/services';
 import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.component';
 import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimiento/reporte-finalizados';
-import { EvidenciaResponseDTO } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
+import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 //import * as XLSX from 'xlsx';
 
 @Component({
@@ -20,7 +20,7 @@ import { ExportExcelGestionRendimientoService } from '@data/services/export-exce
   styleUrls: ['./user-task.component.scss']
 })
 export class UserTaskComponent implements OnInit {
-  evidenciaDTO: EvidenciaResponseDTO;
+  evidenciaResponseDto: EvidenciaResponseDto;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -91,7 +91,7 @@ export class UserTaskComponent implements OnInit {
   }
 
   async loadTableRequerimiento(idUsuario: Number) {
-    let load = await this.services.listarRequerimientosPorPersonal(idUsuario).then((data: any) => {
+    let load = await this.services.listarIndicadoresPorTrabajador(idUsuario).then((data: any) => {
       if (data.length > 0) {
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
@@ -121,10 +121,10 @@ export class UserTaskComponent implements OnInit {
 
         let a = await this.services.getEvidenciaPorTarea(i.idTarea).then((data: any) => {
           if (data != null) {
-            this.evidenciaDTO = data;
+            this.evidenciaResponseDto = data;
             console.log("dto:", data);
           } else {
-            this.evidenciaDTO = null;
+            this.evidenciaResponseDto = null;
           }
         });
 
@@ -132,8 +132,8 @@ export class UserTaskComponent implements OnInit {
         let fechaISOPlazo = i.plazo.split("T");
         let fechaPlazo = fechaISOPlazo[0];
 
-        if (this.evidenciaDTO.idEvidencia > 0) {
-          let fechaISOEvidencia = this.evidenciaDTO.fechaCreacion.split("T");
+        if (this.evidenciaResponseDto.evidenciaFechaRegistro !='') {
+          let fechaISOEvidencia = this.evidenciaResponseDto.evidenciaFechaRegistro.split("T");
           let fechaEvidencia = fechaISOEvidencia[0];
 
           console.log("fechaPlazo: ", fechaPlazo);
@@ -154,8 +154,8 @@ export class UserTaskComponent implements OnInit {
             console.log(first, "es igual que", second);
             obj.comentario = 'Presentó evidencia dentro de la fecha';
           }
-          obj.descripcionEvidencia = this.evidenciaDTO.descripcion;
-          obj.porcentajeAvanceEvidencia = this.evidenciaDTO.porcentajeAvance;
+          obj.descripcionEvidencia = this.evidenciaResponseDto.evidenciaDescripcion;
+          // obj.porcentajeAvanceEvidencia = this.evidenciaResponseDto.porcentajeAvance;
           obj.plazoTarea = fechaPlazo;
           listTarea.push(obj);
           obj = null;

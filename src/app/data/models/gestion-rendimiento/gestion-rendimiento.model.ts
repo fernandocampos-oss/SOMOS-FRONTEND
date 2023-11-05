@@ -1,13 +1,13 @@
-export class IndicadorResponse {
-  idIndicador?: number;
-  nombre?: string;
-  descripcion?: string;
-  motivo?: string;
-  valorMeta?: number;
-  tipoIngreso?: TipoIngreso;
-  esJefe?: boolean;
-  tipoValorMeta?: TipoValorMeta;
-}
+// export class IndicadorResponse {
+//   idIndicador?: number;
+//   nombre?: string;
+//   descripcion?: string;
+//   motivo?: string;
+//   valorMeta?: number;
+//   tipoIngreso?: TipoIngreso;
+//   esJefe?: boolean;
+//   tipoValorMeta?: TipoValorMeta;
+// }
 
 export class IndicadorRequest {
   // idIndicador?: number;
@@ -30,50 +30,47 @@ export class TipoValorMeta {
   estado?: boolean;
 }
 
-export class RequerimientoUsuario {
-  idRequerimientoUsuario?: number;
+export class IndicadorUsuario {
+  idIndicadorUsuario?: number;
 }
 
-export class EstadoRequerimiento {
-  idEstadoRequerimiento?: number;
+export class EstadoIndicador {
+  idEstadoIndicador?: number;
   codigo?: string;
   descripcion?: string;
   estado?: boolean;
 }
 
-export class Poi {
-  idPoi?: number;
+export class Actividad {
+  idActividad?: number;
+  codigo?: string;
   descripcion?: string;
   estado?: boolean;
 }
 
-export class UnidadOrganizativa {
-  codUnidad?: string;
-  descripcion?: string;
+// export class UnidadOrganizativa {
+//   codUnidad?: string;
+//   descripcion?: string;
+// }
+
+// export class Personal {
+//   idUsuario?: number;
+//   numeroDocumento?: number;
+//   nombres?: number;
+//   apellidos?: string;
+// }
+
+export class EvidenciaRequestDto {
+  idTarea?: number;
+  evidenciaDescripcion?: string;
+  extension?: string; 
+  fileBase64?: string;
 }
 
-export class Personal {
-  idUsuario?: number;
-  numeroDocumento?: number;
-  nombres?: number;
-  apellidos?: string;
-}
-
-export class EvidenciaRequest {
-  descripcion?: string;
-  porcentajeAvance?: number;
-  tarea?: Tarea;
-  imagenBase64?: string;
-  extension?: string;
-  idRequerimiento?: number;
-}
-
-export class EvidenciaResponseDTO {
-  idEvidencia?: number;
-  descripcion?: string;
-  porcentajeAvance?: number;
-  fechaCreacion?: string;
-  imagenBase64?: string;
+export class EvidenciaResponseDto {
+  evidenciaDescripcion?: string;
+  evidenciaFechaRegistro?: string;
+  fileBase64?: string;
   extension?: string;
 }
 

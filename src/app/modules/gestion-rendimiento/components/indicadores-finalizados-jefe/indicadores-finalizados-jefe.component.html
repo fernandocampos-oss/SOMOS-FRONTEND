@@ -1,0 +1,55 @@
+<br>
+<div *ngIf="listDataFinalizados.length == 0" style="text-align: center">
+    <p class="color-mensaje">Sin registros por mostrar</p>
+</div>
+<div *ngIf="listDataFinalizados.length !== 0">
+    <br>
+    <table mat-table [dataSource]="dataSource_finalizado" matSort>
+        <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef>N°</th>
+            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+        </ng-container>
+        <ng-container matColumnDef="indicador_producto">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Indicador / Producto</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.indicador.nombre}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="fecha_asignacion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de asignación</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.indicador.fechaCreacion | date: 'dd-MM-yyyy'}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="tipo_ingreso">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de ingreso</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.indicador.tipoIngreso.descripcion | titlecase}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="tipo_valor_meta">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de valor meta</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.indicador.tipoValorMeta.descripcion | titlecase}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="valor_meta">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Valor meta</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.indicador.valorMeta}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button class="has-success" (click)="exportToExcel(element)">
+                    <mat-icon>get_app</mat-icon>
+                    &nbsp; Formato Excel
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns_finalizado"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns_finalizado;"></tr>
+    </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

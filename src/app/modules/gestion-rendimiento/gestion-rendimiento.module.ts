@@ -6,54 +6,50 @@ import { MaterialModule } from '@material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@core/core.module';
 import { SharedModule } from '@shared/shared.module';
-import { MisTareasComponent } from './components/mis-tareas/mis-tareas.component';
 import { MiEquipoComponent } from './components/mi-equipo/mi-equipo.component';
 import { UserAddDeleteComponent } from './components/mi-equipo/dialogs/user-add-delete/user-add-delete.component';
 import { UserTaskComponent } from './components/mi-equipo/dialogs/user-task/user-task.component';
 import { UserAddTaskComponent } from './components/mi-equipo/dialogs/user-add-task/user-add-task.component';
 import { UserDownloadTaskComponent } from './components/mi-equipo/dialogs/user-download-task/user-download-task.component';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { ReportTaskComponent } from './components/mis-tareas/dialogs/report-task/report-task.component';
 import { UserDownloadFileComponent } from './components/mi-equipo/dialogs/user-download-file/user-download-file.component';
 import { UserEditComponent } from './components/mi-equipo/dialogs/user-edit/user-edit.component';
 import { TaskRejectComponent } from './components/mi-equipo/dialogs/task-reject/task-reject.component';
-import { PdfComponent } from './components/mi-equipo/dialogs/pdf/pdf.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import { MisRequerimientosComponent } from './components/mis-requerimientos/mis-requerimientos.component';
-import { ReadRequirementComponent } from './components/mis-requerimientos/dialogs/read-requirement/read-requirement.component';
-import { AcceptRejectRequirementComponent } from './components/mis-requerimientos/dialogs/accept-reject-requirement/accept-reject-requirement.component';
-import { MoveRequirementComponent } from './components/mis-requerimientos/dialogs/move-requirement/move-requirement.component';
-import { SolicitudRequirementComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/solicitud-requirement.component';
-import { ConfirmRequerimientoComponent } from './components/mis-requerimientos/dialogs/solicitud-requirement/dialog/confirm-requerimiento/confirm-requerimiento.component';
 import { EditUserSelectedComponent } from './components/mi-equipo/dialogs/edit-user-selected/edit-user-selected.component';
-import { UpdateTareaComponent } from './components/mis-requerimientos/dialogs/read-requirement/update-tarea/update-tarea.component';
 import { DeleteDialogComponent } from './components/mi-equipo/dialogs/delete-dialog/delete-dialog.component';
-import { JefeRequirementComponent } from './components/mis-requerimientos/dialogs/jefe-requirement/jefe-requirement.component';
+import { IndicadoresPendientesJefeComponent } from './components/indicadores-pendientes-jefe/indicadores-pendientes-jefe.component';
+import { RegistrarIndicadorJefeComponent } from './components/indicadores-pendientes-jefe/dialogs/registrar-indicador-jefe/registrar-indicador-jefe.component';
+import { IndicadoresFinalizadosJefeComponent } from './components/indicadores-finalizados-jefe/indicadores-finalizados-jefe.component';
+import { GestionarIndicadoresTrabajadorComponent } from './components/gestionar-indicadores-trabajador/gestionar-indicadores-trabajador.component';
+import { AsignarTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-tarea/asignar-tarea.component';
+import { ConfirmarTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-tarea/dialog/confirmar-tarea/confirmar-tarea.component';
+import { ReadIndicadorTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/read-indicador-tarea.component';
+import { EditTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/edit-tarea/edit-tarea.component';
+import { AceptarRechazarTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/aceptar-rechazar-tarea/aceptar-rechazar-tarea.component';
 
 @NgModule({
   declarations: [
     GestionRendimientoComponent,
-    MisTareasComponent,
     MiEquipoComponent,
     UserAddDeleteComponent,
     UserTaskComponent,
     UserAddTaskComponent,
     UserDownloadTaskComponent,
-    ReportTaskComponent,
     UserDownloadFileComponent,
     UserEditComponent,
     TaskRejectComponent,
-    PdfComponent,
-    MisRequerimientosComponent,
-    ReadRequirementComponent,
-    AcceptRejectRequirementComponent,
-    MoveRequirementComponent,
-    SolicitudRequirementComponent,
-    ConfirmRequerimientoComponent,
     EditUserSelectedComponent,
-    UpdateTareaComponent,
     DeleteDialogComponent,
-    JefeRequirementComponent,
+    IndicadoresPendientesJefeComponent,
+    RegistrarIndicadorJefeComponent,
+    IndicadoresFinalizadosJefeComponent,
+    GestionarIndicadoresTrabajadorComponent,
+    AsignarTareaComponent,
+    ConfirmarTareaComponent,
+    ReadIndicadorTareaComponent,
+    EditTareaComponent,
+    AceptarRechazarTareaComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +60,6 @@ import { JefeRequirementComponent } from './components/mis-requerimientos/dialog
     SharedModule,
     MatGridListModule,
     NgxExtendedPdfViewerModule,
-
     FormsModule,
   ]
 })

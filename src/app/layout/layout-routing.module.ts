@@ -130,10 +130,10 @@ export const ROUTES: Routes = [
           ),
       },
       {
-        path: AppRoute.MIS_REQUERIMIENTOS,
+        path: AppRoute.INDICADORES_TRABAJADORES,
         loadChildren: () => 
-          import('../modules/mis-requerimientos/mis-requerimientos.module').then(
-            (m) => m.MisRequerimientosModule
+          import('../modules/indicadores-trabajador/indicadores-trabajador.module').then(
+            (m) => m.IndicadoresTrabajadorModule
           ),
       },
       // {

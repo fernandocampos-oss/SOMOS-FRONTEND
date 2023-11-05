@@ -5,8 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
-import { PdfComponent } from '../pdf/pdf.component';
-import { EvidenciaResponseDTO } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
 
 @Component({
   selector: 'app-user-download-file',
@@ -17,7 +17,7 @@ export class UserDownloadFileComponent implements OnInit {
 
   descripcionEvidencia: string;
   stringBase64: string;
-  evidenciaDTO: EvidenciaResponseDTO;
+  evidenciaResponseDto: EvidenciaResponseDto;
 
   constructor(
     private _requerimientoService: GestionRendimientoService,
@@ -35,31 +35,31 @@ export class UserDownloadFileComponent implements OnInit {
   async getEvidenciaPorTarea() {
     let load = await this._requerimientoService.getEvidenciaPorTarea(this.data.model.idTarea).then((data: any) => {
       if (data != null) {
-        this.evidenciaDTO = data;
+        this.evidenciaResponseDto = data;
         this.descripcionEvidencia = data.descripcion;
         this.stringBase64 = data.imagenBase64;
       } else {
-        this.evidenciaDTO = null;
+        this.evidenciaResponseDto = null;
         this._notification.warning("Aún no tienes evidencias registradas");
       }
     });
   }
 
   downloadFile() {
-    if (this.evidenciaDTO != null) {
-      const byteString = window.atob(this.evidenciaDTO.imagenBase64);
+    if (this.evidenciaResponseDto != null) {
+      const byteString = window.atob(this.evidenciaResponseDto.fileBase64);
       const arrayBuffer = new ArrayBuffer(byteString.length);
       const int8Array = new Uint8Array(arrayBuffer);
       for (let i = 0; i < byteString.length; i++) {
         int8Array[i] = byteString.charCodeAt(i);
       }
-      const blob = new Blob([int8Array], { type: this.evidenciaDTO.extension });
+      const blob = new Blob([int8Array], { type: this.evidenciaResponseDto.extension });
       let url = window.URL.createObjectURL(blob);
       let a = document.createElement('a');
       document.body.appendChild(a);
       a.setAttribute('style', 'display: none');
       a.href = url;
-      a.download = "Evidencia" + '_' + new Date().getTime() + "." + this.evidenciaDTO.extension;
+      a.download = "Evidencia" + '_' + new Date().getTime() + "." + this.evidenciaResponseDto.extension;
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
@@ -92,7 +92,7 @@ export class UserDownloadFileComponent implements OnInit {
   // });
 
   showDialogPdf(element) {
-    const dialogRef: MatDialogRef<PdfComponent> = this.dialog.open(PdfComponent, {
+    const dialogRef: MatDialogRef<VerEvidenciaPdfComponent> = this.dialog.open(VerEvidenciaPdfComponent, {
       disableClose: false,
       width: '90%',
       autoFocus: false,

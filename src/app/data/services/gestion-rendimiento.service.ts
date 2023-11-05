@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
-import { EquipoRequest, EvidenciaRequest, EvidenciaResponseDTO, IndicadorRequest, Poi, TipoIngreso, UnidadOrganizativa } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
-import { TareaDTO } from '@data/models/gestion-rendimiento/tarea-model';
+import { EquipoRequest, IndicadorRequest, Actividad, TipoIngreso, EvidenciaRequestDto, EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { TareaRequestDto } from '@data/models/gestion-rendimiento/tarea-model';
 
 const URL_BASE = `${environment.apiUrl}`;
 
@@ -82,7 +82,6 @@ export class GestionRendimientoService {
   //   return this.http.post(`${environment.apiUrl}/equipo/registrarIntegranteDetalle`, data);
   // }
 
-
   //Indicadores
   async listarIndicadorPendiente() {
     const url = `${URL_BASE}/indicadores-usuarios/listar/pendiente`;
@@ -102,10 +101,10 @@ export class GestionRendimientoService {
   //   return await this.http.get<Object[]>(url).toPromise();
   // }
 
-  async registrarIndicador(requerimiento: IndicadorRequest) {
+  async registrarIndicador(indicadorRequest: IndicadorRequest) {
     const url = `${URL_BASE}/indicadores-usuarios/registrar/indicador`;
-    console.log(url, requerimiento);
-    return await this.http.post(url, requerimiento).toPromise();
+    console.log(url, indicadorRequest);
+    return await this.http.post(url, indicadorRequest).toPromise();
   }
 
   async updateIndicador(idIndicador: number, model: IndicadorRequest) {
@@ -114,19 +113,19 @@ export class GestionRendimientoService {
     return await this.http.put(url, model).toPromise();
   }
 
-  async listarRequerimientoPrincipal() {
-    const url = `${URL_BASE}/indicadores-usuarios/listar/principal`;
-    console.log(url);
-    return await this.http.get<Object[]>(url).toPromise();
-  }
+  // async listarIndicadoresPrincipal() {
+  //   const url = `${URL_BASE}/indicadores-usuarios/listar/principal`;
+  //   console.log(url);
+  //   return await this.http.get<Object[]>(url).toPromise();
+  // }
 
-  aprobarRequerimiento(estado: number, idRequerimientoUsuario: number) {
-    const url = `${URL_BASE}/indicadores-usuarios/aprobar?estado=${estado}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
-    console.log(url);
-    return this.http.get<any[]>(url);
-  }
+  // aprobarIndicador(estado: number, idIndicadorUsuario: number) {
+  //   const url = `${URL_BASE}/indicadores-usuarios/aprobar?estado=${estado}&idIndicadorUsuario=${idIndicadorUsuario}`;
+  //   console.log(url);
+  //   return this.http.get<any[]>(url);
+  // }
 
-  // rechazarRequerimiento(estado: number, motivo: string, idRequerimientoUsuario: number) {
+  // rechazarIndicador(estado: number, motivo: string, idIndicadorUsuario: number) {
   //   const url = `${URL_BASE}/indicadores-usuarios/rechazar?estado=${estado}&motivo=${motivo}&idRequerimientoUsuario=${idRequerimientoUsuario}`;
   //   console.log(url);
   //   return this.http.get<any[]>(url);
@@ -138,10 +137,10 @@ export class GestionRendimientoService {
   //   return this.http.get<any[]>(url);
   // }
 
-  async listarPoi() {
-    const url = `${URL_BASE}/tareas/listar/pois`;
+  async listarActividades() {
+    const url = `${URL_BASE}/indicadores-usuarios/listar/actividades`;
     console.log(url);
-    return await this.http.get<Poi[]>(url).toPromise();
+    return await this.http.get<Actividad[]>(url).toPromise();
   }
 
   // async listarTodosUnidadOrganizativa() {
@@ -150,20 +149,20 @@ export class GestionRendimientoService {
   //   return await this.http.get<UnidadOrganizativa[]>(url).toPromise();
   // }
 
-  async registrarTareas(modelDTO: TareaDTO) {
+  async registrarTareas(tareaRequestDto: TareaRequestDto) {
     const url = `${URL_BASE}/tareas/registrar`;
-    console.log(url, modelDTO);
-    return await this.http.post(url, modelDTO).toPromise();
+    console.log(url, tareaRequestDto);
+    return await this.http.post(url, tareaRequestDto).toPromise();
   }
 
-  async modificarTareaAdministrador(nombreTarea: string, plazo: String, idTarea: number) {
-    const url = `${URL_BASE}/tareas/modificar?nombreTarea=${nombreTarea}&plazo=${plazo}&idTarea=${idTarea}`;
+  async modificarTareaAdministrador(nombre: string, plazo: String, idTarea: number) {
+    const url = `${URL_BASE}/tareas/modificar?nombre=${nombre}&plazo=${plazo}&idTarea=${idTarea}`;
     console.log(url);
     return await this.http.get<any[]>(url).toPromise();
   }
 
-  async listarRequerimientosPorPersonal(idUsuario) {
-    const url = `${URL_BASE}/indicadores-usuarios/listar/requerimientos/${idUsuario}/personal`;
+  async listarIndicadoresPorTrabajador(idUsuario) {
+    const url = `${URL_BASE}/indicadores-usuarios/listar/indicadores/${idUsuario}/trabajador`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
@@ -207,16 +206,16 @@ export class GestionRendimientoService {
     return this.http.get<any[]>(url);
   }
 
-  async registrarEvidencia(evidencia: EvidenciaRequest) {
+  async registrarEvidencia(evidenciaRequestDto: EvidenciaRequestDto) {
     const url = `${URL_BASE}/tareas/registrar/evidencia`;
-    console.log(url, evidencia);
-    return await this.http.post(url, evidencia).toPromise();
+    console.log(url, evidenciaRequestDto);
+    return await this.http.post(url, evidenciaRequestDto).toPromise();
   }
 
   async getEvidenciaPorTarea(idTarea: number) {
     const url = `${URL_BASE}/tareas/obtener/evidencia/${idTarea}`;
     console.log(url);
-    return await this.http.get<EvidenciaResponseDTO>(url).toPromise();
+    return await this.http.get<EvidenciaResponseDto>(url).toPromise();
   }
 
   async listarTipoIngreso() {

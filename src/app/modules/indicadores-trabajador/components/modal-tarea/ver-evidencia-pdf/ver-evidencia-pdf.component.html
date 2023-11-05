@@ -1,0 +1,9 @@
+<mat-dialog-content>
+    <h2 mat-dialog-title>Descripción de la evidencia: {{evidenciaDescripcion}}</h2>
+    <br>
+    <ngx-extended-pdf-viewer [base64Src]="pdfSrc" useBrowserLocale="true" height="400px"
+        width="100%"></ngx-extended-pdf-viewer>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close class="close-button">Cerrar</button>
+</mat-dialog-actions>

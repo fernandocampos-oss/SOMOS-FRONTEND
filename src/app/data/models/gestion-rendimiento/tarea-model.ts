@@ -1,20 +1,20 @@
-import { Poi, RequerimientoUsuario } from "./gestion-rendimiento.model";
+import { IndicadorUsuario, Actividad } from "./gestion-rendimiento.model";
 
-export class TareaDTO {
-    poi?: Poi;
-    requerimientoUsuario?: RequerimientoUsuario;
+export class TareaRequestDto {
+    actividad?: Actividad;
+    indicadorUsuario?: IndicadorUsuario;
     listTarea?: TareaResponse[];
 }
 
 export class TareaResponse {
-    nombreTarea?: string;
+    nombre?: string;
     plazo?: String;
-    porcentajeInicial?: number;
+    pesoFraccion?: number;
 }
 
 export class TareaRequest {
     idTarea?: number;
-    nombreTarea?: string;
+    nombre?: string;
     plazo?: String;
-    requerimientoUsuario?: RequerimientoUsuario;
+    indicadorUsuario?: IndicadorUsuario;
 }

@@ -1,0 +1,170 @@
+<h3 class="auth__subtitle">Solicitud para un sistema de Gestión del Rendimiento</h3><br>
+<mat-stepper [linear]="true">
+    <mat-step [stepControl]="formActividadSelect" label="Elección actividad">
+        <form [formGroup]="formActividadSelect">
+            <br>
+            <h4>Seleccione el tipo de prioridad anual de gestión del órgano o unidad orgánica</h4>
+            <mat-grid-list cols="6" rowHeight="86px" gutterSize="6px">
+                <mat-grid-tile [colspan]="5" class="grid">
+                    <mat-form-field appearance="outline">
+                        <mat-select formControlName="frmActividad">
+                            <mat-option *ngFor="let a of listActividad" [value]="a">
+                                {{a.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1">
+                    <button mat-raised-button color="primary" class="botonPoi" matStepperNext required>Elegir</button>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </form>
+    </mat-step>
+    <!-- <mat-step [stepControl]="secondFormGroup" label="Indicadores">
+        <form [formGroup]="secondFormGroup">
+            <div>
+                <button mat-raised-button matStepperPrevious>Volver</button>
+            </div>
+            <br>
+            <h4>POI: {{ nombrePoi }}</h4>
+            <mat-grid-list cols="6" rowHeight="80px" gutterSize="6px">
+                <mat-grid-tile [colspan]="6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Ingrese el/los indicadores</mat-label>
+                        <input type="text" [(ngModel)]="indicadorNgModel" matInput maxlength="80" />
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+                <mat-grid-tile [colspan]="3" class="grid">
+                    <h4>Valor meta</h4>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2" class="grid">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Placeholder</mat-label>
+                        <input type="text" matInput maxlength="50" />
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1">
+                    <button mat-raised-button color="primary" class="aniadir" (click)="onMetaCreate()">Añadir</button>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <table mat-table [dataSource]="metas" style="width:100%">
+                <ng-container matColumnDef="Ver">
+                    <th mat-header-cell *matHeaderCellDef width="100px"> Ver </th>
+                    <td mat-cell *matCellDef="let element;index as i">
+                        <button mat-icon-button color="primary" matTooltip="Ver" matStepperNext (click)="verMeta(element)">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Indicadores / Producto">
+                    <th mat-header-cell *matHeaderCellDef> Indicadores / Producto </th>
+                    <td mat-cell *matCellDef="let element"> {{element.producto}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Valor Meta">
+                    <th mat-header-cell *matHeaderCellDef> Valor Meta </th>
+                    <td mat-cell *matCellDef="let element"> {{element.meta}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Quitar">
+                    <th mat-header-cell *matHeaderCellDef width="100px"> Quitar </th>
+                    <td mat-cell *matCellDef="let element;index as i">
+                        <button mat-icon-button color="primary" matTooltip="Quitar" (click)="deleteMeta(i)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns_2"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
+                <tr class="empty-row" *matNoDataRow>
+                    <td class="empty-cell">Sin registros por mostrar</td>
+                </tr>
+            </table>            
+        </form>
+    </mat-step> -->
+    <mat-step>
+        <form [formGroup]="formTareasListadas">
+            <ng-template matStepLabel>Tareas</ng-template>
+            <br>
+            <h4>Actividad elegida: {{formActividadSelect.value.frmActividad.descripcion}}</h4>
+            <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+                <!-- <mat-grid-tile [colspan]="5">
+                    <mat-form-field appearance="outline">
+                        <mat-select formControlName="frmIntegrante">
+                            <mat-option *ngFor="let p of listPersonal" [value]="p">
+                                {{p.nombres}} {{p.apellidos}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1">
+                    <button mat-raised-button color="primary" class="botonPoi"
+                        (click)="onTareaCreate(); formTareasListadas.reset()">Añadir</button>
+                </mat-grid-tile> -->
+
+                <mat-grid-tile [colspan]="6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tarea a realizar</mat-label>
+                        <input matInput formControlName="frmDescTarea">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="5">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Plazo máximo</mat-label>
+                        <input matInput formControlName="frmDateTarea" [min]="minFechaTarea"
+                            [matDatepicker]="fechaTareaPicker" />
+                        <mat-datepicker-toggle matSuffix [for]="fechaTareaPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fechaTareaPicker></mat-datepicker>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="1">
+                    <button mat-raised-button color="primary" class="botonPoi"
+                        (click)="onTareaCreate(); formTareasListadas.reset()">Añadir</button>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <div style="max-height: 260px; overflow-y: auto;">
+                <table mat-table [dataSource]="dataSource" style="width:100%">
+                    <ng-container matColumnDef="item">
+                        <th mat-header-cell *matHeaderCellDef width="15%">N°</th>
+                        <td mat-cell *matCellDef="let element, index as i"> {{i+1}} </td>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="nombre_persona">
+                        <th mat-header-cell *matHeaderCellDef width="40%"> Colaborador </th>
+                        <td mat-cell *matCellDef="let element"> {{element.nombrePersona}}</td>
+                    </ng-container> -->
+                    <ng-container matColumnDef="tarea">
+                        <th mat-header-cell *matHeaderCellDef width="25%"> Tarea </th>
+                        <td mat-cell *matCellDef="let element"> {{element.nombreTarea}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="plazo">
+                        <th mat-header-cell *matHeaderCellDef width="25%"> Plazo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.plazo | date: 'dd-MM-yyyy'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Quitar">
+                        <th mat-header-cell *matHeaderCellDef width="10%"> Quitar </th>
+                        <td mat-cell *matCellDef="let element;index as i">
+                            <button mat-icon-button class="primary-button" matTooltip="Quitar" (click)="deleteTarea(i)">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr class="empty-row" *matNoDataRow>
+                        <td class="empty-cell">Sin registros por mostrar</td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </mat-step>
+</mat-stepper>
+<mat-divider></mat-divider>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button class="aproved-button" [disabled]="formActividadSelect.value.frmActividad === ''"
+        style="margin-left: 1rem;" (click)="registrarTareas()">Asignar</button>
+</mat-dialog-actions>
