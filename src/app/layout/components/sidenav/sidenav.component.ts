@@ -15,6 +15,7 @@ import { InscribirseBoletasComponent } from '@modules/mis-boletas/components/ins
 import { BoletaService } from '@data/services/boleta.service';
 import { Router } from '@angular/router';
 import { AppRoute } from '@data/constants';
+import { InscripcionService } from '@data/services/inscripcion.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -23,6 +24,7 @@ import { AppRoute } from '@data/constants';
 })
 export class SidenavComponent implements OnInit {
   menuItemList = this._menuService.getAll();
+  asignacionesInscripciones = [];
   user: UserSession;
   gerencia: String = '';//Aqui se guarda la gerencia
   email: String = '';
@@ -30,14 +32,15 @@ export class SidenavComponent implements OnInit {
   numDoc: string = '';
 
   constructor(private dialog: MatDialog,
-              private _menuService   : MenuService,
-              private router         : Router,
-              private matIconRegistry: MatIconRegistry,
-              private domSanitizer   : DomSanitizer,
-              private _authService   : AuthService,
-              private _boletaService : BoletaService,
-              private _zonaService   : ZonaService,
-              private _userService   : UsuarioService) {
+              private _menuService          : MenuService,
+              private router                : Router,
+              private matIconRegistry       : MatIconRegistry,
+              private domSanitizer          : DomSanitizer,
+              private _authService          : AuthService,
+              private _boletaService        : BoletaService,
+              private _inscripcionService   : InscripcionService,
+              private _zonaService          : ZonaService,
+              private _userService          : UsuarioService) {
     this.matIconRegistry.addSvgIcon("remote_menu",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/remote_menu.svg"));
     this.matIconRegistry.addSvgIcon("ddjj",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/ddjj.svg"));
     this.matIconRegistry.addSvgIcon("marcacion_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/carneMarcacionIcon.svg"));
@@ -59,7 +62,11 @@ export class SidenavComponent implements OnInit {
     })
   }
 
-  private _initialize() {}
+  private _initialize() {
+    this._inscripcionService.getInscripcionesAsignadas().subscribe((data)=>{
+      this.asignacionesInscripciones = data;
+    })
+  }
 
   @ViewChild('sidenav') sidenav: MatSidenav;
   isExpanded = false;

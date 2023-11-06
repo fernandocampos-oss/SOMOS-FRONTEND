@@ -19,29 +19,31 @@ import { ImageOptionsComponent } from '@shared/image-options/image-options.compo
   styleUrls: ['./administrar-inscripcion.component.scss']
 })
 export class AdministrarInscripcionComponent implements OnInit {
-
-  selectFormControl = new FormControl('');
-  idIns: number;
-  descripcionInsc: string = '';
-  esVotacion: boolean;
-  esVotacionActivo: boolean;
-  user: UserSession;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<inscritosResponse>;
+
+  ctrlInscripcion = new FormControl('');
+  dataInscripcion = Object();
+  estructuraExtraInscripcion = Object();
+
+
+  // idIns: number;
+  // descripcionInsc: string = '';
+  // esVotacion: boolean;
+  // esVotacionActivo: boolean;
+  user: UserSession;
   listInscritos: inscritosResponse[] = [];
   grupos: any = [];
 
-  resultadosVotacion: any;
+  inscripcionesAsignadas = [];
+
+  // resultadosVotacion: any;
 
   displayedColumns: string[] = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
 
   headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
   
-  idUsuarioRequerido = 242;
-
-  tipo: number = 2;
-
   constructor(
     private _router: Router,
     private route: ActivatedRoute,
@@ -51,53 +53,55 @@ export class AdministrarInscripcionComponent implements OnInit {
     private inscripcionService: InscripcionService) { }
 
   ngOnInit(): void {
-    this.user = this._authService.getUserSession();
-    if(this.user.id == this.idUsuarioRequerido || this.idUsuarioRequerido == 0){
-      this.getData();
-    }
-    this.selectFormControl.valueChanges.subscribe((data)=>{
+    this.ctrlInscripcion.valueChanges.subscribe((data)=>{
       this.grupos = [];
-      this.tipo = data;
       this.getData();
+    })
+    this.inscripcionService.getInscripcionesAsignadas().subscribe((data)=>{
+      this.inscripcionesAsignadas = data;
+      this.ctrlInscripcion.setValue(data[0].idInscripcion);
     })
   }
 
   getData(){
-    this.inscripcionService.getUsuariosInscritos(this.tipo).subscribe((data)=>{
-      // console.log(data)
-      this.idIns = data.idInscripcion;
-      this.descripcionInsc = data.descripcion;
-      this.listInscritos = data.inscritos;
-      this.esVotacion = data.votacion;
-      this.esVotacionActivo = data.votoActivo;
-      if (data.inscritos.length > 0) {
-        this.dataSource = new MatTableDataSource(data.inscritos);
-        // if(this.tipo == 2) this.displayedColumns.push('acciones');
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      } else {
-        this.dataSource=null;
-      }
-
-      if(this.tipo == 2){
+    this.inscripcionService.getUsuariosInscritos(this.ctrlInscripcion.value).subscribe((data)=>{
+      console.log(data)
+      this.dataInscripcion = data;
+      this.inscripcionService.getDatosInscripcionPorId(this.ctrlInscripcion.value).subscribe((datosInscripcion)=>{
+        console.log(datosInscripcion);
         let idGrupo = 0;
-        this.resultadosVotacion = data.votacionesResultado;
-        console.log(this.resultadosVotacion)
-        this.listInscritos.sort(function (a, b) {
-            return a.fechaInscripcion.localeCompare(b.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
-        });
-        this.listInscritos.forEach((x)=>{
-          if(idGrupo != x.idLider && x.idLider == x.idUsuario){
-            let cantVotacion = 0;
-            idGrupo = x.idLider;
-            if(data.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == x.idLider})){
-              cantVotacion = data.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == x.idLider}).votos;
+
+        this.estructuraExtraInscripcion = datosInscripcion;
+        if(this.estructuraExtraInscripcion.grupoActivo){
+          this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
+          this.dataInscripcion.inscritos.sort(function (a, b) {
+                return a.fechaInscripcion.localeCompare(b.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
+          });
+          console.log(this.dataInscripcion.inscritos)
+          this.dataInscripcion.inscritos.forEach((x)=>{
+            if(idGrupo != x.idLider && x.idLider == x.idUsuario){
+              let cantVotacion = 0;
+              idGrupo = x.idLider;
+              if(data.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == x.idLider})){
+                cantVotacion = data.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == x.idLider}).votos;
+              }
+              this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, cantVotos: cantVotacion, integrantes:this.dataInscripcion.inscritos.filter((z)=>{return x.idLider == z.idLider})});
             }
-            this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, cantVotos: cantVotacion, integrantes:this.listInscritos.filter((z)=>{return x.idLider == z.idLider})});
+          })
+          console.log(this.grupos)
+        }
+        else{
+          if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) this.displayedColumns.splice(6, 0, 'accion')
+          else this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
+          if (this.dataInscripcion.inscritos.length > 0) {
+            this.dataSource = new MatTableDataSource(this.dataInscripcion.inscritos);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          } else {
+            this.dataSource=null;
           }
-        })
-        console.log(this.grupos)
-      }
+        }
+      })
     })
   }
 
@@ -108,8 +112,8 @@ export class AdministrarInscripcionComponent implements OnInit {
       minHeight: '20%',
       maxHeight: '780px',
       data:{
-        encabezado: 'Grupo inscrito en: ' + this.descripcionInsc,
-        idInscripcion: this.tipo,
+        encabezado: 'Grupo inscrito en: ' + this.dataInscripcion.descripcion,
+        idInscripcion: this.ctrlInscripcion.value,
         imagenBase64: infoGrupo.imagen,
         descripcion: infoGrupo.descripcion,
         descargar: true
@@ -122,36 +126,43 @@ export class AdministrarInscripcionComponent implements OnInit {
   }
 
   exportar(){
-    if(this.tipo == 2){
-      this.headers.splice(0,0,'GRUPO');
-      if(this.esVotacion){
-        this.headers.splice(1,0,'VOTOS');
-      }
-    }
-    else{
-      this.headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
-    }
-    this._servicerExcel.exportExcel(this.descripcionInsc, this.headers, this.listInscritos, this.resultadosVotacion)
+    // if(this.idInscripcionSelected == 2){
+    //   this.headers.splice(0,0,'GRUPO');
+    //   if(this.esVotacion){
+    //     this.headers.splice(1,0,'VOTOS');
+    //   }
+    // }
+    // else{
+    //   this.headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
+    // }
+    this._servicerExcel.exportExcel(this.dataInscripcion.descripcion, this.headers, this.dataInscripcion.inscritos, this.dataInscripcion.votacionesResultado)
   }
 
+      // this.idIns = data.idInscripcion;
+      // this.descripcionInsc = data.descripcion;
+      // this.listInscritos = data.inscritos;
+      // this.esVotacion = data.votacion;
+      // this.esVotacionActivo = data.votoActivo;
   activarVotacion(){
-    console.log(this.idIns, this.esVotacionActivo)
+    console.log(this.dataInscripcion.idInscripcion, this.dataInscripcion.votoActivo)
     const dialogRef: MatDialogRef<ConfirmDialogComponent> = this.dialog.open(ConfirmDialogComponent, {
       disableClose: true,
       autoFocus: false,
       data:{
         type:0,
-        title:'¿Está seguro de ' + (this.esVotacionActivo ? 'desactivar': 'activar') + ' esta votación?',
-        message: 'Campaña: '+ this.descripcionInsc,
+        title:'¿Está seguro de ' + (this.dataInscripcion.votoActivo ? 'desactivar': 'activar') + ' esta votación?',
+        message: 'Campaña: '+ this.dataInscripcion.descripcion,
       }
     });
 
     dialogRef.afterClosed().subscribe((data)=>{
       if(data == true){
-        this.esVotacionActivo = !this.esVotacionActivo;
-        this.inscripcionService.activarInscripcionPorId(this.idIns,this.esVotacionActivo).subscribe((data)=>{
+        this.dataInscripcion.votoActivo = !this.dataInscripcion.votoActivo;
+        this.inscripcionService.activarInscripcionPorId(this.dataInscripcion.idInscripcion,this.dataInscripcion.votoActivo).subscribe((data)=>{
           // console.log(data);
-    this.inscripcionService.getUsuariosInscritos(this.tipo).subscribe((data)=>{console.log(data)})
+        this.grupos = [];
+        this.getData();
+        // this.inscripcionService.getUsuariosInscritos(this.idInscripcionSelected).subscribe((data)=>{console.log(data)})
         })
       }
     })

@@ -45,4 +45,9 @@ export class InscripcionService {
     const url = `${URL_BASE}/registrar-voto`;
     return this._httpClient.post<any>(url,model);
   }
+
+  getInscripcionesAsignadas(){
+    const url = `${URL_BASE}/asignaciones`;
+    return this._httpClient.get<any>(url);
+  }
 }

@@ -56,9 +56,14 @@ const data: MenuItem[] = [
       //   path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
       //   icon: 'settings',
       //   label: 'Campañas Asignadas',
-      //   roles: [Role.ADMIN_CENTRAL,Role.ADMIN_SEDE],
       // },
     ]
+  },
+  {
+    path: `${AppRoute.ADMINISTRACION}/${AppRoute.ADMINISTRAR_INSCRIPCIONES}`,
+    icon: 'library_books',
+    label: 'Campañas Asignadas',
+    type: 4
   },
   // {
   //     path: AppRoute.MARCACION_TRABAJADOR,

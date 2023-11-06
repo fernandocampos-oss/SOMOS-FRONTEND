@@ -7,6 +7,7 @@ import { MaterialModule } from '@material';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { AdministrarUsuariosComponent } from './administrar-usuarios/administrar-usuarios.component';
 import { AdministrarInscripcionComponent } from './administrar-inscripcion/administrar-inscripcion.component';
 import { VistaUsuariosComponent } from './administrar-usuarios/components/vista-usuarios/vista-usuarios.component';
@@ -32,7 +33,8 @@ import { VistaPreviaProyectoComponent } from './administrar-proyectos/vista-prev
     FormsModule,
     ReactiveFormsModule,
     NgxChartsModule,
-    SharedModule
+    SharedModule,
+    ClipboardModule
   ],
   providers:[
     TitleCasePipe 

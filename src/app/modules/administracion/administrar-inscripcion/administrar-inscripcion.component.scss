@@ -16,6 +16,13 @@
 .infoIns{
     align-self: center;
 }
+::ng-deep.mat-menu-panel {
+    max-width:fit-content !important;
+}
+
+.menuDatosInscripcion{
+    padding: 0 1rem;
+}
 
 .containerGruposInsc{
     display: flex;
