@@ -347,10 +347,20 @@ export class EditarPublicacionComponent implements OnInit {
         const model = this._getModel_rol_3();
   
         const idPublicacion = this.data.obj.idPublicacion;
-        this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
-          this._notification.success('Publicación actualizada correctamente');
-        });
-        this.dialogRef.close();
+        if (this.ctrlCampania.value && this.personasResponsablesInscr.length == 0) {
+          this._notification.warning('Debe asignarse almenos 1 persona responsable de la campaña');
+        }
+        else{
+          if (this.formDatosCampania.valid) {
+            this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
+              this._notification.success('Publicación actualizada correctamente');
+            });
+            this.dialogRef.close();
+          }
+          else{
+            this._notification.warning('Debe completarse los campos requeridos de la campaña');
+          }
+        }
       }
     }
   }
@@ -388,10 +398,20 @@ export class EditarPublicacionComponent implements OnInit {
         const model = this._getModel_rol_4_3();
         const idPublicacion = this.data.obj.idPublicacion;
   
-        this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
-            this._notification.success('Publicación actualizada correctamente');
-          });
-        this.dialogRef.close();
+        if (this.ctrlCampania.value && this.personasResponsablesInscr.length == 0) {
+          this._notification.warning('Debe asignarse almenos 1 persona responsable de la campaña');
+        }
+        else{
+          if (this.formDatosCampania.valid) {
+            this._menuService.updatePublicacion(idPublicacion, model).subscribe(() => {
+                this._notification.success('Publicación actualizada correctamente');
+              });
+            this.dialogRef.close();
+          }
+          else{
+            this._notification.warning('Debe completarse los campos requeridos de la campaña');
+          }
+        }
       }
     }
   }

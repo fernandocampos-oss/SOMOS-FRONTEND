@@ -24,7 +24,7 @@ export class RegisterInscripcionComponent implements OnInit {
   displayedColumns: string[] = ['nombresApellidos', 'dni', 'accion'];
   inscripcionRespondida: boolean;
   infoDialog: InscripcionResponse = Object(); // Tipos: 1 = 'Inscripcion directa singular', 2 = 'Inscripcion con descripcion, grupo e imagen'
-  tipoInscripcion: number = 2;
+  // tipoInscripcion: number = 2;
 
   idLider: number;
   descripcionControl = new FormControl('',Validators.required);
@@ -40,6 +40,9 @@ export class RegisterInscripcionComponent implements OnInit {
   retrievedImage: any;
   isImageUpdate = false;
 
+  datosActivados = null;
+  dataInscripcionCargada = false;
+
   constructor(
     private dialogRef: MatDialogRef<RegisterInscripcionComponent>,
     private dialogRefConfirmation: MatDialog,
@@ -51,30 +54,32 @@ export class RegisterInscripcionComponent implements OnInit {
     private inscripcionService: InscripcionService) { }
 
   ngOnInit(): void {
-    // console.log(this.data)
+    console.log(this.data)
     // let arraytest = new Array<string>(3);
     // arraytest.splice(2, 0, "prueba")
     // console.log(arraytest)
 
-    this.inscripcionService.getInscripcionPorId(this.data.obj).subscribe((data)=>{
+    this.inscripcionService.getInscripcionPorId(this.data.idInscripcion).subscribe((data)=>{
       console.log(data)
       this.infoDialog = data;
       if(data.enviado != true){
-        this.inscripcionService.getDatosInscripcionPorId(this.data.obj).subscribe((datos)=>{
+        this.inscripcionService.getDatosInscripcionPorId(this.data.idInscripcion).subscribe((datos)=>{
+          this.datosActivados = datos;
           console.log(datos)
+          if(this.datosActivados.grupoActivo){
+            this.idLider = this.authService.getUserSession().id;
+            this.cargarLider();
+            this.cargarUsuariosRed();
+            this.filteredOptions = this.integranteControl.valueChanges
+              .pipe(
+                startWith(''),
+                map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
+                map(nombresCompletos => nombresCompletos ? this._filterPersonal(nombresCompletos) : this.listaUsuariosRed.slice())
+              );
+            this.integranteControl.setValue('')
+          }
+          this.dataInscripcionCargada = true;
         })
-        if(this.tipoInscripcion == 2){
-          this.idLider = this.authService.getUserSession().id;
-          this.cargarLider();
-          this.cargarUsuariosRed();
-          this.filteredOptions = this.integranteControl.valueChanges
-            .pipe(
-              startWith(''),
-              map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
-              map(nombresCompletos => nombresCompletos ? this._filterPersonal(nombresCompletos) : this.listaUsuariosRed.slice())
-            );
-          this.integranteControl.setValue('')
-        }
       }
     })
   }
@@ -120,8 +125,8 @@ export class RegisterInscripcionComponent implements OnInit {
 
   aniadirIntegrante(){ // Añade integrantes al listado visual del equipo
     if (this.personalSeleccionadoTmp != undefined){
-      if (this.listaIntegrantes.length == 5){
-        this._notification.warning('El grupo debe ser de máximo 5 personas (incluyendo al líder)');
+      if (this.listaIntegrantes.length == this.datosActivados.grupoLongitud){
+        this._notification.warning(`El grupo debe ser de máximo ${this.datosActivados.grupoLongitud} personas (incluyendo al líder)`);
       }
       else{
         let registrado = false;
@@ -187,18 +192,24 @@ export class RegisterInscripcionComponent implements OnInit {
   }
 
   enviarInscripcion(){
-    if (this.tipoInscripcion == 1) {
-      this.inscripcionService.registerUserToInscripcion(this.getInscripcionTipo1()).subscribe(()=>{
+    console.log(this.getInscripcion())
+    if (!this.datosActivados.grupoActivo && !this.datosActivados.imagenActiva && !this.datosActivados.textoActivo) {
+      this.inscripcionService.registerUserToInscripcion(this.getInscripcion()).subscribe(()=>{
         this._notification.success('¡Se registró su inscripción!');
         this.dialogRef.close("enviado");
       })
     }
-    else if(this.tipoInscripcion == 2){
-      if(!this.descripcionControl.valid || this.retrievedImage == undefined){
-        this._notification.warning('Hay datos faltantes');
+    else{
+      if(this.datosActivados.textoActivo && !this.descripcionControl.valid){
+        this._notification.warning(`El campo "${this.datosActivados.textoDescripcion}" se encuentra vacío`);
       }
-      else{
-        
+      else if(this.datosActivados.imagenActiva && this.retrievedImage == undefined){
+        this._notification.warning(`No se ha adjuntado la imagen requerida`);
+      }
+      else if(this.datosActivados.grupoActivo && (this.listaIntegrantes.length < 1 || this.listaIntegrantes.length > this.datosActivados.grupoLongitud)){
+        this._notification.warning(`Longitud de grupo no permitida`);
+      }
+      else{        
         const dialogRef: MatDialogRef<ConfirmDialogComponent> = this.dialogRefConfirmation.open(ConfirmDialogComponent, {
           disableClose: true,
           autoFocus: false,
@@ -211,8 +222,7 @@ export class RegisterInscripcionComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((data)=>{
           if(data == true){
-            console.log(this.getInscripcionTipo2())
-            this.inscripcionService.registerUserToInscripcion(this.getInscripcionTipo2()).subscribe(()=>{
+            this.inscripcionService.registerUserToInscripcion(this.getInscripcion()).subscribe(()=>{
               this._notification.success('¡Se registró su inscripción!');
               this.dialogRef.close("enviado");
             })
@@ -221,24 +231,38 @@ export class RegisterInscripcionComponent implements OnInit {
       }
     }
   }
-  getInscripcionTipo1(): InscripcionRequest{
-    return{
-      idInscripcion: this.data.obj,
-      tipoInscripcion: 1
-    }
-  }
+  // getInscripcionDirecta(): InscripcionRequest{
+  //   return{
+  //     idInscripcion: this.data.idInscripcion
+  //     // tipoInscripcion: 1
+  //   }
+  // }
 
-  getInscripcionTipo2(): InscripcionRequest{
-    let arrayId = [];
-    this.listaIntegrantes.map((x)=>{
-      arrayId.push(x.idUsuario)
-    })
-    return {
-      idInscripcion: this.data.obj,
-      tipoInscripcion: 2,
-      inscritos: arrayId,
-      descripcion: this.descripcionControl.value,
-      imagenBase64: this.retrievedImage.split(',')[1]
-    };
+  getInscripcion(): InscripcionRequest{//this.datosActivados
+    let inscripcionRequest: InscripcionRequest = Object();
+
+    inscripcionRequest.idInscripcion = this.data.idInscripcion;
+    if (this.datosActivados.textoActivo) {
+      inscripcionRequest.descripcion = this.descripcionControl.value;
+    }
+    if (this.datosActivados.imagenActiva) {
+      inscripcionRequest.imagenBase64 = this.retrievedImage.split(',')[1];
+    }
+    if (this.datosActivados.grupoActivo) {
+      let arrayId = [];
+      this.listaIntegrantes.map((x)=>{
+        arrayId.push(x.idUsuario)
+      })
+      inscripcionRequest.inscritos = arrayId;
+    }
+
+    return inscripcionRequest;
+    // return {
+    //   idInscripcion: this.data.idInscripcion,
+    //   // tipoInscripcion: 2,
+    //   descripcion: this.descripcionControl.value,
+    //   imagenBase64: this.retrievedImage.split(',')[1],
+    //   inscritos: arrayId
+    // };
   }
 }

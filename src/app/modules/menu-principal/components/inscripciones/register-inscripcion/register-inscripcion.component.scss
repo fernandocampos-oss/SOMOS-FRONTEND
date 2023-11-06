@@ -88,6 +88,10 @@ th{
     width: 100%;
 }
 
+.containerTable{
+    max-height: 30vh;
+    overflow: auto;
+}
 @media screen and (max-width: 639px) {
     th.mat-header-cell, td.mat-cell{
         font-size: 10px;

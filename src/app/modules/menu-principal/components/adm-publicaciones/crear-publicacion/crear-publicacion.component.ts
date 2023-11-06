@@ -292,10 +292,20 @@ export class CrearPublicacionComponent implements OnInit {
         this._notification.warning('Seleccione una Red Asistencial para este tipo de alcance');
       }
       else{
-        this._menuService.newPublicacion(model).subscribe(() => {
-          this._notification.success('Publicación registrada correctamente');
-        });
-        this.dialogRef.close();
+        if (this.ctrlCampania.value && this.personasResponsablesInscr.length == 0) {
+          this._notification.warning('Debe asignarse almenos 1 persona responsable de la campaña');
+        }
+        else{
+          if (this.formDatosCampania.valid) {
+            this._menuService.newPublicacion(model).subscribe(() => {
+              this._notification.success('Publicación registrada correctamente');
+            });
+            this.dialogRef.close();
+          }
+          else{
+            this._notification.warning('Debe completarse los campos requeridos de la campaña');
+          }
+        }
       }
     }
   }
@@ -332,10 +342,20 @@ export class CrearPublicacionComponent implements OnInit {
         this._notification.warning('Seleccione una Red Asistencial para este tipo de alcance');
       }
       else{
-        this._menuService.newPublicacion(model).subscribe(() => {
-          this._notification.success('Publicación registrada correctamente');
-        });
-        this.dialogRef.close();
+        if (this.ctrlCampania.value && this.personasResponsablesInscr.length == 0) {
+          this._notification.warning('Debe asignarse almenos 1 persona responsable de la campaña');
+        }
+        else{
+          if (this.formDatosCampania.valid) {
+            this._menuService.newPublicacion(model).subscribe(() => {
+              this._notification.success('Publicación registrada correctamente');
+            });
+            this.dialogRef.close();
+          }
+          else{
+            this._notification.warning('Debe completarse los campos requeridos de la campaña');
+          }
+        }
       }
     }
   }

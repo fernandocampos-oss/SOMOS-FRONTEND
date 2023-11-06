@@ -20,10 +20,10 @@ export class inscritosResponse {
 
 export class InscripcionRequest {
   idInscripcion: number;
-  tipoInscripcion: number;
-  inscritos?: number[];
+  // tipoInscripcion: number;
   descripcion?: string;
   imagenBase64?: string;
+  inscritos?: number[];
 }
 
 export class VotacionInscripcionRequest {
