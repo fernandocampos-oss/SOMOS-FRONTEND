@@ -90,21 +90,6 @@ export class MiEquipoComponent implements OnInit {
     });
   }
 
-  // verRequerimientos(element) {
-  //   const dialogRef: MatDialogRef<UserTaskComponent> = this.dialog.open(UserTaskComponent, {
-  //     disableClose: false,
-  //     width: '70%',
-  //     autoFocus: false,
-  //     data: {
-  //       model: element,
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadTable();
-  //   });
-  // }
-
   async loadTable() {
     let listtrabajadores = await this.services.listarIntegrantesPorLider().then((data) => {
       if (data.length > 0) {

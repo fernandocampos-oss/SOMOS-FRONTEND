@@ -31,17 +31,6 @@ export class ConfirmarTareaComponent implements OnInit {
       // this.dialogRef.closeAll();
     });
     this.dialogRef.closeAll();
-
-    // this._service.validarDuplicadoRequerimientoPersonal(this.data.obj.requerimiento.idRequerimiento, x.personal.idPersonal).subscribe(dataValidacion => {
-    //   console.log(dataValidacion);
-    //   if (dataValidacion.length == 0) {          
-    //   }
-    //   else {
-    //     this._service.registrarTareaNoDuplicado(tareaValDTO).subscribe(data => {
-    //       this._snackbar.success("Se registró correctamente");
-    //     });
-    //   }
-    // });
   }
 
   // closeAll() {

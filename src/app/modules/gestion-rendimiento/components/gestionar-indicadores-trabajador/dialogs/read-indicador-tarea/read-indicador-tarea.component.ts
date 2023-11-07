@@ -8,6 +8,8 @@ import { NotificationService } from '@core/services';
 import { TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { EditTareaComponent } from './edit-tarea/edit-tarea.component';
+import { VerEvidenciaImagenComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-imagen/ver-evidencia-imagen.component';
+import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
 
 @Component({
   selector: 'app-read-indicador-tarea',
@@ -66,6 +68,40 @@ export class ReadIndicadorTareaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       // this.loadTable();
     });
+  }
+
+  verImagenEvidencia(element) {
+    const dialogRef: MatDialogRef<VerEvidenciaImagenComponent> = this._dialog.open(VerEvidenciaImagenComponent, {
+      disableClose: false,
+      width: '50%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  verEvidenciaPdf(element) {
+    const dialogRef: MatDialogRef<VerEvidenciaPdfComponent> = this._dialog.open(VerEvidenciaPdfComponent, {
+      disableClose: false,
+      width: '70%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  rechazarTarea(){
+    
   }
 
   // onPoiCreate(){

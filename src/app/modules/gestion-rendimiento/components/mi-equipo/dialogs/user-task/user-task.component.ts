@@ -9,7 +9,6 @@ import { UserDownloadTaskComponent } from '../user-download-task/user-download-t
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { DialogService, NotificationService } from '@core/services';
 import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.component';
-import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimiento/reporte-finalizados';
 import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 //import * as XLSX from 'xlsx';
@@ -43,7 +42,6 @@ export class UserTaskComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(this.data);
-    this.loadTableRequerimiento(this.data.model.integrante.idUsuario);
   }
 
   verTareas(element, id: number) {
@@ -70,6 +68,8 @@ export class UserTaskComponent implements OnInit {
   //     .pipe(filter((isConfirmed) => isConfirmed))
   //     .subscribe(() => this.onSave());
   // }
+  // onSave() {
+  // }
 
   finalizarTarea(element) {
     this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -80,111 +80,15 @@ export class UserTaskComponent implements OnInit {
       if (result) {
         this.services.finalizarTareaAdministrador(element.idRequerimientoUsuario).subscribe(() => {
           this._notification.success('Requerimiento finalizado correctamente');
-          this.loadTableRequerimiento(this.data.model.integrante.idUsuario);
+          // this.loadTableRequerimiento(this.data.model.integrante.idUsuario);
         });
       }
       this.confirmDialogRef == null;
     });
   }
 
-  onSave() {
-  }
-
-  async loadTableRequerimiento(idUsuario: Number) {
-    let load = await this.services.listarIndicadoresPorTrabajador(idUsuario).then((data: any) => {
-      if (data.length > 0) {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      } else {
-        this.dataSource = null;
-        this._notification.warning("El integrante no cuenta con indicadores/productos");
-      }
-    });
-  }
-
   async exportToExcel(element) {
-    console.log("element", element)
-    if (element.idRequerimientoUsuario > 0) {
-      let reportePersonal = new ReportePersonal();
-      reportePersonal.apellidos = element.usuario.apellidos;
-      reportePersonal.nombres = element.usuario.nombres;
-      reportePersonal.cargo = element.usuario.cargo;
 
-      let listTarea: ReporteEvidencia[] = [];
-      for (let i of element.listTarea) {
-        let obj = new ReporteEvidencia();
-        obj.nombreTarea = i.nombreTarea;
-        obj.requerimientoDescripcion = element.requerimiento.nombre;
-        obj.poi = element.poi.descripcion;
-        obj.indicador = element.poi.indicador.descripcion;
-
-        let a = await this.services.getEvidenciaPorTarea(i.idTarea).then((data: any) => {
-          if (data != null) {
-            this.evidenciaResponseDto = data;
-            console.log("dto:", data);
-          } else {
-            this.evidenciaResponseDto = null;
-          }
-        });
-
-        //comparar fechas para el comentario en excel
-        let fechaISOPlazo = i.plazo.split("T");
-        let fechaPlazo = fechaISOPlazo[0];
-
-        if (this.evidenciaResponseDto.evidenciaFechaRegistro !='') {
-          let fechaISOEvidencia = this.evidenciaResponseDto.evidenciaFechaRegistro.split("T");
-          let fechaEvidencia = fechaISOEvidencia[0];
-
-          console.log("fechaPlazo: ", fechaPlazo);
-          console.log("fechaEvidencia: ", fechaEvidencia)
-
-          var first = new Date(fechaPlazo);
-          var second = new Date(fechaEvidencia);
-
-          if (first < second) {
-            console.log(first, "es menor que", second);
-            obj.comentario = 'Se pasó de la fecha';
-          }
-          else if (first > second) {
-            console.log(first, "es mayor que", second);
-            obj.comentario = 'Presentó evidencia dentro de la fecha';
-          }
-          else if (first == second) {
-            console.log(first, "es igual que", second);
-            obj.comentario = 'Presentó evidencia dentro de la fecha';
-          }
-          obj.descripcionEvidencia = this.evidenciaResponseDto.evidenciaDescripcion;
-          // obj.porcentajeAvanceEvidencia = this.evidenciaResponseDto.porcentajeAvance;
-          obj.plazoTarea = fechaPlazo;
-          listTarea.push(obj);
-          obj = null;
-          reportePersonal.estadoEntregado = "Entregado";
-
-        } else {
-          this._notification.warning("No se encontró evidencia para la tarea: " + i.nombreTarea);
-
-          let obj = new ReporteEvidencia();
-          obj.nombreTarea = i.nombreTarea;
-          obj.requerimientoDescripcion = element.requerimiento.nombre;
-          obj.poi = element.poi.descripcion;
-          obj.plazoTarea = fechaPlazo;
-          obj.porcentajeAvanceEvidencia = 0;
-          obj.comentario = 'No presentó evidencia';
-          listTarea.push(obj);
-          obj = null;
-        }
-
-      }
-      console.log("data excel", listTarea)
-      let columnsName = ["String_1", "String_2"];
-      let reportData = {
-        data_personal: reportePersonal,
-        data_evidencia: listTarea,
-        headers: columnsName,
-      };
-      this._serviceExcel.exportExcel(reportData);
-    }
   }
 
 }

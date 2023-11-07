@@ -15,11 +15,11 @@ export class ExportExcelGestionRendimientoService {
 
   constructor() { }
 
-  exportExcel(excelData: { data_personal: any, data_evidencia: any; headers: any }) {
-    console.log(">>>>", excelData);
+  exportExcel(excelData: { data_trabajador: any, data_evidencia: any; headers: any }) {
+    console.log("service", excelData);
     //Title, Header & Data
     const header = excelData.headers;
-    const data_personal = excelData.data_personal;
+    const data_trabajador = excelData.data_trabajador;
     const data_evidencia = excelData.data_evidencia;
 
     //Create a workbook with a worksheet
@@ -253,7 +253,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('E9:I9');
     let titleApellidosResult = worksheet.getCell('E9');
-    titleApellidosResult.value = data_personal.apellidos + ", " + data_personal.nombres;
+    titleApellidosResult.value = data_trabajador.apellidos + ", " + data_trabajador.nombres;
     titleApellidosResult.font = {
       name: 'Calibri',
       size: 8,
@@ -292,7 +292,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('E10:I10');
     let titlePuestoResult = worksheet.getCell('E10');
-    titlePuestoResult.value = data_personal.cargo;
+    titlePuestoResult.value = data_trabajador.cargo;
     titlePuestoResult.font = {
       name: 'Calibri',
       size: 8,
@@ -967,7 +967,7 @@ export class ExportExcelGestionRendimientoService {
 
     data_evidencia.forEach((d: any) => {
       let row = worksheet.addRow(Object.values(d));
-      console.log("i ", d);
+      console.log("row", d);
 
       const currentRowIdx = worksheet.rowCount;
       const endColumnIdx = worksheet.columnCount;
@@ -980,13 +980,13 @@ export class ExportExcelGestionRendimientoService {
       worksheet.mergeCells(currentRowIdx, 10, currentRowIdx, 11); // plazos
       worksheet.mergeCells(currentRowIdx, 13, currentRowIdx, 15); // comentarios
 
-      worksheet.getRow(currentRowIdx).getCell('A').value = d.poi;
-      worksheet.getRow(currentRowIdx).getCell('D').value = d.requerimientoDescripcion;
+      worksheet.getRow(currentRowIdx).getCell('A').value = d.actividad;
+      worksheet.getRow(currentRowIdx).getCell('D').value = d.indicador;
       worksheet.getRow(currentRowIdx).getCell('F').value = 1;
-      worksheet.getRow(currentRowIdx).getCell('G').value = d.porcentajeAvanceEvidencia + '%';
-      worksheet.getRow(currentRowIdx).getCell('H').value = d.nombreTarea;
-      worksheet.getRow(currentRowIdx).getCell('J').value = d.plazoTarea;
-      worksheet.getRow(currentRowIdx).getCell('M').value = d.comentario;
+      worksheet.getRow(currentRowIdx).getCell('G').value = d.pesoFraccion + '%';
+      worksheet.getRow(currentRowIdx).getCell('H').value = d.nombre;
+      worksheet.getRow(currentRowIdx).getCell('J').value = d.plazo;
+      worksheet.getRow(currentRowIdx).getCell('M').value = d.evaluacionComentario;
 
       let a = row.getCell('A');
       a.font = { size: 8 };

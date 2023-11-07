@@ -1,18 +1,17 @@
-export class ReportePersonal {
-    apellidos?: string;
+export class ReporteTrabajador {
     nombres?: string;
+    apellidos?: string;
     cargo?: string;
     estadoEntregado?: string;
 }
 
-export class ReporteEvidencia {
-    poi?: string;
+export class ReporteTarea {
+    actividad?: string;
     indicador?: string;
-    requerimientoDescripcion?: string;
-
-    nombreTarea?: string;
-    plazoTarea?: string;
-    descripcionEvidencia?: string;
-    porcentajeAvanceEvidencia?: number;
-    comentario?: string;
+    // valorMeta?: number;
+    pesoTotal?: number;
+    pesoFraccion?: number;
+    nombre?: string;
+    plazo?: string;
+    evaluacionComentario?: string;
 }

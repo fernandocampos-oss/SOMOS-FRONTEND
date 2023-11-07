@@ -3,6 +3,11 @@
         <mat-icon>add_circle</mat-icon>
         &nbsp; Registrar Indicador/Producto
     </button>
+    <button mat-raised-button color="primary" (click)="actualizarIndicadoresPendientes()"
+        *ngIf="listDataPendientes.length !== 0">
+        <mat-icon>cached</mat-icon>
+        &nbsp; Actualizar Lista
+    </button>
 </div>
 <br />
 <div *ngIf="listDataPendientes.length == 0" style="text-align: center">
@@ -73,12 +78,11 @@
                     <mat-icon>library_books</mat-icon>
                 </button>
                 <button mat-icon-button class="color-mensaje" matTooltip="Editar Requerimiento"
-                    *ngIf="element.estadoIndicador.codigo == '01'"
-                    (click)="editarRequerimiento(element, true)">
+                    *ngIf="element.estadoIndicador.codigo == '01'" (click)="editarRequerimiento(element, true)">
                     <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button class="has-success" matTooltip="Descargar Formato Excel"
-                    (click)="exportToExcel(element)">
+                    (click)="exportToExcelGR(element)">
                     <mat-icon>get_app</mat-icon>
                 </button>
             </td>

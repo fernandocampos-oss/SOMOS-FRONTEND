@@ -161,8 +161,8 @@ export class GestionRendimientoService {
     return await this.http.get<any[]>(url).toPromise();
   }
 
-  async listarIndicadoresPorTrabajador(idUsuario) {
-    const url = `${URL_BASE}/indicadores-usuarios/listar/indicadores/${idUsuario}/trabajador`;
+  async listarIndicadoresPorTrabajadorPrincipal() {
+    const url = `${URL_BASE}/indicadores-usuarios/listar/indicadores-tareas/principal`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
@@ -193,11 +193,11 @@ export class GestionRendimientoService {
     return await this.http.post(url, equipoRequest).toPromise();
   }
 
-  // async findUsuarioByNumeroDocumento(numeroDocumento: string) {
-  //   const url = `${URL_BASE}/lideres-equipos/obtener/usuario/${numeroDocumento}`;
-  //   console.log(url);
-  //   return await this.http.get<Object>(url).toPromise();
-  // }
+  async getVotanteByIdUsuario() {
+    const url = `${URL_BASE}/equipos/obtener/votante/segmento`;
+    console.log(url);
+    return await this.http.get<Object>(url).toPromise();
+  }
 
   //Indicador
   finalizarTareaAdministrador(idRequerimientoUsuario: number) {

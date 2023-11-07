@@ -5,12 +5,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService, SnackbarService } from '@core/services';
-import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { RegistrarIndicadorTrabajadorComponent } from '../components/registrar-indicador-trabajador/registrar-indicador-trabajador.component';
 import { ModalTareaComponent } from '../components/modal-tarea/modal-tarea.component';
-import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimiento/reporte-finalizados';
+import { ReporteTarea, ReporteTrabajador } from '@data/models/gestion-rendimiento/reporte-finalizados';
 
 @Component({
   selector: 'app-indicadores-trabajador',
@@ -18,8 +17,6 @@ import { ReporteEvidencia, ReportePersonal } from '@data/models/gestion-rendimie
   styleUrls: ['./indicadores-trabajador.component.scss']
 })
 export class IndicadoresTrabajadorComponent implements OnInit {
-  evidenciaDTO: EvidenciaResponseDto;
-  // listDataRechazados: any[] = [];
   listDataFinalizados: any[] = [];
   listDataPendientes: any[] = [];
 
@@ -32,11 +29,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   @ViewChild(MatPaginator) paginator_finalizado: MatPaginator;
   dataSource_finalizado: MatTableDataSource<any>;
   displayedColumns_finalizado: string[] = ['item', 'indicador_producto', 'fecha_asignacion', 'tipo_ingreso', 'tipo_valor_meta', 'valor_meta', 'acciones'];
-
-  // @ViewChild(MatSort) sort_rechazado: MatSort;
-  // @ViewChild(MatPaginator) paginator_rechazado: MatPaginator;
-  // dataSource_rechazado: MatTableDataSource<any>;
-  // displayedColumns_rechazado: string[] = ['item', 'identificador', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'motivo'];
 
   constructor(
     private _router: Router,
@@ -51,16 +43,17 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   ngOnInit(): void {
     this.loadTablePendiente();
     this.loadTableFinalizado();
-    // this.loadTableRechazado();
   }
 
-  async actualizar() {
+  async actualizarIndicadoresPendientes() {
     this.listDataPendientes = [];
-    this.listDataFinalizados = [];
-    // this.listDataRechazados = [];
     let pendientes = await this.loadTablePendiente();
+    this._snackbar.success("La lista ya se encuentra actualizada");
+  }
+
+  async actualizarindicadoresRechazados() {
+    this.listDataFinalizados = [];
     let finalizados = await this.loadTableFinalizado();
-    // let rechazados = await this.loadTableRechazado();
     this._snackbar.success("La lista ya se encuentra actualizada");
   }
 
@@ -77,17 +70,13 @@ export class IndicadoresTrabajadorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadTablePendiente();
-      this.loadTableFinalizado();
-      // this.loadTableRechazado();
     });
-
   }
 
   async loadTablePendiente() {
     let listPendiente = await this._requerimientoService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
         this.listDataPendientes = data;
-        console.log("rr",this.listDataPendientes)
         this.dataSource = new MatTableDataSource(this.listDataPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -106,17 +95,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  // async loadTableRechazado() {
-  //   let listRechazado = await this._requerimientoService.listarRequerimientoRechazado().then((data) => {
-  //     if (data.length > 0) {
-  //       this.listDataRechazados = data;
-  //       this.dataSource_rechazado = new MatTableDataSource(this.listDataRechazados);
-  //       this.dataSource_rechazado.paginator = this.paginator_rechazado;
-  //       this.dataSource_rechazado.sort = this.sort_rechazado;
-  //     }
-  //   });
-  // }
-
   verDetalleIndicadorYtareas(element) {
     console.log(element)
     const dialogRef: MatDialogRef<ModalTareaComponent> = this._matDialog.open(ModalTareaComponent, {
@@ -125,19 +103,17 @@ export class IndicadoresTrabajadorComponent implements OnInit {
       //height: '780px',
       autoFocus: true,
       data: {
+        model: element,
         // auto: true,
-        model: element
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadTablePendiente();
-      this.loadTableFinalizado();
-      // this.loadTableRechazado();
     });
   }
 
-  editarRequerimiento(element, es_editar) {
+  editarIndicador(element, es_editar) {
     const dialogRef: MatDialogRef<RegistrarIndicadorTrabajadorComponent> = this._matDialog.open(RegistrarIndicadorTrabajadorComponent, {
       disableClose: false,
       width: '600px',
@@ -152,8 +128,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadTablePendiente();
-      this.loadTableFinalizado();
-      // this.loadTableRechazado();
     });
 
   }
@@ -162,86 +136,101 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     this._router.navigate([''], { relativeTo: this.route });
   }
 
-  async exportToExcel(element) {
+  async exportToExcelGR(element) {
     console.log("element", element)
-    if (element.idRequerimientoUsuario > 0) {
-      let reportePersonal = new ReportePersonal();
-      reportePersonal.apellidos = element.usuario.apellidos;
-      reportePersonal.nombres = element.usuario.nombres;
-      reportePersonal.cargo = element.usuario.cargo;
+    if (element.idIndicadorUsuario > 0) {
+      let reporteTrabajador = new ReporteTrabajador();
+      reporteTrabajador.nombres = element.usuario.nombres;
+      reporteTrabajador.apellidos = element.usuario.apellidos;
+      reporteTrabajador.cargo = element.usuario.cargo;
 
-      let listTarea: ReporteEvidencia[] = [];
-      for (let i of element.listTarea) {
-        let obj = new ReporteEvidencia();
-        obj.nombreTarea = i.nombreTarea;
-        obj.requerimientoDescripcion = element.requerimiento.nombre;
-        obj.poi = element.poi.descripcion;
-        obj.indicador = element.poi.indicador.descripcion;
+      let listTarea: ReporteTarea[] = [];
+      if (element.listTarea.length > 0) {
+        for (let i of element.listTarea) {
+          let fila = new ReporteTarea();
+          if (i.evidenciaFechaRegistro != null) {
+            fila.actividad = element.actividad.descripcion;
+            fila.indicador = element.indicador.nombre;
+            // fila.valorMeta = element.indicador.valorMeta;
+            fila.pesoTotal = element.pesoTotal;
+            fila.pesoFraccion = i.pesoFraccion;
+            fila.nombre = i.nombre;
 
-        let a = await this._requerimientoService.getEvidenciaPorTarea(i.idTarea).then((data: any) => {
-          if (data != null) {
-            this.evidenciaDTO = data;
-            console.log("dto:", data);
+            let fechaISOPlazo = i.plazo.split("T");
+            let fechaPlazo = fechaISOPlazo[0];
+            fila.plazo = fechaPlazo;
+
+            let fechaISOEvidencia = i.evidenciaFechaRegistro.split("T");
+            let fechaEvidencia = fechaISOEvidencia[0];
+            console.log("fechaPlazo: ", fechaPlazo, " fechaEvidencia: ", fechaEvidencia);
+
+            var first = new Date(fechaPlazo);
+            var second = new Date(fechaEvidencia);
+
+            //comparar fechas para evaluacionComentario
+            if (first < second) {
+              console.log(first, "es menor que", second);
+              fila.evaluacionComentario = 'Se pasó de la fecha';
+            }
+            else if (first > second) {
+              console.log(first, "es mayor que", second);
+              fila.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
+            }
+            else if (first == second) {
+              console.log(first, "es igual que", second);
+              fila.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
+            }
+            listTarea.push(fila);
+            fila = null;
+            // reportePersonal.estadoEntregado = "Entregado";
           } else {
-            this.evidenciaDTO = null;
+            fila.actividad = element.actividad.descripcion;
+            fila.indicador = element.indicador.nombre;
+            // fila.valorMeta = element.indicador.valorMeta;
+            fila.pesoTotal = element.pesoTotal;
+            fila.pesoFraccion = i.pesoFraccion;
+            fila.nombre = i.nombre;
+
+            let fechaISOPlazo = i.plazo.split("T");
+            let fechaPlazo = fechaISOPlazo[0];
+            fila.plazo = fechaPlazo;
+
+            fila.evaluacionComentario = 'Aún no presentó evidencia';
+            listTarea.push(fila);
+            fila = null;
           }
-        });
-
-        //comparar fechas para el comentario en excel
-        let fechaISOPlazo = i.plazo.split("T");
-        let fechaPlazo = fechaISOPlazo[0];
-
-        if (this.evidenciaDTO.evidenciaFechaRegistro != null) {
-          let fechaISOEvidencia = this.evidenciaDTO.evidenciaFechaRegistro.split("T");
-          let fechaEvidencia = fechaISOEvidencia[0];
-
-          console.log("fechaPlazo: ", fechaPlazo);
-          console.log("fechaEvidencia: ", fechaEvidencia)
-
-          var first = new Date(fechaPlazo);
-          var second = new Date(fechaEvidencia);
-
-          if (first < second) {
-            console.log(first, "es menor que", second);
-            obj.comentario = 'Se pasó de la fecha';
-          }
-          else if (first > second) {
-            console.log(first, "es mayor que", second);
-            obj.comentario = 'Presentó evidencia dentro de la fecha';
-          }
-          else if (first == second) {
-            console.log(first, "es igual que", second);
-            obj.comentario = 'Presentó evidencia dentro de la fecha';
-          }
-          obj.descripcionEvidencia = this.evidenciaDTO.evidenciaDescripcion;
-          // obj.porcentajeAvanceEvidencia = this.evidenciaDTO.porcentajeAvance;
-          obj.plazoTarea = fechaPlazo;
-          listTarea.push(obj);
-          obj = null;
-          reportePersonal.estadoEntregado = "Entregado";
-        } else {
-          // console.log("No se encontró evidencia para la tarea: " + i.nombreTarea);
-          let obj = new ReporteEvidencia();
-          obj.nombreTarea = i.nombreTarea;
-          obj.requerimientoDescripcion = element.requerimiento.nombre;
-          obj.poi = element.poi.descripcion;
-          obj.plazoTarea = fechaPlazo;
-          obj.porcentajeAvanceEvidencia = 0;
-          obj.comentario = 'No presentó evidencia';
-          listTarea.push(obj);
-          obj = null;
         }
+        console.log("data lleno", listTarea)
+      } else {
+        for (let i of element.listTarea) {
+          let fila = new ReporteTarea();
+          fila.actividad = element.actividad.descripcion;
+          fila.indicador = element.indicador.nombre;
+          // fila.valorMeta = element.indicador.valorMeta;
+          fila.pesoTotal = element.pesoTotal;
+          fila.pesoFraccion = i.pesoFraccion;
+          fila.nombre = i.nombre;
+
+          let fechaISOPlazo = i.plazo.split("T");
+          let fechaPlazo = fechaISOPlazo[0];
+          fila.plazo = fechaPlazo;
+
+          fila.evaluacionComentario = 'Aún no presentó evidencia';
+
+          listTarea.push(fila);
+          fila = null;
+          // reportePersonal.estadoEntregado = "Entregado";
+        }
+        console.log("data vacio", listTarea)
       }
-      console.log("data excel", listTarea)
       let columnsName = ["String_1", "String_2"];
       let reportData = {
-        data_personal: reportePersonal,
+        data_trabajador: reporteTrabajador,
         data_evidencia: listTarea,
         headers: columnsName,
       };
       this._serviceExcel.exportExcel(reportData);
     }
   }
-  
 
 }

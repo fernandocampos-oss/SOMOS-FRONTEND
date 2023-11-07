@@ -1,19 +1,27 @@
 mat-form-field {
-    width: 100%;
-  }
-  
-  .aniadir {
-    position: absolute;
-    bottom: 27px;
-    height: 65%;
-    width: 100%;
-  }
-  
-  .edit-button {
-    color: var(--color-bordes);
-  }
-  
-  .close-button {
-    color: white;
-    background-color: var(--color-bordes);
-  }
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+.aniadir {
+  position: absolute;
+  bottom: 27px;
+  height: 65%;
+  width: 100%;
+}
+
+.edit-button {
+  color: var(--color-warn);
+}
+
+.primary-button {
+  color: var(--color-bordes);
+}
+
+.close-button {
+  color: white;
+  background-color: var(--color-bordes);
+}

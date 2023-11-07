@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationService } from '@core/services';
+import { NotificationService, SnackbarService } from '@core/services';
 import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
@@ -28,10 +28,17 @@ export class IndicadoresFinalizadosJefeComponent implements OnInit {
     private _requerimientoService: GestionRendimientoService,
     private _notification: NotificationService,
     public _serviceExcel: ExportExcelGestionRendimientoService,
+    private _snackbar: SnackbarService,
   ) { }
 
   ngOnInit(): void {
     this.loadTableFinalizado();
+  }
+
+  async actualizarindicadoresRechazados() {
+    this.listDataFinalizados = [];
+    let finalizados = await this.loadTableFinalizado();
+    this._snackbar.success("La lista ya se encuentra actualizada");
   }
 
   async loadTableFinalizado() {
@@ -44,5 +51,9 @@ export class IndicadoresFinalizadosJefeComponent implements OnInit {
       }
     });
   }
-  
+
+  exportToExcelGR(){
+    
+  }
+
 }

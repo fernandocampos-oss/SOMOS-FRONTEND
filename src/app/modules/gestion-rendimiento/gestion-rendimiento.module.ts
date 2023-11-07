@@ -27,6 +27,7 @@ import { ConfirmarTareaComponent } from './components/gestionar-indicadores-trab
 import { ReadIndicadorTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/read-indicador-tarea.component';
 import { EditTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/edit-tarea/edit-tarea.component';
 import { AceptarRechazarTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/aceptar-rechazar-tarea/aceptar-rechazar-tarea.component';
+import { AsignarComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar/asignar.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { AceptarRechazarTareaComponent } from './components/gestionar-indicadore
     ConfirmarTareaComponent,
     ReadIndicadorTareaComponent,
     EditTareaComponent,
-    AceptarRechazarTareaComponent
+    AceptarRechazarTareaComponent,
+    AsignarComponent
   ],
   imports: [
     CommonModule,

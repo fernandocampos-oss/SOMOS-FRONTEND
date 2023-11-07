@@ -1,3 +1,18 @@
+:host {
+    .actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        column-gap: 0.5rem;
+        padding-top: 1rem;
+        flex-wrap: wrap;
+
+        &__separator {
+            flex: 1;
+        }
+    }
+}
+
 table {
     width: 100%;
 }

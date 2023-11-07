@@ -15,6 +15,8 @@ import { InscribirseBoletasComponent } from '@modules/mis-boletas/components/ins
 import { BoletaService } from '@data/services/boleta.service';
 import { Router } from '@angular/router';
 import { AppRoute } from '@data/constants';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { SegmentoVotante } from '@data/enums';
 
 @Component({
   selector: 'app-sidenav',
@@ -29,6 +31,11 @@ export class SidenavComponent implements OnInit {
   nombre: String = '';
   numDoc: string = '';
 
+  votanteSegmento: number = 0;
+  usuarioVotante: any;
+  segmentoJefe: number;
+  segmentoTrabajador: number;
+
   constructor(private dialog: MatDialog,
               private _menuService   : MenuService,
               private router         : Router,
@@ -37,12 +44,15 @@ export class SidenavComponent implements OnInit {
               private _authService   : AuthService,
               private _boletaService : BoletaService,
               private _zonaService   : ZonaService,
-              private _userService   : UsuarioService) {
+              private _userService   : UsuarioService,
+              private _gestionRendimientoService: GestionRendimientoService) {
     this.matIconRegistry.addSvgIcon("remote_menu",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/remote_menu.svg"));
     this.matIconRegistry.addSvgIcon("ddjj",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/ddjj.svg"));
     this.matIconRegistry.addSvgIcon("marcacion_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/carneMarcacionIcon.svg"));
     this.matIconRegistry.addSvgIcon("payment_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/mon_azul_icon.svg"));
     this.matIconRegistry.addSvgIcon("check-access",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/check-access.svg"));
+    this.segmentoJefe = SegmentoVotante.DIRECTIVO;
+    this.segmentoTrabajador = SegmentoVotante.EJECUTOR;
   }
 
   ngOnInit(): void {
@@ -57,6 +67,8 @@ export class SidenavComponent implements OnInit {
       this.nombre = data.nombres;
       this.numDoc = data.numeroDocumento;
     })
+
+    this.getSegmentoModuloGR();
   }
 
   private _initialize() {}
@@ -116,4 +128,17 @@ export class SidenavComponent implements OnInit {
           break;
     }
   }
+
+  async getSegmentoModuloGR() {
+    let load = await this._gestionRendimientoService.getVotanteByIdUsuario().then((data: any) => {
+      if (data != null) {
+        this.usuarioVotante = data;
+        if (this.user.id == this.usuarioVotante.idUsuario) {
+          console.log("Votante encontrado ",this.user.id, "-", this.usuarioVotante.idUsuario);
+          this.votanteSegmento = this.usuarioVotante.idSegmento;
+        } 
+      }
+    });
+  }
+	
 }

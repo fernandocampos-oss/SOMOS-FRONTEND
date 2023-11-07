@@ -8,39 +8,40 @@
         &nbsp; Actualizar
     </button>
 </div>
-<div *ngIf="listEquipo.length == 0" style="text-align: center">
+<div *ngIf="listIndicadoresPorTrabajadorPrincipal.length == 0" style="text-align: center">
     <br>
     <p class="color-mensaje">Sin registros por mostrar</p>
 </div>
-<div *ngIf="listEquipo.length !== 0">
+<div *ngIf="listIndicadoresPorTrabajadorPrincipal.length !== 0">
     <br />
     <br />
     <b>Lista de trabajadores</b>
     <div class="containerGruposInsc">
-        <mat-accordion multi *ngFor="let t of listEquipo">
+        <mat-accordion multi *ngFor="let i of listIndicadoresPorTrabajadorPrincipal">
             <mat-expansion-panel>
-                <mat-expansion-panel-header (click)="listarIndicadoresPorTrabajador(t.integrante.idUsuario)">
+                <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <span>{{t.integrante.nombres | titlecase}} {{t.integrante.apellidos | titlecase}}</span>
+                        <span>{{i.trabajadorNombre | titlecase}} {{i.trabajadorApellido | titlecase}}</span>
                     </mat-panel-title>
                     <mat-panel-description>
-                        <!-- item derecho -->
+                        <!-- margen derecho -->
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <br />
-                <div *ngIf="listIndicadoresPorTrabajador.length == 0" style="text-align: center">
+                <div *ngIf="listIndicadoresPorTrabajadorPrincipal.length == 0" style="text-align: center">
                     <p class="color-mensaje">Sin registros por mostrar</p>
                 </div>
-                <div *ngIf="listIndicadoresPorTrabajador.length !== 0" style="text-align: center">
-                    <table mat-table [dataSource]="listIndicadoresPorTrabajador">
+                <div *ngIf="listIndicadoresPorTrabajadorPrincipal.length !== 0" style="text-align: center">
+                    <table mat-table [dataSource]="i.listIndicador">
                         <ng-container matColumnDef="item">
                             <th mat-header-cell *matHeaderCellDef>N°</th>
                             <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
-                          </ng-container>
+                        </ng-container>
                         <ng-container matColumnDef="actividad">
                             <th mat-header-cell *matHeaderCellDef>Prioridades anuales de gestión del órgano o unidad
                                 orgánica</th>
-                            <td mat-cell *matCellDef="let element">{{element.actividad ? element.actividad.descripcion :'-'}}</td>
+                            <td mat-cell *matCellDef="let element">{{element.actividad ? element.actividad.descripcion
+                                :'-'}}</td>
                         </ng-container>
                         <ng-container matColumnDef="indicador_producto">
                             <th mat-header-cell *matHeaderCellDef>Indicador / producto</th>
@@ -53,7 +54,7 @@
                         <ng-container matColumnDef="peso_total">
                             <th mat-header-cell *matHeaderCellDef>Peso</th>
                             <td mat-cell *matCellDef="let element">
-                                100%
+                                100%- {{element.pesoTotal}}
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="evidencia">
@@ -61,11 +62,10 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let t of element.listTarea">
-                                        33% {{t.nombre}}
+                                        33%- {{t.nombre}}
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
-
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="tipo_formula">
@@ -81,16 +81,16 @@
                             <td mat-cell *matCellDef="let element"></td>
                         </ng-container>
                         <!-- <ng-container matColumnDef="estado">
-                        <th mat-header-cell *matHeaderCellDef>Estado</th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-chip-list>
-                                <mat-chip [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2,
+                            <th mat-header-cell *matHeaderCellDef>Estado</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-chip-list>
+                                    <mat-chip [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2,
                         'finalizado-background':element.estadoRequerimiento.codigo== 6}">
-                                    {{element.estadoRequerimiento.descripcion | titlecase}}
-                                </mat-chip>
-                            </mat-chip-list>
-                        </td>
-                    </ng-container> -->
+                                        {{element.estadoRequerimiento.descripcion | titlecase}}
+                                    </mat-chip>
+                                </mat-chip-list>
+                            </td>
+                        </ng-container> -->
                         <ng-container matColumnDef="acciones">
                             <th mat-header-cell *matHeaderCellDef></th>
                             <td mat-cell *matCellDef="let element">
@@ -103,21 +103,20 @@
                                     (click)="verIndicadorYtarea(element)">
                                     <mat-icon>library_books</mat-icon>
                                 </button>
+                                <button mat-icon-button class="has-success" matTooltip="Descargar Formato Excel"
+                                    (click)="exportToExcelGR(element)">
+                                    <mat-icon>get_app</mat-icon>
+                                </button>
                                 <!-- <button mat-icon-button class="has-success"
-                                [disabled]="(element.estadoIndicador.codigo == '01') ? false : true"
-                                matTooltip="Aprobar" (click)="aprobarIndicador(element, false)">
-                                <mat-icon>check</mat-icon>
-                            </button> -->
-                                <!-- <button mat-icon-button color="warn"
-                            [disabled]="(element.estadoRequerimiento.descripcion == 'PENDIENTE' || element.estadoRequerimiento.descripcion == 'DERIVADO')? false:true"
-                            matTooltip="Rechazar" (click)="aprobarRequerimiento(element, true)">
-                            <mat-icon>cancel</mat-icon>
-                        </button> -->
-                                <!-- <button mat-icon-button class="primary-button"
-                            [disabled]="(element.estadoRequerimiento.descripcion == 'PENDIENTE' || element.estadoRequerimiento.descripcion == 'DERIVADO')? false:true"
-                            matTooltip="Derivar a otra Ã¡rea" (click)="derivarRequerimiento(element)">
-                            <mat-icon>subdirectory_arrow_right</mat-icon>
-                        </button> -->
+                                    [disabled]="(element.estadoIndicador.codigo == '01') ? false : true"
+                                    matTooltip="Aprobar" (click)="aprobarIndicador(element, false)">
+                                    <mat-icon>check</mat-icon>
+                                </button>
+                                <button mat-icon-button color="warn"
+                                    [disabled]="(element.estadoRequerimiento.descripcion == 'PENDIENTE' || element.estadoRequerimiento.descripcion == 'DERIVADO')? false:true"
+                                    matTooltip="Rechazar" (click)="aprobarRequerimiento(element, true)">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>-->
                             </td>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

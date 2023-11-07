@@ -49,6 +49,15 @@
           <mat-icon mat-list-icon>library_books</mat-icon>
           <span class="option" matLine>Proyectos de Renueva EsSalud </span>
         </mat-list-item>
+        <!-- modulo-gr -->
+        <mat-list-item *ngIf="votanteSegmento == segmentoJefe" routerLinkActive="active" [routerLink]="['/gestion-rendimiento']" [routerLinkActiveOptions]="{ exact: true }">
+          <mat-icon mat-list-icon>description</mat-icon>
+          <span class="option" matLine>Gestión del rendimiento</span>
+        </mat-list-item>
+        <mat-list-item *ngIf="votanteSegmento == segmentoTrabajador" routerLinkActive="active" [routerLink]="['/indicadores-trabajador']" [routerLinkActiveOptions]="{ exact: true }">
+          <mat-icon mat-list-icon>description</mat-icon>
+          <span class="option" matLine>Mis Indicadores/Productos</span>
+        </mat-list-item>
       </ng-container>
     </mat-nav-list>
   </div>

@@ -3,8 +3,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AsignarTareaComponent } from './dialogs/asignar-tarea/asignar-tarea.component';
 import { ReadIndicadorTareaComponent } from './dialogs/read-indicador-tarea/read-indicador-tarea.component';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
-import { NotificationService } from '@core/services';
+import { NotificationService, SnackbarService } from '@core/services';
 import { MiEquipoComponent } from '../mi-equipo/mi-equipo.component';
+import { AsignarComponent } from './dialogs/asignar/asignar.component';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -12,20 +13,15 @@ import { MiEquipoComponent } from '../mi-equipo/mi-equipo.component';
   styleUrls: ['./gestionar-indicadores-trabajador.component.scss']
 })
 export class GestionarIndicadoresTrabajadorComponent implements OnInit {
-// @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-  // dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['item', 'actividad', 'indicador_producto', 'valor_meta', 'peso_total', 'evidencia', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'acciones'];
   // menuToggle = new EventEmitter<void>();
-
-  // listDataPendientes: any[] = [];
-  listIndicadoresPorTrabajador: any[] = [];
-  listEquipo: any[] = [];
+  listIndicadoresPorTrabajadorPrincipal: any[] = [];
 
   constructor(
     private _dialog: MatDialog,
     private services: GestionRendimientoService,
     private _notification: NotificationService,
+    private _snackbar: SnackbarService,
   ) { }
 
   ngOnInit(): void {
@@ -33,30 +29,19 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async actualizar() {
-    this.listEquipo = [];
-    let listar = await this.loadTable();
+    this.listIndicadoresPorTrabajadorPrincipal = [];
+    let update = await this.loadTable();
+    this._snackbar.success("La lista ya se encuentra actualizada");
   }
 
   async loadTable() {
-    let listtrabajadores = await this.services.listarIntegrantesPorLider().then((data) => {
+    let load = await this.services.listarIndicadoresPorTrabajadorPrincipal().then((data: any) => {
       if (data.length > 0) {
-        this.listEquipo = data;
-        console.log(">>>>>3333", this.listEquipo);
+        this.listIndicadoresPorTrabajadorPrincipal = data;
+        console.log("## #####", this.listIndicadoresPorTrabajadorPrincipal)
       }
     });
   }
-
-  // async loadTable() {
-  //   let listar = await this.services.listarIndicadoresPrincipal().then((data) => {
-  //     if (data.length > 0) {
-  //       this.listDataPendientes = data;
-  //       console.log("<<<<<<<<<<<<<<<", this.listDataPendientes)
-  //       // this.dataSource = new MatTableDataSource(this.listDataPendientes);
-  //       // this.dataSource.paginator = this.paginator;
-  //       // this.dataSource.sort = this.sort;
-  //     }
-  //   });
-  // }
 
   verIndicadorYtarea(element) {
     const dialogRef: MatDialogRef<ReadIndicadorTareaComponent> = this._dialog.open(ReadIndicadorTareaComponent, {
@@ -75,20 +60,35 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   registrarTareas(element) {
-    const dialogRef: MatDialogRef<AsignarTareaComponent> = this._dialog.open(AsignarTareaComponent, {
-      disableClose: true,
-      width: '50%',
-      maxHeight: '810px',
-      //height: '780px',
-      autoFocus: false,
-      data: {
-        obj: element
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
+    if (element.actividad == null || element.actividad == undefined) {
+      const dialogRef: MatDialogRef<AsignarTareaComponent> = this._dialog.open(AsignarTareaComponent, {
+        disableClose: true,
+        width: '50%',
+        maxHeight: '810px',
+        //height: '780px',
+        autoFocus: false,
+        data: {
+          obj: element
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.loadTable();
+      });
+    } else {
+      const dialogRef: MatDialogRef<AsignarComponent> = this._dialog.open(AsignarComponent, {
+        disableClose: true,
+        width: '50%',
+        maxHeight: '810px',
+        //height: '780px',
+        autoFocus: false,
+        data: {
+          obj: element
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.loadTable();
+      });
+    }
   }
 
   // aprobarIndicador(element, onDelete: boolean) {
@@ -104,51 +104,6 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
   //   dialogRef.afterClosed().subscribe(result => {
   //     this.loadTable();
-  //   });
-  // }
-
-  // derivarRequerimiento(element) {
-  //   const dialogRef: MatDialogRef<MoveRequirementComponent> = this._dialog.open(MoveRequirementComponent, {
-  //     disableClose: false,
-  //     width: '35%',
-  //     autoFocus: false,
-  //     data: {
-  //       obj: element,
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadTable();
-  //   });
-  // }
-
-  // nuevoRequerimientoJefe() {
-  //   const dialogRef: MatDialogRef<RequerimientoRegisterUpdateComponent> = this._dialog.open(RequerimientoRegisterUpdateComponent, {
-  //     disableClose: false,
-  //     width: '50%',
-  //     //height: '780px',
-  //     autoFocus: false,
-  //     data: {
-  //       esJefe: true,
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //   });
-  // }
-
-  // listRequerimientosJefe() {
-  //   const dialogRef: MatDialogRef<JefeRequirementComponent> = this._dialog.open(JefeRequirementComponent, {
-  //     disableClose: false,
-  //     width: '80%',
-  //     // height: '680px',
-  //     autoFocus: false,
-  //     data: {
-  //       esJefe: true,
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
   //   });
   // }
 
@@ -168,17 +123,8 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  async listarIndicadoresPorTrabajador(idUsuario: Number) {
-    let load = await this.services.listarIndicadoresPorTrabajador(idUsuario).then((data: any) => {
-      if (data.length > 0) {
-        console.log("## #####", data)
-        this.listIndicadoresPorTrabajador = data;
-        // this.dataSource = new MatTableDataSource(data);
-        // this.dataSource.paginator = this.paginator;
-        // this.dataSource.sort = this.sort;
-      }
-    });
+  async exportToExcelGR(element) {
+
   }
- 
 
 }

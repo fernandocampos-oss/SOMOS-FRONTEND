@@ -17,15 +17,13 @@ import * as moment from 'moment';
 })
 export class AsignarTareaComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
-  minFechaTarea = AppConfig.MAX_FECHA_NACIMIENTO;
-  listActividad: Actividad[];
-  // listPersonal: Personal[];
-
   listTareas: Array<{ nombreTarea: string, plazo: String, pesoFraccion: number }> = [];
   dataSource = this.listTareas;
   displayedColumns: string[] = ['item', 'tarea', 'plazo', 'Quitar'];
-
-  //mat-stteper
+  
+  minFechaTarea = AppConfig.MAX_FECHA_NACIMIENTO;
+  listActividad: Actividad[];
+  
   formActividadSelect = this._formBuilder.group({
     frmActividad: ['', Validators.required],
   });
@@ -40,16 +38,16 @@ export class AsignarTareaComponent implements OnInit {
   });
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialog,
     private _notification: NotificationService,
     private _formBuilder: FormBuilder,
     private services: GestionRendimientoService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit(): void {
+    console.log(this.data)
     this.listarActividades();
-    // this.listarPersonalUnidad();
   }
 
   async listarActividades() {
@@ -62,23 +60,12 @@ export class AsignarTareaComponent implements OnInit {
     });
   }
 
-  // async listarPersonalUnidad() {
-  //   let listPersonal = await this.services.listarPersonalUnidad().then((data) => {
-  //     if (data) {
-  //       this.listPersonal = data;
-  //     } else {
-  //       this._notification.warning("Lista de integrantes vacia");
-  //     }
-  //   });
-  // }
-
   onTareaCreate() {
     // console.log(this.formTareasListadas.value);
     if (this.formTareasListadas.value.frmDescTarea == undefined || this.formTareasListadas.value.frmDateTarea == undefined ||
       this.formTareasListadas.value.frmDescTarea == '' || this.formTareasListadas.value.frmDateTarea == '') {
       this._notification.warning("Se deben ingresar los datos para continuar");
-    }
-    else {
+    } else {
       this.listTareas.push({
         nombreTarea: this.formTareasListadas.value.frmDescTarea,
         // plazo: this.formTareasListadas.value.frmDateTarea._d.toLocaleDateString()
@@ -107,10 +94,8 @@ export class AsignarTareaComponent implements OnInit {
       });
     }
   }
-
   private _getModel(): TareaRequestDto {
     let tareas: TareaResponse[] = [];
-
     for (let i of this.listTareas) {
       let t = new TareaResponse();
       t.nombre = i.nombreTarea;
@@ -119,7 +104,6 @@ export class AsignarTareaComponent implements OnInit {
 
       tareas.push(t);
     }
-
     let indicadorUsuario = new IndicadorUsuario();
     indicadorUsuario.idIndicadorUsuario = this.data.obj.idIndicadorUsuario;
 
@@ -132,33 +116,5 @@ export class AsignarTareaComponent implements OnInit {
       listTarea: tareas,
     };
   }
-
-  // onIntegranteCreate() {
-  //   console.log(this.formIntegranteAsignacion.value);
-  //   if (this.formIntegranteAsignacion.value.frmIntegrante == null || this.formIntegranteAsignacion.value.frmTarea == null || this.formIntegranteAsignacion.value.frmPlazo == null) {
-  //     this._notification.warning("Se deben ingresar los datos para continuar");
-  //     return;
-  //   }
-  //   else {
-  //     if (this.listTareas.find(x => x.idUsuario === this.formIntegranteAsignacion.value.frmIntegrante.idUsuario) != undefined) {
-  //       this._notification.warning("Este trabajador ya esta en lista");
-  //       return;
-  //     }
-  //     else {
-  //       this.listTareas.push({
-  //         "idUsuario": this.formIntegranteAsignacion.value.frmIntegrante.idUsuario,
-  //         "nombrePersona": this.formIntegranteAsignacion.value.frmIntegrante.nombres + " " + this.formIntegranteAsignacion.value.frmIntegrante.apellidos,
-  //         "nombreTarea": this.formIntegranteAsignacion.value.frmTarea,
-  //         "plazo": this.formIntegranteAsignacion.value.frmPlazo._d.toLocaleDateString()
-  //       });
-  //       this.table.renderRows();
-  //     }
-  //   }
-  // }
-  // deleteIntegrante(index) {
-  //   this.listTareas.splice(index, 1);
-  //   this.table.renderRows();
-  // }
- 
 
 }
