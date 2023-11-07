@@ -78,10 +78,10 @@ export class EditarPublicacionComponent implements OnInit {
   showExtraCampania = false;
   
   opcionesCampania = [
-    {nombre: '¿Pide imagen?'},
-    {nombre: '¿Requiere un texto?'},
-    {nombre: '¿Habrá inscripción grupal?'},
-    {nombre: '¿Se realizarán votaciones?'},
+    {nombre: '¿Pide imagen?', deshabilitar: false},
+    {nombre: '¿Requiere un texto?', deshabilitar: false},
+    {nombre: '¿Habrá inscripción grupal?', deshabilitar: false},
+    {nombre: '¿Se realizarán votaciones?', deshabilitar: false},
   ]
   
   showHelpImagen = false;
@@ -126,6 +126,9 @@ export class EditarPublicacionComponent implements OnInit {
 
           if (this.data.obj.idInscripcion != 0) {
             this.inscripcionService.getDatosInscripcionPorId(this.data.obj.idInscripcion).subscribe((datos)=>{
+              this.opcionesCampania[0].deshabilitar = true;
+              this.opcionesCampania[1].deshabilitar = true;
+              this.opcionesCampania[2].deshabilitar = true;
               let caracteristicas = [];
               if(datos.imagenActiva){
                 caracteristicas.push(0);

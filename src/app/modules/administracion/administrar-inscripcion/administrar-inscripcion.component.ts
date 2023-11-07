@@ -62,7 +62,7 @@ export class AdministrarInscripcionComponent implements OnInit {
       this.ctrlInscripcion.setValue(data[0].idInscripcion);
     })
   }
-
+  
   getData(){
     this.inscripcionService.getUsuariosInscritos(this.ctrlInscripcion.value).subscribe((data)=>{
       console.log(data)
@@ -75,7 +75,7 @@ export class AdministrarInscripcionComponent implements OnInit {
         if(this.estructuraExtraInscripcion.grupoActivo){
           this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
           this.dataInscripcion.inscritos.sort(function (a, b) {
-                return a.fechaInscripcion.localeCompare(b.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
+                return b.fechaInscripcion.localeCompare(a.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
           });
           console.log(this.dataInscripcion.inscritos)
           this.dataInscripcion.inscritos.forEach((x)=>{
@@ -91,9 +91,12 @@ export class AdministrarInscripcionComponent implements OnInit {
           console.log(this.grupos)
         }
         else{
-          if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) this.displayedColumns.splice(6, 0, 'accion')
+          if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion', 'accion'];
           else this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
           if (this.dataInscripcion.inscritos.length > 0) {
+            this.dataInscripcion.inscritos.sort(function (a, b) {
+                  return b.fechaInscripcion.localeCompare(a.fechaInscripcion);
+            });
             this.dataSource = new MatTableDataSource(this.dataInscripcion.inscritos);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
@@ -105,17 +108,22 @@ export class AdministrarInscripcionComponent implements OnInit {
     })
   }
 
-  showImg(infoGrupo: any){
+  comprobarSiUrl(stringEvaluar: string): boolean{
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(stringEvaluar);
+  }
+
+  showImg(infoImagen: string, infoDescripcion: string){
     const dialogRef: MatDialogRef<ImageOptionsComponent> = this.dialog.open(ImageOptionsComponent, {
       disableClose: false,
       maxWidth: '728px',
       minHeight: '20%',
       maxHeight: '780px',
       data:{
-        encabezado: 'Grupo inscrito en: ' + this.dataInscripcion.descripcion,
+        encabezado: this.estructuraExtraInscripcion.grupoActivo ? 'Grupo inscrito en: ' + this.dataInscripcion.descripcion : 'Inscripcion en: ' + this.dataInscripcion.descripcion,
         idInscripcion: this.ctrlInscripcion.value,
-        imagenBase64: infoGrupo.imagen,
-        descripcion: infoGrupo.descripcion,
+        imagenBase64: infoImagen,
+        descripcion: infoDescripcion,
         descargar: true
       }
     });

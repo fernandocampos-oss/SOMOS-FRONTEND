@@ -8,17 +8,17 @@
     </div>
     <div class="page__body">
       <div class="card shadow contieneInscripcion">
-        <mat-form-field appearance="outline" style="width: 100%;">
-          <mat-label>Inscripciones Asignadas</mat-label>
-          <mat-select [formControl]="ctrlInscripcion">
-            <mat-option *ngFor="let option of inscripcionesAsignadas" [value]="option.idInscripcion">
-              {{option.nombreInscripcion}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        
         <div class="opciones">
             <div class="infoIns">
-                <span><b>Campaña: </b>{{dataInscripcion.descripcion}}</span>
+              <mat-form-field appearance="outline" class="selectorOfCampanias" style="width: 100%;">
+                <mat-label>Inscripciones Asignadas</mat-label>
+                <mat-select [formControl]="ctrlInscripcion">
+                  <mat-option *ngFor="let option of inscripcionesAsignadas" [value]="option.idInscripcion">
+                    {{option.nombreInscripcion}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
             <div style="display: flex; gap:0.5rem;">
                 <button mat-raised-button *ngIf="dataInscripcion.votacion" [color]="dataInscripcion.votoActivo ? 'warn' : 'primary'" (click)="activarVotacion()">{{dataInscripcion.votoActivo ? 'Desactivar Votación' : 'Activar Votación'}}</button>
@@ -27,12 +27,12 @@
         </div>
         <table mat-table [dataSource]="dataSource" style="width:100%" matSort *ngIf="!estructuraExtraInscripcion.grupoActivo">
           <ng-container matColumnDef="dni">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header width="3%"> DNI </th>
+              <th mat-header-cell *matHeaderCellDef width="3%"> DNI </th>
               <td mat-cell *matCellDef="let element"> {{element.numeroDocumento}} </td>
           </ng-container>
       
           <ng-container matColumnDef="nombres">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header width="14%"> Apellidos y Nombres </th>
+              <th mat-header-cell *matHeaderCellDef width="14%"> Apellidos y Nombres </th>
               <td mat-cell *matCellDef="let element"> {{element.nombreCompleto | titlecase}} </td>
           </ng-container>
               
@@ -42,30 +42,39 @@
           </ng-container>
       
           <ng-container matColumnDef="celular">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header width="4%"> Celular </th>
+            <th mat-header-cell *matHeaderCellDef width="4%"> Celular </th>
             <td mat-cell *matCellDef="let element"> {{element.numeroCelular}} </td>
           </ng-container>
     
           <ng-container matColumnDef="correo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header width="8%"> Correo </th>
+            <th mat-header-cell *matHeaderCellDef width="8%"> Correo </th>
             <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
           </ng-container>
     
           <ng-container matColumnDef="fechaInscripcion">
             <th mat-header-cell *matHeaderCellDef mat-sort-header width="5%"> Fecha Inscripción </th>
-            <td mat-cell *matCellDef="let element"> {{element.fechaInscripcion}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.fechaInscripcion | date: 'dd/MM/yyyy'}} </td>
           </ng-container>
     
           <ng-container *ngIf="estructuraExtraInscripcion.imagenActiva || estructuraExtraInscripcion.textoActivo" matColumnDef="accion">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header width="5%"> Acciones </th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button color="primary" [matMenuTriggerFor]="menu">
+            <th mat-header-cell *matHeaderCellDef width="5%" style="text-align: center;"> Datos Inscripcion </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+              <button mat-icon-button color="primary" *ngIf="estructuraExtraInscripcion.textoActivo" [matMenuTriggerFor]="menu" [matTooltip]="'Ver '+ estructuraExtraInscripcion.textoDescripcion">
                 <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" *ngIf="estructuraExtraInscripcion.imagenActiva" [matTooltip]="'Ver '+ estructuraExtraInscripcion.imagenDescripcion" (click)="showImg(element.rutaImagen, element.nombreCompleto)">
+                <mat-icon>image</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
                 <div *ngIf="estructuraExtraInscripcion.textoActivo" class="menuDatosInscripcion">
-                  <h4>{{estructuraExtraInscripcion.textoDescripcion}}</h4>
-                  <span>{{element.descripcion}}</span> <button mat-button color="primary" [cdkCopyToClipboard]="element.descripcion">Copiar</button>
+                  <div style="max-width: 425px;">
+                    <h4>{{estructuraExtraInscripcion.textoDescripcion}}</h4>
+                    <span>{{element.descripcion}}</span>
+                  </div>
+                  <div class="optionsSubMenu">
+                    <button mat-raised-button color="primary" [cdkCopyToClipboard]="element.descripcion">Copiar</button>
+                    <a *ngIf="comprobarSiUrl(element.descripcion)" [href]="element.descripcion" target="_blank"><button mat-raised-button color="primary"><mat-icon>open_in_new</mat-icon> Ir al enlace</button></a>
+                  </div>
                 </div>
               </mat-menu>
             </td>
@@ -93,9 +102,9 @@
                 </mat-panel-description>
               </mat-expansion-panel-header>
               <div class="infoGrupo">
-                <div class="infoImagenGrupo">
-                  <h3>Imagen del grupo:</h3>
-                  <img src='data:image/jpeg;base64,{{grupo.imagen}}' alt='{{grupo.descripcion}}' (click)="showImg(grupo)">
+                <div class="infoImagenGrupo" *ngIf="estructuraExtraInscripcion.imagenActiva">
+                  <h3>{{estructuraExtraInscripcion.imagenDescripcion}}:</h3>
+                  <img src='data:image/jpeg;base64,{{grupo.imagen}}' alt='{{grupo.descripcion}}' (click)="showImg(grupo.imagen, grupo.descripcion)">
                 </div>
                 <div class="infoIntegrantesGrupo">
                   <h3>Integrantes del grupo:</h3>

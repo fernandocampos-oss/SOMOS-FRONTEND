@@ -109,7 +109,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Características extra de la Campaña</mat-label>
                         <mat-select [formControl]="ctrlCaracteristicas" multiple>
-                            <mat-option *ngFor="let r of opcionesCampania, index as i" [value]="i">
+                            <mat-option *ngFor="let r of opcionesCampania, index as i" [value]="i" [disabled]="r.deshabilitar">
                                 {{r.nombre}}
                             </mat-option>
                         </mat-select>
