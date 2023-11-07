@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { AppRoute } from '@data/constants';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { SegmentoVotante } from '@data/enums';
+import { InscripcionService } from '@data/services/inscripcion.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -25,6 +26,7 @@ import { SegmentoVotante } from '@data/enums';
 })
 export class SidenavComponent implements OnInit {
   menuItemList = this._menuService.getAll();
+  asignacionesInscripciones = [];
   user: UserSession;
   gerencia: String = '';//Aqui se guarda la gerencia
   email: String = '';
@@ -45,7 +47,8 @@ export class SidenavComponent implements OnInit {
               private _boletaService : BoletaService,
               private _zonaService   : ZonaService,
               private _userService   : UsuarioService,
-              private _gestionRendimientoService: GestionRendimientoService) {
+              private _gestionRendimientoService: GestionRendimientoService,
+              private _inscripcionService   : InscripcionService) {
     this.matIconRegistry.addSvgIcon("remote_menu",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/remote_menu.svg"));
     this.matIconRegistry.addSvgIcon("ddjj",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/ddjj.svg"));
     this.matIconRegistry.addSvgIcon("marcacion_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/carneMarcacionIcon.svg"));
@@ -71,7 +74,11 @@ export class SidenavComponent implements OnInit {
     this.getSegmentoModuloGR();
   }
 
-  private _initialize() {}
+  private _initialize() {
+    this._inscripcionService.getInscripcionesAsignadas().subscribe((data)=>{
+      this.asignacionesInscripciones = data;
+    })
+  }
 
   @ViewChild('sidenav') sidenav: MatSidenav;
   isExpanded = false;

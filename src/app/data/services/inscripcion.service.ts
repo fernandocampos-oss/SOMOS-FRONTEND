@@ -16,6 +16,11 @@ export class InscripcionService {
     return this._httpClient.get<any>(url);
   }
 
+  getDatosInscripcionPorId(idInscripcion: number){
+    const url = `${URL_BASE}/datos/${idInscripcion}`;
+    return this._httpClient.get<any>(url);
+  }
+
   activarInscripcionPorId(idInscripcion: number, activarVotacion: boolean){
     const url = `${URL_BASE}/${idInscripcion}/activar-votacion/${activarVotacion}`;
     return this._httpClient.put<any>(url,{});
@@ -39,5 +44,10 @@ export class InscripcionService {
   votarInscripcion(model: VotacionInscripcionRequest){
     const url = `${URL_BASE}/registrar-voto`;
     return this._httpClient.post<any>(url,model);
+  }
+
+  getInscripcionesAsignadas(){
+    const url = `${URL_BASE}/asignaciones`;
+    return this._httpClient.get<any>(url);
   }
 }

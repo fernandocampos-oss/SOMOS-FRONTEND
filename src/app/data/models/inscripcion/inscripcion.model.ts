@@ -20,13 +20,24 @@ export class inscritosResponse {
 
 export class InscripcionRequest {
   idInscripcion: number;
-  tipoInscripcion: number;
-  inscritos?: number[];
+  // tipoInscripcion: number;
   descripcion?: string;
   imagenBase64?: string;
+  inscritos?: number[];
 }
 
 export class VotacionInscripcionRequest {
   idInscripcion: number;
   idCandidato: number;
+}
+
+export class CreateInscripcionRequest {
+  imagenActiva: boolean ;
+  imagenDescripcion: string ;
+  textoActivo: boolean ;
+  textoDescripcion: string ;
+  grupoActivo: boolean ;
+  grupoLongitud: string ;
+  esVotacion: boolean ;
+  usuarios: number[] ;
 }

@@ -1,3 +1,5 @@
+import { CreateInscripcionRequest } from "../inscripcion/inscripcion.model";
+
 export class MenuPublicacion {
     id: number;
     nom_largo: string;
@@ -14,7 +16,7 @@ export class PublicacionRequest{
     urlRedireccion: string;
     alcance: number;
     anuncio: boolean;
-    votacion: boolean;
+    inscripcionRequest: CreateInscripcionRequest;
     redes: string[];
 }
 

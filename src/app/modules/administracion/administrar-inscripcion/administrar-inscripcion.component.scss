@@ -12,9 +12,37 @@
 .opciones{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
 }
 .infoIns{
     align-self: center;
+    flex-grow: 1;
+}
+::ng-deep.mat-menu-panel {
+    max-width:fit-content !important;
+}
+
+.menuDatosInscripcion{
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    .optionsSubMenu{
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+    }
+}
+
+.selectorOfCampanias{
+    width: 100%;
+    ::ng-deep.mat-form-field-appearance-outline .mat-form-field-wrapper{
+        margin: 0;
+    }
+    ::ng-deep.mat-form-field-wrapper{
+        padding-bottom: 0;
+    }
 }
 
 .containerGruposInsc{
@@ -61,6 +89,9 @@
             flex-grow: 1;
             .tablaIntegrantes{
                 width: 100%;
+                th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type{
+                    padding: 0;
+                }
                 td{
                     font-size: 13.5px !important;
                 }

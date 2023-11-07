@@ -363,7 +363,7 @@ export class MenuPrincipalComponent implements OnInit {
         maxWidth:'480px',
         autoFocus: false,
         data:{
-          obj: publicacionData.idInscripcion,
+          idInscripcion: publicacionData.idInscripcion,
           pubData: {
             imagenBase64: publicacionData.imagenBase64,
             titulo: publicacionData.titulo
@@ -379,7 +379,7 @@ export class MenuPrincipalComponent implements OnInit {
               maxWidth:'480px',
               autoFocus: false,
               data:{
-                obj: publicacionData.idInscripcion,
+                idInscripcion: publicacionData.idInscripcion,
                 pubData: {
                   imagenBase64: publicacionData.imagenBase64,
                   titulo: publicacionData.titulo
