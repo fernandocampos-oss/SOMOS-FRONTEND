@@ -41,8 +41,6 @@ export class AdministrarInscripcionComponent implements OnInit {
   // resultadosVotacion: any;
 
   displayedColumns: string[] = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
-
-  headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
   
   constructor(
     private _router: Router,
@@ -64,16 +62,18 @@ export class AdministrarInscripcionComponent implements OnInit {
   }
   
   getData(){
+    let headersTabla = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
     this.inscripcionService.getUsuariosInscritos(this.ctrlInscripcion.value).subscribe((data)=>{
       console.log(data)
       this.dataInscripcion = data;
       this.inscripcionService.getDatosInscripcionPorId(this.ctrlInscripcion.value).subscribe((datosInscripcion)=>{
+        // console.log((({ inscritos, ...o }) => o)(this.dataInscripcion));
         console.log(datosInscripcion);
         let idGrupo = 0;
 
         this.estructuraExtraInscripcion = datosInscripcion;
         if(this.estructuraExtraInscripcion.grupoActivo){
-          this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
+          // this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
           this.dataInscripcion.inscritos.sort(function (a, b) {
                 return b.fechaInscripcion.localeCompare(a.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
           });
@@ -91,8 +91,8 @@ export class AdministrarInscripcionComponent implements OnInit {
           console.log(this.grupos)
         }
         else{
-          if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion', 'accion'];
-          else this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
+          if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) {headersTabla.push('accion')} // = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion', 'accion'];
+          // else this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
           if (this.dataInscripcion.inscritos.length > 0) {
             this.dataInscripcion.inscritos.sort(function (a, b) {
                   return b.fechaInscripcion.localeCompare(a.fechaInscripcion);
@@ -105,11 +105,13 @@ export class AdministrarInscripcionComponent implements OnInit {
           }
         }
       })
+      this.displayedColumns = headersTabla;
     })
   }
 
   comprobarSiUrl(stringEvaluar: string): boolean{
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    // var regexp = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
     return regexp.test(stringEvaluar);
   }
 
@@ -134,16 +136,24 @@ export class AdministrarInscripcionComponent implements OnInit {
   }
 
   exportar(){
-    // if(this.idInscripcionSelected == 2){
-    //   this.headers.splice(0,0,'GRUPO');
-    //   if(this.esVotacion){
-    //     this.headers.splice(1,0,'VOTOS');
-    //   }
-    // }
-    // else{
-    //   this.headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
-    // }
-    this._servicerExcel.exportExcel(this.dataInscripcion.descripcion, this.headers, this.dataInscripcion.inscritos, this.dataInscripcion.votacionesResultado)
+    let headers = ['DNI','Apellidos y Nombres','Red','Unidad Orgánica','Reg. Laboral','Celular','Correo'];
+    
+    if(this.estructuraExtraInscripcion.grupoActivo){
+      headers.splice(0,0,(this.estructuraExtraInscripcion.textoActivo ? `GRUPO (${this.estructuraExtraInscripcion.textoDescripcion.toUpperCase()})`: 'LÍDER DE GRUPO'));
+      if(this.dataInscripcion.votacionesResultado){
+        headers.splice(1,0,'VOTOS');
+      }
+    }
+    else{
+      if(this.estructuraExtraInscripcion.textoActivo){
+        headers.push(this.estructuraExtraInscripcion.textoDescripcion.toUpperCase())
+      }
+      if(this.dataInscripcion.votacionesResultado){
+        headers.splice(0,0,'VOTOS');
+      }
+    }
+        
+    this._servicerExcel.exportExcel(headers, this.dataInscripcion, this.estructuraExtraInscripcion)
   }
 
       // this.idIns = data.idInscripcion;

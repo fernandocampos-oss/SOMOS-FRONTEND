@@ -366,7 +366,8 @@ export class MenuPrincipalComponent implements OnInit {
           idInscripcion: publicacionData.idInscripcion,
           pubData: {
             imagenBase64: publicacionData.imagenBase64,
-            titulo: publicacionData.titulo
+            titulo: publicacionData.titulo,
+            urlRedireccion: publicacionData.urlRedireccion
           }
         }
         });
