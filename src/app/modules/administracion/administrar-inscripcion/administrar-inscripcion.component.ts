@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationService } from '@core/services';
 import { UserSession } from '@data/models';
 import { inscritosResponse } from '@data/models/inscripcion/inscripcion.model';
 import { AuthService } from '@data/services';
@@ -47,6 +48,7 @@ export class AdministrarInscripcionComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private _authService   : AuthService,
+    private _notification   : NotificationService,
     public _servicerExcel: ExportExcelService,
     private inscripcionService: InscripcionService) { }
 
@@ -136,31 +138,31 @@ export class AdministrarInscripcionComponent implements OnInit {
   }
 
   exportar(){
-    let headers = ['DNI','Apellidos y Nombres','Red','Unidad Orgánica','Reg. Laboral','Celular','Correo'];
-    
-    if(this.estructuraExtraInscripcion.grupoActivo){
-      headers.splice(0,0,(this.estructuraExtraInscripcion.textoActivo ? `GRUPO (${this.estructuraExtraInscripcion.textoDescripcion.toUpperCase()})`: 'LÍDER DE GRUPO'));
-      if(this.dataInscripcion.votacionesResultado){
-        headers.splice(1,0,'VOTOS');
+    if (this.dataInscripcion.inscritos.length > 0) {
+      let headers = ['DNI','Apellidos y Nombres','Red','Unidad Orgánica','Reg. Laboral','Celular','Correo'];
+      
+      if(this.estructuraExtraInscripcion.grupoActivo){
+        headers.splice(0,0,(this.estructuraExtraInscripcion.textoActivo ? `Grupo (${this.estructuraExtraInscripcion.textoDescripcion})`: 'Líder de grupo'));
+        if(this.dataInscripcion.votacionesResultado){
+          headers.splice(1,0,'Votos');
+        }
       }
+      else{
+        if(this.estructuraExtraInscripcion.textoActivo){
+          headers.push(this.estructuraExtraInscripcion.textoDescripcion)
+        }
+        if(this.dataInscripcion.votacionesResultado){
+          headers.splice(0,0,'Votos');
+        }
+      }
+          
+      this._servicerExcel.exportExcel(headers, this.dataInscripcion, this.estructuraExtraInscripcion)
     }
     else{
-      if(this.estructuraExtraInscripcion.textoActivo){
-        headers.push(this.estructuraExtraInscripcion.textoDescripcion.toUpperCase())
-      }
-      if(this.dataInscripcion.votacionesResultado){
-        headers.splice(0,0,'VOTOS');
-      }
+      this._notification.warning('Aún no hay registro de inscritos');
     }
-        
-    this._servicerExcel.exportExcel(headers, this.dataInscripcion, this.estructuraExtraInscripcion)
   }
 
-      // this.idIns = data.idInscripcion;
-      // this.descripcionInsc = data.descripcion;
-      // this.listInscritos = data.inscritos;
-      // this.esVotacion = data.votacion;
-      // this.esVotacionActivo = data.votoActivo;
   activarVotacion(){
     console.log(this.dataInscripcion.idInscripcion, this.dataInscripcion.votoActivo)
     const dialogRef: MatDialogRef<ConfirmDialogComponent> = this.dialog.open(ConfirmDialogComponent, {

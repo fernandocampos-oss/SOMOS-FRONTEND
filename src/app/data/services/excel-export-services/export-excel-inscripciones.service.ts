@@ -47,23 +47,24 @@ export class ExportExcelService {
 
     this.formatoContenido(worksheet, dataInscripcion, columnas.length, dataExtraInscripcion);
 
-    // for (let i = 0; i < columnas.length; i++) {
-    //   let maxLength = columnas[i].length;
-    //   for (let j = 0; j < inscritos.length; j++) {
-    //     if (worksheet.getRow(j+6).getCell(i+1).value) {
-    //       if(worksheet.getRow(j+6).getCell(i+1).value.toString().length > maxLength)
-    //         maxLength = worksheet.getRow(j+6).getCell(i+1).value.toString().length;
-    //     }
-    //   }
-    //   worksheet.getColumn(i+1).width = maxLength + maxLength*0.6;
-    //   // worksheet.getColumn(i+1).alignment = { wrapText:true};
-    // }
+    for (let i = 0; i < columnas.length; i++) {
+      let maxLength = columnas[i].length;
+      for (let j = 0; j < dataInscripcion.inscritos.length; j++) {
+        if (worksheet.getRow(j+6).getCell(i+1).value) {
+          if(worksheet.getRow(j+6).getCell(i+1).value.toString().length > maxLength)
+            maxLength = worksheet.getRow(j+6).getCell(i+1).value.toString().length;
+        }
+      }
+      
+      worksheet.getColumn(i+1).width = maxLength + maxLength*0.6;
+      // worksheet.getColumn(i+1).alignment = { wrapText:true};
+    }
     
-    // //Generate & Save Excel File
-    // workbook.xlsx.writeBuffer().then((data) => {
-    //   let blob = new Blob([data], { type: EXCEL_TYPE, });
-    //   fs.saveAs(blob, this.fileName + '_' + titulo + EXCEL_EXTENSION);
-    // });
+    //Generate & Save Excel File
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: EXCEL_TYPE, });
+      fs.saveAs(blob, this.fileName + '_' + dataInscripcion.descripcion + EXCEL_EXTENSION);
+    });
   }
   
   formatoHeaders(wb: Worksheet, values){
@@ -147,17 +148,33 @@ export class ExportExcelService {
     else{
       for (let i = 0; i < dataInscripcion.inscritos.length; i++) {
         if (dataInscripcion.votacionesResultado) {
-          
+          let votacionEncontrada = dataInscripcion.votacionesResultado.find((votacionRes)=>{return votacionRes.idInsPersona == dataInscripcion.inscritos.idInsPersona});
+          wb.getRow(i+6).getCell(1).value = (votacionEncontrada ? votacionEncontrada.votos : 0);
+          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].numeroDocumento;
+          wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].red;
+          wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].unidadOrganica;
+          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].regimen;
+          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].numeroCelular;
+          wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].correo;
         }
-        wb.getRow(i+6).getCell('A').value = dataInscripcion.inscritos[i].numeroDocumento;
-        wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].nombreCompleto;
-        wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].regimen;
-        wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].numeroCelular;
-        wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].correo;
+        else{
+          wb.getRow(i+6).getCell('A').value = dataInscripcion.inscritos[i].numeroDocumento;
+          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].red;
+          wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].unidadOrganica;
+          wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].regimen;
+          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].numeroCelular;
+          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].correo;
+          if(dataExtraInscripcion.textoActivo){
+            wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].descripcion;
+          }
+        }
+
         for (let j = 0; j < cantHeaders; j++) {
           wb.getRow(i+6).getCell(j+1).font = {
             name: 'Calibri',
-            size: 16,
+            size: 14,
           }
           wb.getRow(i+6).getCell(j+1).border = {
             top: {style:'thin'},
