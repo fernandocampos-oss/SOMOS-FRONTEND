@@ -32,6 +32,8 @@ export class MenuPrincipalComponent implements OnInit {
   mostrarEleccion = false;
   numDocUsuario = '';
 
+  idPublicacionCambiar = 188;
+
   onomasticos: OnomasticosResponse[] = [];
   today = new Date();
   interfazCelular: boolean;
@@ -201,6 +203,19 @@ export class MenuPrincipalComponent implements OnInit {
       data:{
         obj: element
       }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          const dialogRef2: MatDialogRef<EncuestaSimpleComponent> = this.dialog.open(EncuestaSimpleComponent, {
+            disableClose: false,
+            minWidth: '22em',
+            maxWidth:'40em',
+            autoFocus: false,
+            data:{
+              obj: element
+            }
+            });
+        }
       });
   }
 

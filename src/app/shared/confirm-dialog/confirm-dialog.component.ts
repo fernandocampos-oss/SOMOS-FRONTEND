@@ -4,6 +4,7 @@ import { NotificationType } from '@data/enums/notification-type.enum';
 export interface ConfirmDialog {
   title: string;
   message?: string;
+  messageAdicional?: string;
   confirmButtonText?: string;
   type?: NotificationType;
 }
