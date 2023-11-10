@@ -32,7 +32,7 @@ export class MenuPrincipalComponent implements OnInit {
   mostrarEleccion = false;
   numDocUsuario = '';
 
-  idPublicacionCambiar = 188;
+  idPublicacionCambiar = 100;
 
   onomasticos: OnomasticosResponse[] = [];
   today = new Date();
