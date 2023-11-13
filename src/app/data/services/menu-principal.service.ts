@@ -54,6 +54,11 @@ export class MenuPrincipalService {
     return this._httpClient.get<MenuEncuestaShow>(url);
   }
 
+  getReporteEncuesta(idEncuesta: number){
+    const url = `${URL_BASE}/encuestas/${idEncuesta}/resultado-encuesta`;
+    return this._httpClient.get<any>(url);
+  }
+
   searchOnomasticos(model: OnomasticosRequest){
     return this._httpClient.get<OnomasticosResponse[]>(`${URL_BASE}/onomasticos/mes/${model.mesConsulta}/dia/${model.diaConsulta}`);
   }

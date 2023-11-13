@@ -23,7 +23,7 @@ export class AppRoute {
   static readonly ADJUNTAR_DOCUMENTOS = 'adjuntar-documentos';
   static readonly MIS_REQUERIMIENTOS = 'mis-requerimientos';
   static readonly ADMINISTRACION = 'administracion';
-  static readonly ADMINISTRAR_ENCUESTA = 'encuesta';
+  static readonly ADMINISTRAR_ENCUESTA = 'encuestas';
   static readonly ADMINISTRAR_USUARIOS = 'usuarios';
   static readonly ADMINISTRAR_INSCRIPCIONES = 'inscripciones';
   static readonly ADMINISTRAR_RENUEVA = 'renueva-proyectos';

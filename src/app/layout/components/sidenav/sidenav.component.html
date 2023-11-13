@@ -56,6 +56,10 @@
           <mat-icon mat-list-icon>library_books</mat-icon>
           <span class="option" matLine>Proyectos de Renueva EsSalud </span>
         </mat-list-item>
+        <mat-list-item *ngIf="user.id == 242" routerLinkActive="active" [routerLink]="['/administracion/encuestas']" [routerLinkActiveOptions]="{ exact: true }">
+          <mat-icon mat-list-icon>assignment</mat-icon>
+          <span class="option" matLine>Encuestas Asignadas </span>
+        </mat-list-item>
       </ng-container>
     </mat-nav-list>
   </div>
