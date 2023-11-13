@@ -1,0 +1,14 @@
+<form [formGroup]="formPesoSelect">
+    <h4>Peso</h4>
+    <mat-form-field appearance="outline">
+        <input matInput formControlName="frmPeso" class="example-right-align" required minlength="1" maxlength="3"/>
+        <span matSuffix class="percent-align">%</span>
+    </mat-form-field>
+</form>
+
+<mat-divider></mat-divider>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" [disabled]="formPesoSelect.value.frmPeso=== ''" style="margin-left: 1rem;"
+        (click)="asignarPesoPrioridad()">Asignar
+    </button>
+</mat-dialog-actions>

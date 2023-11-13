@@ -1,16 +1,4 @@
-// export class IndicadorResponse {
-//   idIndicador?: number;
-//   nombre?: string;
-//   descripcion?: string;
-//   motivo?: string;
-//   valorMeta?: number;
-//   tipoIngreso?: TipoIngreso;
-//   esJefe?: boolean;
-//   tipoValorMeta?: TipoValorMeta;
-// }
-
 export class IndicadorRequest {
-  // idIndicador?: number;
   nombre?: string;
   descripcion?: string;
   tipoIngreso?: TipoIngreso;
@@ -30,8 +18,15 @@ export class TipoValorMeta {
   estado?: boolean;
 }
 
+//eliminar
 export class IndicadorUsuario {
   idIndicadorUsuario?: number;
+  pesoTotal?: number;
+}
+
+export class Indicador{
+  idIndicador?: number;
+  // pesoTotal?: number;
 }
 
 export class EstadoIndicador {
@@ -48,11 +43,6 @@ export class Actividad {
   estado?: boolean;
 }
 
-// export class UnidadOrganizativa {
-//   codUnidad?: string;
-//   descripcion?: string;
-// }
-
 // export class Personal {
 //   idUsuario?: number;
 //   numeroDocumento?: number;
@@ -63,7 +53,7 @@ export class Actividad {
 export class EvidenciaRequestDto {
   idTarea?: number;
   evidenciaDescripcion?: string;
-  extension?: string; 
+  extension?: string;
   fileBase64?: string;
 }
 
@@ -88,3 +78,9 @@ export class Jefe {
 export class Integrante {
   idVotante?: number;
 }
+
+export class PrioridadDto {
+  actividad?: Actividad;
+  listIdIndicador?: number[];
+}
+

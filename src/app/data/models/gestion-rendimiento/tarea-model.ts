@@ -1,15 +1,14 @@
-import { IndicadorUsuario, Actividad } from "./gestion-rendimiento.model";
+import { IndicadorUsuario, Actividad, Indicador } from "./gestion-rendimiento.model";
 
 export class TareaRequestDto {
     actividad?: Actividad;
-    indicadorUsuario?: IndicadorUsuario;
+    indicador?: Indicador;
     listTarea?: TareaResponse[];
 }
 
 export class TareaResponse {
     nombre?: string;
     plazo?: String;
-    pesoFraccion?: number;
 }
 
 export class TareaRequest {

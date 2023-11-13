@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { RegistrarEvidenciaTrabajadorComponent } from './registrar-evidencia-trabajador/registrar-evidencia-trabajador.component';
 import { VerEvidenciaImagenComponent } from './ver-evidencia-imagen/ver-evidencia-imagen.component';
 import { VerEvidenciaPdfComponent } from './ver-evidencia-pdf/ver-evidencia-pdf.component';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-modal-tarea',
@@ -30,14 +31,23 @@ export class ModalTareaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _fb: FormBuilder,
     private _matDialog: MatDialog,
+    private _grService: GestionRendimientoService,
   ) { }
 
   ngOnInit(): void {
     console.log(this.data)
-    this.idRequerimiento = this.data.model.indicador.idIndicador;
+    this.idRequerimiento = this.data.model.idIndicador;
     // this.createForm();
-    this.dataSource_tarea = this.data.model.listTarea;
-    console.log(this.dataSource_tarea)
+    this.loadTable();
+  }
+
+  async loadTable() {
+    let listFinalizado = await this._grService.getTareasByIdIndicador(this.data.model.idIndicador).then((data) => {
+      if (data.length > 0) {
+        this.dataSource_tarea = data;
+        console.log("tareas", this.dataSource_tarea)
+      }
+    });
   }
 
   // createForm() {

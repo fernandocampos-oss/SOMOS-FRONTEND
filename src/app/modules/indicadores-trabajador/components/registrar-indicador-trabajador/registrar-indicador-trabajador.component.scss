@@ -1,18 +1,19 @@
 mat-form-field {
-    width: 100%;
-  }
-  
-  .btnsave {
-    color: white;
-    background-color: var(--color-MiEssalud);
-    border-radius: 4px;
-  }
-  
-  // numeric input
-  .example-right-align {
-    text-align: right;
-  }
-  .percent-align {
-    position: relative;
-    top: -3px;
-  }
+  width: 100%;
+}
+
+.btnsave {
+  color: white;
+  background-color: var(--color-MiEssalud);
+  border-radius: 4px;
+}
+
+// numeric input con %
+.example-right-align {
+  text-align: right;
+}
+
+.percent-align {
+  position: relative;
+  top: -3px;
+}

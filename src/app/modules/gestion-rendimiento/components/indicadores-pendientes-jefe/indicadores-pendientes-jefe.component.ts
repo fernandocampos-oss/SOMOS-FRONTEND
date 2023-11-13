@@ -24,7 +24,7 @@ export class IndicadoresPendientesJefeComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'indicador_producto', 'fecha_asignacion', 'tipo_ingreso', 'tipo_valor_meta', 'valor_meta', 'estado', 'acciones'];
+  displayedColumns: string[] = ['item', 'indicador_producto', 'descripcion', 'fecha_creacion', 'tipo_ingreso', 'tipo_valor_meta', 'valor_meta', 'acciones'];
 
   constructor(
     private _router: Router,
@@ -57,7 +57,7 @@ export class IndicadoresPendientesJefeComponent implements OnInit {
     });
   }
 
-  verDetalleRequerimiento(element) {
+  verDetalleIndicadorYtareas(element) {
     const dialogRef: MatDialogRef<ModalTareaComponent> = this._matDialog.open(ModalTareaComponent, {
       disableClose: false,
       width: '60%',
@@ -74,7 +74,7 @@ export class IndicadoresPendientesJefeComponent implements OnInit {
     });
   }
 
-  editarRequerimiento(element, es_editar) {
+  editarIndicadorJefe(element, es_editar) {
     const dialogRef: MatDialogRef<RegistrarIndicadorJefeComponent> = this._matDialog.open(RegistrarIndicadorJefeComponent, {
       disableClose: false,
       width: '600px',

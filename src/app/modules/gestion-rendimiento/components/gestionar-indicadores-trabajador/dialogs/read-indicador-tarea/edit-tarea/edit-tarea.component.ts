@@ -16,7 +16,7 @@ export class EditTareaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public _data: any,
     // private dialogRef: MatDialog,
     public _dialogRef: MatDialogRef<EditTareaComponent>,
-    private _services: GestionRendimientoService,
+    private _grService: GestionRendimientoService,
     private _notification: NotificationService,
   ) { }
 
@@ -35,7 +35,7 @@ export class EditTareaComponent implements OnInit {
 
   async modificarTareaAdministrador() {
     if (this.tarea.idTarea > 0) {
-      let actualizar = await this._services.modificarTareaAdministrador(this.tarea.nombre, this.tarea.plazo, this.tarea.idTarea).then((data) => {
+      let actualizar = await this._grService.modificarTareaAdministrador(this.tarea.nombre, this.tarea.plazo, this.tarea.idTarea).then((data) => {
         if (data) {
           this._notification.success("Tarea actualizada correctamente");
           // this.dialogRef.closeAll();

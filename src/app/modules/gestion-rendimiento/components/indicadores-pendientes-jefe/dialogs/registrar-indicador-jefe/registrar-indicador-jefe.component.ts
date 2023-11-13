@@ -57,13 +57,13 @@ export class RegistrarIndicadorJefeComponent implements OnInit {
 
   private _createForm() {
     if (this.data.esEditar == true) {
-      this.idTipoIngresoSeleccionado = this.data.model.indicador.tipoIngreso.idTipoIngreso;
+      this.idTipoIngresoSeleccionado = this.data.model.tipoIngreso.idTipoIngreso;
       this.form = this._fb.group({
-        frmNombre: [this.data.model.indicador.nombre, [Validators.required]],
-        frmDescripcion: [this.data.model.indicador.descripcion, [Validators.required]],
-        frmTipoIngreso: [this.data.model.indicador.tipoIngreso.idTipoIngreso, [Validators.required]],
-        frmTipoValorMeta: [this.data.model.indicador.tipoValorMeta.idTipoValorMeta, [Validators.required]],
-        frmValorMeta: [this.data.model.indicador.valorMeta, [Validators.required]],
+        frmNombre: [this.data.model.nombre, [Validators.required]],
+        frmDescripcion: [this.data.model.descripcion, [Validators.required]],
+        frmTipoIngreso: [this.data.model.tipoIngreso.idTipoIngreso, [Validators.required]],
+        frmTipoValorMeta: [this.data.model.tipoValorMeta.idTipoValorMeta, [Validators.required]],
+        frmValorMeta: [this.data.model.valorMeta, [Validators.required]],
       });
     } else {
       this.form = this._fb.group({
@@ -85,7 +85,7 @@ export class RegistrarIndicadorJefeComponent implements OnInit {
   async registrarActualizarIndicador() {
     const model = this._getModel();
     if (this.data.esEditar == true) {
-      let modificar = await this._gestionRendimientoService.updateIndicador(this.data.model.indicador.idIndicador, model).then((data) => {
+      let modificar = await this._gestionRendimientoService.updateIndicador(this.data.model.idIndicador, model).then((data) => {
         this._notification.success("Requerimiento actualizado correctamente")
         this.dialogRef.closeAll();
       });

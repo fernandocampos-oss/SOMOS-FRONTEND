@@ -1,0 +1,30 @@
+<h1 matDialogTitle>Organizar indicadores/productos segun actividad</h1>
+<form [formGroup]="formActividadSelect">
+    <mat-form-field appearance="outline">
+        <mat-label>Seleccione el tipo de prioridad anual de gestión del órgano o unidad orgánica</mat-label>
+        <mat-select formControlName="frmActividad">
+            <mat-option *ngFor="let a of listActividad" [value]="a">
+                {{a.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+
+<mat-form-field appearance="outline">
+    <mat-label>Seleccione indicadores/productos</mat-label>
+    <mat-select [(ngModel)]="listCheckSeleccionado" [ngModelOptions]="{standalone: true}" multiple>
+        <mat-option *ngFor="let r of listIndicador" [value]="r.idIndicador">
+            {{r.nombre | titlecase}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<br>
+
+<mat-dialog-actions align="end">
+    <!-- [disabled]="listCheckSeleccionado.length==0" -->
+    <button mat-raised-button color="primary" [disabled]="formActividadSelect.value.frmActividad === ''"
+        (click)="registar()" class="aproved-button" style="margin-left: 1rem;">
+        Registrar
+    </button>
+</mat-dialog-actions>
+

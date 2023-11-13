@@ -29,14 +29,14 @@ export class ReadIndicadorTareaComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _requerimientoService: GestionRendimientoService,
+    private _grService: GestionRendimientoService,
     private _dialog: MatDialog,
     private _notification: NotificationService,
   ) { }
 
   ngOnInit(): void {
     console.log("tareas", this.data)
-    this.estadoReq = this.data.model.estadoIndicador.codigo;
+    // this.estadoReq = this.data.model.estadoIndicador.codigo;
     // this.createForm();
     this.dataSource_tarea = this.data.model.listTarea;
   }

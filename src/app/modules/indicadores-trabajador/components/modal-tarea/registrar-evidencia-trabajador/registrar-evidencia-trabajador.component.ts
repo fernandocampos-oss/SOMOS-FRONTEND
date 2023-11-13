@@ -114,7 +114,6 @@ export class RegistrarEvidenciaTrabajadorComponent implements OnInit {
       this.retrievedPdf = reader.result;
       this.pdfExtension = fileApp.type;
       // this.isPdfUpdate = true;
-      console.log("fffff", this.pdfExtension)
     };
   }
 

@@ -5,11 +5,11 @@ export class ReporteTrabajador {
     estadoEntregado?: string;
 }
 
-export class ReporteTarea {
+export class RowsBody {
     actividad?: string;
     indicador?: string;
-    // valorMeta?: number;
-    pesoTotal?: number;
+    valorMeta?: number;
+    // pesoTotal?: number;
     pesoFraccion?: number;
     nombre?: string;
     plazo?: string;
