@@ -14,22 +14,22 @@
                             <mat-icon>add_circle</mat-icon>
                             &nbsp; Registrar Indicador / Producto
                         </button>
-                        <div *ngIf="listDataPendientes.length !== 0">
+                        <div *ngIf="listIndicadoresPendientes.length !== 0">
                             <button mat-raised-button color="primary" (click)="actualizarIndicadoresPendientes()">
                                 <mat-icon>cached</mat-icon>
                                 &nbsp; Actualizar Lista
                             </button>
-                            <button mat-button class="has-success" (click)="exportToExcelGR()">
+                            <button mat-button class="has-success" (click)="generarExcelEjecutor()">
                                 <mat-icon>get_app</mat-icon>
                                 &nbsp; Formato Excel
                             </button>
                         </div>
                     </div>
                     <br>
-                    <div *ngIf="listDataPendientes.length == 0" style="text-align: center">
+                    <div *ngIf="listIndicadoresPendientes.length == 0" style="text-align: center">
                         <p class="color-mensaje">Sin registros por mostrar</p>
                     </div>
-                    <div *ngIf="listDataPendientes.length !== 0">
+                    <div *ngIf="listIndicadoresPendientes.length !== 0">
                         <table mat-table [dataSource]="dataSource" matSort>
                             <ng-container matColumnDef="item">
                                 <th mat-header-cell *matHeaderCellDef>N°</th>
@@ -53,12 +53,12 @@
                                     {{element.fechaCreacion | date: 'dd-MM-yyyy'}}
                                 </td>
                             </ng-container>
-                            <ng-container matColumnDef="tipo_ingreso">
+                            <!-- <ng-container matColumnDef="tipo_ingreso">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de ingreso</th>
                                 <td mat-cell *matCellDef="let element">
                                     {{element.tipoIngreso.descripcion | titlecase}}
                                 </td>
-                            </ng-container>
+                            </ng-container> -->
                             <ng-container matColumnDef="tipo_valor_meta">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de valor meta</th>
                                 <td mat-cell *matCellDef="let element">
@@ -123,7 +123,7 @@
                     </div>
                 </mat-tab>
 
-                <mat-tab label="Indicadores / Productos Finalizados">
+                <!-- <mat-tab label="Indicadores / Productos Finalizados">
                     <br>
                     <div *ngIf="listDataFinalizados.length == 0" style="text-align: center">
                         <p class="color-mensaje">Sin registros por mostrar</p>
@@ -187,7 +187,7 @@
                         </table>
                         <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
                     </div>
-                </mat-tab>
+                </mat-tab> -->
             </mat-tab-group>
         </div>
     </div>

@@ -24,17 +24,17 @@ export class AddPesoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(">>>", this.data);
+    console.log(this.data);
   }
 
-  async asignarPesoPrioridad() {
+  async asignarPesoIndicador() {
     console.log("peso", this.formPesoSelect.value.frmPeso);
-    let actualizar = await this._grService.asignarPesoPrioridad(this.formPesoSelect.value.frmPeso, this.data.modal.idPrioridad).then((data) => {
+    let actualizar = await this._grService.asignarPesoIndicador(this.formPesoSelect.value.frmPeso, this.data.modal.idIndicador).then((data) => {
       if (data) {
         this._notification.success("Peso asignado correctamente");
         this._dialogRef.closeAll();
       } else {
-        this._notification.error("Error al actualizar tarea")
+        this._notification.error("Asignar Peso: Error")
       }
     });
   }

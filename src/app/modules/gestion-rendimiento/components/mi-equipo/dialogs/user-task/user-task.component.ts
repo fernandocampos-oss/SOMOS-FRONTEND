@@ -9,7 +9,6 @@ import { UserDownloadTaskComponent } from '../user-download-task/user-download-t
 import { GestionRendimientoService } from '../../../../../../data/services/gestion-rendimiento.service'
 import { DialogService, NotificationService } from '@core/services';
 import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.component';
-import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 //import * as XLSX from 'xlsx';
 
@@ -37,7 +36,6 @@ export class UserTaskComponent implements OnInit {
     private services: GestionRendimientoService,
     private _notification: NotificationService,
     private _dialogService: DialogService,
-    public _serviceExcel: ExportExcelGestionRendimientoService,
   ) { }
 
   ngOnInit(): void {
@@ -78,10 +76,9 @@ export class UserTaskComponent implements OnInit {
     this.confirmDialogRef.componentInstance.confirmMessage = '¿Estas seguro de finalizar el requerimiento?';
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.services.finalizarTareaAdministrador(element.idRequerimientoUsuario).subscribe(() => {
-          this._notification.success('Requerimiento finalizado correctamente');
-          // this.loadTableRequerimiento(this.data.model.integrante.idUsuario);
-        });
+        // this.services.finalizarTareaAdministrador(element.idRequerimientoUsuario).subscribe(() => {
+        //   this._notification.success('Requerimiento finalizado correctamente');
+        // });
       }
       this.confirmDialogRef == null;
     });

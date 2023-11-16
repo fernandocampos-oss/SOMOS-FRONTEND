@@ -30,7 +30,6 @@ export class EditTareaComponent implements OnInit {
     this.tarea.idTarea = this._data.model.idTarea;
     this.tarea.nombre = this._data.model.nombre;
     this.tarea.plazo = this._data.model.plazo;
-    // this.tarea.porcentajeAvance = this._data.model.porcentajeAvance;
   }
 
   async modificarTareaAdministrador() {

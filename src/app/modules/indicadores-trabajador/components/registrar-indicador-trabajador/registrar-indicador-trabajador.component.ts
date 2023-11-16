@@ -63,7 +63,7 @@ export class RegistrarIndicadorTrabajadorComponent implements OnInit {
       this.form = this._fb.group({
         frmNombre: [this.data.model.nombre, [Validators.required]],
         frmDescripcion: [this.data.model.descripcion, [Validators.required]],
-        frmTipoIngreso: [this.data.model.tipoIngreso.idTipoIngreso, [Validators.required]],
+        // frmTipoIngreso: [this.data.model.tipoIngreso.idTipoIngreso, [Validators.required]],
         frmTipoValorMeta: [this.data.model.tipoValorMeta.idTipoValorMeta, [Validators.required]],
         frmValorMeta: [this.data.model.valorMeta, [Validators.required]],
       });
@@ -101,7 +101,7 @@ export class RegistrarIndicadorTrabajadorComponent implements OnInit {
 
   private _getModel(): IndicadorRequest {
     let modelTipoIngreso = new TipoIngreso();
-    modelTipoIngreso.idTipoIngreso = this.form.value.frmTipoIngreso;
+    modelTipoIngreso.idTipoIngreso = 1;
 
     let modelTipoValorMeta = new TipoValorMeta();
     modelTipoValorMeta.idTipoValorMeta = this.form.value.frmTipoValorMeta;

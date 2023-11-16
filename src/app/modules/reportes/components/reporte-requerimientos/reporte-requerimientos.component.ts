@@ -6,7 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
-import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 interface Año {
@@ -38,7 +37,6 @@ export class ReporteRequerimientosComponent implements OnInit {
     private _fb: FormBuilder,
     private _requerimientoService: GestionRendimientoService,
     private _notification: NotificationService,
-    public _serviceExcel: ExportExcelGestionRendimientoService,
   ) { }
 
   ngOnInit(): void {
@@ -56,20 +54,17 @@ export class ReporteRequerimientosComponent implements OnInit {
   }
 
   async generarReporte() {
-    let result = await this._requerimientoService.reporteGeneralRequerimientos(this.form.value.frmAnioElegido).then((data) => {
-      if (data.length > 0) {
-        this.listData = data;
-        console.log("data", this.listData.length)
-        for (let i of this.listData) {
-          this.procesarExcel(i);
-        }
-        // this.dataSource = new MatTableDataSource(this.listData);
-        // this.dataSource.paginator = this.paginator;
-        // this.dataSource.sort = this.sort;
-      } else {
-        this._notification.warning("No se encontró requerimientos finalizados para el año " + this.form.value.frmAnioElegido);
-      }
-    });
+    // let result = await this._requerimientoService.reporteGeneralRequerimientos(this.form.value.frmAnioElegido).then((data) => {
+    //   if (data.length > 0) {
+    //     this.listData = data;
+    //     console.log("data", this.listData.length)
+    //     for (let i of this.listData) {
+    //       this.procesarExcel(i);
+    //     }
+    //   } else {
+    //     this._notification.warning("No se encontró requerimientos finalizados para el año " + this.form.value.frmAnioElegido);
+    //   }
+    // });
   }
 
   async procesarExcel(element) {

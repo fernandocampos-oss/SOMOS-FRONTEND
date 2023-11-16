@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService, SnackbarService } from '@core/services';
 import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
-import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { RegistrarIndicadorJefeComponent } from './dialogs/registrar-indicador-jefe/registrar-indicador-jefe.component';
 import { ModalTareaComponent } from '@modules/indicadores-trabajador/components/modal-tarea/modal-tarea.component';
@@ -32,7 +31,6 @@ export class IndicadoresPendientesJefeComponent implements OnInit {
     private _matDialog: MatDialog,
     private _requerimientoService: GestionRendimientoService,
     private _notification: NotificationService,
-    public _serviceExcel: ExportExcelGestionRendimientoService,
     private _snackbar: SnackbarService,
   ) { }
 

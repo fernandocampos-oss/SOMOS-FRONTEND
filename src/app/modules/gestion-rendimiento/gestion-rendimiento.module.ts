@@ -29,6 +29,7 @@ import { EditTareaComponent } from './components/gestionar-indicadores-trabajado
 import { AceptarRechazarTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/aceptar-rechazar-tarea/aceptar-rechazar-tarea.component';
 import { OrganizarIndicadorComponent } from './components/gestionar-indicadores-trabajador/dialogs/organizar-indicador/organizar-indicador.component';
 import { AddPesoComponent } from './components/gestionar-indicadores-trabajador/dialogs/add-peso/add-peso.component';
+import { RegistrarIndicadorComponent } from './components/gestionar-indicadores-trabajador/dialogs/registrar-indicador/registrar-indicador.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { AddPesoComponent } from './components/gestionar-indicadores-trabajador/
     EditTareaComponent,
     AceptarRechazarTareaComponent,
     OrganizarIndicadorComponent,
-    AddPesoComponent
+    AddPesoComponent,
+    RegistrarIndicadorComponent
   ],
   imports: [
     CommonModule,

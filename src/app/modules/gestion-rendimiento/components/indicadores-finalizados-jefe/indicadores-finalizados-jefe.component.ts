@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService, SnackbarService } from '@core/services';
-import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
@@ -27,7 +26,6 @@ export class IndicadoresFinalizadosJefeComponent implements OnInit {
     private _matDialog: MatDialog,
     private _requerimientoService: GestionRendimientoService,
     private _notification: NotificationService,
-    public _serviceExcel: ExportExcelGestionRendimientoService,
     private _snackbar: SnackbarService,
   ) { }
 

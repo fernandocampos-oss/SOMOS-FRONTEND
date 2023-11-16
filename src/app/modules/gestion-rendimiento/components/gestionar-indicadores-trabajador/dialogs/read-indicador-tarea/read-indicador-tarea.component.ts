@@ -18,7 +18,7 @@ import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/compon
 })
 export class ReadIndicadorTareaComponent implements OnInit {
   form: FormGroup;
-  estadoReq: string = '';
+  tareaEvidencia: any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -35,10 +35,8 @@ export class ReadIndicadorTareaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("tareas", this.data)
-    // this.estadoReq = this.data.model.estadoIndicador.codigo;
+    console.log("tarea", this.data)
     // this.createForm();
-    this.dataSource_tarea = this.data.model.listTarea;
   }
 
   // createForm() {
@@ -60,7 +58,6 @@ export class ReadIndicadorTareaComponent implements OnInit {
       //height: '780px',
       autoFocus: true,
       data: {
-        // idRequerimientoUsuario: this.data.model.idRequerimientoUsuario,
         model: element
       }
     });
@@ -100,19 +97,24 @@ export class ReadIndicadorTareaComponent implements OnInit {
     });
   }
 
-  rechazarTarea(){
-    
+   aprobarTarear(element, onDelete: boolean) {
+    console.log("aprobar", element, "bool ", onDelete);
+    // const dialogRef: MatDialogRef<AcceptRejectRequirementComponent> = this._dialog.open(AcceptRejectRequirementComponent, {
+    //   disableClose: false,
+    //   autoFocus: false,
+    //   data: {
+    //     model: element,
+    //     rechazar: onDelete
+    //   }
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   this.loadTable();
+    // });
   }
 
-  // onPoiCreate(){
-  //   this.poiList.push({descripcionPoi: this.descripcionPoi});
-  //   this.descripcionPoi = "";
-  //   this.table.renderRows();
-  // }
-
-  // deletePoi(index){
-  //   this.poiList.splice(index,1);
-  //   this.table.renderRows();
-  // }
+  rechazarTarea(element, onDelete: boolean){
+    console.log("rechazar", element, "bool ", onDelete);
+  }
  
 }

@@ -1,5 +1,36 @@
-<h1 matDialogTitle>Etapa de seguimiento revision de tareas</h1>
+<h1 matDialogTitle>Seguimiento de la Tarea</h1>
 <mat-dialog-content>
+    <p><strong>Datos de la tarea:</strong></p>
+    <br>
+    <p><strong>Descripción:</strong> {{data.model.nombre}}</p>
+    <p><strong>Fecha de asignacion:</strong> {{data.model.fechaCreacion | date: 'dd-MM-yyyy'}}</p>
+    <p><strong>Plazo máximo:</strong> {{data.model.plazo | date: 'dd-MM-yyyy'}}</p>
+    <p><strong>Motivo de Rechazo:</strong> {{data.model.motivoRechazo ? data.model.motivoRechazo:'Ninguno'}}</p>
+    <br>
+    <p><strong>Datos de la evidencia:</strong></p>
+    <br>
+    <p><strong>Descripción de la evidencia:</strong> {{data.model.evidenciaDescripcion ?
+        data.model.evidenciaDescripcion:'-'}}</p>
+    <p><strong>Fecha de Registro:</strong> {{data.model.evidenciaFechaRegistro | date: 'dd-MM-yyyy'}}</p>
+    <br>
+    <button mat-icon-button class="edit-button" matTooltip="Editar Tarea" (click)="editarTarea(data.model)">
+        <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button class="primary-button" [disabled]="data.model.evidenciaExtensionFile !=='png'"
+        matTooltip="Ver Imagen" (click)="verImagenEvidencia(data.model)">
+        <mat-icon>image</mat-icon>
+    </button>
+    <button mat-icon-button class="primary-button" [disabled]="data.model.evidenciaExtensionFile !=='pdf'"
+        matTooltip="Ver PDF" (click)="verEvidenciaPdf(data.model)">
+        <mat-icon>picture_as_pdf</mat-icon>
+    </button>
+    <button mat-icon-button class="has-success" matTooltip="Aprobar Evidencia" (click)="aprobarTarear(data.model, false)">
+        <mat-icon>check</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" matTooltip="Rechazar Evidencia" (click)="rechazarTarea(data.model, true)">
+        <mat-icon>cancel</mat-icon>
+    </button>
+
     <!-- <form [formGroup]="form">
         <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
             <mat-grid-tile [colspan]="6">
@@ -14,7 +45,6 @@
                     <textarea matInput formControlName="frmDescripcion" readonly></textarea>
                 </mat-form-field>
             </mat-grid-tile>
-
             <mat-grid-tile [colspan]="2">
                 <mat-form-field appearance="outline">
                     <mat-label>Identificador</mat-label>
@@ -49,47 +79,48 @@
             <textarea matInput formControlName="frmMotivo" readonly></textarea>
         </mat-form-field>
     </form> -->
-    <!-- <div *ngIf="estadoReq !== '05'"> -->
-    <table mat-table [dataSource]="dataSource_tarea">
-        <ng-container matColumnDef="nombre_tarea">
-            <th mat-header-cell *matHeaderCellDef>Descripcion de la tarea</th>
-            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-        </ng-container>
-        <ng-container matColumnDef="fecha_asignacion">
-            <th mat-header-cell *matHeaderCellDef>Fecha Asignacion</th>
-            <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd-MM-yyyy'}} </td>
-        </ng-container>
-        <ng-container matColumnDef="plazo">
-            <th mat-header-cell *matHeaderCellDef>Plazo</th>
-            <td mat-cell *matCellDef="let element"> {{element.plazo | date: 'dd-MM-yyyy'}} </td>
-        </ng-container>
-        <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef>Acciones</th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-icon-button class="edit-button" matTooltip="Editar Tarea" (click)="editarTarea(element)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button class="primary-button" matTooltip="Ver Imagen"
-                    [disabled]="element.evidenciaExtensionFile !=='png'" (click)="verImagenEvidencia(element)">
-                    <mat-icon>image</mat-icon>
-                </button>
-                <button mat-icon-button class="primary-button" matTooltip="Ver PDF"
-                    [disabled]="element.evidenciaExtensionFile !=='pdf'" (click)="verEvidenciaPdf(element)">
-                    <mat-icon>picture_as_pdf</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" matTooltip="Rechazar Tarea" (click)="rechazarTarea(element)">
-                    <mat-icon>cancel</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+    <!-- <div *ngIf="estadoReq !== '05'">
+        <table mat-table [dataSource]="dataSource_tarea">
+            <ng-container matColumnDef="nombre_tarea">
+                <th mat-header-cell *matHeaderCellDef>Descripcion de la tarea</th>
+                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fecha_asignacion">
+                <th mat-header-cell *matHeaderCellDef>Fecha Asignacion</th>
+                <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd-MM-yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="plazo">
+                <th mat-header-cell *matHeaderCellDef>Plazo</th>
+                <td mat-cell *matCellDef="let element"> {{element.plazo | date: 'dd-MM-yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button class="edit-button" matTooltip="Editar Tarea"
+                        (click)="editarTarea(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button class="primary-button" matTooltip="Ver Imagen"
+                        [disabled]="element.evidenciaExtensionFile !=='png'" (click)="verImagenEvidencia(element)">
+                        <mat-icon>image</mat-icon>
+                    </button>
+                    <button mat-icon-button class="primary-button" matTooltip="Ver PDF"
+                        [disabled]="element.evidenciaExtensionFile !=='pdf'" (click)="verEvidenciaPdf(element)">
+                        <mat-icon>picture_as_pdf</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" matTooltip="Rechazar Tarea" (click)="rechazarTarea(element)">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        <tr class="empty-row" *matNoDataRow>
-            <td class="empty-cell">Sin registros por mostrar</td>
-        </tr>
-    </table>
-    <!-- </div> -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="empty-row" *matNoDataRow>
+                <td class="empty-cell">Sin registros por mostrar</td>
+            </tr>
+        </table>
+    </div> -->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close class="close-button">Cerrar</button>

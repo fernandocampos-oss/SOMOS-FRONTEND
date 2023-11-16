@@ -1,3 +1,4 @@
+import { GestionRendimientoExcelEjecutorService } from './../../../data/services/gestion-rendimiento-excel-ejecutor.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -5,11 +6,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService, SnackbarService } from '@core/services';
-import { ExportExcelGestionRendimientoService } from '@data/services/export-excel-gestion-rendimiento.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { RegistrarIndicadorTrabajadorComponent } from '../components/registrar-indicador-trabajador/registrar-indicador-trabajador.component';
 import { ModalTareaComponent } from '../components/modal-tarea/modal-tarea.component';
-import { ReporteTrabajador, RowsBody } from '@data/models/gestion-rendimiento/reporte-indicador-excel';
+import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
 
 @Component({
   selector: 'app-indicadores-trabajador',
@@ -18,12 +18,12 @@ import { ReporteTrabajador, RowsBody } from '@data/models/gestion-rendimiento/re
 })
 export class IndicadoresTrabajadorComponent implements OnInit {
   listDataFinalizados: any[] = [];
-  listDataPendientes: any[] = [];
+  listIndicadoresPendientes: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'indicador_producto', 'descripcion', 'fecha_creacion', 'tipo_ingreso', 'tipo_valor_meta', 'valor_meta', 'acciones'];
+  displayedColumns: string[] = ['item', 'indicador_producto', 'descripcion', 'fecha_creacion', 'tipo_valor_meta', 'valor_meta', 'acciones'];
 
   @ViewChild(MatSort) sort_finalizado: MatSort;
   @ViewChild(MatPaginator) paginator_finalizado: MatPaginator;
@@ -36,7 +36,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     private _matDialog: MatDialog,
     private _requerimientoService: GestionRendimientoService,
     private _notification: NotificationService,
-    public _serviceExcel: ExportExcelGestionRendimientoService,
+    public _serviceExcelEjecutor: GestionRendimientoExcelEjecutorService,
     private _snackbar: SnackbarService,
   ) { }
 
@@ -48,8 +48,8 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   async loadTablePendiente() {
     let listPendiente = await this._requerimientoService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
-        this.listDataPendientes = data;
-        this.dataSource = new MatTableDataSource(this.listDataPendientes);
+        this.listIndicadoresPendientes = data;
+        this.dataSource = new MatTableDataSource(this.listIndicadoresPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }
@@ -68,7 +68,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   }
 
   async actualizarIndicadoresPendientes() {
-    this.listDataPendientes = [];
+    this.listIndicadoresPendientes = [];
     let pendientes = await this.loadTablePendiente();
     this._snackbar.success("La lista ya se encuentra actualizada");
   }
@@ -136,93 +136,97 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     this._router.navigate([''], { relativeTo: this.route });
   }
 
-  async exportToExcelGR() {
-    console.log("list", this.listDataPendientes)
-    if (this.listDataPendientes.length > 0) {
-      let reporteTrabajador = new ReporteTrabajador();
-      reporteTrabajador.nombres = this.listDataPendientes[0].usuario.nombres;
-      reporteTrabajador.apellidos = this.listDataPendientes[0].usuario.apellidos;
-      reporteTrabajador.cargo = this.listDataPendientes[0].usuario.cargo;
+  async generarExcelEjecutor() {
+    console.log("data", this.listIndicadoresPendientes)
+    if (this.listIndicadoresPendientes.length > 0) {
+      let trabajador = new Persona();
+      trabajador.nombre = this.listIndicadoresPendientes[0].usuario.apellidos + "" + this.listIndicadoresPendientes[0].usuario.nombres;
+      trabajador.cargo = this.listIndicadoresPendientes[0].usuario.cargo;
+      trabajador.segmento = "";
+      trabajador.codUnidad = "";
+      trabajador.numeroDocumento = "";
 
       let listRows: RowsBody[] = [];
-      for (let i of this.listDataPendientes) {
-        if (i.listTarea.length > 0) {
-          for (let t of i.listTarea) {
-            if (t.evidenciaFechaRegistro !== null) { //evalua si tiene evidencia registrada o no
-              let rowsBody = new RowsBody();
-              rowsBody.actividad = i.actividad.descripcion;
-              rowsBody.indicador = i.indicador.nombre;
-              // rowsBody.pesoTotal = i.pesoTotal;
-              rowsBody.valorMeta = i.indicador.valorMeta;
-              //iterativo
-              rowsBody.pesoFraccion = t.pesoFraccion;
-              rowsBody.nombre = t.nombre;
-              let fechaPlazo = t.plazo.split("T")[0];
-              rowsBody.plazo = fechaPlazo;
+      for (let i of this.listIndicadoresPendientes) {
+        let rowsBody = new RowsBody();
+        rowsBody.prioridad = "";
+        rowsBody.indicador = i.nombre;
+        rowsBody.valorMeta = i.valorMeta;
+        rowsBody.peso = i.peso;
 
-              let fechaEvidencia = t.evidenciaFechaRegistro.split("T")[0];
-              console.log("fechaPlazo: ", fechaPlazo, " fechaEvidencia: ", fechaEvidencia);
-
-              var first = new Date(fechaPlazo);
-              var second = new Date(fechaEvidencia);
-
-              //comparar fechas para evaluacionComentario
-              if (first < second) {
-                console.log(first, "es menor que", second);
-                rowsBody.evaluacionComentario = 'Se pasó de la fecha';
-              }
-              else if (first > second) {
-                console.log(first, "es mayor que", second);
-                rowsBody.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
-              }
-              else if (first == second) {
-                console.log(first, "es igual que", second);
-                rowsBody.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
-              }
-              listRows.push(rowsBody);
-              rowsBody = null;
-              // reportePersonal.estadoEntregado = "Entregado";
-            } else {
-              console.log("La tarea " + t.idTarea + " no tiene evidencia registrada");
-              let rowsBody = new RowsBody();
-              rowsBody.actividad = i.actividad.descripcion;
-              rowsBody.indicador = i.indicador.nombre;
-              // rowsBody.pesoTotal = i.pesoTotal;
-              rowsBody.valorMeta = i.indicador.valorMeta;
-              //iterativo
-              rowsBody.pesoFraccion = t.pesoFraccion;
-              rowsBody.nombre = t.nombre;
-              rowsBody.plazo = t.plazo.split("T")[0];
-              rowsBody.evaluacionComentario = 'No presentó evidencia';
-              listRows.push(rowsBody);
-              rowsBody = null;
-            }
-          }
-        } else {
-          console.log("El indicador no cuenta con tareas");
-          let rowsBody = new RowsBody();
-          if (i.actividad != null) {
-            rowsBody.actividad = i.actividad.descripcion;
-          } else {
-            rowsBody.actividad = '-'
-          }
-          rowsBody.indicador = i.indicador.nombre;
-          // rowsBody.pesoTotal = i.pesoTotal;
-          rowsBody.valorMeta = i.indicador.valorMeta;
-          rowsBody.evaluacionComentario = 'No tiene tareas asignadas';
-          listRows.push(rowsBody);
-          rowsBody = null;
-        }
-
+        listRows.push(rowsBody);
+        rowsBody = null;
       }
+
+      // if (i.listTarea.length > 0) {
+      //   for (let t of i.listTarea) {
+      //     if (t.evidenciaFechaRegistro !== null) { //evidencia registrada?
+      //       //iterativo
+      //       rowsBody.nombre = t.nombre;
+      //       let fechaPlazo = t.plazo.split("T")[0];
+      //       rowsBody.plazo = fechaPlazo;
+
+      //       let fechaEvidencia = t.evidenciaFechaRegistro.split("T")[0];
+      //       console.log("fechaPlazo: ", fechaPlazo, " fechaEvidencia: ", fechaEvidencia);
+
+      //       var first = new Date(fechaPlazo);
+      //       var second = new Date(fechaEvidencia);
+
+      //       //comparar fechas para evaluacionComentario
+      //       if (first < second) {
+      //         console.log(first, "es menor que", second);
+      //         rowsBody.evaluacionComentario = 'Se pasó de la fecha';
+      //       }
+      //       else if (first > second) {
+      //         console.log(first, "es mayor que", second);
+      //         rowsBody.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
+      //       }
+      //       else if (first == second) {
+      //         console.log(first, "es igual que", second);
+      //         rowsBody.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
+      //       }
+      //       listRows.push(rowsBody);
+      //       rowsBody = null;
+      //       // reportePersonal.estadoEntregado = "Entregado";
+      //     } else {
+      //       console.log("La tarea " + t.idTarea + " no tiene evidencia registrada");
+      //       let rowsBody = new RowsBody();
+      //       rowsBody.actividad = i.actividad.descripcion;
+      //       rowsBody.indicador = i.indicador.nombre;
+      //       rowsBody.valorMeta = i.indicador.valorMeta;
+      //       //iterativo
+      //       rowsBody.pesoFraccion = t.pesoFraccion;
+      //       rowsBody.nombre = t.nombre;
+      //       rowsBody.plazo = t.plazo.split("T")[0];
+      //       rowsBody.evaluacionComentario = 'No presentó evidencia';
+      //       listRows.push(rowsBody);
+      //       rowsBody = null;
+      //     }
+      //   }
+      // } else {
+      //   console.log("El indicador no cuenta con tareas");
+      //   let rowsBody = new RowsBody();
+      //   if (i.actividad != null) {
+      //     rowsBody.actividad = i.actividad.descripcion;
+      //   } else {
+      //     rowsBody.actividad = '-'
+      //   }
+      //   rowsBody.indicador = i.indicador.nombre;
+      //   rowsBody.valorMeta = i.indicador.valorMeta;
+      //   rowsBody.evaluacionComentario = 'No tiene tareas asignadas';
+      //   listRows.push(rowsBody);
+      //   rowsBody = null;
+      // }
+
+
       console.log("data excel", listRows);
       let columnsName = ["String_1", "String_2"];
       let reportData = {
-        data_trabajador: reporteTrabajador,
+        data_trabajador: trabajador,
         data_evidencia: listRows,
         headers: columnsName,
       };
-      let listFinalizado = await this._serviceExcel.exportExcel(reportData);
+      let listFinalizado = await this._serviceExcelEjecutor.exportExcelEjecutor(reportData);
     }
   }
 

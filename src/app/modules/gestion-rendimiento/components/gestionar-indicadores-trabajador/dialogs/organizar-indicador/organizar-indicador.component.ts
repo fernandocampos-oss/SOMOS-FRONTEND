@@ -28,7 +28,7 @@ export class OrganizarIndicadorComponent implements OnInit {
     private dialogRef: MatDialog,
     private _notification: NotificationService,
     private _formBuilder: FormBuilder,
-    private services: GestionRendimientoService,
+    private _grService: GestionRendimientoService,
   ) { }
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class OrganizarIndicadorComponent implements OnInit {
   }
 
   async listarActividades() {
-    let listActividades = await this.services.listarActividades().then((data) => {
+    let listActividades = await this._grService.listarActividades().then((data) => {
       if (data.length > 0) {
         this.listActividad = data;
       } else {
@@ -47,7 +47,7 @@ export class OrganizarIndicadorComponent implements OnInit {
   }
 
   async listarIndicadores() {
-    let listActividades = await this.services.listarIndicadorPrincipal().then((data) => {
+    let listActividades = await this._grService.listarIndicadorPrincipal().then((data) => {
       if (data.length > 0) {
         this.listIndicador = data;
         console.log("list indicadores", this.listIndicador);
@@ -74,7 +74,7 @@ export class OrganizarIndicadorComponent implements OnInit {
     dto.listIdIndicador = arrayIndicadoresSeleccionados;
     console.log("dto", dto)
 
-    let actualizar = await this.services.registrarAsignarPrioridad(dto).then(data => {
+    let actualizar = await this._grService.registrarAsignarPrioridad(dto).then(data => {
       this._notification.success("Los Indicadores/Productos fueron asociados correctamente");
       this.dialogRef.closeAll();
     });

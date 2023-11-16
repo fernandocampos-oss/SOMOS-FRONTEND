@@ -10,17 +10,17 @@ const EXCEL_EXTENSION = '.xlsx';
 @Injectable({
   providedIn: 'root'
 })
-export class ExportExcelGestionRendimientoService {
-  fileName: string = "Reporte_Requerimiento";
+export class GestionRendimientoExcelDirectivoService {
+  fileName: string = "Reporte_GR_";
 
   constructor() { }
 
-  exportExcel(excelData: { data_trabajador: any, data_evidencia: any; headers: any }) {
-    console.log("service", excelData);
-    //Title, Header & Data
+  exportExcelDirectivo(excelData: { data_trabajador: any, data_jefe: any, data_filas: any; headers: any }) {
+    console.log("data service", excelData);
     const header = excelData.headers;
     const data_trabajador = excelData.data_trabajador;
-    const data_evidencia = excelData.data_evidencia;
+    const data_jefe = excelData.data_jefe;
+    const data_filas = excelData.data_filas;
 
     //Create a workbook with a worksheet
     let workbook = new Workbook();
@@ -83,7 +83,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('O4:Q4');
     let titleEvaluadorResult = worksheet.getCell('O4');
-    titleEvaluadorResult.value = '';
+    titleEvaluadorResult.value = data_jefe.numeroDocumento;
     titleEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -253,7 +253,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('E9:I9');
     let titleApellidosResult = worksheet.getCell('E9');
-    titleApellidosResult.value = data_trabajador.apellidos + ", " + data_trabajador.nombres;
+    titleApellidosResult.value = data_trabajador.nombre;
     titleApellidosResult.font = {
       name: 'Calibri',
       size: 8,
@@ -331,7 +331,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('E11:I11');
     let titleSegmentoEvaluadoResult = worksheet.getCell('E11');
-    titleSegmentoEvaluadoResult.value = '';
+    titleSegmentoEvaluadoResult.value = data_trabajador.segmento;
     titleSegmentoEvaluadoResult.font = {
       name: 'Calibri',
       size: 8,
@@ -370,7 +370,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('E12:I12');
     let titleUnidadEvaluadoResult = worksheet.getCell('E12');
-    titleUnidadEvaluadoResult.value = '';
+    titleUnidadEvaluadoResult.value = data_trabajador.codUnidad;
     titleUnidadEvaluadoResult.font = {
       name: 'Calibri',
       size: 8,
@@ -449,7 +449,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('N9:Q9');
     let titleApellidosEvaluadorResult = worksheet.getCell('N9');
-    titleApellidosEvaluadorResult.value = '';
+    titleApellidosEvaluadorResult.value = data_jefe.nombre;
     titleApellidosEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -488,7 +488,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('N10:Q10');
     let titlePuestoEvaluadorResult = worksheet.getCell('N10');
-    titlePuestoEvaluadorResult.value = '';
+    titlePuestoEvaluadorResult.value = data_jefe.cargo;
     titlePuestoEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -527,7 +527,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('N11:Q11');
     let titleSegmentoEvaluadorResult = worksheet.getCell('N11');
-    titleSegmentoEvaluadorResult.value = '';
+    titleSegmentoEvaluadorResult.value = data_jefe.segmento;
     titleSegmentoEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -566,7 +566,7 @@ export class ExportExcelGestionRendimientoService {
 
     worksheet.mergeCells('N12:Q12');
     let titleUnidadEvaluadorResult = worksheet.getCell('N12');
-    titleUnidadEvaluadorResult.value = '';
+    titleUnidadEvaluadorResult.value = data_jefe.codUnidad;
     titleUnidadEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -965,14 +965,14 @@ export class ExportExcelGestionRendimientoService {
     };
     titlePuntuacion.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    data_evidencia.forEach((d: any) => {
+    data_filas.forEach((d: any) => {
       let row = worksheet.addRow(Object.values(d));
       console.log("row", d);
 
       const currentRowIdx = worksheet.rowCount;
       const endColumnIdx = worksheet.columnCount;
       // merge by start row, start column, end row, end column 
-      worksheet.mergeCells(currentRowIdx, 1, currentRowIdx, 3); // poi
+      worksheet.mergeCells(currentRowIdx, 1, currentRowIdx, 3); // actividad
       worksheet.mergeCells(currentRowIdx, 4, currentRowIdx, 5); // indicador
       worksheet.mergeCells(currentRowIdx, 6, currentRowIdx, 6); // valor meta
       worksheet.mergeCells(currentRowIdx, 7, currentRowIdx, 7); // porcentaje
@@ -980,13 +980,13 @@ export class ExportExcelGestionRendimientoService {
       worksheet.mergeCells(currentRowIdx, 10, currentRowIdx, 11); // plazos
       worksheet.mergeCells(currentRowIdx, 13, currentRowIdx, 15); // comentarios
 
-      worksheet.getRow(currentRowIdx).getCell('A').value = d.actividad;
+      worksheet.getRow(currentRowIdx).getCell('A').value = d.prioridad;
       worksheet.getRow(currentRowIdx).getCell('D').value = d.indicador;
-      worksheet.getRow(currentRowIdx).getCell('F').value = 1;
-      worksheet.getRow(currentRowIdx).getCell('G').value = d.pesoFraccion + '%';
-      worksheet.getRow(currentRowIdx).getCell('H').value = d.nombre;
+      worksheet.getRow(currentRowIdx).getCell('F').value = d.valorMeta;
+      worksheet.getRow(currentRowIdx).getCell('G').value = d.peso + '%';
+      worksheet.getRow(currentRowIdx).getCell('H').value = d.nombreTarea;
       worksheet.getRow(currentRowIdx).getCell('J').value = d.plazo;
-      worksheet.getRow(currentRowIdx).getCell('M').value = d.evaluacionComentario;
+      // worksheet.getRow(currentRowIdx).getCell('M').value = d.evaluacionComentario;
 
       let a = row.getCell('A');
       a.font = { size: 8 };
@@ -1373,26 +1373,27 @@ export class ExportExcelGestionRendimientoService {
     worksheet.addRow([]);
     worksheet.addRow([]);
 
-    //Footer Row
-    let footerRow = worksheet.addRow([
-      'Fecha del Reporte '
-    ]);
-    footerRow.getCell(1).fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'd9e0f0' },
-    };
-    footerRow.getCell(1).font = {
-      name: 'Calibri',
-      size: 8,
-    };
-    //Merge Cells
-    worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
+    // //Footer Row
+    // let footerRow = worksheet.addRow([
+    //   'Fecha del Reporte '
+    // ]);
+    // footerRow.getCell(1).fill = {
+    //   type: 'pattern',
+    //   pattern: 'solid',
+    //   fgColor: { argb: 'd9e0f0' },
+    // };
+    // footerRow.getCell(1).font = {
+    //   name: 'Calibri',
+    //   size: 8,
+    // };
+    // //Merge Cells
+    // worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
 
-    //Generate & Save Excel File
+    // Generate & Save Excel File
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: EXCEL_TYPE, });
-      fs.saveAs(blob, this.fileName + '_' + new Date().getTime() + EXCEL_EXTENSION);
+      fs.saveAs(blob, this.fileName + '_' + data_trabajador.nombre + EXCEL_EXTENSION);
     });
   }
+
 }
