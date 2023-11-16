@@ -66,11 +66,9 @@ export class AdministrarInscripcionComponent implements OnInit {
   getData(){
     let headersTabla = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
     this.inscripcionService.getUsuariosInscritos(this.ctrlInscripcion.value).subscribe((data)=>{
-      console.log(data)
       this.dataInscripcion = data;
       this.inscripcionService.getDatosInscripcionPorId(this.ctrlInscripcion.value).subscribe((datosInscripcion)=>{
         // console.log((({ inscritos, ...o }) => o)(this.dataInscripcion));
-        console.log(datosInscripcion);
         let idGrupo = 0;
 
         this.estructuraExtraInscripcion = datosInscripcion;
@@ -79,7 +77,6 @@ export class AdministrarInscripcionComponent implements OnInit {
           this.dataInscripcion.inscritos.sort(function (a, b) {
                 return b.fechaInscripcion.localeCompare(a.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
           });
-          console.log(this.dataInscripcion.inscritos)
           this.dataInscripcion.inscritos.forEach((x)=>{
             if(idGrupo != x.idLider && x.idLider == x.idUsuario){
               let cantVotacion = 0;
@@ -90,7 +87,6 @@ export class AdministrarInscripcionComponent implements OnInit {
               this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, cantVotos: cantVotacion, integrantes:this.dataInscripcion.inscritos.filter((z)=>{return x.idLider == z.idLider})});
             }
           })
-          console.log(this.grupos)
         }
         else{
           if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) {headersTabla.push('accion')} // = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion', 'accion'];
@@ -139,7 +135,7 @@ export class AdministrarInscripcionComponent implements OnInit {
 
   exportar(){
     if (this.dataInscripcion.inscritos.length > 0) {
-      let headers = ['DNI','Apellidos y Nombres','Red','Unidad Orgánica','Reg. Laboral','Celular','Correo'];
+      let headers = ['DNI','Apellidos y Nombres','Fec. Nacimiento','Red','Unidad Orgánica','Reg. Laboral','Celular','Correo'];
       
       if(this.estructuraExtraInscripcion.grupoActivo){
         headers.splice(0,0,(this.estructuraExtraInscripcion.textoActivo ? `Grupo (${this.estructuraExtraInscripcion.textoDescripcion})`: 'Líder de grupo'));
@@ -164,7 +160,6 @@ export class AdministrarInscripcionComponent implements OnInit {
   }
 
   activarVotacion(){
-    console.log(this.dataInscripcion.idInscripcion, this.dataInscripcion.votoActivo)
     const dialogRef: MatDialogRef<ConfirmDialogComponent> = this.dialog.open(ConfirmDialogComponent, {
       disableClose: true,
       autoFocus: false,

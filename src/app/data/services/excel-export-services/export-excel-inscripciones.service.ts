@@ -86,6 +86,7 @@ export class ExportExcelService {
   }
 
   formatoContenido(wb: Worksheet, dataInscripcion, cantHeaders, dataExtraInscripcion){
+    const datePipe = new DatePipe('en-US');
   // formatoContenido(wb: Worksheet, values, cantHeaders, esVotacion){
     if(dataExtraInscripcion.grupoActivo){
       let identificador = 0;
@@ -115,20 +116,22 @@ export class ExportExcelService {
         if(dataInscripcion.votacionesResultado){
           wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].numeroDocumento;
           wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('E').value = datePipe.transform(dataInscripcion.inscritos[i].fechaNacimiento, 'dd/MM/yyyy');
+          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].red;
+          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].unidadOrganica;
+          wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].regimen;
+          wb.getRow(i+6).getCell('I').value = dataInscripcion.inscritos[i].numeroCelular;
+          wb.getRow(i+6).getCell('J').value = dataInscripcion.inscritos[i].correo;
+        }
+        else{
+          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].numeroDocumento;
+          wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('D').value = datePipe.transform(dataInscripcion.inscritos[i].fechaNacimiento, 'dd/MM/yyyy');
           wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].red;
           wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].unidadOrganica;
           wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].regimen;
           wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].numeroCelular;
           wb.getRow(i+6).getCell('I').value = dataInscripcion.inscritos[i].correo;
-        }
-        else{
-          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].numeroDocumento;
-          wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].nombreCompleto;
-          wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].red;
-          wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].unidadOrganica;
-          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].regimen;
-          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].numeroCelular;
-          wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].correo;
         }
         for (let j = 0; j < cantHeaders; j++) {
           wb.getRow(i+6).getCell(j+1).font = {
@@ -152,22 +155,24 @@ export class ExportExcelService {
           wb.getRow(i+6).getCell(1).value = (votacionEncontrada ? votacionEncontrada.votos : 0);
           wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].numeroDocumento;
           wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('D').value = datePipe.transform(dataInscripcion.inscritos[i].fechaNacimiento, 'dd/MM/yyyy');
+          wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].red;
+          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].unidadOrganica;
+          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].regimen;
+          wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].numeroCelular;
+          wb.getRow(i+6).getCell('I').value = dataInscripcion.inscritos[i].correo;
+        }
+        else{
+          wb.getRow(i+6).getCell('A').value = dataInscripcion.inscritos[i].numeroDocumento;
+          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('C').value = datePipe.transform(dataInscripcion.inscritos[i].fechaNacimiento, 'dd/MM/yyyy');
           wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].red;
           wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].unidadOrganica;
           wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].regimen;
           wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].numeroCelular;
           wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].correo;
-        }
-        else{
-          wb.getRow(i+6).getCell('A').value = dataInscripcion.inscritos[i].numeroDocumento;
-          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].nombreCompleto;
-          wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].red;
-          wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].unidadOrganica;
-          wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].regimen;
-          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].numeroCelular;
-          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].correo;
           if(dataExtraInscripcion.textoActivo){
-            wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].descripcion;
+            wb.getRow(i+6).getCell(cantHeaders).value = dataInscripcion.inscritos[i].descripcion;
           }
         }
 

@@ -31,6 +31,7 @@ export class AdministrarEncuestasComponent implements OnInit {
               private excelService         : ExportExcelEncuestasService) { }
 
   ngOnInit(): void {
+    console.log(this.authService.getUserSession().id)
     if(this.authService.getUserSession().id == 11511){
       this.menuServices.getReporteEncuesta(1).subscribe((data)=>{
         this.encuestaData = data;
