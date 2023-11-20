@@ -1,0 +1,77 @@
+::ng-deep .mat-step-header .mat-step-icon-selected {
+  background-color: var(--color-MiEssalud);
+}
+
+mat-grid-list {
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.botonPoi {
+  height: 70%;
+  align-self: flex-start;
+  margin-top: 2px;
+  width: 100%;
+  color: white;
+  background-color: var(--color-MiEssalud);
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
+}
+
+.aproved-button {
+  color: white;
+  background-color: var(--color-MiEssalud);
+}
+
+.primary-button {
+  color: var(--color-danger);
+}
+
+// numeric input
+.example-right-align {
+  text-align: right;
+}
+
+.percent-align {
+  position: relative;
+  top: -3px;
+}
+
+.mat-column-item {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 8% !important;
+  width: 3% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-plazo {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 8% !important;
+  width: 5% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}

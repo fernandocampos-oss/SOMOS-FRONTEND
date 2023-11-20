@@ -3,10 +3,12 @@
     <mat-dialog-content>
       <mat-form-field appearance="outline">
         <mat-label>Descripción de la evidencia</mat-label>
-        <textarea matInput formControlName="frmDescripcion" rows="5" type="text" minlength="5" maxlength="300" required></textarea>
+        <textarea matInput (keyup)="onKey($event)" formControlName="frmDescripcion" rows="5" type="text" minlength="15" maxlength="300" required>
+        </textarea>
+        <mat-hint align="end">Máx. {{contadorTxtArea}} / 300</mat-hint>
       </mat-form-field>
-      <br>
-      <p>Seleccione el tipo de file que desea enviar, Máx. 2MB.</p>
+      <br><br>
+      <p>Elija el tipo de sustento que desea enviar. <strong>(Máx. 2MB.)</strong></p>
   
       <div class="datosPdf">
         <mat-radio-group name="opciones" [(ngModel)]="operacionSeleccionada" [ngModelOptions]="{standalone: true}">

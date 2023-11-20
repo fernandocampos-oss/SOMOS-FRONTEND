@@ -1,11 +1,11 @@
 <div class="actions">
+    <button mat-raised-button color="primary" (click)="registrarPrioridad()">
+        <mat-icon>add_circle</mat-icon>
+        &nbsp; Registrar Indicador/Producto
+    </button>
     <button mat-raised-button color="primary" (click)="modalMiEquipo()">
         <mat-icon>groups</mat-icon>
         &nbsp; Mi Equipo
-    </button>
-    <button mat-raised-button color="primary" (click)="modalAgregarIndicador()">
-        <mat-icon>groups</mat-icon>
-        &nbsp; Agregar Indicador
     </button>
     <button mat-raised-button color="primary" (click)="actualizar()">
         <mat-icon>cached</mat-icon>
@@ -13,7 +13,7 @@
     </button>
     <button mat-button color="primary" (click)="generarExcelDirectivo()">
         <mat-icon>get_app</mat-icon>
-        &nbsp; Formato Excel
+        &nbsp; Formato
     </button>
 </div>
 <div *ngIf="listDataTable.length == 0" style="text-align: center">
@@ -32,28 +32,20 @@
                         <span>{{i.trabajadorNombre | titlecase}} {{i.trabajadorApellido | titlecase}}</span>
                     </mat-panel-title>
                     <mat-panel-description>
-                        <!-- margen derecho -->
+                        <div class="send-email">
+                            <button mat-button color="primary" (click)="notificarCorreo()">
+                                <mat-icon>email</mat-icon>
+                                &nbsp; Notificar
+                            </button>
+                        </div>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <div *ngIf="i.listPrioridad.length == 0" style="text-align: left">
-                    <button mat-raised-button color="primary" (click)="organizarIndicadores()">
-                        <mat-icon>add_circle</mat-icon>
-                        &nbsp; Indicadores/Productos
-                    </button>
-                </div>
                 <div *ngIf="i.listPrioridad.length == 0" style="text-align: center">
                     <br>
-                    <p class="color-mensaje">Clic en el botón para organizar indicadores/productos del trabajador</p>
+                    <p class="color-mensaje">Sin registros por mostrar</p>
                 </div>
                 <div *ngIf="i.listPrioridad.length !== 0">
-                    <div style="text-align: left">
-                        <button mat-button color="primary" (click)="organizarIndicadores()">
-                            <mat-icon>add_circle</mat-icon>
-                            &nbsp; Gestionar Indicadores/Productos
-                        </button>
-                    </div>
-                    <br>
                     <table mat-table [dataSource]="i.listPrioridad">
                         <ng-container matColumnDef="item">
                             <th mat-header-cell *matHeaderCellDef>N°</th>
@@ -62,8 +54,12 @@
                         <ng-container matColumnDef="prioridad">
                             <th mat-header-cell *matHeaderCellDef>Prioridades anuales de gestión del órgano o unidad
                                 orgánica</th>
-                            <td mat-cell *matCellDef="let element">{{element.prioridadNombre ? element.prioridadNombre
-                                :'-'}}
+                            <td mat-cell *matCellDef="let element">
+                                {{element.prioridadNombre ? element.prioridadNombre :'-'}}
+                                <button mat-icon-button class="add-prioridad" matTooltip="Asignar nuevo indicador"
+                                    (click)="agregarIndicador(element, i.idVotante)">
+                                    <mat-icon>add_circle</mat-icon>
+                                </button>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="indicador_producto">
@@ -72,8 +68,8 @@
                                 <mat-list>
                                     <mat-list-item *ngFor="let x of element.listIndicador">
                                         {{x.nombreIndicador}}
-                                        <button mat-icon-button class="has-success" matTooltip="Asignar Tarea"
-                                            (click)="registrarTareas(x)">
+                                        <button mat-icon-button class="has-success" matTooltip="Asignar nueva evidencia"
+                                            (click)="agregarEvidencia(x)">
                                             <mat-icon>add_circle</mat-icon>
                                         </button>
                                         <mat-divider></mat-divider>
@@ -120,14 +116,38 @@
                                         <section class="example-section">
                                             <span class="example-list-section">
                                                 <ul>
-                                                    <li *ngFor="let t of z.listTarea">
-                                                        {{t.nombre}}
+                                                    <li *ngFor="let t of z.listEvidencia">
+                                                        {{t.descripcion}}
                                                         <!-- [disabled]="(element.estadoIndicador.codigo == '01' || element.estadoIndicador.codigo == '04') ? true : false" -->
                                                         <button mat-icon-button class="primary-button"
                                                             matTooltip="Seguimiento de la evidencia"
                                                             (click)="verIndicadorYtarea(t)">
                                                             <mat-icon>remove_red_eye</mat-icon>
                                                         </button>
+                                                        <!-- *ngIf="element.estadoIndicador.codigo == '01'" -->
+                                                        <!-- <button mat-icon-button class="color-mensaje"
+                                                            matTooltip="Editar Indicador"
+                                                            (click)="editarIndicador(element, true)">
+                                                            <mat-icon>edit</mat-icon>
+                                                        </button> -->
+                                                    </li>
+                                                </ul>
+                                            </span>
+                                        </section>
+                                    </mat-list-item>
+                                </mat-list>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="plazo">
+                            <th mat-header-cell *matHeaderCellDef>Plazo</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let z of element.listIndicador">
+                                        <section class="example-section">
+                                            <span class="example-list-section">
+                                                <ul>
+                                                    <li *ngFor="let t of z.listEvidencia">
+                                                        {{t.plazo | date: 'dd-MM-yyyy'}}
                                                     </li>
                                                 </ul>
                                             </span>

@@ -1,5 +1,5 @@
-import { GestionRendimientoExcelDirectivoService } from './../../../../data/services/gestion-rendimiento-excel-directivo.service';
 import { element } from 'protractor';
+import { GestionRendimientoExcelDirectivoService } from './../../../../data/services/gestion-rendimiento-excel-directivo.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AsignarTareaComponent } from './dialogs/asignar-tarea/asignar-tarea.component';
@@ -7,10 +7,11 @@ import { ReadIndicadorTareaComponent } from './dialogs/read-indicador-tarea/read
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { NotificationService, SnackbarService } from '@core/services';
 import { MiEquipoComponent } from '../mi-equipo/mi-equipo.component';
-import { OrganizarIndicadorComponent } from './dialogs/organizar-indicador/organizar-indicador.component';
 import { AddPesoComponent } from './dialogs/add-peso/add-peso.component';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
-import { RegistrarIndicadorComponent } from './dialogs/registrar-indicador/registrar-indicador.component';
+import { RegistrarPrioridadComponent } from './dialogs/registrar-prioridad/registrar-prioridad.component';
+import { NotificacionCorreoComponent } from './dialogs/notificacion-correo/notificacion-correo.component';
+import { AsignarIndicadorComponent } from './dialogs/asignar-indicador/asignar-indicador.component';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -18,7 +19,7 @@ import { RegistrarIndicadorComponent } from './dialogs/registrar-indicador/regis
   styleUrls: ['./gestionar-indicadores-trabajador.component.scss']
 })
 export class GestionarIndicadoresTrabajadorComponent implements OnInit {
-  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'tipo_formula', 'logro_final', 'puntuacion_meta'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta'];
   // menuToggle = new EventEmitter<void>();
   listDataTable: any[] = [];
 
@@ -66,7 +67,25 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  registrarTareas(i) {
+  agregarIndicador(element, idVotante) {
+    const dialogRef: MatDialogRef<AsignarIndicadorComponent> = this._dialog.open(AsignarIndicadorComponent, {
+      disableClose: true,
+      width: '50%',
+      maxHeight: '810px',
+      //height: '780px',
+      autoFocus: false,
+      data: {
+        element: element,
+        idVotante: idVotante
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTable();
+    });
+  }
+
+  agregarEvidencia(i) {
     const dialogRef: MatDialogRef<AsignarTareaComponent> = this._dialog.open(AsignarTareaComponent, {
       disableClose: true,
       width: '50%',
@@ -81,22 +100,6 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       this.loadTable();
     });
 
-  }
-
-  organizarIndicadores() {
-    const dialogRef: MatDialogRef<OrganizarIndicadorComponent> = this._dialog.open(OrganizarIndicadorComponent, {
-      disableClose: false,
-      width: '50%',
-      // height: '60%',
-      autoFocus: false,
-      data: {
-        // model: element
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
   }
 
   modalMiEquipo() {
@@ -131,14 +134,48 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  async modalAgregarIndicador() {
-    const dialogRef: MatDialogRef<RegistrarIndicadorComponent> = this._dialog.open(RegistrarIndicadorComponent, {
+  async registrarPrioridad() {
+    const dialogRef: MatDialogRef<RegistrarPrioridadComponent> = this._dialog.open(RegistrarPrioridadComponent, {
       disableClose: false,
-      width: '15%',
-      maxHeight: '100vh',
+      width: '60%',
+      maxHeight: '80vh',
       autoFocus: false,
       data: {
-        modal: element
+        // modal: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTable();
+    });
+  }
+
+  // editarIndicador(element, es_editar) {
+  //   const dialogRef: MatDialogRef<RegistrarIndicadorTrabajadorComponent> = this._matDialog.open(RegistrarIndicadorTrabajadorComponent, {
+  //     disableClose: false,
+  //     width: '600px',
+  //     //height: '780px',
+  //     autoFocus: false,
+  //     data: {
+  //       esEditar: es_editar,
+  //       // esJefe: false,
+  //       model: element
+  //     }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadTablePendiente();
+  //   });
+  // }
+
+  async notificarCorreo() {
+    const dialogRef: MatDialogRef<NotificacionCorreoComponent> = this._dialog.open(NotificacionCorreoComponent, {
+      disableClose: false,
+      width: '35%',
+      maxHeight: '80vh',
+      autoFocus: false,
+      data: {
+        // modal: element
       }
     });
 

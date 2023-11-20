@@ -3,12 +3,12 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RegistrarEvidenciaTrabajadorComponent } from './registrar-evidencia-trabajador/registrar-evidencia-trabajador.component';
 import { VerEvidenciaImagenComponent } from './ver-evidencia-imagen/ver-evidencia-imagen.component';
 import { VerEvidenciaPdfComponent } from './ver-evidencia-pdf/ver-evidencia-pdf.component';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { EvidenciaResponse } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 @Component({
   selector: 'app-modal-tarea',
@@ -25,7 +25,7 @@ export class ModalTareaComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['item', 'nombre_tarea', 'fecha_asignacion', 'plazo', 'acciones'];
 
-  dataSource_tarea: TareaResponse[];
+  dataSource_tarea: EvidenciaResponse[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,

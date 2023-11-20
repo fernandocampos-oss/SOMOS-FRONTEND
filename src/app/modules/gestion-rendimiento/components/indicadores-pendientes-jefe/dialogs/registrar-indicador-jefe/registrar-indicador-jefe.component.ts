@@ -1,9 +1,10 @@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
-import { IndicadorRequest, TipoIngreso, TipoValorMeta } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { TipoValorMeta } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { NotificationService } from '@core/services';
+import { IndicadorRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
 
 @Component({
   selector: 'app-registrar-indicador-jefe',
@@ -12,7 +13,6 @@ import { NotificationService } from '@core/services';
 })
 export class RegistrarIndicadorJefeComponent implements OnInit {
   form: FormGroup;
-  listTipoIngreso: TipoIngreso[] = [];
   idTipoIngresoSeleccionado: number;
 
   listTipoValorMeta: any[] = [];
@@ -31,18 +31,7 @@ export class RegistrarIndicadorJefeComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data)
     this._createForm();
-    this.listarTipoIngreso();
     this.listarTipoValorMeta();
-  }
-
-  async listarTipoIngreso() {
-    let listarTipoIngreso = await this._gestionRendimientoService.listarTipoIngreso().then((data) => {
-      if (data.length > 0) {
-        this.listTipoIngreso = data;
-      } else {
-        this._notification.warning("Lista tipo de ingreso vacio");
-      }
-    });
   }
 
   async listarTipoValorMeta() {
@@ -98,8 +87,8 @@ export class RegistrarIndicadorJefeComponent implements OnInit {
   }
 
   private _getModel(): IndicadorRequest {
-    let modelTipoIngreso = new TipoIngreso();
-    modelTipoIngreso.idTipoIngreso = this.form.value.frmTipoIngreso;
+    // let modelTipoIngreso = new TipoIngreso();
+    // modelTipoIngreso.idTipoIngreso = this.form.value.frmTipoIngreso;
 
     let modelTipoValorMeta = new TipoValorMeta();
     modelTipoValorMeta.idTipoValorMeta = this.form.value.frmTipoValorMeta;
@@ -112,11 +101,11 @@ export class RegistrarIndicadorJefeComponent implements OnInit {
     }
 
     return {
-      nombre: this.form.value.frmNombre,
-      descripcion: this.form.value.frmDescripcion,
-      tipoIngreso: modelTipoIngreso,
-      tipoValorMeta: modelTipoValorMeta,
-      valorMeta: valorMetaTemp,
+      // nombre: this.form.value.frmNombre,
+      // descripcion: this.form.value.frmDescripcion,
+      // tipoIngreso: modelTipoIngreso,
+      // tipoValorMeta: modelTipoValorMeta,
+      // valorMeta: valorMetaTemp,
     };
   }
   

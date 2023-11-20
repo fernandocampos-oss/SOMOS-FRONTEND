@@ -7,7 +7,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService, SnackbarService } from '@core/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
-import { RegistrarIndicadorTrabajadorComponent } from '../components/registrar-indicador-trabajador/registrar-indicador-trabajador.component';
 import { ModalTareaComponent } from '../components/modal-tarea/modal-tarea.component';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
 
@@ -23,12 +22,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'indicador_producto', 'descripcion', 'fecha_creacion', 'tipo_valor_meta', 'valor_meta', 'acciones'];
-
-  @ViewChild(MatSort) sort_finalizado: MatSort;
-  @ViewChild(MatPaginator) paginator_finalizado: MatPaginator;
-  dataSource_finalizado: MatTableDataSource<any>;
-  displayedColumns_finalizado: string[] = ['item', 'indicador_producto', 'descripcion', 'fecha_creacion', 'tipo_ingreso', 'tipo_valor_meta', 'valor_meta'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'fecha_asignacion', 'acciones'];
 
   constructor(
     private _router: Router,
@@ -42,27 +36,16 @@ export class IndicadoresTrabajadorComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTablePendiente();
-    this.loadTableFinalizado();
   }
 
   async loadTablePendiente() {
     let listPendiente = await this._requerimientoService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
         this.listIndicadoresPendientes = data;
+        console.log(this.listIndicadoresPendientes);
         this.dataSource = new MatTableDataSource(this.listIndicadoresPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      }
-    });
-  }
-
-  async loadTableFinalizado() {
-    let listFinalizado = await this._requerimientoService.listarIndicadorFinalizado().then((data) => {
-      if (data.length > 0) {
-        this.listDataFinalizados = data;
-        this.dataSource_finalizado = new MatTableDataSource(this.listDataFinalizados);
-        this.dataSource_finalizado.paginator = this.paginator_finalizado;
-        this.dataSource_finalizado.sort = this.sort_finalizado;
       }
     });
   }
@@ -71,28 +54,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     this.listIndicadoresPendientes = [];
     let pendientes = await this.loadTablePendiente();
     this._snackbar.success("La lista ya se encuentra actualizada");
-  }
-
-  async actualizarindicadoresRechazados() {
-    this.listDataFinalizados = [];
-    let finalizados = await this.loadTableFinalizado();
-    this._snackbar.success("La lista ya se encuentra actualizada");
-  }
-
-  registrarIndicadorTrabajador() {
-    const dialogRef: MatDialogRef<RegistrarIndicadorTrabajadorComponent> = this._matDialog.open(RegistrarIndicadorTrabajadorComponent, {
-      disableClose: false,
-      width: '50%',
-      //height: '780px',
-      autoFocus: false,
-      data: {
-        esJefe: false,
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTablePendiente();
-    });
   }
 
   verDetalleIndicadorYtareas(element) {
@@ -111,25 +72,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadTablePendiente();
     });
-  }
-
-  editarIndicador(element, es_editar) {
-    const dialogRef: MatDialogRef<RegistrarIndicadorTrabajadorComponent> = this._matDialog.open(RegistrarIndicadorTrabajadorComponent, {
-      disableClose: false,
-      width: '600px',
-      //height: '780px',
-      autoFocus: false,
-      data: {
-        esEditar: es_editar,
-        // esJefe: false,
-        model: element
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTablePendiente();
-    });
-
   }
 
   back() {
@@ -217,7 +159,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
       //   listRows.push(rowsBody);
       //   rowsBody = null;
       // }
-
 
       console.log("data excel", listRows);
       let columnsName = ["String_1", "String_2"];

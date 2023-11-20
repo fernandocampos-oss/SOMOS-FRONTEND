@@ -9,6 +9,8 @@ import { CrudComponent } from './crud/crud.component';
 import { TableComponent } from './table/table.component';
 import { NotificationDialogComponent } from './notification-dialog/notification-dialog.component';
 import { ImageOptionsComponent } from './image-options/image-options.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { ConfirmarPanelComponent } from './confirmar-panel/confirmar-panel.component';
 
 const components = [
   ConfirmDialogComponent,
@@ -17,12 +19,13 @@ const components = [
   CrudComponent,
   NotificationDialogComponent,
   TableComponent,
-  ImageOptionsComponent
+  ImageOptionsComponent,
+  ConfirmarPanelComponent
 ];
 
 @NgModule({
   declarations: components,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, MatGridListModule],
   exports: components,
 })
 export class SharedModule {}

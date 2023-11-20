@@ -1,4 +1,3 @@
-import { RegistrarIndicadorTrabajadorComponent } from './components/registrar-indicador-trabajador/registrar-indicador-trabajador.component';
 import { IndicadoresTrabajadorComponent } from './indicadores-trabajador/indicadores-trabajador.component';
 import { IndicadoresTrabajadorRoutingModule } from './indicadores-trabajador-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +15,6 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 @NgModule({
   declarations: [
     IndicadoresTrabajadorComponent,
-    RegistrarIndicadorTrabajadorComponent,
     RegistrarEvidenciaTrabajadorComponent,
     ModalTareaComponent,
     VerEvidenciaImagenComponent,

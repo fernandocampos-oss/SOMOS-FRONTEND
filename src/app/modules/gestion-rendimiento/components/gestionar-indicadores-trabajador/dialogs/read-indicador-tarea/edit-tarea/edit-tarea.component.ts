@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
-import { TareaRequest } from '@data/models/gestion-rendimiento/tarea-model';
+import { EvidenciaRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
   styleUrls: ['./edit-tarea.component.scss']
 })
 export class EditTareaComponent implements OnInit {
-  tarea: TareaRequest;
+  tarea: EvidenciaRequest;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public _data: any,
@@ -26,24 +26,24 @@ export class EditTareaComponent implements OnInit {
   }
 
   getModel() {
-    this.tarea = new TareaRequest();
-    this.tarea.idTarea = this._data.model.idTarea;
-    this.tarea.nombre = this._data.model.nombre;
-    this.tarea.plazo = this._data.model.plazo;
+    // this.tarea = new TareaRequest();
+    // this.tarea.idTarea = this._data.model.idTarea;
+    // this.tarea.nombre = this._data.model.nombre;
+    // this.tarea.plazo = this._data.model.plazo;
   }
 
   async modificarTareaAdministrador() {
-    if (this.tarea.idTarea > 0) {
-      let actualizar = await this._grService.modificarTareaAdministrador(this.tarea.nombre, this.tarea.plazo, this.tarea.idTarea).then((data) => {
-        if (data) {
-          this._notification.success("Tarea actualizada correctamente");
-          // this.dialogRef.closeAll();
-          this._dialogRef.close();
-        } else {
-          this._notification.error("Error al actualizar tarea")
-        }
-      });
-    }
+    // if (this.tarea.idTarea > 0) {
+    //   let actualizar = await this._grService.modificarTareaAdministrador(this.tarea.nombre, this.tarea.plazo, this.tarea.idTarea).then((data) => {
+    //     if (data) {
+    //       this._notification.success("Tarea actualizada correctamente");
+    //       // this.dialogRef.closeAll();
+    //       this._dialogRef.close();
+    //     } else {
+    //       this._notification.error("Error al actualizar tarea")
+    //     }
+    //   });
+    // }
   }
 
 }

@@ -3,7 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
-import { EvidenciaRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 @Component({
   selector: 'app-registrar-evidencia-trabajador',
@@ -30,6 +30,7 @@ export class RegistrarEvidenciaTrabajadorComponent implements OnInit {
   operacionSeleccionada: string = 'Imagen';
   tipoArchivo = ['Imagen', 'PDF'];
 
+  contadorTxtArea: number = 0;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _notification: NotificationService,
@@ -49,6 +50,10 @@ export class RegistrarEvidenciaTrabajadorComponent implements OnInit {
       // frmPorcentajeAvance: [(this.data.model.porcentajeInicial > 0 ? 90 : ''), [Validators.required, Validators.min(1), Validators.max(100)]],
       // frmAreaSolicitante: 'SGSA',
     });
+  }
+
+  onKey(event) {
+    this.contadorTxtArea = event.target.value.length;
   }
 
   onChangeImage(files) {
@@ -133,14 +138,14 @@ export class RegistrarEvidenciaTrabajadorComponent implements OnInit {
     // else {
     const model = this._getModel();
 
-    let register = await this._requerimientoService.registrarEvidencia(model).then((data) => {
+    let register = await this._requerimientoService.crearSustentoEvidencia(model).then((data) => {
       this._notification.success("Evidencia registrada correctamente")
     });
     this._dialogRef.closeAll();
     // }
   }
 
-  private _getModel(): EvidenciaRequestDto {
+  private _getModel(): EvidenciaSustentoRequestDto {
     let completo = this.nameImage;
     const nombreFile = completo.lastIndexOf('.');
     // // archivo.nombre = completo.substring(0, nombreFile);
@@ -154,8 +159,8 @@ export class RegistrarEvidenciaTrabajadorComponent implements OnInit {
     }
 
     return {
-      idTarea: this.data.model.idTarea,
-      evidenciaDescripcion: this.form.value.frmDescripcion,
+      idEvidencia: this.data.model.idEvidencia,
+      sustentoDescripcion: this.form.value.frmDescripcion,
       extension: this.globalextension,
       fileBase64: this.globalBase64
     };

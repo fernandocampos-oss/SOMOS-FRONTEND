@@ -1,4 +1,3 @@
-import { element } from 'protractor';
 import { startWith, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -6,14 +5,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserAddDeleteComponent } from './dialogs/user-add-delete/user-add-delete.component'
-import { UserTaskComponent } from './dialogs/user-task/user-task.component'
 import { GestionRendimientoService } from '../../../../data/services/gestion-rendimiento.service'
 import { NotificationService } from '@core/services';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 import { EquipoRequest, Integrante, Jefe } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
-import { EditUserSelectedComponent } from './dialogs/edit-user-selected/edit-user-selected.component';
+import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 
 @Component({
   selector: 'gestion-rendimiento-mi-equipo',
@@ -35,10 +32,13 @@ export class MiEquipoComponent implements OnInit {
   trabajadorSeleccionadoTmp: any;
   usuarioObtenido: any;
 
+  confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
+
   constructor(
-    private dialog: MatDialog,
-    private services: GestionRendimientoService,
+    private _dialog: MatDialog,
+    private _grService: GestionRendimientoService,
     private _notification: NotificationService,
+    // private dialogRef: MatDialogRef<ConfirmarDialogoComponent>,
   ) { }
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class MiEquipoComponent implements OnInit {
   }
 
   async listarVotantes() {
-    let load = await this.services.listarVotantes().then((data: any) => {
+    let load = await this._grService.listarVotantes().then((data: any) => {
       if (data.length > 0) {
         this.listTrabajador = data;
       } else {
@@ -75,7 +75,7 @@ export class MiEquipoComponent implements OnInit {
   }
 
   showDialogUser(onDelete: boolean) {
-    const dialogRef: MatDialogRef<UserAddDeleteComponent> = this.dialog.open(UserAddDeleteComponent, {
+    const dialogRef: MatDialogRef<UserAddDeleteComponent> = this._dialog.open(UserAddDeleteComponent, {
       disableClose: false,
       width: onDelete == true ? '600px' : '70%',
       autoFocus: false,
@@ -91,7 +91,7 @@ export class MiEquipoComponent implements OnInit {
   }
 
   async loadTable() {
-    let listtrabajadores = await this.services.listarIntegrantesPorLider().then((data) => {
+    let listtrabajadores = await this._grService.listarIntegrantesPorLider().then((data) => {
       if (data.length > 0) {
         this.listEquipo = data;
         this.dataSource = new MatTableDataSource(this.listEquipo);
@@ -117,7 +117,7 @@ export class MiEquipoComponent implements OnInit {
         equipo.jefe = jefeModel;
         equipo.integrante = integranteModel;
 
-        let add = await this.services.registrarTrabajador(equipo).then((data: any) => {
+        let add = await this._grService.registrarTrabajador(equipo).then((data: any) => {
           if (data = 1) {
             this._notification.success("Trabajador agregado correctamente");
             this.integranteControl.reset('');
@@ -133,20 +133,27 @@ export class MiEquipoComponent implements OnInit {
     }
   }
 
-  eliminarTrabajador(element) {
-    const dialogRef: MatDialogRef<DeleteDialogComponent> = this.dialog.open(DeleteDialogComponent, {
-      disableClose: false,
-      width: '30%',
-      autoFocus: false,
-      data: {
-        // funcion: 3,
-        model: element
-      }
+  async eliminarTrabajador(element) {
+    this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
     });
+    this.confirmDialogRef.componentInstance.confirmMessage = '¿Estas seguro de eliminar el trabajador?';
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.listEquipo = [];
-      this.loadTable();
+        this._grService.eliminarTrabajador(element.idEquipo).then((data: any) => {
+          if (data = 1) {
+            this._notification.success("Trabajador eliminado correctamente");
+            // this.dialogRef.close();
+            this.listEquipo = [];
+            this.loadTable();
+          } else {
+            this._notification.warning("Eliminar trabajador: Se produjo un error");
+          }
+        });
+
+      }
+      this.confirmDialogRef = null;
     });
   }
 

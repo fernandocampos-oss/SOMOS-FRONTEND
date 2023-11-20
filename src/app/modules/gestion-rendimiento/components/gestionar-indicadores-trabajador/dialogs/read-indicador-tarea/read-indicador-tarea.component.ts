@@ -5,11 +5,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
-import { TareaResponse } from '@data/models/gestion-rendimiento/tarea-model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { EditTareaComponent } from './edit-tarea/edit-tarea.component';
 import { VerEvidenciaImagenComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-imagen/ver-evidencia-imagen.component';
 import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
+import { EvidenciaResponse } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 
 @Component({
   selector: 'app-read-indicador-tarea',
@@ -24,7 +24,7 @@ export class ReadIndicadorTareaComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['nombre_tarea', 'fecha_asignacion', 'plazo', 'acciones'];
-  dataSource_tarea: TareaResponse[];
+  dataSource_tarea: EvidenciaResponse[];
 
   constructor(
     private _fb: FormBuilder,
