@@ -1,13 +1,23 @@
 <div class="alert">
-    <h2>Se enviará el correo de notificación al siguiente dirección:</h2><br>
-    <span>prueba.somos.essalud@essalud.com.pe</span><br>
+    <div class="outline">
+        <mat-icon>mail</mat-icon>
+    </div>
+    <h2>¿Enviar notificación al siguiente correo?</h2><br>
+    <!-- <span>sgrhs.bienestar@essalud.gob.pe</span> -->
+    
+        <mat-form-field appearance="outline">
+            <!-- <mat-label>Dirección de correo</mat-label> -->
+            <input matInput [(ngModel)]="dto.email">
+        </mat-form-field>
+   
+    <br>
 </div>
 <br>
 <mat-grid-list cols="2" rowHeight="40px" gutterSize="6px">
     <mat-grid-tile [colspan]="1" class="grid">
-        <button mat-button matDialogClose class="close-button">Cancelar</button>
+        <button mat-button matDialogClose class="close-button">No</button>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1" class="grid">
-        <button mat-raised-button (click)="enviarCorreo()" color="primary" class="boton">Confirmar</button>
+        <button mat-raised-button (click)="enviarCorreo()" color="primary" class="boton">Si</button>
     </mat-grid-tile>
 </mat-grid-list>

@@ -11,16 +11,17 @@ const EXCEL_EXTENSION = '.xlsx';
   providedIn: 'root'
 })
 export class GestionRendimientoExcelEjecutorService {
-  fileName: string = "Reporte_Requerimiento";
+  fileName: string = "GDR_";
 
   constructor() { }
 
-  exportExcelEjecutor(excelData: { data_trabajador: any, data_evidencia: any; headers: any }) {
-    console.log("service", excelData);
+  exportExcelEjecutor(excelData: { data_trabajador: any, data_jefe: any, data_filas: any; headers: any }) {
+    console.log("data service trabajador", excelData);
     //Title, Header & Data
     const header = excelData.headers;
     const data_trabajador = excelData.data_trabajador;
-    const data_evidencia = excelData.data_evidencia;
+    const data_jefe = excelData.data_jefe;
+    const data_filas = excelData.data_filas;
 
     //Create a workbook with a worksheet
     let workbook = new Workbook();
@@ -83,7 +84,7 @@ export class GestionRendimientoExcelEjecutorService {
 
     worksheet.mergeCells('O4:Q4');
     let titleEvaluadorResult = worksheet.getCell('O4');
-    titleEvaluadorResult.value = '';
+    titleEvaluadorResult.value = data_jefe.numeroDocumento;
     titleEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -164,7 +165,7 @@ export class GestionRendimientoExcelEjecutorService {
 
     worksheet.mergeCells('O6:Q6');
     let titleFechaMetaResult = worksheet.getCell('O6');
-    titleFechaMetaResult.value = '';
+    titleFechaMetaResult.value = '24/11/2023';
     titleFechaMetaResult.font = {
       name: 'Calibri',
       size: 8,
@@ -331,7 +332,7 @@ export class GestionRendimientoExcelEjecutorService {
 
     worksheet.mergeCells('E11:I11');
     let titleSegmentoEvaluadoResult = worksheet.getCell('E11');
-    titleSegmentoEvaluadoResult.value = '';
+    titleSegmentoEvaluadoResult.value = data_trabajador.segmento;
     titleSegmentoEvaluadoResult.font = {
       name: 'Calibri',
       size: 8,
@@ -370,7 +371,7 @@ export class GestionRendimientoExcelEjecutorService {
 
     worksheet.mergeCells('E12:I12');
     let titleUnidadEvaluadoResult = worksheet.getCell('E12');
-    titleUnidadEvaluadoResult.value = '';
+    titleUnidadEvaluadoResult.value = data_trabajador.codUnidad;
     titleUnidadEvaluadoResult.font = {
       name: 'Calibri',
       size: 8,
@@ -449,7 +450,7 @@ export class GestionRendimientoExcelEjecutorService {
 
     worksheet.mergeCells('N9:Q9');
     let titleApellidosEvaluadorResult = worksheet.getCell('N9');
-    titleApellidosEvaluadorResult.value = '';
+    titleApellidosEvaluadorResult.value = data_jefe.nombre;
     titleApellidosEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -488,7 +489,7 @@ export class GestionRendimientoExcelEjecutorService {
 
     worksheet.mergeCells('N10:Q10');
     let titlePuestoEvaluadorResult = worksheet.getCell('N10');
-    titlePuestoEvaluadorResult.value = '';
+    titlePuestoEvaluadorResult.value = data_jefe.cargo;
     titlePuestoEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -527,7 +528,7 @@ export class GestionRendimientoExcelEjecutorService {
 
     worksheet.mergeCells('N11:Q11');
     let titleSegmentoEvaluadorResult = worksheet.getCell('N11');
-    titleSegmentoEvaluadorResult.value = '';
+    titleSegmentoEvaluadorResult.value = data_jefe.segmento;
     titleSegmentoEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -566,7 +567,7 @@ export class GestionRendimientoExcelEjecutorService {
 
     worksheet.mergeCells('N12:Q12');
     let titleUnidadEvaluadorResult = worksheet.getCell('N12');
-    titleUnidadEvaluadorResult.value = '';
+    titleUnidadEvaluadorResult.value = data_jefe.codUnidad;
     titleUnidadEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -965,14 +966,14 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePuntuacion.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    data_evidencia.forEach((d: any) => {
+    data_filas.forEach((d: any) => {
       let row = worksheet.addRow(Object.values(d));
       console.log("row", d);
 
       const currentRowIdx = worksheet.rowCount;
       const endColumnIdx = worksheet.columnCount;
       // merge by start row, start column, end row, end column 
-      worksheet.mergeCells(currentRowIdx, 1, currentRowIdx, 3); // prioridad
+      worksheet.mergeCells(currentRowIdx, 1, currentRowIdx, 3); // actividad
       worksheet.mergeCells(currentRowIdx, 4, currentRowIdx, 5); // indicador
       worksheet.mergeCells(currentRowIdx, 6, currentRowIdx, 6); // valor meta
       worksheet.mergeCells(currentRowIdx, 7, currentRowIdx, 7); // porcentaje
@@ -980,13 +981,13 @@ export class GestionRendimientoExcelEjecutorService {
       worksheet.mergeCells(currentRowIdx, 10, currentRowIdx, 11); // plazos
       worksheet.mergeCells(currentRowIdx, 13, currentRowIdx, 15); // comentarios
 
-      worksheet.getRow(currentRowIdx).getCell('A').value = "";
+      worksheet.getRow(currentRowIdx).getCell('A').value = d.prioridad;
       worksheet.getRow(currentRowIdx).getCell('D').value = d.indicador;
       worksheet.getRow(currentRowIdx).getCell('F').value = d.valorMeta;
       worksheet.getRow(currentRowIdx).getCell('G').value = d.peso + '%';
-      // worksheet.getRow(currentRowIdx).getCell('H').value = d.nombre;
-      // worksheet.getRow(currentRowIdx).getCell('J').value = d.plazo;
-      // worksheet.getRow(currentRowIdx).getCell('M').value = d.evaluacionComentario;
+      worksheet.getRow(currentRowIdx).getCell('H').value = d.nombreTarea;
+      worksheet.getRow(currentRowIdx).getCell('J').value = d.plazo;
+      worksheet.getRow(currentRowIdx).getCell('M').value = d.comentario;
 
       let a = row.getCell('A');
       a.font = { size: 8 };
@@ -1026,8 +1027,8 @@ export class GestionRendimientoExcelEjecutorService {
     });
 
     //RESULTADOS FINALES--------------------------------------------------------------
-    worksheet.mergeCells('A23', 'Q23');
-    let resultados = worksheet.getCell('A23');
+    worksheet.mergeCells('A35', 'Q35');
+    let resultados = worksheet.getCell('A35');
     resultados.value = 'RESULTADOS FINALES';
     resultados.font = {
       name: 'Calibri',
@@ -1049,8 +1050,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     resultados.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A24', 'C25');
-    let puntuacionFinal = worksheet.getCell('A24');
+    worksheet.mergeCells('A36', 'C37');
+    let puntuacionFinal = worksheet.getCell('A36');
     puntuacionFinal.value = 'PUNTUACIÓN FINAL';
     puntuacionFinal.font = {
       name: 'Calibri',
@@ -1072,8 +1073,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     puntuacionFinal.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('D24', 'E25');
-    let calificacion = worksheet.getCell('D24');
+    worksheet.mergeCells('D36', 'E37');
+    let calificacion = worksheet.getCell('D36');
     calificacion.value = 'CALIFICACIÓN';
     calificacion.font = {
       name: 'Calibri',
@@ -1095,8 +1096,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     calificacion.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('F24', 'O25');
-    let feetback = worksheet.getCell('F24');
+    worksheet.mergeCells('F36', 'O37');
+    let feetback = worksheet.getCell('F36');
     feetback.value = 'RETROALIMENTACIÓN FINAL Y PLAN DE MEJORA';
     feetback.font = {
       name: 'Calibri',
@@ -1118,8 +1119,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     feetback.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('P24', 'Q25');
-    let meet = worksheet.getCell('P24');
+    worksheet.mergeCells('P36', 'Q37');
+    let meet = worksheet.getCell('P36');
     meet.value = 'FECHA DE REUNIÓN DE RETROALIMENTACIÓN';
     meet.font = {
       name: 'Calibri',
@@ -1141,8 +1142,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     meet.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('A26', 'C27');
-    let puntuacion = worksheet.getCell('A26');
+    worksheet.mergeCells('A38', 'C39');
+    let puntuacion = worksheet.getCell('A38');
     puntuacion.value = '30.00';
     puntuacion.font = {
       name: 'Calibri',
@@ -1164,8 +1165,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     puntuacion.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('D26', 'E27');
-    let calificacionFinal = worksheet.getCell('D26');
+    worksheet.mergeCells('D38', 'E39');
+    let calificacionFinal = worksheet.getCell('D38');
     calificacionFinal.value = 'Rendimiento Sujeto a Observación';
     calificacionFinal.font = {
       name: 'Calibri',
@@ -1187,8 +1188,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     calificacionFinal.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('F26:G26');
-    let capacitacion = worksheet.getCell('F26');
+    worksheet.mergeCells('F38:G38');
+    let capacitacion = worksheet.getCell('F38');
     capacitacion.value = 'Capacitaciones:';
     capacitacion.font = {
       name: 'Calibri',
@@ -1203,8 +1204,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     capacitacion.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('H26:O26');
-    let capacitacionRespuesta = worksheet.getCell('H26');
+    worksheet.mergeCells('H38:O38');
+    let capacitacionRespuesta = worksheet.getCell('H38');
     capacitacionRespuesta.value = '';
     capacitacionRespuesta.font = {
       name: 'Calibri',
@@ -1219,8 +1220,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     capacitacionRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('P26:Q27');
-    let meetRespuesta = worksheet.getCell('P26');
+    worksheet.mergeCells('P38:Q39');
+    let meetRespuesta = worksheet.getCell('P38');
     meetRespuesta.value = '';
     meetRespuesta.font = {
       name: 'Calibri',
@@ -1235,8 +1236,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     meetRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('F27:G27');
-    let recomendaciones = worksheet.getCell('F27');
+    worksheet.mergeCells('F39:G39');
+    let recomendaciones = worksheet.getCell('F39');
     recomendaciones.value = 'Recomendaciones:';
     recomendaciones.font = {
       name: 'Calibri',
@@ -1251,7 +1252,7 @@ export class GestionRendimientoExcelEjecutorService {
     };
     recomendaciones.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('H27:O27');
+    worksheet.mergeCells('H39:O39');
     let recomendacionRespuesta = worksheet.getCell('H27');
     recomendacionRespuesta.value = '';
     recomendacionRespuesta.font = {
@@ -1268,8 +1269,8 @@ export class GestionRendimientoExcelEjecutorService {
     recomendacionRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
     //FIRMAS DE LOS RESULTADOS FINALES --------------------------------------------------------------
-    worksheet.mergeCells('A28', 'Q28');
-    let firmaFinal = worksheet.getCell('A28');
+    worksheet.mergeCells('A40', 'Q40');
+    let firmaFinal = worksheet.getCell('A40');
     firmaFinal.value = 'FIRMAS DE LOS RESULTADOS FINALES';
     firmaFinal.font = {
       name: 'Calibri',
@@ -1291,8 +1292,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     firmaFinal.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A29', 'C30');
-    let firmaEvaluado = worksheet.getCell('A29');
+    worksheet.mergeCells('A41', 'C42');
+    let firmaEvaluado = worksheet.getCell('A41');
     firmaEvaluado.value = 'FIRMA EVALUADO/A';
     firmaEvaluado.font = {
       name: 'Calibri',
@@ -1314,8 +1315,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     firmaEvaluado.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('D29:I30');
-    let firmaEvaluadoRespuesta = worksheet.getCell('D29');
+    worksheet.mergeCells('D41:I42');
+    let firmaEvaluadoRespuesta = worksheet.getCell('D41');
     firmaEvaluadoRespuesta.value = '';
     firmaEvaluadoRespuesta.font = {
       name: 'Calibri',
@@ -1330,8 +1331,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     firmaEvaluadoRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J29', 'L30');
-    let firmaEvaluador = worksheet.getCell('J29');
+    worksheet.mergeCells('J41', 'L42');
+    let firmaEvaluador = worksheet.getCell('J41');
     firmaEvaluador.value = 'FIRMA EVALUADOR/A';
     firmaEvaluador.font = {
       name: 'Calibri',
@@ -1353,8 +1354,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     firmaEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('M29:Q30');
-    let firmaEvaluadorRespuesta = worksheet.getCell('M29');
+    worksheet.mergeCells('M41:Q42');
+    let firmaEvaluadorRespuesta = worksheet.getCell('M41');
     firmaEvaluadorRespuesta.value = '';
     firmaEvaluadorRespuesta.font = {
       name: 'Calibri',

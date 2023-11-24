@@ -2,7 +2,7 @@
     .actions {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        // justify-content: flex-start;
         column-gap: 0.5rem;
         padding-top: 1rem;
         flex-wrap: wrap;
@@ -47,15 +47,99 @@ table {
     width: 100%;
 }
 
-.primary-button {
-    color: white;
-    background-color: var(--color-bordes);
-}
-
 .color-mensaje {
     color: var(--color-bordes);
 }
 
 .has-success {
     color: var(--color-success);
+}
+
+.mat-list-base .mat-list-item,
+.mat-list-base .mat-list-option {
+    height: 200px;
+    // background-color: #e6effa;
+    border: 1px solid #bfd7f5;
+    font-size: none;
+}
+
+// ul {
+//     list-style-type: none;
+//     // margin-top: 1px;
+//     padding: 0px 0px 0px 0px;
+// }
+
+.mat-column-prioridad {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 8% !important;
+    width: 11% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    word-break: break-word;
+
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-indicador_producto {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 8% !important;
+    width: 18% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    word-break: break-word;
+
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-evidencia {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 8% !important;
+    width: 30% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    word-break: break-word;
+
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-plazo {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 8% !important;
+    width: 15% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    word-break: break-word;
+
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+td,
+th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    // font-size: 11px;
+}
+
+.mat-sort-header-container {
+    justify-content: center !important;
 }

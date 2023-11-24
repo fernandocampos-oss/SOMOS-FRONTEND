@@ -28,7 +28,7 @@ ngOnInit(): void {
 }
 
 async loadPdfFile() {
-  let load = await this._requerimientoService.getEvidenciaPorTarea(this.data.model.idTarea).then((data: any) => {
+  let load = await this._requerimientoService.getSustentoByEvidencia(this.data.model.idEvidencia).then((data: any) => {
     if (data != null) {
       this.evidenciaResponseDto = data;
       this.pdfSrc = this.evidenciaResponseDto.fileBase64;

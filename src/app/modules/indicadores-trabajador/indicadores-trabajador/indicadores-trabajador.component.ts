@@ -16,19 +16,19 @@ import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model'
   styleUrls: ['./indicadores-trabajador.component.scss']
 })
 export class IndicadoresTrabajadorComponent implements OnInit {
-  listDataFinalizados: any[] = [];
   listIndicadoresPendientes: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'fecha_asignacion', 'acciones'];
-
+  groupedColumns: string[] = ['grouped'];
+  
   constructor(
     private _router: Router,
     private route: ActivatedRoute,
     private _matDialog: MatDialog,
-    private _requerimientoService: GestionRendimientoService,
+    private _grService: GestionRendimientoService,
     private _notification: NotificationService,
     public _serviceExcelEjecutor: GestionRendimientoExcelEjecutorService,
     private _snackbar: SnackbarService,
@@ -39,7 +39,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   }
 
   async loadTablePendiente() {
-    let listPendiente = await this._requerimientoService.listarIndicadorPendiente().then((data) => {
+    let listPendiente = await this._grService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
         this.listIndicadoresPendientes = data;
         console.log(this.listIndicadoresPendientes);
@@ -53,10 +53,10 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   async actualizarIndicadoresPendientes() {
     this.listIndicadoresPendientes = [];
     let pendientes = await this.loadTablePendiente();
-    this._snackbar.success("La lista ya se encuentra actualizada");
+    this._snackbar.success("La lista se encuentra actualizada");
   }
 
-  verDetalleIndicadorYtareas(element) {
+  verDetalleIndicadorYEvidencias(element) {
     console.log(element)
     const dialogRef: MatDialogRef<ModalTareaComponent> = this._matDialog.open(ModalTareaComponent, {
       disableClose: false,
@@ -78,97 +78,115 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     this._router.navigate([''], { relativeTo: this.route });
   }
 
-  async generarExcelEjecutor() {
-    console.log("data", this.listIndicadoresPendientes)
-    if (this.listIndicadoresPendientes.length > 0) {
-      let trabajador = new Persona();
-      trabajador.nombre = this.listIndicadoresPendientes[0].usuario.apellidos + "" + this.listIndicadoresPendientes[0].usuario.nombres;
-      trabajador.cargo = this.listIndicadoresPendientes[0].usuario.cargo;
-      trabajador.segmento = "";
-      trabajador.codUnidad = "";
-      trabajador.numeroDocumento = "";
-
-      let listRows: RowsBody[] = [];
-      for (let i of this.listIndicadoresPendientes) {
-        let rowsBody = new RowsBody();
-        rowsBody.prioridad = "";
-        rowsBody.indicador = i.nombre;
-        rowsBody.valorMeta = i.valorMeta;
-        rowsBody.peso = i.peso;
-
-        listRows.push(rowsBody);
-        rowsBody = null;
+  async generarExcelTrabajador() {
+    let load = await this._grService.generarExcelTrabajador().then((data: any) => {
+      if (data != null) {
+        console.log("service excel", data);
+        this.servicioExcelEjecutor(data);
       }
+    });
+  }
 
-      // if (i.listTarea.length > 0) {
-      //   for (let t of i.listTarea) {
-      //     if (t.evidenciaFechaRegistro !== null) { //evidencia registrada?
-      //       //iterativo
-      //       rowsBody.nombre = t.nombre;
-      //       let fechaPlazo = t.plazo.split("T")[0];
-      //       rowsBody.plazo = fechaPlazo;
+  async servicioExcelEjecutor(main: any) {
+    let listRows: RowsBody[] = [];
 
-      //       let fechaEvidencia = t.evidenciaFechaRegistro.split("T")[0];
-      //       console.log("fechaPlazo: ", fechaPlazo, " fechaEvidencia: ", fechaEvidencia);
+    let trabajador = new Persona();
+    trabajador.nombre = main.evaluadoNombreCompleto;
+    trabajador.cargo = main.evaluadoPuesto;
+    trabajador.segmento = main.evaluadoSegmento;
+    trabajador.codUnidad = main.evaluadoCodUnidad;
 
-      //       var first = new Date(fechaPlazo);
-      //       var second = new Date(fechaEvidencia);
+    let jefe = new Persona();
+    jefe.nombre = main.evaluadorNombreCompleto;
+    jefe.cargo = main.evaluadorPuesto;
+    jefe.segmento = main.evaluadorSegmento;
+    jefe.codUnidad = main.evaluadorCodUnidad;
+    jefe.numeroDocumento = main.evaluadorNumeroDocumento
 
-      //       //comparar fechas para evaluacionComentario
-      //       if (first < second) {
-      //         console.log(first, "es menor que", second);
-      //         rowsBody.evaluacionComentario = 'Se pasó de la fecha';
-      //       }
-      //       else if (first > second) {
-      //         console.log(first, "es mayor que", second);
-      //         rowsBody.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
-      //       }
-      //       else if (first == second) {
-      //         console.log(first, "es igual que", second);
-      //         rowsBody.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
-      //       }
-      //       listRows.push(rowsBody);
-      //       rowsBody = null;
-      //       // reportePersonal.estadoEntregado = "Entregado";
-      //     } else {
-      //       console.log("La tarea " + t.idTarea + " no tiene evidencia registrada");
-      //       let rowsBody = new RowsBody();
-      //       rowsBody.actividad = i.actividad.descripcion;
-      //       rowsBody.indicador = i.indicador.nombre;
-      //       rowsBody.valorMeta = i.indicador.valorMeta;
-      //       //iterativo
-      //       rowsBody.pesoFraccion = t.pesoFraccion;
-      //       rowsBody.nombre = t.nombre;
-      //       rowsBody.plazo = t.plazo.split("T")[0];
-      //       rowsBody.evaluacionComentario = 'No presentó evidencia';
-      //       listRows.push(rowsBody);
-      //       rowsBody = null;
-      //     }
-      //   }
-      // } else {
-      //   console.log("El indicador no cuenta con tareas");
-      //   let rowsBody = new RowsBody();
-      //   if (i.actividad != null) {
-      //     rowsBody.actividad = i.actividad.descripcion;
-      //   } else {
-      //     rowsBody.actividad = '-'
-      //   }
-      //   rowsBody.indicador = i.indicador.nombre;
-      //   rowsBody.valorMeta = i.indicador.valorMeta;
-      //   rowsBody.evaluacionComentario = 'No tiene tareas asignadas';
-      //   listRows.push(rowsBody);
-      //   rowsBody = null;
-      // }
+    if (main.listPrioridad.length > 0) {
+      for (let prioridad of main.listPrioridad) {
+        // let rowsBody = new RowsBody();
+        // rowsBody.prioridad = prioridad.prioridadNombre;
 
-      console.log("data excel", listRows);
-      let columnsName = ["String_1", "String_2"];
-      let reportData = {
-        data_trabajador: trabajador,
-        data_evidencia: listRows,
-        headers: columnsName,
-      };
-      let listFinalizado = await this._serviceExcelEjecutor.exportExcelEjecutor(reportData);
+        if (prioridad.listIndicador.length > 0) {
+          for (let indicador of prioridad.listIndicador) {
+            // rowsBody.indicador = indicador.nombreIndicador;
+            // rowsBody.valorMeta = indicador.valorMeta;
+            // rowsBody.peso = indicador.peso;
+
+            if (indicador.listEvidencia.length > 0) {
+              for (let t of indicador.listEvidencia) {
+                let rowsBody = new RowsBody();
+                // constante
+                rowsBody.prioridad = prioridad.prioridadNombre;
+                rowsBody.indicador = indicador.nombreIndicador;
+                rowsBody.valorMeta = indicador.valorMeta;
+                rowsBody.peso = indicador.peso;
+
+                //iterativo
+                rowsBody.nombreTarea = t.descripcion;
+                let fechaPlazo = t.plazo.split("T")[0];
+                // rowsBody.plazo = fechaPlazo;
+
+                const date = new Date(fechaPlazo);
+                let year = date.getFullYear();
+                let mes = date.toLocaleDateString("es-ES", { month: 'long' })
+                rowsBody.plazo = mes + " " + year;
+
+                //comentario
+                if (t.sustentoFechaRegistro !== null) {
+                  let fechaEvidencia = t.sustentoFechaRegistro.split("T")[0];
+                  console.log("fechaPlazo: ", fechaPlazo, " fechaEvidencia: ", fechaEvidencia);
+
+                  var first = new Date(fechaPlazo);
+                  var second = new Date(fechaEvidencia);
+
+                  //comparar fechas para evaluacionComentario
+                  if (first < second) {
+                    console.log(first, "es menor que", second);
+                    rowsBody.comentario = 'Se pasó de la fecha';
+                  }
+                  else if (first > second) {
+                    console.log(first, "es mayor que", second);
+                    rowsBody.comentario = 'Presentó evidencia dentro de la fecha';
+                  }
+                  else if (first == second) {
+                    console.log(first, "es igual que", second);
+                    rowsBody.comentario = 'Presentó evidencia dentro de la fecha';
+                  }
+                } else {
+                  console.log("La evidencia " + t.idEvidencia + " no tiene sustento");
+                  //iterativo
+                  let fechaPlazo = t.plazo.split("T")[0];
+
+                  const date = new Date(fechaPlazo);
+                  let year = date.getFullYear();
+                  let mes = date.toLocaleDateString("es-ES", { month: 'long' })
+                  rowsBody.plazo = mes + " " + year;
+
+                  rowsBody.comentario = 'No presentó evidencia';
+                }
+
+                listRows.push(rowsBody);
+                rowsBody = null;
+              }
+            }
+          }
+        }
+      }
+    } else {
+      console.log("Prioridades vacio")
     }
+
+    console.log("data excel", listRows);
+    let columnsName = ["String_1", "String_2"];
+    let reportData = {
+      data_trabajador: trabajador,
+      data_jefe: jefe,
+      data_filas: listRows,
+      headers: columnsName,
+    };
+    let excel = await this._serviceExcelEjecutor.exportExcelEjecutor(reportData);
   }
 
 }

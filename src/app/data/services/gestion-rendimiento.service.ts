@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
-import { ActividadResponse, EquipoRequest, EvidenciaResponseDto, EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { ActividadResponse, EmailNotificacionRequestDto, EquipoRequest, EvidenciaResponseDto, EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { IndicadorExistRequestDto } from '@data/models/gestion-rendimiento/indicador-exist-evidencia.model';
 import { PrioridadExistRequestDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
 
@@ -102,6 +102,12 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
+  async sendCorreoNotificacion(dto: EmailNotificacionRequestDto) {
+    const url = `${URL_BASE}/prioridades/correo-notificar`;
+    console.log(url, dto);
+    return await this.http.post(url, dto).toPromise();
+  }
+
   //Indicadores
   async asignarPesoIndicador(peso: number, idIndicador: number) {
     const url = `${URL_BASE}/indicadores/asignar/peso/${peso}/indicador/${idIndicador}`;
@@ -132,6 +138,13 @@ export class GestionRendimientoService {
     console.log(url, model);
     return await this.http.put(url, model).toPromise();
   }
+
+  async generarExcelTrabajador() {
+    const url = `${URL_BASE}/indicadores/excel/trabajador`;
+    console.log(url);
+    return await this.http.get<Object[]>(url).toPromise();
+  }
+  
 
   //Equipo
   async listarIntegrantesPorLider() {
@@ -183,7 +196,7 @@ export class GestionRendimientoService {
     return await this.http.post(url, dto).toPromise();
   }
 
-  async getTareasByIdIndicador(idIndicador: number,) {
+  async getEvidenciasByIndicador(idIndicador: number,) {
     const url = `${URL_BASE}/evidencias/listar/indicador/${idIndicador}`;
     console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
@@ -195,8 +208,8 @@ export class GestionRendimientoService {
     return await this.http.get<any[]>(url).toPromise();
   }
 
-  async getEvidenciaPorTarea(idTarea: number) {
-    const url = `${URL_BASE}/evidencias/obtener/evidencia/${idTarea}`;
+  async getSustentoByEvidencia(idEvidencia: number) {
+    const url = `${URL_BASE}/evidencias/obtener/evidencia/${idEvidencia}`;
     console.log(url);
     return await this.http.get<EvidenciaResponseDto>(url).toPromise();
   }

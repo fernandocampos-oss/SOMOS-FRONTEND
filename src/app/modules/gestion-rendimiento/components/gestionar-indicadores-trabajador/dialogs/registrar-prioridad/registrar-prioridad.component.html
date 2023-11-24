@@ -33,7 +33,7 @@
                 <mat-grid-tile [colspan]="6">
                     <mat-form-field appearance="outline">
                         <mat-label>Detalle del Indicador / Producto</mat-label>
-                        <textarea matInput (keyup)="onKey($event)" formControlName="frmDetalleIndicador" type="text" minlength="15" maxlength="300">
+                        <textarea matInput (keyup)="onKey($event)" formControlName="frmDetalleIndicador" type="text" minlength="20" maxlength="300">
                         </textarea>
                         <mat-hint align="end">Máx. {{contadorTxtArea}} / 300</mat-hint>
                     </mat-form-field>
@@ -41,12 +41,13 @@
                 <mat-grid-tile [colspan]="1">
                     <mat-form-field appearance="outline">
                         <mat-label>Peso</mat-label>
-                        <input matInput formControlName="frmPeso">
+                        <input matInput formControlName="frmPeso" class="example-right-align" minlength="1" maxlength="3">
+                        <span matSuffix class="percent-align">%</span>
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="2">
                     <mat-form-field appearance="outline">
-                        <mat-label>Tipo de valor meta</mat-label>
+                        <mat-label>Unidad de medida</mat-label>
                         <mat-select [(value)]="idValorMetaSeleccionado" formControlName="frmTipoValorMeta"
                             (selectionChange)="onSelectionChangeTipoValorMeta($event)">
                             <mat-option *ngFor="let t of listTipoValorMeta" [value]="t.idTipoValorMeta">

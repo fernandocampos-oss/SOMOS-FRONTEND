@@ -2,7 +2,7 @@ import { FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { AppConfig } from '@core/configs';
-import { ActividadResponse, IndicadorRequest, TareaRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { ActividadResponse, IndicadorRequest } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
@@ -40,7 +40,7 @@ export class AsignarTareaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("asignar: ", this.data)
+    console.log(this.data)
   }
 
   crearEvidencia() {

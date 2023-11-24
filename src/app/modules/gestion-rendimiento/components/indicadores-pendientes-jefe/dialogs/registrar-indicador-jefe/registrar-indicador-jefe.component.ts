@@ -87,9 +87,7 @@ export class RegistrarIndicadorJefeComponent implements OnInit {
   }
 
   private _getModel(): IndicadorRequest {
-    // let modelTipoIngreso = new TipoIngreso();
-    // modelTipoIngreso.idTipoIngreso = this.form.value.frmTipoIngreso;
-
+    
     let modelTipoValorMeta = new TipoValorMeta();
     modelTipoValorMeta.idTipoValorMeta = this.form.value.frmTipoValorMeta;
 

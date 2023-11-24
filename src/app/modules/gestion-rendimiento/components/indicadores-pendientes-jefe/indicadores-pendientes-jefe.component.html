@@ -1,99 +1,143 @@
 <div class="actions">
-    <button mat-raised-button color="primary" (click)="registrarIndicadorJefe()">
-        <mat-icon>add_circle</mat-icon>
-        &nbsp; Registrar Indicador/Producto
-    </button>
-    <div *ngIf="listDataPendientes.length !== 0">
+    <div *ngIf="listIndicadoresPendientes.length !== 0">
         <button mat-raised-button color="primary" (click)="actualizarIndicadoresPendientes()"
-            *ngIf="listDataPendientes.length !== 0">
+            *ngIf="listIndicadoresPendientes.length !== 0">
             <mat-icon>cached</mat-icon>
-            &nbsp; Actualizar Lista
+            &nbsp; Actualizar
         </button>
-        <button mat-button class="has-success" (click)="exportToExcelGR()">
-            <mat-icon>get_app</mat-icon>
-            &nbsp; Formato Excel
+        &nbsp;
+        <button mat-raised-button class="has-success" (click)="generarExcelTrabajador()">
+            <mat-icon>cloud_download</mat-icon>
+            &nbsp; Formato
         </button>
     </div>
 </div>
 <br />
-<div *ngIf="listDataPendientes.length == 0" style="text-align: center">
+<div *ngIf="listIndicadoresPendientes.length == 0" style="text-align: center">
     <br />
     <p class="color-mensaje">Sin registros por mostrar</p>
 </div>
-<div *ngIf="listDataPendientes.length !== 0">
+<div *ngIf="listIndicadoresPendientes.length !== 0">
     <br />
-    <table mat-table #tablaindicadorea [dataSource]="dataSource" matSort>
+    <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef>N°</th>
-            <td mat-cell *matCellDef="let element, index as i"> {{i+1}} </td>
+            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+        </ng-container>
+        <ng-container matColumnDef="prioridad">
+            <th mat-header-cell *matHeaderCellDef>Prioridades anuales de gestión del órgano o unidad orgánica</th>
+            <td mat-cell *matCellDef="let element">{{element.prioridadNombre ? element.prioridadNombre :'-'}}
+            </td>
         </ng-container>
         <ng-container matColumnDef="indicador_producto">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Indicador / Producto</th>
+            <th mat-header-cell *matHeaderCellDef>Indicador / producto</th>
             <td mat-cell *matCellDef="let element">
-                {{element.nombre}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="descripcion">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.descripcion}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="fecha_creacion">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de creación</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.fechaCreacion | date: 'dd-MM-yyyy'}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="tipo_ingreso">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de ingreso</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.tipoIngreso.descripcion | titlecase}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="tipo_valor_meta">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de valor meta</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.tipoValorMeta.descripcion | titlecase}}
+                <mat-list>
+                    <mat-list-item *ngFor="let x of element.listIndicador">
+                        {{x.nombreIndicador}}
+                        <mat-divider></mat-divider>
+                    </mat-list-item>
+                </mat-list>
             </td>
         </ng-container>
         <ng-container matColumnDef="valor_meta">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Valor meta</th>
             <td mat-cell *matCellDef="let element">
-                <div *ngIf="((element.tipoValorMeta.codigo =='03') || (element.tipoValorMeta.codigo == '04'))">
-                    {{element.valorMeta}}%
-                </div>
-                <div *ngIf="((element.tipoValorMeta.codigo =='01') || (element.tipoValorMeta.codigo == '02'))">
-                    {{element.valorMeta}}
-                </div>
+                <mat-list>
+                    <mat-list-item *ngFor="let x of element.listIndicador">
+                        <div *ngIf="((x.codTipoValorMeta =='03') || (x.codTipoValorMeta == '04'))">
+                            {{x.valorMeta}}%
+                        </div>
+                        <div *ngIf="((x.codTipoValorMeta =='01') || (x.codTipoValorMeta == '02'))">
+                            {{x.valorMeta}}
+                        </div>
+                        <mat-divider></mat-divider>
+                    </mat-list-item>
+                </mat-list>
             </td>
         </ng-container>
-        <!-- <ng-container matColumnDef="estado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+        <ng-container matColumnDef="peso">
+            <th mat-header-cell *matHeaderCellDef>Peso</th>
             <td mat-cell *matCellDef="let element">
-                <mat-chip-list>
-                    <mat-chip
-                        [ngClass]="{'red-background':element.estadoIndicador.codigo== '01', 'gren-background':element.estadoIndicador.codigo== '02'}">
-                        {{element.estadoIndicador.descripcion | titlecase}}
-                    </mat-chip>
-                </mat-chip-list>
+                <mat-list>
+                    <mat-list-item *ngFor="let p of element.listIndicador">
+                        {{p.peso}}%
+                        <mat-divider></mat-divider>
+                    </mat-list-item>
+                </mat-list>
             </td>
-        </ng-container> -->
+        </ng-container>
+        <ng-container matColumnDef="evidencia">
+            <th mat-header-cell *matHeaderCellDef>Evidencia</th>
+            <td mat-cell *matCellDef="let element">
+                <mat-list>
+                    <mat-list-item *ngFor="let z of element.listIndicador">
+                        <!-- <h3 matLine> {{message.from}} </h3> -->
+                        <p matLine *ngFor="let t of z.listEvidencia">
+                            <!-- <span> {{message.subject}} </span> -->
+                            <span class="demo-2">{{t.descripcion}}</span>
+                            <!-- [disabled]="(element.estadoIndicador.codigo == '01' || element.estadoIndicador.codigo == '04') ? true : false" -->
+                            <!-- <button mat-icon-button class="color-mensaje" matTooltip="Registrar evidencia">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button> -->
+                        </p>
+                    </mat-list-item>
+                </mat-list>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="plazo">
+            <th mat-header-cell *matHeaderCellDef>Plazo</th>
+            <td mat-cell *matCellDef="let element">
+                <mat-list>
+                    <mat-list-item *ngFor="let z of element.listIndicador">
+                        <!-- <h3 matLine> {{message.from}} </h3> -->
+                        <p matLine *ngFor="let t of z.listEvidencia">
+                            <!-- <span> {{message.subject}} </span> -->
+                            <span class="demo-2">{{t.plazo | date: 'MMMM y' | titlecase}}</span>
+                        </p>
+                    </mat-list-item>
+                </mat-list>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="tipo_formula">
+            <th mat-header-cell *matHeaderCellDef>Tipo fórmula</th>
+            <td mat-cell *matCellDef="let element"></td>
+        </ng-container>
+        <ng-container matColumnDef="logro_final">
+            <th mat-header-cell *matHeaderCellDef>Logro final por meta</th>
+            <td mat-cell *matCellDef="let element"></td>
+        </ng-container>
+        <ng-container matColumnDef="puntuacion_meta">
+            <th mat-header-cell *matHeaderCellDef>Puntuacion por meta</th>
+            <td mat-cell *matCellDef="let element"></td>
+        </ng-container>
+        <ng-container matColumnDef="fecha_asignacion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de asignación</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.fechaCreacion | date: 'dd-MM-yyyy'}}
+            </td>
+        </ng-container>
         <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <!-- [disabled]="(element.estadoIndicador.codigo == '01' ) ? true : false" -->
-                <button mat-icon-button class="color-mensaje" matTooltip="Ver tareas asignadas"
-                    (click)="verDetalleIndicadorYtareas(element)">
-                    <mat-icon>library_books</mat-icon>
-                </button>
-                <!-- *ngIf="element.estadoIndicador.codigo == '01'" -->
-                <!-- <button mat-icon-button class="color-mensaje" matTooltip="Editar Indicador"
-                    (click)="editarIndicadorJefe(element, true)">
-                    <mat-icon>edit</mat-icon>
-                </button> -->
+                <mat-list>
+                    <mat-list-item *ngFor="let z of element.listIndicador">
+                        <!-- [disabled]="(element.estadoIndicador.codigo == '01' ) ? true : false" -->
+                        <button mat-icon-button class="color-mensaje" matTooltip="Ver evidencias asignadas"
+                            (click)="verDetalleIndicadorYEvidencias(z)">
+                            <mat-icon>library_books</mat-icon>
+                        </button>
+                    </mat-list-item>
+                </mat-list>
             </td>
         </ng-container>
+
+        <ng-container matColumnDef="grouped">
+            <th mat-header-cell *matHeaderCellDef colspan="8" class="centered">ETAPA DE PLANIFICACIÓN
+            </th>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="groupedColumns; sticky: true"></tr>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>

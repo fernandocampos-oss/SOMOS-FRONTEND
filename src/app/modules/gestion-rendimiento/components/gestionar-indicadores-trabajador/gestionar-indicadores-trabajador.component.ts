@@ -1,4 +1,3 @@
-import { element } from 'protractor';
 import { GestionRendimientoExcelDirectivoService } from './../../../../data/services/gestion-rendimiento-excel-directivo.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -19,9 +18,12 @@ import { AsignarIndicadorComponent } from './dialogs/asignar-indicador/asignar-i
   styleUrls: ['./gestionar-indicadores-trabajador.component.scss']
 })
 export class GestionarIndicadoresTrabajadorComponent implements OnInit {
-  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'comentario', 'logro_final', 'puntuacion_meta'];
+  groupedColumns: string[] = ['grouped'];
   // menuToggle = new EventEmitter<void>();
   listDataTable: any[] = [];
+  condicion_1: any;
+  condicion_2: any;
 
   constructor(
     private _dialog: MatDialog,
@@ -33,12 +35,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTable();
+
+    this.getSegmentoModuloGR();
   }
 
   async actualizar() {
     this.listDataTable = [];
     let update = await this.loadTable();
-    this._snackbar.success("La lista ya se encuentra actualizada.");
+    this._snackbar.success("La lista se encuentra actualizada.");
   }
 
   async loadTable() {
@@ -51,7 +55,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   verIndicadorYtarea(element) {
-    console.log("e", element)
+    // console.log(element)
     const dialogRef: MatDialogRef<ReadIndicadorTareaComponent> = this._dialog.open(ReadIndicadorTareaComponent, {
       disableClose: false,
       width: '40%',
@@ -138,7 +142,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     const dialogRef: MatDialogRef<RegistrarPrioridadComponent> = this._dialog.open(RegistrarPrioridadComponent, {
       disableClose: false,
       width: '60%',
-      maxHeight: '80vh',
+      // maxHeight: '80vh',
       autoFocus: false,
       data: {
         // modal: element
@@ -148,6 +152,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadTable();
     });
+    // this.loadTable();
   }
 
   // editarIndicador(element, es_editar) {
@@ -168,14 +173,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   //   });
   // }
 
-  async notificarCorreo() {
+  async notificarCorreo(email: string) {
     const dialogRef: MatDialogRef<NotificacionCorreoComponent> = this._dialog.open(NotificacionCorreoComponent, {
       disableClose: false,
       width: '35%',
       maxHeight: '80vh',
       autoFocus: false,
       data: {
-        // modal: element
+        correo: email
       }
     });
 
@@ -184,10 +189,23 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
+  async getSegmentoModuloGR() {
+    let load = await this._grService.getVotanteByIdUsuario().then((data: any) => {
+      if (data) {
+        if (data.codCondicion != null) {
+          let string = data.codCondicion;
+          let parts = string.split(",");
+          this.condicion_1 = parts[0];
+          this.condicion_2 = parts[1];
+        }
+      }
+    });
+  }
+
   async generarExcelDirectivo() {
     let load = await this._grService.generarExcelDirectivo().then((data: any) => {
       if (data != null || data.length > 0) {
-        console.log("lista prioridad", data);
+        console.log("service excel", data);
         for (let main of data) {
           this.servicioExcelDirectivo(main);
         }
@@ -197,7 +215,6 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
   async servicioExcelDirectivo(main: any) {
     console.log("main", main)
-
     let listRows: RowsBody[] = [];
 
     let trabajador = new Persona();
@@ -215,7 +232,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
     if (main.listPrioridad.length > 0) {
       for (let prioridad of main.listPrioridad) {
-        let rowsBody = new RowsBody();
+        // let rowsBody = new RowsBody();
         // rowsBody.prioridad = prioridad.prioridadNombre;
 
         if (prioridad.listIndicador.length > 0) {
@@ -225,20 +242,57 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
             // rowsBody.peso = indicador.peso;
 
             if (indicador.listTarea.length > 0) {
-              for (let tarea of indicador.listTarea) {
+              for (let t of indicador.listTarea) {
                 let rowsBody = new RowsBody();
                 // constante
                 rowsBody.prioridad = prioridad.prioridadNombre;
                 rowsBody.indicador = indicador.nombreIndicador;
                 rowsBody.valorMeta = indicador.valorMeta;
                 rowsBody.peso = indicador.peso;
-                console.log("1:", rowsBody.prioridad)
-                console.log("2:", rowsBody.indicador)
-                console.log("3:", rowsBody.valorMeta)
+
                 //iterativo
-                rowsBody.nombreTarea = tarea.nombre;
-                let fechaPlazo = tarea.plazo.split("T")[0];
-                rowsBody.plazo = fechaPlazo;
+                rowsBody.nombreTarea = t.nombre;
+                let fechaPlazo = t.plazo.split("T")[0];
+                // rowsBody.plazo = fechaPlazo;
+
+                const date = new Date(fechaPlazo);
+                let year = date.getFullYear();
+                let mes = date.toLocaleDateString("es-ES", { month: 'long' })
+                rowsBody.plazo = mes + " " + year;
+
+                //comentario
+                if (t.evidenciaFechaRegistro !== null) {
+                  let fechaEvidencia = t.evidenciaFechaRegistro.split("T")[0];
+                  console.log("fechaPlazo: ", fechaPlazo, " fechaEvidencia: ", fechaEvidencia);
+
+                  var first = new Date(fechaPlazo);
+                  var second = new Date(fechaEvidencia);
+
+                  //comparar fechas para evaluacionComentario
+                  if (first < second) {
+                    console.log(first, "es menor que", second);
+                    rowsBody.comentario = 'Se pasó de la fecha';
+                  }
+                  else if (first > second) {
+                    console.log(first, "es mayor que", second);
+                    rowsBody.comentario = 'Presentó evidencia dentro de la fecha';
+                  }
+                  else if (first == second) {
+                    console.log(first, "es igual que", second);
+                    rowsBody.comentario = 'Presentó evidencia dentro de la fecha';
+                  }
+                } else {
+                  console.log("La evidencia " + t.idEvidencia + " no cuenta con sustento");
+                  //iterativo
+                  let fechaPlazo = t.plazo.split("T")[0];
+
+                  const date = new Date(fechaPlazo);
+                  let year = date.getFullYear();
+                  let mes = date.toLocaleDateString("es-ES", { month: 'long' })
+                  rowsBody.plazo = mes + " " + year;
+
+                  rowsBody.comentario = 'No presentó evidencia';
+                }
 
                 listRows.push(rowsBody);
                 rowsBody = null;
@@ -251,75 +305,6 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       console.log("Prioridades vacio")
     }
 
-    // // let listRows: RowsBody[] = [];
-    // for (let i of this.listDataPendientes) {
-    //   if (i.listTarea.length > 0) {
-    //     for (let t of i.listTarea) {
-    //       if (t.evidenciaFechaRegistro !== null) { //evidencia registrada?
-    //         let rowsBody = new RowsBody();
-    //         rowsBody.actividad = i.actividad.descripcion;
-    //         rowsBody.indicador = i.indicador.nombre;
-    //         rowsBody.valorMeta = i.indicador.valorMeta;
-    //         //iterativo
-    //         rowsBody.pesoFraccion = t.pesoFraccion;
-    //         rowsBody.nombre = t.nombre;
-    //         let fechaPlazo = t.plazo.split("T")[0];
-    //         rowsBody.plazo = fechaPlazo;
-
-    //         let fechaEvidencia = t.evidenciaFechaRegistro.split("T")[0];
-    //         console.log("fechaPlazo: ", fechaPlazo, " fechaEvidencia: ", fechaEvidencia);
-
-    //         var first = new Date(fechaPlazo);
-    //         var second = new Date(fechaEvidencia);
-
-    //         //comparar fechas para evaluacionComentario
-    //         if (first < second) {
-    //           console.log(first, "es menor que", second);
-    //           rowsBody.evaluacionComentario = 'Se pasó de la fecha';
-    //         }
-    //         else if (first > second) {
-    //           console.log(first, "es mayor que", second);
-    //           rowsBody.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
-    //         }
-    //         else if (first == second) {
-    //           console.log(first, "es igual que", second);
-    //           rowsBody.evaluacionComentario = 'Presentó evidencia dentro de la fecha';
-    //         }
-    //         listRows.push(rowsBody);
-    //         rowsBody = null;
-    //         // reportePersonal.estadoEntregado = "Entregado";
-    //       } else {
-    //         console.log("La tarea " + t.idTarea + " no tiene evidencia registrada");
-    //         let rowsBody = new RowsBody();
-    //         rowsBody.actividad = i.actividad.descripcion;
-    //         rowsBody.indicador = i.indicador.nombre;
-    //         rowsBody.valorMeta = i.indicador.valorMeta;
-    //         //iterativo
-    //         rowsBody.pesoFraccion = t.pesoFraccion;
-    //         rowsBody.nombre = t.nombre;
-    //         rowsBody.plazo = t.plazo.split("T")[0];
-    //         rowsBody.evaluacionComentario = 'No presentó evidencia';
-    //         listRows.push(rowsBody);
-    //         rowsBody = null;
-    //       }
-    //     }
-    //   } else {
-    //     console.log("El indicador no cuenta con tareas");
-    //     let rowsBody = new RowsBody();
-    //     if (i.actividad != null) {
-    //       rowsBody.actividad = i.actividad.descripcion;
-    //     } else {
-    //       rowsBody.actividad = '-'
-    //     }
-    //     rowsBody.indicador = i.indicador.nombre;
-    //     rowsBody.valorMeta = i.indicador.valorMeta;
-    //     rowsBody.evaluacionComentario = 'No tiene tareas asignadas';
-    //     listRows.push(rowsBody);
-    //     rowsBody = null;
-    //   }
-
-    // }
-
     console.log("data excel", listRows);
     let columnsName = ["String_1", "String_2"];
     let reportData = {
@@ -329,7 +314,6 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       headers: columnsName,
     };
     let excel = await this._serviceExcelDirectivo.exportExcelDirectivo(reportData);
-
   }
 
 }

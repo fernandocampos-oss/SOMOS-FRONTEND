@@ -13,5 +13,5 @@ export class RowsBody {
     peso?: number;
     nombreTarea?: string;
     plazo?: string;
-    // evaluacionComentario?: string;
+    comentario?: string;
 }

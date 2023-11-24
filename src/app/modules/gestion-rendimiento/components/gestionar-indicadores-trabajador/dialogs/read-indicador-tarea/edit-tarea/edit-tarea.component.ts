@@ -10,7 +10,7 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
   styleUrls: ['./edit-tarea.component.scss']
 })
 export class EditTareaComponent implements OnInit {
-  tarea: EvidenciaRequest;
+  evidencia: EvidenciaRequest;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public _data: any,
@@ -26,10 +26,10 @@ export class EditTareaComponent implements OnInit {
   }
 
   getModel() {
-    // this.tarea = new TareaRequest();
-    // this.tarea.idTarea = this._data.model.idTarea;
-    // this.tarea.nombre = this._data.model.nombre;
-    // this.tarea.plazo = this._data.model.plazo;
+    // this.evidencia = new TareaRequest();
+    // this.evidencia.idTarea = this._data.model.idTarea;
+    // this.evidencia.nombre = this._data.model.nombre;
+    // this.evidencia.plazo = this._data.model.plazo;
   }
 
   async modificarTareaAdministrador() {

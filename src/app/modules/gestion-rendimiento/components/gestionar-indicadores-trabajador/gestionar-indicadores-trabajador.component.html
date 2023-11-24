@@ -1,24 +1,26 @@
 <div class="actions">
-    <button mat-raised-button color="primary" (click)="registrarPrioridad()">
-        <mat-icon>add_circle</mat-icon>
-        &nbsp; Registrar Indicador/Producto
-    </button>
+    <!-- <div *ngIf="(condicion_1 ==='01' || condicion_2 ==='04') || (condicion_1 ==='04' || condicion_2 ==='01')"> -->
     <button mat-raised-button color="primary" (click)="modalMiEquipo()">
         <mat-icon>groups</mat-icon>
         &nbsp; Mi Equipo
+    </button>
+    <!-- </div> -->
+    <button mat-raised-button color="primary" (click)="registrarPrioridad()">
+        <mat-icon>add_circle</mat-icon>
+        &nbsp; Registrar Indicador/Producto
     </button>
     <button mat-raised-button color="primary" (click)="actualizar()">
         <mat-icon>cached</mat-icon>
         &nbsp; Actualizar
     </button>
-    <button mat-button color="primary" (click)="generarExcelDirectivo()">
-        <mat-icon>get_app</mat-icon>
+    <button mat-raised-button class="has-success" (click)="generarExcelDirectivo()">
+        <mat-icon>cloud_download</mat-icon>
         &nbsp; Formato
     </button>
 </div>
 <div *ngIf="listDataTable.length == 0" style="text-align: center">
     <br>
-    <p class="color-mensaje">Sin registros por mostrar, para visualizar puede añadir integrantes a su equipo</p>
+    <p class="color-mensaje">Sin registros por mostrar, para visualizar debe añadir integrantes a su equipo</p>
 </div>
 <div *ngIf="listDataTable.length !== 0">
     <br />
@@ -33,7 +35,8 @@
                     </mat-panel-title>
                     <mat-panel-description>
                         <div class="send-email">
-                            <button mat-button color="primary" (click)="notificarCorreo()">
+                            <button mat-button color="primary" (click)="notificarCorreo(i.email)"
+                                [disabled]="(i.listPrioridad.length === 0) ? true : false">
                                 <mat-icon>email</mat-icon>
                                 &nbsp; Notificar
                             </button>
@@ -67,10 +70,14 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let x of element.listIndicador">
-                                        {{x.nombreIndicador}}
+                                        <!-- <h3 matLine> {{x.nombreIndicador}} </h3> -->
+                                        <p matLine>
+                                            <!-- <span>{{x.nombreIndicador}}</span> -->
+                                            <span class="demo-2">{{x.nombreIndicador}}</span>
+                                        </p>
                                         <button mat-icon-button class="has-success" matTooltip="Asignar nueva evidencia"
                                             (click)="agregarEvidencia(x)">
-                                            <mat-icon>add_circle</mat-icon>
+                                            <mat-icon matListIcon>add_circle</mat-icon>
                                         </button>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
@@ -113,27 +120,23 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador">
-                                        <section class="example-section">
-                                            <span class="example-list-section">
-                                                <ul>
-                                                    <li *ngFor="let t of z.listEvidencia">
-                                                        {{t.descripcion}}
-                                                        <!-- [disabled]="(element.estadoIndicador.codigo == '01' || element.estadoIndicador.codigo == '04') ? true : false" -->
-                                                        <button mat-icon-button class="primary-button"
-                                                            matTooltip="Seguimiento de la evidencia"
-                                                            (click)="verIndicadorYtarea(t)">
-                                                            <mat-icon>remove_red_eye</mat-icon>
-                                                        </button>
-                                                        <!-- *ngIf="element.estadoIndicador.codigo == '01'" -->
-                                                        <!-- <button mat-icon-button class="color-mensaje"
-                                                            matTooltip="Editar Indicador"
-                                                            (click)="editarIndicador(element, true)">
-                                                            <mat-icon>edit</mat-icon>
-                                                        </button> -->
-                                                    </li>
-                                                </ul>
-                                            </span>
-                                        </section>
+                                        <!-- <h3 matLine> {{message.from}} </h3> -->
+                                        <p matLine *ngFor="let t of z.listEvidencia">
+                                            <!-- <span>{{t.descripcion}}</span> -->
+                                            <span class="demo-2">{{t.descripcion}}</span>
+                                            <!-- [disabled]="(element.estadoIndicador.codigo == '01' || element.estadoIndicador.codigo == '04') ? true : false" -->
+                                            <button mat-icon-button class="primary-button"
+                                                matTooltip="Seguimiento de la evidencia"
+                                                (click)="verIndicadorYtarea(t)">
+                                                <mat-icon matListIcon>remove_red_eye</mat-icon>
+                                            </button>
+                                            <mat-divider></mat-divider>
+                                            <!-- *ngIf="element.estadoIndicador.codigo == '01'" -->
+                                            <!-- <button mat-icon-button class="color-mensaje" matTooltip="Editar Indicador"
+                                                (click)="editarIndicador(element, true)">
+                                                <mat-icon>edit</mat-icon>
+                                            </button> -->
+                                        </p>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
@@ -143,21 +146,21 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador">
-                                        <section class="example-section">
-                                            <span class="example-list-section">
-                                                <ul>
-                                                    <li *ngFor="let t of z.listEvidencia">
-                                                        {{t.plazo | date: 'dd-MM-yyyy'}}
-                                                    </li>
-                                                </ul>
-                                            </span>
-                                        </section>
+                                        <!-- <h3 matLine> {{message.from}} </h3> -->
+                                        <p matLine *ngFor="let t of z.listEvidencia">
+                                            <!-- <span> {{message.subject}} </span> -->
+                                            <span class="demo-2">{{t.plazo | date: 'MMMM y' | titlecase}}</span>
+                                        </p>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="tipo_formula">
                             <th mat-header-cell *matHeaderCellDef>Tipo fórmula</th>
+                            <td mat-cell *matCellDef="let element"></td>
+                        </ng-container>
+                        <ng-container matColumnDef="comentario">
+                            <th mat-header-cell *matHeaderCellDef>Comentario</th>
                             <td mat-cell *matCellDef="let element"></td>
                         </ng-container>
                         <ng-container matColumnDef="logro_final">
@@ -168,17 +171,13 @@
                             <th mat-header-cell *matHeaderCellDef>Puntuacion por meta</th>
                             <td mat-cell *matCellDef="let element"></td>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="estado">
-                            <th mat-header-cell *matHeaderCellDef>Estado</th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-chip-list>
-                                    <mat-chip [ngClass]="{'red-background':element.estadoRequerimiento.codigo== 1, 'gren-background':element.estadoRequerimiento.codigo== 2,
-                        'finalizado-background':element.estadoRequerimiento.codigo== 6}">
-                                        {{element.estadoRequerimiento.descripcion | titlecase}}
-                                    </mat-chip>
-                                </mat-chip-list>
-                            </td>
-                        </ng-container> -->
+
+                        <ng-container matColumnDef="grouped">
+                            <th mat-header-cell *matHeaderCellDef colspan="8" class="centered">ETAPA DE PLANIFICACIÓN
+                            </th>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="groupedColumns; sticky: true"></tr>
+                        
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>

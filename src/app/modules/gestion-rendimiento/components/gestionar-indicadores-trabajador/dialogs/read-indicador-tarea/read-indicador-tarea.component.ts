@@ -35,7 +35,7 @@ export class ReadIndicadorTareaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("tarea", this.data)
+    console.log(this.data)
     // this.createForm();
   }
 
@@ -51,7 +51,7 @@ export class ReadIndicadorTareaComponent implements OnInit {
   //   });
   // }
 
-  editarTarea(element) {
+  editarEvidencia(element) {
     const dialogRef: MatDialogRef<EditTareaComponent> = this._dialog.open(EditTareaComponent, {
       disableClose: false,
       width: '40%',
@@ -67,7 +67,7 @@ export class ReadIndicadorTareaComponent implements OnInit {
     });
   }
 
-  verImagenEvidencia(element) {
+  verEvidenciaImagen(element) {
     const dialogRef: MatDialogRef<VerEvidenciaImagenComponent> = this._dialog.open(VerEvidenciaImagenComponent, {
       disableClose: false,
       width: '50%',

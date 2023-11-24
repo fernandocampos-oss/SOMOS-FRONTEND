@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { AppConfig } from '@core/configs';
 import { NotificationService } from '@core/services';
 import { ActividadResponse, TipoValorMeta } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
-import { ActividadRequest, EvidenciaRequest, IndicadorRequest, PrioridadRequestDto, VotanteRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
 import { EvidenciaExistDto, IndicadorExistDto, PrioridadExistDto, PrioridadExistRequestDto, VotanteExistDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 import * as moment from 'moment';
 
 @Component({
@@ -44,9 +44,11 @@ export class AsignarIndicadorComponent implements OnInit {
   idValorMetaSeleccionado: number;
   onChangeValueTipoValorMeta: number;
 
+  confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialog,
+    private _dialog: MatDialog,
     private _notification: NotificationService,
     private _formBuilder: FormBuilder,
     private _grService: GestionRendimientoService,
@@ -131,13 +133,23 @@ export class AsignarIndicadorComponent implements OnInit {
     prioridadExistDto.votante = votante;
     prioridadExistDto.indicador = indicador;
     prioridadExistDto.listEvidencia = evidencias;
-    console.log("prioridadExistDto", prioridadExistDto)
+    // console.log(prioridadExistDto)
 
-    let registrar = await this._grService.registrarIndicadorExistPrioridad(prioridadExistDto).then(data => {
-      this._notification.success("Se registró correctamente");
-      // this.dialogRef.closeAll();
+    this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
     });
-    this.dialogRef.closeAll();
+    this.confirmDialogRef.componentInstance.confirmMessage = '¿Estas seguro de continuar?';
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+        this._grService.registrarIndicadorExistPrioridad(prioridadExistDto).then(data => {
+          this._notification.success("Se registró correctamente");
+          // this.dialogRef.closeAll();
+        });
+        // this._dialog.closeAll();
+      }
+      this.confirmDialogRef = null;
+    });
 
   }
 

@@ -12,10 +12,18 @@
     }
 }
 
+mat-form-field {
+    width: 100%;
+}
+
 .boton {
     width: 60%;
 }
 
 .close-button {
     width: 60%;
+}
+
+.outline {
+    color: var(--color-primary);
 }

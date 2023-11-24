@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { AppConfig } from '@core/configs';
 import { NotificationService } from '@core/services';
 import { ActividadResponse, TipoValorMeta } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { ActividadRequest, EvidenciaRequest, IndicadorRequest, PrioridadRequestDto, VotanteRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 import * as moment from 'moment';
 
 @Component({
@@ -45,9 +46,11 @@ export class RegistrarPrioridadComponent implements OnInit {
   idValorMetaSeleccionado: number;
   onChangeValueTipoValorMeta: number;
 
+  confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialog,
+    private _dialog: MatDialog,
     private _notification: NotificationService,
     private _formBuilder: FormBuilder,
     private _grService: GestionRendimientoService,
@@ -77,9 +80,8 @@ export class RegistrarPrioridadComponent implements OnInit {
     let listtrabajadores = await this._grService.listarIntegrantesPorLider().then((data) => {
       if (data.length > 0) {
         this.listEquipo = data;
-        console.log(this.listEquipo)
       } else {
-        this._notification.warning("Aún no tiene equipo para agregar indicadores");
+        this._notification.warning("Para crear indicadores primero debes registrar integrantes a tu equipo");
       }
     });
   }
@@ -152,14 +154,25 @@ export class RegistrarPrioridadComponent implements OnInit {
     prioridadDto.votante = votante;
     prioridadDto.indicador = indicador;
     prioridadDto.listEvidencia = evidencias;
-    console.log("prioridadDto", prioridadDto)
+    // console.log(prioridadDto)
 
-    let registrar = await this._grService.registrarIndicador(prioridadDto).then(data => {
-      this._notification.success("Se registró correctamente");
-      // this.dialogRef.closeAll();
+    this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
     });
-    this.dialogRef.closeAll();
+    this.confirmDialogRef.componentInstance.confirmMessage = '¿Estas seguro de continuar?';
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
 
+        this._grService.registrarIndicador(prioridadDto).then(data => {
+          this._notification.success("Se registró correctamente");
+          // this.dialogRef.closeAll();
+        });
+        // this._dialog.closeAll();
+
+      }
+      this.confirmDialogRef = null;
+    });
+    
   }
 
 }

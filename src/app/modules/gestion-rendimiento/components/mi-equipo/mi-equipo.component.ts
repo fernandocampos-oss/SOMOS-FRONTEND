@@ -127,6 +127,7 @@ export class MiEquipoComponent implements OnInit {
             this._notification.warning("Agregar trabajador: Se produjo un error");
           }
         });
+        
       }
     } else {
       this._notification.warning('Debe seleccionar un trabajador');

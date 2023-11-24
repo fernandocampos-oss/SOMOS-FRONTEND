@@ -18,7 +18,6 @@ import { EvidenciaResponse } from '@data/models/gestion-rendimiento/gestion-rend
 export class ModalTareaComponent implements OnInit {
   form: FormGroup;
   // requerimiento: string = '';
-  idRequerimiento: number = 0;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -35,14 +34,13 @@ export class ModalTareaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
-    this.idRequerimiento = this.data.model.idIndicador;
+    console.log(this.data);
     // this.createForm();
     this.loadTable();
   }
 
   async loadTable() {
-    let listFinalizado = await this._grService.getTareasByIdIndicador(this.data.model.idIndicador).then((data) => {
+    let listFinalizado = await this._grService.getEvidenciasByIndicador(this.data.model.idIndicador).then((data) => {
       if (data.length > 0) {
         this.dataSource_tarea = data;
         console.log("tareas", this.dataSource_tarea)
@@ -66,7 +64,7 @@ export class ModalTareaComponent implements OnInit {
       //height: '780px',
       autoFocus: true,
       data: {
-        idRequerimiento: this.idRequerimiento,
+        idIndicador: this.data.model.idIndicador,
         model: element
       }
     });

@@ -43,18 +43,13 @@ export class EvidenciaResponseDto {
   extension?: string;
 }
 
-
-
-export class TareaRequestDto {
-  // actividad?: ActividadRequest;
-  // indicador?: IndicadorRequest;
-  // listTarea?: TareaRequest[];
-}
-
-
 export class EvidenciaResponse {
   idTarea?: number;
   nombre?: string;
   plazo?: String;
-  // indicadorUsuario?: IndicadorUsuario;
+}
+
+export class EmailNotificacionRequestDto {
+  email?: string;
+  url?: String;
 }

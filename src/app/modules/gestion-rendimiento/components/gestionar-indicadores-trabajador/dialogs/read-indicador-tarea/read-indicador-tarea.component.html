@@ -1,30 +1,24 @@
-<h1 matDialogTitle>Seguimiento de la Tarea</h1>
+<h1 matDialogTitle>Datos de la evidencia:</h1>
 <mat-dialog-content>
-    <p><strong>Datos de la tarea:</strong></p>
+    <p><strong>Descripción:</strong> {{data.model.descripcion ? data.model.descripcion:'(Ninguno)'}}</p>
     <br>
-    <p><strong>Descripción:</strong> {{data.model.nombre}}</p>
     <p><strong>Fecha de asignacion:</strong> {{data.model.fechaCreacion | date: 'dd-MM-yyyy'}}</p>
+    <br>
     <p><strong>Plazo máximo:</strong> {{data.model.plazo | date: 'dd-MM-yyyy'}}</p>
-    <p><strong>Motivo de Rechazo:</strong> {{data.model.motivoRechazo ? data.model.motivoRechazo:'Ninguno'}}</p>
     <br>
-    <p><strong>Datos de la evidencia:</strong></p>
-    <br>
-    <p><strong>Descripción de la evidencia:</strong> {{data.model.evidenciaDescripcion ?
-        data.model.evidenciaDescripcion:'-'}}</p>
-    <p><strong>Fecha de Registro:</strong> {{data.model.evidenciaFechaRegistro | date: 'dd-MM-yyyy'}}</p>
-    <br>
-    <button mat-icon-button class="edit-button" matTooltip="Editar Tarea" (click)="editarTarea(data.model)">
+    <button mat-icon-button class="edit-button" matTooltip="Editar Tarea" (click)="editarEvidencia(data.model)">
         <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button class="primary-button" [disabled]="data.model.evidenciaExtensionFile !=='png'"
-        matTooltip="Ver Imagen" (click)="verImagenEvidencia(data.model)">
+    <button mat-icon-button class="primary-button" [disabled]="data.model.sustentoExtensionFile !=='png'"
+        matTooltip="Ver Imagen" (click)="verEvidenciaImagen(data.model)">
         <mat-icon>image</mat-icon>
     </button>
-    <button mat-icon-button class="primary-button" [disabled]="data.model.evidenciaExtensionFile !=='pdf'"
+    <button mat-icon-button class="primary-button" [disabled]="data.model.sustentoExtensionFile !=='pdf'"
         matTooltip="Ver PDF" (click)="verEvidenciaPdf(data.model)">
         <mat-icon>picture_as_pdf</mat-icon>
     </button>
-    <button mat-icon-button class="has-success" matTooltip="Aprobar Evidencia" (click)="aprobarTarear(data.model, false)">
+    <button mat-icon-button class="has-success" matTooltip="Aprobar Evidencia"
+        (click)="aprobarTarear(data.model, false)">
         <mat-icon>check</mat-icon>
     </button>
     <button mat-icon-button color="warn" matTooltip="Rechazar Evidencia" (click)="rechazarTarea(data.model, true)">

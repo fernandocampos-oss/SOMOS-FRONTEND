@@ -12,7 +12,7 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento.se
 })
 export class VerEvidenciaImagenComponent implements OnInit {
   evidenciaResponseDto: EvidenciaResponseDto;
-  evidenciaDescripcion: string;
+  evidenciaDescripcion: string = '';
   fileBase64: string;
 
   constructor(
@@ -25,11 +25,11 @@ export class VerEvidenciaImagenComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.data)
-    this.getEvidenciaPorTarea();
+    this.loadImagenFile();
   }
 
-  async getEvidenciaPorTarea() {
-    let load = await this._requerimientoService.getEvidenciaPorTarea(this.data.model.idTarea).then((data: any) => {
+  async loadImagenFile() {
+    let load = await this._requerimientoService.getSustentoByEvidencia(this.data.model.idEvidencia).then((data: any) => {
       if (data != null) {
         this.evidenciaResponseDto = data;
         this.evidenciaDescripcion = this.evidenciaResponseDto.evidenciaDescripcion;
@@ -62,6 +62,6 @@ export class VerEvidenciaImagenComponent implements OnInit {
       this._notification.error("Error al descargar imagen");
     }
   }
- 
+
 
 }

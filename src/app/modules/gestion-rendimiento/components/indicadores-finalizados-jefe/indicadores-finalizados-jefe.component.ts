@@ -36,7 +36,7 @@ export class IndicadoresFinalizadosJefeComponent implements OnInit {
   // async actualizarindicadoresRechazados() {
   //   this.listDataFinalizados = [];
   //   let finalizados = await this.loadTableFinalizado();
-  //   this._snackbar.success("La lista ya se encuentra actualizada");
+  //   this._snackbar.success("La lista se encuentra actualizada");
   // }
 
   // async loadTableFinalizado() {
