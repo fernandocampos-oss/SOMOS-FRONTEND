@@ -20,7 +20,6 @@ export class PrioridadRequestDto {
 
   export class IndicadorRequest {
     descripcion?: string;
-    detalle?: string;
     peso?: number;
     tipoValorMeta?: TipoValorMeta
     valorMeta?: number;

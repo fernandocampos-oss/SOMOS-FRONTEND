@@ -1,5 +1,5 @@
-<h3 class="auth__subtitle">Registrar nuevo sistema de Gestión del Rendimiento</h3><br>
-<mat-stepper [linear]="true">
+<h3 class="auth__subtitle">Nuevo Gestión del Rendimiento</h3>
+<mat-stepper [linear]="isLinear">
     <mat-step [stepControl]="formPrioridad" label="Formulario Indicador">
         <form [formGroup]="formPrioridad">
             <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
@@ -27,25 +27,14 @@
                 <mat-grid-tile [colspan]="6">
                     <mat-form-field appearance="outline">
                         <mat-label>Indicador / Producto</mat-label>
-                        <input matInput formControlName="frmDescripcionIndicador">
+                        <input matInput formControlName="frmDescripcionIndicador" minlength="1" maxlength="200" />
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="6">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Detalle del Indicador / Producto</mat-label>
-                        <textarea matInput (keyup)="onKey($event)" formControlName="frmDetalleIndicador" type="text" minlength="20" maxlength="300">
-                        </textarea>
-                        <mat-hint align="end">Máx. {{contadorTxtArea}} / 300</mat-hint>
-                    </mat-form-field>
+                    <h3>Valor Meta:</h3>
                 </mat-grid-tile>
-                <mat-grid-tile [colspan]="1">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Peso</mat-label>
-                        <input matInput formControlName="frmPeso" class="example-right-align" minlength="1" maxlength="3">
-                        <span matSuffix class="percent-align">%</span>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="2">
+                <mat-grid-tile [colspan]="3">
+                    <!-- valor meta -->
                     <mat-form-field appearance="outline">
                         <mat-label>Unidad de medida</mat-label>
                         <mat-select [(value)]="idValorMetaSeleccionado" formControlName="frmTipoValorMeta"
@@ -57,15 +46,15 @@
                     </mat-form-field>
                 </mat-grid-tile>
                 <div *ngIf="onChangeValueTipoValorMeta ==1 || onChangeValueTipoValorMeta ==2">
-                    <mat-grid-tile [colspan]="2">
+                    <mat-grid-tile [colspan]="3">
                         <mat-form-field appearance="outline">
-                            <mat-label>Valor numérico</mat-label>
+                            <mat-label>Valor</mat-label>
                             <input matInput formControlName="frmValorMeta" maxlength="3" required />
                         </mat-form-field>
                     </mat-grid-tile>
                 </div>
                 <div *ngIf="onChangeValueTipoValorMeta ==4">
-                    <mat-grid-tile [colspan]="2">
+                    <mat-grid-tile [colspan]="3">
                         <mat-form-field appearance="outline">
                             <mat-label>Valor porcentual</mat-label>
                             <input matInput formControlName="frmValorMeta" minlength="1" maxlength="3"
@@ -74,7 +63,25 @@
                         </mat-form-field>
                     </mat-grid-tile>
                 </div>
+
+                <mat-grid-tile [colspan]="6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Peso</mat-label>
+                        <input matInput formControlName="frmPeso" class="example-right-align" minlength="1"
+                            maxlength="3">
+                        <span matSuffix class="percent-align">%</span>
+                    </mat-form-field>
+                </mat-grid-tile>
             </mat-grid-list>
+            <mat-divider></mat-divider>
+            <br />
+            <div align="end">
+                <button mat-button mat-dialog-close color="primary">Cancelar</button>&nbsp;
+                <button mat-raised-button matStepperNext color="primary" [disabled]="formPrioridad.value.frmPeso === ''">
+                    Siguiente
+                    <mat-icon>chevron_right</mat-icon>
+                </button>
+            </div>
         </form>
     </mat-step>
 
@@ -119,8 +126,7 @@
                     <ng-container matColumnDef="Quitar">
                         <th mat-header-cell *matHeaderCellDef width="10%">Quitar</th>
                         <td mat-cell *matCellDef="let element;index as i">
-                            <button mat-icon-button class="primary-button" matTooltip="Quitar"
-                                (click)="deleteTarea(i)">
+                            <button mat-icon-button class="primary-button" matTooltip="Quitar" (click)="deleteTarea(i)">
                                 <mat-icon>cancel</mat-icon>
                             </button>
                         </td>
@@ -133,14 +139,21 @@
                     </tr>
                 </table>
             </div>
+            <br /><br />
+            <mat-divider></mat-divider>
+            <br />
+            <div align="end">
+                <button mat-button mat-dialog-close color="primary">Cancelar</button>&nbsp;
+                <button mat-raised-button matStepperPrevious color="primary">
+                    <mat-icon>chevron_left</mat-icon>
+                    Atrás
+                </button>
+                <button mat-raised-button color="primary" [disabled]="dataSource.length ==0" style="margin-left: 1rem;"
+                    (click)="registrar()">
+                    <mat-icon>check</mat-icon>
+                    Asignar
+                </button>
+            </div>
         </form>
     </mat-step>
 </mat-stepper>
-<br>
-<mat-divider></mat-divider>
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-raised-button class="aproved-button" [disabled]="dataSource.length ==0" style="margin-left: 1rem;"
-        (click)="registrar()">Registrar
-    </button>
-</mat-dialog-actions>

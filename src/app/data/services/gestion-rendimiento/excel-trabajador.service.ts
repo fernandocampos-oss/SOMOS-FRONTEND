@@ -1,46 +1,49 @@
+import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 
-import { Workbook } from 'exceljs';
+import { Workbook, Worksheet } from 'exceljs';
 import * as fs from 'file-saver';
 
-export const imgBase64 = "data:image/png;base64,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"
+export const imgBase64 = "data:image/png;base64,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";
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const EXCEL_EXTENSION = '.xlsx';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GestionRendimientoExcelEjecutorService {
+export class ExcelTrabajadorService {
   fileName: string = "GDR_";
 
   constructor() { }
 
-  exportExcelEjecutor(excelData: { data_trabajador: any, data_jefe: any, data_filas: any; headers: any }) {
-    console.log("data service trabajador", excelData);
-    //Title, Header & Data
-    const header = excelData.headers;
-    const data_trabajador = excelData.data_trabajador;
-    const data_jefe = excelData.data_jefe;
-    const data_filas = excelData.data_filas;
-
+  exportExcelTrabajador(trabajador: any, jefe: any, listPrioridades: any[]) {
     //Create a workbook with a worksheet
     let workbook = new Workbook();
-    let worksheet = workbook.addWorksheet('FORMATO');
+    let worksheet = workbook.addWorksheet('FORMATO GR');
 
     //Add Image
     let myLogoImage = workbook.addImage({
       base64: imgBase64,
       extension: 'png',
     });
-    worksheet.mergeCells('A1:C2');
-    worksheet.addImage(myLogoImage, 'A1:C2');
+    worksheet.mergeCells('A1:A2');
+    worksheet.addImage(myLogoImage, 'A1:A2');
     let logo = worksheet.getCell('A1');
     logo.border = {
       bottom: { style: 'thin' }
     };
 
-    worksheet.mergeCells('D1', 'Q2');
-    let titleRow = worksheet.getCell('D1');
+    worksheet.mergeCells('B1:L2');
+    let spaceBlank = worksheet.getCell('B1');
+    spaceBlank.border = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' }
+    };
+
+    worksheet.mergeCells('A3', 'L4');
+    let titleRow = worksheet.getCell('A3');
     titleRow.value = 'FORMATO PARA LA GESTIÓN DEL RENDIMIENTO';
     titleRow.font = {
       name: 'Calibri',
@@ -59,8 +62,8 @@ export class GestionRendimientoExcelEjecutorService {
     //Blank Row
     worksheet.addRow([]);
 
-    worksheet.mergeCells('L4', 'N4');
-    let titleEvaluador = worksheet.getCell('L4');
+    worksheet.mergeCells('F6', 'H6');
+    let titleEvaluador = worksheet.getCell('F6');
     titleEvaluador.value = 'DNI EVALUADOR/A';
     titleEvaluador.font = {
       name: 'Calibri',
@@ -82,9 +85,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('O4:Q4');
-    let titleEvaluadorResult = worksheet.getCell('O4');
-    titleEvaluadorResult.value = data_jefe.numeroDocumento;
+    worksheet.mergeCells('I6:L6');
+    let titleEvaluadorResult = worksheet.getCell('I6');
+    titleEvaluadorResult.value = jefe.numeroDocumento;
     titleEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -101,8 +104,8 @@ export class GestionRendimientoExcelEjecutorService {
     //Blank Row 
     worksheet.addRow([]);
 
-    worksheet.mergeCells('A6:C6');
-    let titleEntidad = worksheet.getCell('A6');
+    worksheet.mergeCells('A8:B8');
+    let titleEntidad = worksheet.getCell('A8');
     titleEntidad.value = 'NOMBRE DE LA ENTIDAD';
     titleEntidad.font = {
       name: 'Calibri',
@@ -124,8 +127,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleEntidad.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('D6:K6');
-    let titleEntidadResult = worksheet.getCell('D6');
+    worksheet.mergeCells('C8:E8');
+    let titleEntidadResult = worksheet.getCell('C8');
     titleEntidadResult.value = 'SEGURO SOCIAL DE SALUD - ESSALUD';
     titleEntidadResult.font = {
       name: 'Calibri',
@@ -140,8 +143,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleEntidadResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('L6', 'N6');
-    let titleFechaMeta = worksheet.getCell('L6');
+    worksheet.mergeCells('F8', 'H8');
+    let titleFechaMeta = worksheet.getCell('F8');
     titleFechaMeta.value = 'FECHA DE DEFINICIÓN DE METAS';
     titleFechaMeta.font = {
       name: 'Calibri',
@@ -163,8 +166,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleFechaMeta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('O6:Q6');
-    let titleFechaMetaResult = worksheet.getCell('O6');
+    worksheet.mergeCells('I8:L8');
+    let titleFechaMetaResult = worksheet.getCell('I8');
     titleFechaMetaResult.value = '24/11/2023';
     titleFechaMetaResult.font = {
       name: 'Calibri',
@@ -182,8 +185,8 @@ export class GestionRendimientoExcelEjecutorService {
     //Blank Row
     worksheet.addRow([]);
 
-    worksheet.mergeCells('A8', 'I8');
-    let titleServidorEvaluado = worksheet.getCell('A8');
+    worksheet.mergeCells('A10', 'D10');
+    let titleServidorEvaluado = worksheet.getCell('A10');
     titleServidorEvaluado.value = 'SERVIDOR/A EVALUADO/A';
     titleServidorEvaluado.font = {
       name: 'Calibri',
@@ -205,8 +208,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleServidorEvaluado.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J8:Q8');
-    let titleServidorEvaluador = worksheet.getCell('J8');
+    worksheet.mergeCells('E10:L10');
+    let titleServidorEvaluador = worksheet.getCell('E10');
     titleServidorEvaluador.value = 'SERVIDOR/A EVALUADOR/A';
     titleServidorEvaluador.font = {
       name: 'Calibri',
@@ -229,8 +232,8 @@ export class GestionRendimientoExcelEjecutorService {
     titleServidorEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
     //EVALUADO ----------------------------------------------------------------
-    worksheet.mergeCells('A9', 'D9');
-    let titleApellidos = worksheet.getCell('A9');
+    worksheet.mergeCells('A11', 'A11');
+    let titleApellidos = worksheet.getCell('A11');
     titleApellidos.value = 'APELLIDOS Y NOMBRES';
     titleApellidos.font = {
       name: 'Calibri',
@@ -252,9 +255,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleApellidos.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('E9:I9');
-    let titleApellidosResult = worksheet.getCell('E9');
-    titleApellidosResult.value = data_trabajador.nombre;
+    worksheet.mergeCells('B11:D11');
+    let titleApellidosResult = worksheet.getCell('B11');
+    titleApellidosResult.value = trabajador.nombre;
     titleApellidosResult.font = {
       name: 'Calibri',
       size: 8,
@@ -268,8 +271,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleApellidosResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A10', 'D10');
-    let titlePuesto = worksheet.getCell('A10');
+    worksheet.mergeCells('A12', 'A12');
+    let titlePuesto = worksheet.getCell('A12');
     titlePuesto.value = 'PUESTO';
     titlePuesto.font = {
       name: 'Calibri',
@@ -291,9 +294,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePuesto.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('E10:I10');
-    let titlePuestoResult = worksheet.getCell('E10');
-    titlePuestoResult.value = data_trabajador.cargo;
+    worksheet.mergeCells('B12:D12');
+    let titlePuestoResult = worksheet.getCell('B12');
+    titlePuestoResult.value = trabajador.cargo;
     titlePuestoResult.font = {
       name: 'Calibri',
       size: 8,
@@ -307,8 +310,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePuestoResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A11', 'D11');
-    let titleSegmentoEvaluado = worksheet.getCell('A11');
+    worksheet.mergeCells('A13', 'A13');
+    let titleSegmentoEvaluado = worksheet.getCell('A13');
     titleSegmentoEvaluado.value = 'SEGMENTO';
     titleSegmentoEvaluado.font = {
       name: 'Calibri',
@@ -330,9 +333,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleSegmentoEvaluado.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('E11:I11');
-    let titleSegmentoEvaluadoResult = worksheet.getCell('E11');
-    titleSegmentoEvaluadoResult.value = data_trabajador.segmento;
+    worksheet.mergeCells('B13:D13');
+    let titleSegmentoEvaluadoResult = worksheet.getCell('B13');
+    titleSegmentoEvaluadoResult.value = trabajador.segmento;
     titleSegmentoEvaluadoResult.font = {
       name: 'Calibri',
       size: 8,
@@ -346,8 +349,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleSegmentoEvaluadoResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A12', 'D12');
-    let titleUnidadEvaluado = worksheet.getCell('A12');
+    worksheet.mergeCells('A14', 'A14');
+    let titleUnidadEvaluado = worksheet.getCell('A14');
     titleUnidadEvaluado.value = 'ÓRGANO O UNIDAD ORGÁNICA';
     titleUnidadEvaluado.font = {
       name: 'Calibri',
@@ -369,9 +372,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleUnidadEvaluado.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('E12:I12');
-    let titleUnidadEvaluadoResult = worksheet.getCell('E12');
-    titleUnidadEvaluadoResult.value = data_trabajador.codUnidad;
+    worksheet.mergeCells('B14:D14');
+    let titleUnidadEvaluadoResult = worksheet.getCell('B14');
+    titleUnidadEvaluadoResult.value = trabajador.codUnidad;
     titleUnidadEvaluadoResult.font = {
       name: 'Calibri',
       size: 8,
@@ -385,8 +388,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleUnidadEvaluadoResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A13', 'D13');
-    let titleFirmaEvaluado = worksheet.getCell('A13');
+    worksheet.mergeCells('A15', 'A15');
+    let titleFirmaEvaluado = worksheet.getCell('A15');
     titleFirmaEvaluado.value = 'FIRMA (a la definición de la meta)';
     titleFirmaEvaluado.font = {
       name: 'Calibri',
@@ -408,8 +411,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleFirmaEvaluado.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('E13:I13');
-    let titleFirmaEvaluadoResult = worksheet.getCell('E13');
+    worksheet.mergeCells('B15:D15');
+    let titleFirmaEvaluadoResult = worksheet.getCell('B15');
     titleFirmaEvaluadoResult.value = '';
     titleFirmaEvaluadoResult.font = {
       name: 'Calibri',
@@ -425,8 +428,8 @@ export class GestionRendimientoExcelEjecutorService {
     titleFirmaEvaluadoResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
     //SERVIDOR/A EVALUADOR/A ----------------------------------------------------------------
-    worksheet.mergeCells('J9', 'M9');
-    let titleApellidosEvaluador = worksheet.getCell('J9');
+    worksheet.mergeCells('E11', 'F11');
+    let titleApellidosEvaluador = worksheet.getCell('E11');
     titleApellidosEvaluador.value = 'APELLIDOS Y NOMBRES';
     titleApellidosEvaluador.font = {
       name: 'Calibri',
@@ -448,9 +451,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleApellidosEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('N9:Q9');
-    let titleApellidosEvaluadorResult = worksheet.getCell('N9');
-    titleApellidosEvaluadorResult.value = data_jefe.nombre;
+    worksheet.mergeCells('G11:L11');
+    let titleApellidosEvaluadorResult = worksheet.getCell('G11');
+    titleApellidosEvaluadorResult.value = jefe.nombre;
     titleApellidosEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -464,8 +467,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleApellidosEvaluadorResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J10', 'M10');
-    let titlePuestoEvaluador = worksheet.getCell('J10');
+    worksheet.mergeCells('E12', 'F12');
+    let titlePuestoEvaluador = worksheet.getCell('E12');
     titlePuestoEvaluador.value = 'PUESTO';
     titlePuestoEvaluador.font = {
       name: 'Calibri',
@@ -487,9 +490,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePuestoEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('N10:Q10');
-    let titlePuestoEvaluadorResult = worksheet.getCell('N10');
-    titlePuestoEvaluadorResult.value = data_jefe.cargo;
+    worksheet.mergeCells('G12:L12');
+    let titlePuestoEvaluadorResult = worksheet.getCell('G12');
+    titlePuestoEvaluadorResult.value = jefe.cargo;
     titlePuestoEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -503,8 +506,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePuestoEvaluadorResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J11', 'M11');
-    let titleSegmentoEvaluador = worksheet.getCell('J11');
+    worksheet.mergeCells('E13', 'F13');
+    let titleSegmentoEvaluador = worksheet.getCell('E13');
     titleSegmentoEvaluador.value = 'SEGMENTO';
     titleSegmentoEvaluador.font = {
       name: 'Calibri',
@@ -526,9 +529,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleSegmentoEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('N11:Q11');
-    let titleSegmentoEvaluadorResult = worksheet.getCell('N11');
-    titleSegmentoEvaluadorResult.value = data_jefe.segmento;
+    worksheet.mergeCells('G13:L13');
+    let titleSegmentoEvaluadorResult = worksheet.getCell('G13');
+    titleSegmentoEvaluadorResult.value = jefe.segmento;
     titleSegmentoEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -542,8 +545,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleSegmentoEvaluadorResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J12', 'M12');
-    let titleUnidadEvaluador = worksheet.getCell('J12');
+    worksheet.mergeCells('E14', 'F14');
+    let titleUnidadEvaluador = worksheet.getCell('E14');
     titleUnidadEvaluador.value = 'ÓRGANO O UNIDAD ORGÁNICA';
     titleUnidadEvaluador.font = {
       name: 'Calibri',
@@ -565,9 +568,9 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleUnidadEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('N12:Q12');
-    let titleUnidadEvaluadorResult = worksheet.getCell('N12');
-    titleUnidadEvaluadorResult.value = data_jefe.codUnidad;
+    worksheet.mergeCells('G14:L14');
+    let titleUnidadEvaluadorResult = worksheet.getCell('G14');
+    titleUnidadEvaluadorResult.value = jefe.codUnidad;
     titleUnidadEvaluadorResult.font = {
       name: 'Calibri',
       size: 8,
@@ -581,8 +584,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleUnidadEvaluadorResult.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J13', 'M13');
-    let titleFirmaEvaluador = worksheet.getCell('J13');
+    worksheet.mergeCells('E15', 'F15');
+    let titleFirmaEvaluador = worksheet.getCell('E15');
     titleFirmaEvaluador.value = 'FIRMA (a la definición de la meta)';
     titleFirmaEvaluador.font = {
       name: 'Calibri',
@@ -604,8 +607,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleFirmaEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('N13:Q13');
-    let titleFirmaEvaluadorResult = worksheet.getCell('N13');
+    worksheet.mergeCells('G15:L15');
+    let titleFirmaEvaluadorResult = worksheet.getCell('G15');
     titleFirmaEvaluadorResult.value = '';
     titleFirmaEvaluadorResult.font = {
       name: 'Calibri',
@@ -624,8 +627,8 @@ export class GestionRendimientoExcelEjecutorService {
     worksheet.addRow([]);
 
     //ETAPA DE PLANIFICACIÓN --------------------------------------------------------------
-    worksheet.mergeCells('A15', 'L15');
-    let titlePlanificacion = worksheet.getCell('A15');
+    worksheet.mergeCells('A17', 'G17');
+    let titlePlanificacion = worksheet.getCell('A17');
     titlePlanificacion.value = 'ETAPA DE PLANIFICACIÓN';
     titlePlanificacion.font = {
       name: 'Calibri',
@@ -647,8 +650,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePlanificacion.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('M15', 'O15');
-    let titleSeguimiento = worksheet.getCell('M15');
+    worksheet.mergeCells('H17', 'J17');
+    let titleSeguimiento = worksheet.getCell('H17');
     titleSeguimiento.value = 'ETAPA DE SEGUIMIENTO';
     titleSeguimiento.font = {
       name: 'Calibri',
@@ -670,8 +673,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleSeguimiento.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('P15', 'Q15');
-    let titleEvaluacion = worksheet.getCell('P15');
+    worksheet.mergeCells('K17', 'L17');
+    let titleEvaluacion = worksheet.getCell('K17');
     titleEvaluacion.value = 'ETAPA DE EVALUACIÓN';
     titleEvaluacion.font = {
       name: 'Calibri',
@@ -693,8 +696,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleEvaluacion.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A16', 'C17');
-    let titlePrioridad = worksheet.getCell('A16');
+    worksheet.mergeCells('A18', 'A19');
+    let titlePrioridad = worksheet.getCell('A18');
     titlePrioridad.value = 'PRIORIDADES ANUALES DE GESTIÓN DEL ÓRGANO O UNIDAD ORGÁNICA';
     titlePrioridad.font = {
       name: 'Calibri',
@@ -716,8 +719,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePrioridad.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('D16', 'L16');
-    let titleMeta = worksheet.getCell('D16');
+    worksheet.mergeCells('B18', 'G18');
+    let titleMeta = worksheet.getCell('B18');
     titleMeta.value = 'META';
     titleMeta.font = {
       name: 'Calibri',
@@ -739,8 +742,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleMeta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('M16', 'O16');
-    let titleSubSeguimiento = worksheet.getCell('M16');
+    worksheet.mergeCells('H18', 'J18');
+    let titleSubSeguimiento = worksheet.getCell('H18');
     titleSubSeguimiento.value = 'SEGUIMIENTO Y RETROALIMENTACIÓN';
     titleSubSeguimiento.font = {
       name: 'Calibri',
@@ -762,8 +765,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleSubSeguimiento.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('D17', 'E17');
-    let titleIndicador = worksheet.getCell('D17');
+    worksheet.mergeCells('B19', 'B19');
+    let titleIndicador = worksheet.getCell('B19');
     titleIndicador.value = 'INDICADOR / PRODUCTO';
     titleIndicador.font = {
       name: 'Calibri',
@@ -785,7 +788,7 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleIndicador.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    let titleValorMeta = worksheet.getCell('F17');
+    let titleValorMeta = worksheet.getCell('C19');
     titleValorMeta.value = 'VALOR META';
     titleValorMeta.font = {
       name: 'Calibri',
@@ -807,7 +810,7 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleValorMeta.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    let titlePeso = worksheet.getCell('G17');
+    let titlePeso = worksheet.getCell('D19');
     titlePeso.value = 'PESO';
     titlePeso.font = {
       name: 'Calibri',
@@ -829,8 +832,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePeso.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('H17', 'I17');
-    let titleEvidencia = worksheet.getCell('H17');
+    worksheet.mergeCells('E19', 'E19');
+    let titleEvidencia = worksheet.getCell('E19');
     titleEvidencia.value = 'EVIDENCIA';
     titleEvidencia.font = {
       name: 'Calibri',
@@ -852,8 +855,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleEvidencia.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J17', 'K17');
-    let titlePlazos = worksheet.getCell('J17');
+    // worksheet.mergeCells('F19', 'F19');
+    let titlePlazos = worksheet.getCell('F19');
     titlePlazos.value = 'PLAZOS';
     titlePlazos.font = {
       name: 'Calibri',
@@ -875,7 +878,7 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePlazos.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    let titleFormula = worksheet.getCell('L17');
+    let titleFormula = worksheet.getCell('G19');
     titleFormula.value = 'TIPO DE FÓRMULA*';
     titleFormula.font = {
       name: 'Calibri',
@@ -897,8 +900,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleFormula.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('M17', 'O17');
-    let titleComentario = worksheet.getCell('M17');
+    worksheet.mergeCells('H19', 'J19');
+    let titleComentario = worksheet.getCell('H19');
     titleComentario.value = 'COMENTARIOS';
     titleComentario.font = {
       name: 'Calibri',
@@ -920,8 +923,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleComentario.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('P16', 'P17');
-    let titleLogro = worksheet.getCell('P16');
+    worksheet.mergeCells('K18', 'K19');
+    let titleLogro = worksheet.getCell('K19');
     titleLogro.value = 'LOGRO FINAL POR META';
     titleLogro.font = {
       name: 'Calibri',
@@ -943,8 +946,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titleLogro.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('Q16', 'Q17');
-    let titlePuntuacion = worksheet.getCell('Q16');
+    worksheet.mergeCells('L18', 'L19');
+    let titlePuntuacion = worksheet.getCell('L18');
     titlePuntuacion.value = 'PUNTUACIÓN POR META';
     titlePuntuacion.font = {
       name: 'Calibri',
@@ -966,69 +969,10 @@ export class GestionRendimientoExcelEjecutorService {
     };
     titlePuntuacion.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    data_filas.forEach((d: any) => {
-      let row = worksheet.addRow(Object.values(d));
-      console.log("row", d);
-
-      const currentRowIdx = worksheet.rowCount;
-      const endColumnIdx = worksheet.columnCount;
-      // merge by start row, start column, end row, end column 
-      worksheet.mergeCells(currentRowIdx, 1, currentRowIdx, 3); // actividad
-      worksheet.mergeCells(currentRowIdx, 4, currentRowIdx, 5); // indicador
-      worksheet.mergeCells(currentRowIdx, 6, currentRowIdx, 6); // valor meta
-      worksheet.mergeCells(currentRowIdx, 7, currentRowIdx, 7); // porcentaje
-      worksheet.mergeCells(currentRowIdx, 8, currentRowIdx, 9); // evidencia
-      worksheet.mergeCells(currentRowIdx, 10, currentRowIdx, 11); // plazos
-      worksheet.mergeCells(currentRowIdx, 13, currentRowIdx, 15); // comentarios
-
-      worksheet.getRow(currentRowIdx).getCell('A').value = d.prioridad;
-      worksheet.getRow(currentRowIdx).getCell('D').value = d.indicador;
-      worksheet.getRow(currentRowIdx).getCell('F').value = d.valorMeta;
-      worksheet.getRow(currentRowIdx).getCell('G').value = d.peso + '%';
-      worksheet.getRow(currentRowIdx).getCell('H').value = d.nombreTarea;
-      worksheet.getRow(currentRowIdx).getCell('J').value = d.plazo;
-      worksheet.getRow(currentRowIdx).getCell('M').value = d.comentario;
-
-      let a = row.getCell('A');
-      a.font = { size: 8 };
-      a.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-      worksheet.getColumn('A').width = 8;
-
-      let b = row.getCell('D');
-      b.font = { size: 8 };
-      b.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-      worksheet.getColumn('D').width = 8;
-
-      let c = row.getCell('F');
-      c.font = { size: 8 };
-      c.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-      worksheet.getColumn('F').width = 8;
-
-      let e = row.getCell('G');
-      e.font = { size: 8 };
-      e.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-      worksheet.getColumn('G').width = 8;
-
-      let f = row.getCell('H');
-      f.font = { size: 8 };
-      f.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-      worksheet.getColumn('H').width = 8;
-
-      let g = row.getCell('J');
-      g.font = { size: 8 };
-      g.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-      worksheet.getColumn('J').width = 8;
-
-      let m = row.getCell('M');
-      m.font = { size: 8 };
-      m.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-      worksheet.getColumn('M').width = 8;
-
-    });
-
+    //pie de pagina
     //RESULTADOS FINALES--------------------------------------------------------------
-    worksheet.mergeCells('A35', 'Q35');
-    let resultados = worksheet.getCell('A35');
+    worksheet.mergeCells('A40', 'L40');
+    let resultados = worksheet.getCell('A40');
     resultados.value = 'RESULTADOS FINALES';
     resultados.font = {
       name: 'Calibri',
@@ -1050,8 +994,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     resultados.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A36', 'C37');
-    let puntuacionFinal = worksheet.getCell('A36');
+    worksheet.mergeCells('A41', 'A42');
+    let puntuacionFinal = worksheet.getCell('A41');
     puntuacionFinal.value = 'PUNTUACIÓN FINAL';
     puntuacionFinal.font = {
       name: 'Calibri',
@@ -1073,8 +1017,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     puntuacionFinal.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('D36', 'E37');
-    let calificacion = worksheet.getCell('D36');
+    worksheet.mergeCells('B41', 'B42');
+    let calificacion = worksheet.getCell('B41');
     calificacion.value = 'CALIFICACIÓN';
     calificacion.font = {
       name: 'Calibri',
@@ -1096,8 +1040,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     calificacion.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('F36', 'O37');
-    let feetback = worksheet.getCell('F36');
+    worksheet.mergeCells('C41', 'I42');
+    let feetback = worksheet.getCell('C42');
     feetback.value = 'RETROALIMENTACIÓN FINAL Y PLAN DE MEJORA';
     feetback.font = {
       name: 'Calibri',
@@ -1119,8 +1063,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     feetback.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('P36', 'Q37');
-    let meet = worksheet.getCell('P36');
+    worksheet.mergeCells('J41', 'L42');
+    let meet = worksheet.getCell('J41');
     meet.value = 'FECHA DE REUNIÓN DE RETROALIMENTACIÓN';
     meet.font = {
       name: 'Calibri',
@@ -1142,8 +1086,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     meet.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('A38', 'C39');
-    let puntuacion = worksheet.getCell('A38');
+    worksheet.mergeCells('A43', 'A44');
+    let puntuacion = worksheet.getCell('A43');
     puntuacion.value = '30.00';
     puntuacion.font = {
       name: 'Calibri',
@@ -1165,8 +1109,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     puntuacion.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('D38', 'E39');
-    let calificacionFinal = worksheet.getCell('D38');
+    worksheet.mergeCells('B43', 'B44');
+    let calificacionFinal = worksheet.getCell('B43');
     calificacionFinal.value = 'Rendimiento Sujeto a Observación';
     calificacionFinal.font = {
       name: 'Calibri',
@@ -1188,8 +1132,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     calificacionFinal.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('F38:G38');
-    let capacitacion = worksheet.getCell('F38');
+    worksheet.mergeCells('C43:D43');
+    let capacitacion = worksheet.getCell('C43');
     capacitacion.value = 'Capacitaciones:';
     capacitacion.font = {
       name: 'Calibri',
@@ -1204,8 +1148,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     capacitacion.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('H38:O38');
-    let capacitacionRespuesta = worksheet.getCell('H38');
+    worksheet.mergeCells('E43:I43');
+    let capacitacionRespuesta = worksheet.getCell('E43');
     capacitacionRespuesta.value = '';
     capacitacionRespuesta.font = {
       name: 'Calibri',
@@ -1220,24 +1164,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     capacitacionRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('P38:Q39');
-    let meetRespuesta = worksheet.getCell('P38');
-    meetRespuesta.value = '';
-    meetRespuesta.font = {
-      name: 'Calibri',
-      size: 8,
-      bold: false,
-    };
-    meetRespuesta.border = {
-      top: { style: 'thin' },
-      left: { style: 'thin' },
-      bottom: { style: 'thin' },
-      right: { style: 'thin' }
-    };
-    meetRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
-
-    worksheet.mergeCells('F39:G39');
-    let recomendaciones = worksheet.getCell('F39');
+    worksheet.mergeCells('C44:D44');
+    let recomendaciones = worksheet.getCell('C44');
     recomendaciones.value = 'Recomendaciones:';
     recomendaciones.font = {
       name: 'Calibri',
@@ -1252,8 +1180,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     recomendaciones.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('H39:O39');
-    let recomendacionRespuesta = worksheet.getCell('H27');
+    worksheet.mergeCells('E44:I44');
+    let recomendacionRespuesta = worksheet.getCell('E44');
     recomendacionRespuesta.value = '';
     recomendacionRespuesta.font = {
       name: 'Calibri',
@@ -1268,9 +1196,25 @@ export class GestionRendimientoExcelEjecutorService {
     };
     recomendacionRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
+    worksheet.mergeCells('J43:L44');
+    let meetRespuesta = worksheet.getCell('J43');
+    meetRespuesta.value = '';
+    meetRespuesta.font = {
+      name: 'Calibri',
+      size: 8,
+      bold: false,
+    };
+    meetRespuesta.border = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' }
+    };
+    meetRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
+
     //FIRMAS DE LOS RESULTADOS FINALES --------------------------------------------------------------
-    worksheet.mergeCells('A40', 'Q40');
-    let firmaFinal = worksheet.getCell('A40');
+    worksheet.mergeCells('A45', 'L45');
+    let firmaFinal = worksheet.getCell('A45');
     firmaFinal.value = 'FIRMAS DE LOS RESULTADOS FINALES';
     firmaFinal.font = {
       name: 'Calibri',
@@ -1292,8 +1236,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     firmaFinal.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A41', 'C42');
-    let firmaEvaluado = worksheet.getCell('A41');
+    worksheet.mergeCells('A46', 'A47');
+    let firmaEvaluado = worksheet.getCell('A46');
     firmaEvaluado.value = 'FIRMA EVALUADO/A';
     firmaEvaluado.font = {
       name: 'Calibri',
@@ -1315,8 +1259,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     firmaEvaluado.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('D41:I42');
-    let firmaEvaluadoRespuesta = worksheet.getCell('D41');
+    worksheet.mergeCells('B46:D47');
+    let firmaEvaluadoRespuesta = worksheet.getCell('B46');
     firmaEvaluadoRespuesta.value = '';
     firmaEvaluadoRespuesta.font = {
       name: 'Calibri',
@@ -1331,8 +1275,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     firmaEvaluadoRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J41', 'L42');
-    let firmaEvaluador = worksheet.getCell('J41');
+    worksheet.mergeCells('E46', 'E47');
+    let firmaEvaluador = worksheet.getCell('E46');
     firmaEvaluador.value = 'FIRMA EVALUADOR/A';
     firmaEvaluador.font = {
       name: 'Calibri',
@@ -1354,8 +1298,8 @@ export class GestionRendimientoExcelEjecutorService {
     };
     firmaEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('M41:Q42');
-    let firmaEvaluadorRespuesta = worksheet.getCell('M41');
+    worksheet.mergeCells('F46:L47');
+    let firmaEvaluadorRespuesta = worksheet.getCell('F46');
     firmaEvaluadorRespuesta.value = '';
     firmaEvaluadorRespuesta.font = {
       name: 'Calibri',
@@ -1369,10 +1313,6 @@ export class GestionRendimientoExcelEjecutorService {
       right: { style: 'thin' }
     };
     firmaEvaluadorRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
-
-    //Blank Row
-    worksheet.addRow([]);
-    worksheet.addRow([]);
 
     // //Footer Row
     // let footerRow = worksheet.addRow([
@@ -1390,10 +1330,77 @@ export class GestionRendimientoExcelEjecutorService {
     // //Merge Cells
     // worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
 
+
+    //iterativo ptincipal
+    let contadorFilaMerge = 20;
+    for (let i = 0; i < listPrioridades.length; i++) {
+
+      let contadorActividad = 0;
+      for (let j = 0; j < listPrioridades[i].listIndicador.length; j++) {
+        let numero = 0;
+        numero = listPrioridades[i].listIndicador[j].listEvidencia.length;
+        contadorActividad += numero;
+      }
+      //actividad
+      worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(1).address, worksheet.getRow(contadorFilaMerge + contadorActividad - 1).getCell(1).address);
+      worksheet.getRow(contadorFilaMerge).getCell(1).value = listPrioridades[i].prioridadNombre;
+      worksheet.getRow(contadorFilaMerge).getCell(1).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      worksheet.getRow(contadorFilaMerge).getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      worksheet.getColumn(1).width = 45;
+
+      for (let j = 0; j < listPrioridades[i].listIndicador.length; j++) {
+        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(2).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(2).address);
+        worksheet.getRow(contadorFilaMerge).getCell(2).value = listPrioridades[i].listIndicador[j].nombreIndicador;
+        worksheet.getRow(contadorFilaMerge).getCell(2).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+        worksheet.getRow(contadorFilaMerge).getCell(2).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+        worksheet.getColumn(2).width = 40;
+
+        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(3).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(3).address);
+        worksheet.getRow(contadorFilaMerge).getCell(3).value = listPrioridades[i].listIndicador[j].valorMeta;
+        worksheet.getRow(contadorFilaMerge).getCell(3).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+        worksheet.getRow(contadorFilaMerge).getCell(3).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+
+        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(4).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(4).address);
+        worksheet.getRow(contadorFilaMerge).getCell(4).value = listPrioridades[i].listIndicador[j].peso + "%";
+        worksheet.getRow(contadorFilaMerge).getCell(4).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+        worksheet.getRow(contadorFilaMerge).getCell(4).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+
+        this.formatoEvidencias(worksheet, listPrioridades[i].listIndicador[j].listEvidencia, contadorFilaMerge)
+        contadorFilaMerge += listPrioridades[i].listIndicador[j].listEvidencia.length;
+      }
+    }
+
     //Generate & Save Excel File
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: EXCEL_TYPE, });
-      fs.saveAs(blob, this.fileName + '_' + new Date().getTime() + EXCEL_EXTENSION);
+      fs.saveAs(blob, this.fileName + '_' + trabajador.nombre + '_' + new Date().getTime() + EXCEL_EXTENSION);
     });
+
   }
+
+  formatoEvidencias(wb: Worksheet, listEvidencia, position) {
+    const datePipe = new DatePipe('en-US');
+    for (let i = 0; i < listEvidencia.length; i++) {
+      wb.getRow(i + position).getCell('E').value = listEvidencia[i].descripcion;
+      wb.getRow(i + position).getCell('E').alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+      wb.getRow(i + position).getCell('E').border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      };
+      wb.getColumn(5).width = 35;
+      // wb.getRow(i + position).getCell('D').value = datePipe.transform(listEvidencia[i].plazo, 'dd/MM/yyyy - hh:mm a');
+      wb.getRow(i + position).getCell('F').value = datePipe.transform(listEvidencia[i].plazo, 'dd/MM/yyyy');
+      wb.getRow(i + position).getCell('F').alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+      wb.getRow(i + position).getCell('F').border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      };
+      wb.getColumn(6).width = 15;
+    }
+  }
+
 }

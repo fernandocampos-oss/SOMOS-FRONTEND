@@ -1,24 +1,23 @@
+import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UserAddDeleteComponent } from './dialogs/user-add-delete/user-add-delete.component'
-import { GestionRendimientoService } from '../../../../data/services/gestion-rendimiento.service'
-import { NotificationService } from '@core/services';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { EquipoRequest, Integrante, Jefe } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { NotificationService } from '@core/services';
+import { Observable } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
-  selector: 'gestion-rendimiento-mi-equipo',
-  templateUrl: './mi-equipo.component.html',
-  styleUrls: ['./mi-equipo.component.scss']
+  selector: 'app-gr-equipo',
+  templateUrl: './gr-equipo.component.html',
+  styleUrls: ['./gr-equipo.component.scss']
 })
-export class MiEquipoComponent implements OnInit {
-
+export class GrEquipoComponent implements OnInit {
+  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
@@ -74,21 +73,6 @@ export class MiEquipoComponent implements OnInit {
     this.trabajadorSeleccionadoTmp = event.option.value;
   }
 
-  showDialogUser(onDelete: boolean) {
-    const dialogRef: MatDialogRef<UserAddDeleteComponent> = this._dialog.open(UserAddDeleteComponent, {
-      disableClose: false,
-      width: onDelete == true ? '600px' : '70%',
-      autoFocus: false,
-      data: {
-        title: (onDelete == true ? 'Eliminar ' : 'Agregar ') + 'integrante',
-        borrar: onDelete
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
-  }
 
   async loadTable() {
     let listtrabajadores = await this._grService.listarIntegrantesPorLider().then((data) => {
@@ -161,20 +145,5 @@ export class MiEquipoComponent implements OnInit {
   filter(value: string) {
     this.dataSource.filter = value.trim().toUpperCase();
   }
-
-  // datosTrabajador(element) {
-  //   const dialogRef: MatDialogRef<EditUserSelectedComponent> = this.dialog.open(EditUserSelectedComponent, {
-  //     disableClose: false,
-  //     width: '60%',
-  //     autoFocus: false,
-  //     data: {
-  //       model: element,
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadTable();
-  //   });
-  // }
 
 }

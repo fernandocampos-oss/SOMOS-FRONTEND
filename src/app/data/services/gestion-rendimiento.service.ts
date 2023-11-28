@@ -226,5 +226,4 @@ export class GestionRendimientoService {
   //   return this.http.get<any[]>(url);
   // }
 
-
 }

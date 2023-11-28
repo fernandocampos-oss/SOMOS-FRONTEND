@@ -8,7 +8,7 @@
         &nbsp;
         <button mat-raised-button class="has-success" (click)="generarExcelTrabajador()">
             <mat-icon>cloud_download</mat-icon>
-            &nbsp; Formato
+            &nbsp; Descargar Formato
         </button>
     </div>
 </div>
@@ -141,5 +141,5 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
 </div>

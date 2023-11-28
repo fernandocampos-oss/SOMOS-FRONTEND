@@ -11,11 +11,12 @@ import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-registrar-prioridad',
-  templateUrl: './registrar-prioridad.component.html',
-  styleUrls: ['./registrar-prioridad.component.scss']
+  selector: 'app-asignar-prioridad',
+  templateUrl: './asignar-prioridad.component.html',
+  styleUrls: ['./asignar-prioridad.component.scss']
 })
-export class RegistrarPrioridadComponent implements OnInit {
+export class AsignarPrioridadComponent implements OnInit {
+  isLinear = false;
   minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
   contadorTxtArea: number = 0;
 
@@ -31,10 +32,10 @@ export class RegistrarPrioridadComponent implements OnInit {
     frmTrabajador: ['', Validators.required],
     frmActividad: ['', Validators.required],
     frmDescripcionIndicador: ['', Validators.required],
-    frmDetalleIndicador: ['', Validators.required],
-    frmPeso: ['', Validators.required],
+    // frmDetalleIndicador: ['', Validators.required],    
     frmTipoValorMeta: ['', Validators.required],
     frmValorMeta: [''],
+    frmPeso: ['', Validators.required],
   });
 
   formEvidencia = this._formBuilder.group({
@@ -100,13 +101,17 @@ export class RegistrarPrioridadComponent implements OnInit {
     // console.log(this.formTareasListadas.value);
     if (this.formEvidencia.value.frmDescripcion == undefined || this.formEvidencia.value.frmPlazo == undefined ||
       this.formEvidencia.value.frmDescripcion == '' || this.formEvidencia.value.frmPlazo == '') {
-      this._notification.warning("Ingrese todos los campos obligatorios para continuar");
+      this._notification.warning("Ingrese todos los campos para continuar");
     } else {
-      this.listEvidencia.push({
-        descripcion: this.formEvidencia.value.frmDescripcion,
-        // plazo: this.formTareasListadas.value.frmDateTarea._d.toLocaleDateString()
-        plazo: moment(this.formEvidencia.value.frmPlazo._d).format('YYYY-MM-DDTHH:mm:ss')
-      });
+      if (this.listEvidencia.length <= 5) {
+        this.listEvidencia.push({
+          descripcion: this.formEvidencia.value.frmDescripcion,
+          // plazo: this.formTareasListadas.value.frmDateTarea._d.toLocaleDateString()
+          plazo: moment(this.formEvidencia.value.frmPlazo._d).format('YYYY-MM-DDTHH:mm:ss')
+        });
+      } else {
+        this._notification.warning("Máximo 6 evidencias por Indicador/Producto");
+      }
       this.table.renderRows();
     }
   }
@@ -135,7 +140,6 @@ export class RegistrarPrioridadComponent implements OnInit {
 
     let indicador = new IndicadorRequest();
     indicador.descripcion = this.formPrioridad.value.frmDescripcionIndicador;
-    indicador.detalle = this.formPrioridad.value.frmDetalleIndicador;
     indicador.peso = this.formPrioridad.value.frmPeso;
     indicador.tipoValorMeta = tipoValorMeta;
     indicador.valorMeta = this.formPrioridad.value.frmValorMeta;
@@ -167,12 +171,12 @@ export class RegistrarPrioridadComponent implements OnInit {
           this._notification.success("Se registró correctamente");
           // this.dialogRef.closeAll();
         });
-        // this._dialog.closeAll();
+        this._dialog.closeAll();
 
       }
       this.confirmDialogRef = null;
     });
-    
+
   }
 
 }

@@ -116,5 +116,21 @@ export class ReadIndicadorTareaComponent implements OnInit {
   rechazarTarea(element, onDelete: boolean){
     console.log("rechazar", element, "bool ", onDelete);
   }
+
+  // showDialogUser(onDelete: boolean) {
+  //   const dialogRef: MatDialogRef<UserAddDeleteComponent> = this._dialog.open(UserAddDeleteComponent, {
+  //     disableClose: false,
+  //     width: onDelete == true ? '600px' : '70%',
+  //     autoFocus: false,
+  //     data: {
+  //       title: (onDelete == true ? 'Eliminar ' : 'Agregar ') + 'integrante',
+  //       borrar: onDelete
+  //     }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadTable();
+  //   });
+  // }
  
 }

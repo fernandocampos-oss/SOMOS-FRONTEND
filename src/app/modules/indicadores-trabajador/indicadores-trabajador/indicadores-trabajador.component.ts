@@ -1,4 +1,3 @@
-import { GestionRendimientoExcelEjecutorService } from './../../../data/services/gestion-rendimiento-excel-ejecutor.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,6 +8,7 @@ import { NotificationService, SnackbarService } from '@core/services';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { ModalTareaComponent } from '../components/modal-tarea/modal-tarea.component';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
+import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
 
 @Component({
   selector: 'app-indicadores-trabajador',
@@ -23,15 +23,15 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'fecha_asignacion', 'acciones'];
   groupedColumns: string[] = ['grouped'];
-  
+
   constructor(
     private _router: Router,
     private route: ActivatedRoute,
     private _matDialog: MatDialog,
     private _grService: GestionRendimientoService,
     private _notification: NotificationService,
-    public _serviceExcelEjecutor: GestionRendimientoExcelEjecutorService,
     private _snackbar: SnackbarService,
+    private _serviceExcelEjecutor: ExcelTrabajadorService,
   ) { }
 
   ngOnInit(): void {
@@ -88,8 +88,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   }
 
   async servicioExcelEjecutor(main: any) {
-    let listRows: RowsBody[] = [];
-
     let trabajador = new Persona();
     trabajador.nombre = main.evaluadoNombreCompleto;
     trabajador.cargo = main.evaluadoPuesto;
@@ -101,92 +99,10 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     jefe.cargo = main.evaluadorPuesto;
     jefe.segmento = main.evaluadorSegmento;
     jefe.codUnidad = main.evaluadorCodUnidad;
-    jefe.numeroDocumento = main.evaluadorNumeroDocumento
+    jefe.numeroDocumento = main.evaluadorNumeroDocumento;
 
-    if (main.listPrioridad.length > 0) {
-      for (let prioridad of main.listPrioridad) {
-        // let rowsBody = new RowsBody();
-        // rowsBody.prioridad = prioridad.prioridadNombre;
-
-        if (prioridad.listIndicador.length > 0) {
-          for (let indicador of prioridad.listIndicador) {
-            // rowsBody.indicador = indicador.nombreIndicador;
-            // rowsBody.valorMeta = indicador.valorMeta;
-            // rowsBody.peso = indicador.peso;
-
-            if (indicador.listEvidencia.length > 0) {
-              for (let t of indicador.listEvidencia) {
-                let rowsBody = new RowsBody();
-                // constante
-                rowsBody.prioridad = prioridad.prioridadNombre;
-                rowsBody.indicador = indicador.nombreIndicador;
-                rowsBody.valorMeta = indicador.valorMeta;
-                rowsBody.peso = indicador.peso;
-
-                //iterativo
-                rowsBody.nombreTarea = t.descripcion;
-                let fechaPlazo = t.plazo.split("T")[0];
-                // rowsBody.plazo = fechaPlazo;
-
-                const date = new Date(fechaPlazo);
-                let year = date.getFullYear();
-                let mes = date.toLocaleDateString("es-ES", { month: 'long' })
-                rowsBody.plazo = mes + " " + year;
-
-                //comentario
-                if (t.sustentoFechaRegistro !== null) {
-                  let fechaEvidencia = t.sustentoFechaRegistro.split("T")[0];
-                  console.log("fechaPlazo: ", fechaPlazo, " fechaEvidencia: ", fechaEvidencia);
-
-                  var first = new Date(fechaPlazo);
-                  var second = new Date(fechaEvidencia);
-
-                  //comparar fechas para evaluacionComentario
-                  if (first < second) {
-                    console.log(first, "es menor que", second);
-                    rowsBody.comentario = 'Se pasó de la fecha';
-                  }
-                  else if (first > second) {
-                    console.log(first, "es mayor que", second);
-                    rowsBody.comentario = 'Presentó evidencia dentro de la fecha';
-                  }
-                  else if (first == second) {
-                    console.log(first, "es igual que", second);
-                    rowsBody.comentario = 'Presentó evidencia dentro de la fecha';
-                  }
-                } else {
-                  console.log("La evidencia " + t.idEvidencia + " no tiene sustento");
-                  //iterativo
-                  let fechaPlazo = t.plazo.split("T")[0];
-
-                  const date = new Date(fechaPlazo);
-                  let year = date.getFullYear();
-                  let mes = date.toLocaleDateString("es-ES", { month: 'long' })
-                  rowsBody.plazo = mes + " " + year;
-
-                  rowsBody.comentario = 'No presentó evidencia';
-                }
-
-                listRows.push(rowsBody);
-                rowsBody = null;
-              }
-            }
-          }
-        }
-      }
-    } else {
-      console.log("Prioridades vacio")
-    }
-
-    console.log("data excel", listRows);
-    let columnsName = ["String_1", "String_2"];
-    let reportData = {
-      data_trabajador: trabajador,
-      data_jefe: jefe,
-      data_filas: listRows,
-      headers: columnsName,
-    };
-    let excel = await this._serviceExcelEjecutor.exportExcelEjecutor(reportData);
+    console.log("data excel", main.listPrioridad);
+    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
   }
 
 }

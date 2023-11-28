@@ -16,6 +16,7 @@ import * as moment from 'moment';
   styleUrls: ['./asignar-indicador.component.scss']
 })
 export class AsignarIndicadorComponent implements OnInit {
+  isLinear = false;
   minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
   contadorTxtArea: number = 0;
 
@@ -29,12 +30,11 @@ export class AsignarIndicadorComponent implements OnInit {
 
   formPrioridad = this._formBuilder.group({
     frmDescripcionIndicador: ['', Validators.required],
-    frmDetalleIndicador: ['', Validators.required],
-    frmPeso: ['', Validators.required],
     frmTipoValorMeta: ['', Validators.required],
     frmValorMeta: [''],
+    frmPeso: ['', Validators.required],
   });
-
+  
   formEvidencia = this._formBuilder.group({
     frmDescripcion: [''],
     frmPlazo: [''],
@@ -45,7 +45,9 @@ export class AsignarIndicadorComponent implements OnInit {
   onChangeValueTipoValorMeta: number;
 
   confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
-
+  porcentajeMensaje: string = '';
+  porcentajeActual: number = 0;
+ 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _dialog: MatDialog,
@@ -57,6 +59,8 @@ export class AsignarIndicadorComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data);
     this.listarTipoValorMeta();
+    this.porcentajeActual = this.data.trabajador.pesoTotal;
+    this.porcentajeMensaje = "Porcentaje Total: " + this.data.trabajador.pesoTotal + "%";
   }
 
   onKey(event) {
@@ -100,10 +104,10 @@ export class AsignarIndicadorComponent implements OnInit {
 
   async registrar() {
     // console.log(this.formPrioridad.value.frmTrabajador.integrante.idVotante);
-    // console.log(this.formPrioridad.value.frmActividad.idActividad);
+    console.log(this.formPrioridad.value);
 
     let prioridad = new PrioridadExistDto();
-    prioridad.idPrioridad = this.data.element.idPrioridad;
+    prioridad.idPrioridad = this.data.prioridadSelected.idPrioridad;
 
     let votante = new VotanteExistDto();
     votante.idVotante = this.data.idVotante;
@@ -113,8 +117,7 @@ export class AsignarIndicadorComponent implements OnInit {
 
     let indicador = new IndicadorExistDto();
     indicador.descripcion = this.formPrioridad.value.frmDescripcionIndicador;
-    indicador.detalle = this.formPrioridad.value.frmDetalleIndicador;
-    indicador.peso = this.formPrioridad.value.frmPeso;
+    indicador.peso = Number(this.formPrioridad.value.frmPeso);
     indicador.tipoValorMeta = tipoValorMeta;
     indicador.valorMeta = this.formPrioridad.value.frmValorMeta;
 
@@ -146,7 +149,7 @@ export class AsignarIndicadorComponent implements OnInit {
           this._notification.success("Se registró correctamente");
           // this.dialogRef.closeAll();
         });
-        // this._dialog.closeAll();
+        this._dialog.closeAll();
       }
       this.confirmDialogRef = null;
     });

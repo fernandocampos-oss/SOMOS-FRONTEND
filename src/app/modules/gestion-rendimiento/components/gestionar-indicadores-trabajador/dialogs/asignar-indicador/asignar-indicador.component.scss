@@ -1,6 +1,22 @@
-::ng-deep .mat-step-header .mat-step-icon-selected {
-  background-color: var(--color-MiEssalud);
+::ng-deep .mat-horizontal-stepper-header {
+  pointer-events: none !important;
 }
+
+// form {
+//   mat-dialog-actions {
+//     display: grid;
+//     grid-template-columns: 1fr 1fr;
+//     column-gap: 1rem;
+//   }
+
+//   mat-form-field {
+//     width: 100%;
+//   }
+
+//   textarea {
+//     resize: none;
+//   }
+// }
 
 mat-grid-list {
   mat-form-field {
@@ -23,11 +39,6 @@ mat-grid-list {
 
 .mat-mdc-form-field {
   margin-top: 16px;
-}
-
-.aproved-button {
-  color: white;
-  background-color: var(--color-MiEssalud);
 }
 
 .primary-button {

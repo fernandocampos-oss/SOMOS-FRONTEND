@@ -29,13 +29,13 @@ export class NotificacionCorreoComponent implements OnInit {
 
   async enviarCorreo() {
     // console.log(this.dto);
-    let send = await this._grService.sendCorreoNotificacion(this.dto).then((data: any) => {
-      if (data = 1) {
-        this._notification.success("Correo Enviado");
-      } else {
-        this._notification.warning("Enviar correo: Se produjo un error");
-      }
-    });
+    // let send = await this._grService.sendCorreoNotificacion(this.dto).then((data: any) => {
+    //   if (data = 1) {
+    //     this._notification.success("Correo Enviado");
+    //   } else {
+    //     this._notification.warning("Enviar correo: Se produjo un error");
+    //   }
+    // });
 
   }
 

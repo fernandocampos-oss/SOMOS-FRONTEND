@@ -1,4 +1,4 @@
-<h1 matDialogTitle>Datos de la evidencia:</h1>
+<h1 matDialogTitle>Información de la evidencia:</h1>
 <mat-dialog-content>
     <p><strong>Descripción:</strong> {{data.model.descripcion ? data.model.descripcion:'(Ninguno)'}}</p>
     <br>
@@ -17,13 +17,13 @@
         matTooltip="Ver PDF" (click)="verEvidenciaPdf(data.model)">
         <mat-icon>picture_as_pdf</mat-icon>
     </button>
-    <button mat-icon-button class="has-success" matTooltip="Aprobar Evidencia"
+    <!-- <button mat-icon-button class="has-success" matTooltip="Aprobar Evidencia"
         (click)="aprobarTarear(data.model, false)">
         <mat-icon>check</mat-icon>
     </button>
     <button mat-icon-button color="warn" matTooltip="Rechazar Evidencia" (click)="rechazarTarea(data.model, true)">
         <mat-icon>cancel</mat-icon>
-    </button>
+    </button> -->
 
     <!-- <form [formGroup]="form">
         <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">

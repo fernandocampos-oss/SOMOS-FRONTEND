@@ -1,5 +1,5 @@
-::ng-deep .mat-step-header .mat-step-icon-selected {
-  background-color: var(--color-MiEssalud);
+::ng-deep .mat-horizontal-stepper-header {
+  pointer-events: none !important;
 }
 
 mat-grid-list {
@@ -23,11 +23,6 @@ mat-grid-list {
 
 .mat-mdc-form-field {
   margin-top: 16px;
-}
-
-.aproved-button {
-  color: white;
-  background-color: var(--color-MiEssalud);
 }
 
 .primary-button {

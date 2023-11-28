@@ -1,21 +1,22 @@
 import { FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { AppConfig } from '@core/configs';
-import { ActividadResponse, IndicadorRequest } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
+import { ActividadResponse, IndicadorRequest } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+
 import * as moment from 'moment';
 import { EvidenciaExistRequestDto, IndicadorExistRequestDto } from '@data/models/gestion-rendimiento/indicador-exist-evidencia.model';
-import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 
 @Component({
-  selector: 'app-asignar-tarea',
-  templateUrl: './asignar-tarea.component.html',
-  styleUrls: ['./asignar-tarea.component.scss']
+  selector: 'app-asignar-evidencia',
+  templateUrl: './asignar-evidencia.component.html',
+  styleUrls: ['./asignar-evidencia.component.scss']
 })
-export class AsignarTareaComponent implements OnInit {
+export class AsignarEvidenciaComponent implements OnInit {
   confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;

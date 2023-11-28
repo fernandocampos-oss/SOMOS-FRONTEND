@@ -17,7 +17,7 @@ export class VotanteExistDto{
 
 export class IndicadorExistDto {
     descripcion?: string;
-    detalle?: string;
+    // detalle?: string;
     peso?: number;
     tipoValorMeta?: TipoValorMeta
     valorMeta?: number;
