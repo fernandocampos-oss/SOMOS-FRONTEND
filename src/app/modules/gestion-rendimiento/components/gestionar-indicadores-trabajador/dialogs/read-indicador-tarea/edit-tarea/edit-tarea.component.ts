@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { EvidenciaRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-edit-tarea',
@@ -21,7 +21,6 @@ export class EditTareaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this._data);
     this.getModel();
   }
 

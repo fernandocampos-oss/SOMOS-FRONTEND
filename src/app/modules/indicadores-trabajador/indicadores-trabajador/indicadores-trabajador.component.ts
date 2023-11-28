@@ -5,10 +5,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService, SnackbarService } from '@core/services';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { ModalTareaComponent } from '../components/modal-tarea/modal-tarea.component';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
 import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-indicadores-trabajador',
@@ -42,7 +42,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     let listPendiente = await this._grService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
         this.listIndicadoresPendientes = data;
-        console.log(this.listIndicadoresPendientes);
         this.dataSource = new MatTableDataSource(this.listIndicadoresPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -57,7 +56,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   }
 
   verDetalleIndicadorYEvidencias(element) {
-    console.log(element)
     const dialogRef: MatDialogRef<ModalTareaComponent> = this._matDialog.open(ModalTareaComponent, {
       disableClose: false,
       width: '60%',
@@ -81,7 +79,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   async generarExcelTrabajador() {
     let load = await this._grService.generarExcelTrabajador().then((data: any) => {
       if (data != null) {
-        console.log("service excel", data);
+        // console.log("service excel", data);
         this.servicioExcelEjecutor(data);
       }
     });
@@ -101,7 +99,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     jefe.codUnidad = main.evaluadorCodUnidad;
     jefe.numeroDocumento = main.evaluadorNumeroDocumento;
 
-    console.log("data excel", main.listPrioridad);
+    // console.log("data excel", main.listPrioridad);
     let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
   }
 

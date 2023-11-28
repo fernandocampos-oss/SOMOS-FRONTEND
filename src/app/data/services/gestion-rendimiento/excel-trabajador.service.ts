@@ -168,7 +168,7 @@ export class ExcelTrabajadorService {
 
     worksheet.mergeCells('I8:L8');
     let titleFechaMetaResult = worksheet.getCell('I8');
-    titleFechaMetaResult.value = '24/11/2023';
+    titleFechaMetaResult.value = '28/11/2023';
     titleFechaMetaResult.font = {
       name: 'Calibri',
       size: 8,

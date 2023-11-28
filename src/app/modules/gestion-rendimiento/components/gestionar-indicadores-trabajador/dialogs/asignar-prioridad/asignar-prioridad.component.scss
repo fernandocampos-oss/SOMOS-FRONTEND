@@ -2,6 +2,14 @@
   pointer-events: none !important;
 }
 
+mat-form-field {
+  width: 100%;
+}
+
+.size-field {
+  width: 35%;
+}
+
 mat-grid-list {
   mat-form-field {
     width: 100%;

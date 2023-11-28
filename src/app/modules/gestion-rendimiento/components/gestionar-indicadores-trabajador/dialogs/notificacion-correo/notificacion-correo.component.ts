@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { EmailNotificacionRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-notificacion-correo',
@@ -21,14 +21,12 @@ export class NotificacionCorreoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data);
     this.dto = new EmailNotificacionRequestDto();
     this.dto.email = this.data.correo;
     this.dto.url = "";
   }
 
   async enviarCorreo() {
-    // console.log(this.dto);
     // let send = await this._grService.sendCorreoNotificacion(this.dto).then((data: any) => {
     //   if (data = 1) {
     //     this._notification.success("Correo Enviado");

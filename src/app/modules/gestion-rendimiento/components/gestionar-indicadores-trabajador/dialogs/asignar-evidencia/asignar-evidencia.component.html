@@ -11,7 +11,7 @@
             <mat-form-field appearance="outline">
                 <mat-label>Plazo máximo</mat-label>
                 <input matInput formControlName="frmFechaLimiteEvidencia" [min]="minFechaTarea"
-                    [matDatepicker]="fechaTareaPicker" />
+                    [matDatepicker]="fechaTareaPicker" (focus)="fechaTareaPicker.open()"/>
                 <mat-datepicker-toggle matSuffix [for]="fechaTareaPicker"></mat-datepicker-toggle>
                 <mat-datepicker #fechaTareaPicker></mat-datepicker>
             </mat-form-field>
@@ -52,7 +52,7 @@
         </table>
     </div>
 </form>
-<br>
+<br><br><br>
 <mat-divider></mat-divider>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close color="primary">Cancelar</button>

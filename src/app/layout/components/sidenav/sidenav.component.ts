@@ -15,9 +15,9 @@ import { InscribirseBoletasComponent } from '@modules/mis-boletas/components/ins
 import { BoletaService } from '@data/services/boleta.service';
 import { Router } from '@angular/router';
 import { AppRoute } from '@data/constants';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { SegmentoVotante } from '@data/enums';
 import { InscripcionService } from '@data/services/inscripcion.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-sidenav',

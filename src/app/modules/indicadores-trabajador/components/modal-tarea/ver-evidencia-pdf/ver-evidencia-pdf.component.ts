@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-ver-evidencia-pdf',
@@ -22,7 +22,6 @@ constructor(
 ) { }
 
 ngOnInit(): void {
-  console.log(this.data)
   // this.loadPdfFile(this.data.model.idArchivo)
   this.loadPdfFile()
 }

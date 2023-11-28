@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ReadIndicadorTareaComponent } from './dialogs/read-indicador-tarea/read-indicador-tarea.component';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { NotificationService, SnackbarService } from '@core/services';
 import { AddPesoComponent } from './dialogs/add-peso/add-peso.component';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
@@ -11,6 +10,7 @@ import { GrEquipoComponent } from './dialogs/gr-equipo/gr-equipo.component';
 import { AsignarPrioridadComponent } from './dialogs/asignar-prioridad/asignar-prioridad.component';
 import { AsignarEvidenciaComponent } from './dialogs/asignar-evidencia/asignar-evidencia.component';
 import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -49,13 +49,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let listPrioridades = await this._grService.listarPrioridadesPrincipal().then((data) => {
       if (data.length > 0) {
         this.listDataTable = data;
-        console.log("onTable", this.listDataTable)
       }
     });
   }
 
   verIndicadorYtarea(element) {
-    // console.log(element)
     const dialogRef: MatDialogRef<ReadIndicadorTareaComponent> = this._dialog.open(ReadIndicadorTareaComponent, {
       disableClose: false,
       width: '40%',
@@ -207,7 +205,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   async generarExcelDirectivo() {
     let load = await this._grService.generarExcelDirectivo().then((data: any) => {
       if (data != null || data.length > 0) {
-        console.log("service excel", data);
+        // console.log("service excel", data);
         for (let i of data) {
           if (i.listPrioridad.length > 0) {
             this.servicioExcelDirectivo(i);
@@ -231,7 +229,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     jefe.codUnidad = main.evaluadorCodUnidad;
     jefe.numeroDocumento = main.evaluadorNumeroDocumento;
 
-    console.log("data excel", main.listPrioridad);
+    // console.log("data excel", main.listPrioridad);
     let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
   }
 

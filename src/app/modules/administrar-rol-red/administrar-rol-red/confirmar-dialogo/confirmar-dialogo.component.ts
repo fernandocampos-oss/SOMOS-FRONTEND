@@ -23,7 +23,6 @@ export class ConfirmarDialogoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data);
     this.titleNombre = this.data.personal.nombresCompletos;
   }
 

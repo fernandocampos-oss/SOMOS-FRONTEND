@@ -6,10 +6,10 @@ import { AppConfig } from '@core/configs';
 import { NotificationService } from '@core/services';
 import { ActividadResponse, IndicadorRequest } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 
 import * as moment from 'moment';
 import { EvidenciaExistRequestDto, IndicadorExistRequestDto } from '@data/models/gestion-rendimiento/indicador-exist-evidencia.model';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-asignar-evidencia',
@@ -41,7 +41,6 @@ export class AsignarEvidenciaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
   }
 
   crearEvidencia() {

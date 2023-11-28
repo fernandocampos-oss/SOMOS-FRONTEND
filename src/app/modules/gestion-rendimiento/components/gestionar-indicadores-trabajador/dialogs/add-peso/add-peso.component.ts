@@ -2,7 +2,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-add-peso',
@@ -25,27 +25,10 @@ export class AddPesoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
   }
 
   async asignarPesoIndicador() {
-    // console.log("peso", this.formPesoSelect.value.frmPeso);
-
-    // let suma = 0;
-    // for (let p of this.data.listPrioridad) {
-    //   for (let i of p.listIndicador) {
-    //     let numero = 0;
-    //     numero = i.peso;
-    //     suma += numero;
-    //   }
-    // }
-    // console.log("suma", suma);
-    // this.sumaTotal = suma;
-
-    // console.log("suma actual", this.sumaTotal + Number(this.formPesoSelect.value.frmPeso));
-
-    // if ((this.sumaTotal + Number(this.formPesoSelect.value.frmPeso)) > 100) {
-
+    // console.log(this.formPesoSelect.value.frmPeso);
       let actualizar = await this._grService.asignarPesoIndicador(Number(this.formPesoSelect.value.frmPeso), this.data.indicadorSeleccionado.idIndicador).then((data) => {
         if (data) {
           this._notification.success("Peso asignado correctamente");
@@ -54,11 +37,6 @@ export class AddPesoComponent implements OnInit {
           this._notification.error("Asignar Peso: Error")
         }
       });
-
-    // } else {
-    //   this._notification.warning("Con el porcentaje ingresado supera el 100%")
-    // }
-
   }
 
 }

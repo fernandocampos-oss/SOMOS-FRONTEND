@@ -2,8 +2,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-registrar-evidencia-trabajador',
@@ -40,7 +40,6 @@ export class RegistrarEvidenciaTrabajadorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
     this._createForm();
   }
 

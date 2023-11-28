@@ -1,83 +1,69 @@
-<h3 class="auth__subtitle">Nuevo Gestión del Rendimiento</h3>
+<h3 class="auth__subtitle">Registrar Gestión del Rendimiento</h3>
 <mat-stepper [linear]="isLinear">
     <mat-step [stepControl]="formPrioridad" label="Formulario Indicador">
         <form [formGroup]="formPrioridad">
-            <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
-                <mat-grid-tile [colspan]="6">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Seleccionar Trabajador</mat-label>
-                        <mat-select formControlName="frmTrabajador">
-                            <mat-option *ngFor="let t of listEquipo" [value]="t">
-                                {{t.integrante.nombres}} {{t.integrante.apellidos}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="6">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Seleccione el tipo de prioridad anual de gestión del órgano o unidad
-                            orgánica</mat-label>
-                        <mat-select formControlName="frmActividad">
-                            <mat-option *ngFor="let a of listActividad" [value]="a">
-                                {{a.descripcion}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="6">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Indicador / Producto</mat-label>
-                        <input matInput formControlName="frmDescripcionIndicador" minlength="1" maxlength="200" />
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="6">
-                    <h3>Valor Meta:</h3>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="3">
-                    <!-- valor meta -->
-                    <mat-form-field appearance="outline">
-                        <mat-label>Unidad de medida</mat-label>
-                        <mat-select [(value)]="idValorMetaSeleccionado" formControlName="frmTipoValorMeta"
-                            (selectionChange)="onSelectionChangeTipoValorMeta($event)">
-                            <mat-option *ngFor="let t of listTipoValorMeta" [value]="t.idTipoValorMeta">
-                                {{t.descripcion | titlecase}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <div *ngIf="onChangeValueTipoValorMeta ==1 || onChangeValueTipoValorMeta ==2">
-                    <mat-grid-tile [colspan]="3">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Valor</mat-label>
-                            <input matInput formControlName="frmValorMeta" maxlength="3" required />
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </div>
-                <div *ngIf="onChangeValueTipoValorMeta ==4">
-                    <mat-grid-tile [colspan]="3">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Valor porcentual</mat-label>
-                            <input matInput formControlName="frmValorMeta" minlength="1" maxlength="3"
-                                class="example-right-align" required />
-                            <span matSuffix class="percent-align">%</span>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </div>
+            <mat-form-field appearance="outline">
+                <mat-label>Seleccionar Trabajador</mat-label>
+                <mat-select formControlName="frmTrabajador">
+                    <mat-option *ngFor="let t of listEquipo" [value]="t">
+                        {{t.integrante.nombres}} {{t.integrante.apellidos}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-                <mat-grid-tile [colspan]="6">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Peso</mat-label>
-                        <input matInput formControlName="frmPeso" class="example-right-align" minlength="1"
-                            maxlength="3">
-                        <span matSuffix class="percent-align">%</span>
-                    </mat-form-field>
-                </mat-grid-tile>
-            </mat-grid-list>
+            <mat-form-field appearance="outline">
+                <mat-label>Seleccione el tipo de prioridad anual de gestión del órgano o unidad
+                    orgánica</mat-label>
+                <mat-select formControlName="frmActividad">
+                    <mat-option *ngFor="let a of listActividad" [value]="a">
+                        {{a.descripcion}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Indicador / Producto</mat-label>
+                <input matInput formControlName="frmDescripcionIndicador" minlength="1" maxlength="200" />
+            </mat-form-field>
+
+            <h4>Valor Meta:</h4>
+            <mat-form-field appearance="outline">
+                <mat-label>Unidad de medida</mat-label>
+                <mat-select [(value)]="idValorMetaSeleccionado" formControlName="frmTipoValorMeta"
+                    (selectionChange)="onSelectionChangeTipoValorMeta($event)">
+                    <mat-option *ngFor="let t of listTipoValorMeta" [value]="t.idTipoValorMeta">
+                        {{t.descripcion | titlecase}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div *ngIf="onChangeValueTipoValorMeta ==1 || onChangeValueTipoValorMeta ==2">
+                <mat-form-field appearance="outline">
+                    <mat-label>Valor Numérico</mat-label>
+                    <input matInput formControlName="frmValorMeta" maxlength="3" required />
+                </mat-form-field>
+            </div>
+            <div *ngIf="onChangeValueTipoValorMeta ==4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Valor porcentual</mat-label>
+                    <input matInput formControlName="frmValorMeta" minlength="1" maxlength="3"
+                        class="example-right-align" required />
+                    <span matSuffix class="percent-align">%</span>
+                </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline" class="size-field">
+                <mat-label>Peso del Indicador/Producto</mat-label>
+                <input matInput formControlName="frmPeso" class="example-right-align" type="number" minlength="1"
+                    maxlength="3">
+                <span matSuffix class="percent-align">%</span>
+            </mat-form-field>
+            <br><br><br>
             <mat-divider></mat-divider>
             <br />
             <div align="end">
                 <button mat-button mat-dialog-close color="primary">Cancelar</button>&nbsp;
-                <button mat-raised-button matStepperNext color="primary" [disabled]="formPrioridad.value.frmPeso === ''">
+                <button mat-raised-button matStepperNext color="primary"
+                    [disabled]="formPrioridad.value.frmPeso === ''">
                     Siguiente
                     <mat-icon>chevron_right</mat-icon>
                 </button>
@@ -95,11 +81,11 @@
                         <input matInput formControlName="frmDescripcion">
                     </mat-form-field>
                 </mat-grid-tile>
-                <mat-grid-tile [colspan]="3">
+                <mat-grid-tile [colspan]="5">
                     <mat-form-field appearance="outline">
                         <mat-label>Plazo máximo</mat-label>
                         <input matInput formControlName="frmPlazo" [min]="minFechaEvidencia"
-                            [matDatepicker]="fechaTareaPicker" />
+                            [matDatepicker]="fechaTareaPicker" (focus)="fechaTareaPicker.open()" />
                         <mat-datepicker-toggle matSuffix [for]="fechaTareaPicker"></mat-datepicker-toggle>
                         <mat-datepicker #fechaTareaPicker></mat-datepicker>
                     </mat-form-field>
@@ -139,7 +125,7 @@
                     </tr>
                 </table>
             </div>
-            <br /><br />
+            <br><br><br>
             <mat-divider></mat-divider>
             <br />
             <div align="end">

@@ -2,9 +2,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { TipoValorMeta } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { NotificationService } from '@core/services';
 import { IndicadorRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-registrar-indicador-jefe',
@@ -29,7 +29,6 @@ export class RegistrarIndicadorJefeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data)
     this._createForm();
     this.listarTipoValorMeta();
   }
@@ -67,7 +66,7 @@ export class RegistrarIndicadorJefeComponent implements OnInit {
   }
 
   onSelectionChangeTipoValorMeta(event: any) {
-    console.log(event.value);
+    // console.log(event.value);
     this.onChangeValueTipoValorMeta = event.value;
   }
 

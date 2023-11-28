@@ -5,8 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 interface Año {
   anio: number;
@@ -35,7 +35,7 @@ export class ReporteRequerimientosComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _requerimientoService: GestionRendimientoService,
+    private _grService: GestionRendimientoService,
     private _notification: NotificationService,
   ) { }
 
@@ -54,10 +54,9 @@ export class ReporteRequerimientosComponent implements OnInit {
   }
 
   async generarReporte() {
-    // let result = await this._requerimientoService.reporteGeneralRequerimientos(this.form.value.frmAnioElegido).then((data) => {
+    // let result = await this._grService.reporteGeneralRequerimientos(this.form.value.frmAnioElegido).then((data) => {
     //   if (data.length > 0) {
     //     this.listData = data;
-    //     console.log("data", this.listData.length)
     //     for (let i of this.listData) {
     //       this.procesarExcel(i);
     //     }

@@ -6,7 +6,7 @@ import { AppConfig } from '@core/configs';
 import { NotificationService } from '@core/services';
 import { ActividadResponse, TipoValorMeta } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { EvidenciaExistDto, IndicadorExistDto, PrioridadExistDto, PrioridadExistRequestDto, VotanteExistDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 import * as moment from 'moment';
 
@@ -45,8 +45,9 @@ export class AsignarIndicadorComponent implements OnInit {
   onChangeValueTipoValorMeta: number;
 
   confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
-  porcentajeMensaje: string = '';
-  porcentajeActual: number = 0;
+  porcentajeGrabado: number = 0;
+
+  showHelpCPlanilla = false;
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -59,8 +60,7 @@ export class AsignarIndicadorComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data);
     this.listarTipoValorMeta();
-    this.porcentajeActual = this.data.trabajador.pesoTotal;
-    this.porcentajeMensaje = "Porcentaje Total: " + this.data.trabajador.pesoTotal + "%";
+    this.porcentajeGrabado = this.data.trabajador.pesoTotal;
   }
 
   onKey(event) {
@@ -98,13 +98,12 @@ export class AsignarIndicadorComponent implements OnInit {
   }
 
   onSelectionChangeTipoValorMeta(event: any) {
-    console.log(event.value);
     this.onChangeValueTipoValorMeta = event.value;
   }
 
   async registrar() {
     // console.log(this.formPrioridad.value.frmTrabajador.integrante.idVotante);
-    console.log(this.formPrioridad.value);
+    // console.log(this.formPrioridad.value);
 
     let prioridad = new PrioridadExistDto();
     prioridad.idPrioridad = this.data.prioridadSelected.idPrioridad;
@@ -119,7 +118,11 @@ export class AsignarIndicadorComponent implements OnInit {
     indicador.descripcion = this.formPrioridad.value.frmDescripcionIndicador;
     indicador.peso = Number(this.formPrioridad.value.frmPeso);
     indicador.tipoValorMeta = tipoValorMeta;
-    indicador.valorMeta = this.formPrioridad.value.frmValorMeta;
+    if (this.formPrioridad.value.frmTipoValorMeta == 3) {
+      indicador.valorMeta = 100;
+    } else {
+      indicador.valorMeta = this.formPrioridad.value.frmValorMeta;
+    }
 
     let evidencias: EvidenciaExistDto[] = [];
     for (let i of this.listEvidencia) {
@@ -136,7 +139,6 @@ export class AsignarIndicadorComponent implements OnInit {
     prioridadExistDto.votante = votante;
     prioridadExistDto.indicador = indicador;
     prioridadExistDto.listEvidencia = evidencias;
-    // console.log(prioridadExistDto)
 
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false
@@ -147,9 +149,9 @@ export class AsignarIndicadorComponent implements OnInit {
 
         this._grService.registrarIndicadorExistPrioridad(prioridadExistDto).then(data => {
           this._notification.success("Se registró correctamente");
-          // this.dialogRef.closeAll();
+          this._dialog.closeAll();
         });
-        this._dialog.closeAll();
+        // this._dialog.closeAll();
       }
       this.confirmDialogRef = null;
     });

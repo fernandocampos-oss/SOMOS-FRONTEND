@@ -5,11 +5,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EquipoRequest, Integrante, Jefe } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { NotificationService } from '@core/services';
 import { Observable } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-gr-equipo',

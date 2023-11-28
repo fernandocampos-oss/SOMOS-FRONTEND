@@ -15,75 +15,6 @@ export class GestionRendimientoService {
     private http: HttpClient
   ) { }
 
-  // AgregarPersona(data): Observable<any> {
-  //   return this.http.post(`${environment.apiUrl}/equipo/registrarIntegrante/`, data);
-  // }
-
-  // ListarIntegrantes(): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/equipo/listarMisIntegrantes`);
-  // }
-
-  // EliminarIntegrante(id, motivo) {
-  //   return this.http.delete(`${environment.apiUrl}/equipo/eliminarIntegrante/${id}/${motivo}`);
-  // }
-
-  // ListarTareas(id): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/tarea/listarTareas/${id}`);
-  // }
-
-  // RegistrarTarea(data): Observable<any> {
-  //   return this.http.post(`${environment.apiUrl}/tarea/registrar`, data);
-  // }
-
-  // ListarInformes(id): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/evidencia/listarPorTarea/${id}`);
-  // }
-
-  // RegistrarInforme(data): Observable<any> {
-  //   return this.http.post(`${environment.apiUrl}/evidencia/registrar`, data);
-  // }
-
-  // ListarArchivos(id): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/evidencia/listarArchivosEvidencia/${id}`);
-  // }
-
-  // CargarArchivo(data): Observable<any> {
-  //   return this.http.post(`${environment.apiUrl}/evidencia/subirArchivo/`, data);
-  // }
-
-  // EliminarArchivo(id) {
-  //   return this.http.delete(`${environment.apiUrl}/evidencia/eliminarArchivo/${id}`);
-  // }
-
-  // DescargarArchivo(id): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/archivo/descargar/${id}`);
-  // }
-
-  // AprobarRechazarTarea(data) {
-  //   return this.http.put(`${environment.apiUrl}/tarea/actualizarEstado`, data);
-  // }
-
-  // ListarModalidad(): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/equipo/listarModalidad`);
-  // }
-
-  // ListarRiesgo(): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/equipo/listarRiesgo`);
-  // }
-
-  // ListarMisModalidades(id): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/equipo/listarMisModalidades/${id}`);
-  // }
-
-  // ListarMisRiesgos(id): Observable<any> {
-  //   return this.http.get(`${environment.apiUrl}/equipo/listarMisRiesgos/${id}`);
-  // }
-
-  // RegistrarIntegranteDetalle(data): Observable<any> {
-  //   return this.http.post(`${environment.apiUrl}/equipo/registrarIntegranteDetalle`, data);
-  // }
-
-  //Prioridad
   async listarActividades() {
     const url = `${URL_BASE}/prioridades/listar/actividades`;
     console.log(url);
@@ -108,7 +39,6 @@ export class GestionRendimientoService {
     return await this.http.post(url, dto).toPromise();
   }
 
-  //Indicadores
   async asignarPesoIndicador(peso: number, idIndicador: number) {
     const url = `${URL_BASE}/indicadores/asignar/peso/${peso}/indicador/${idIndicador}`;
     console.log(url);
@@ -145,8 +75,6 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
   
-
-  //Equipo
   async listarIntegrantesPorLider() {
     const url = `${URL_BASE}/equipos/listar`;
     console.log(url);
@@ -177,7 +105,6 @@ export class GestionRendimientoService {
     return await this.http.get<Object>(url).toPromise();
   }
 
-  //evidencias
   async registrarEvidenciaExistIndicador(dto: IndicadorExistRequestDto) {
     const url = `${URL_BASE}/evidencias/registrar/exist-indicador`;
     console.log(url, dto);

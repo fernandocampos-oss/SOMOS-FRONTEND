@@ -5,11 +5,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@core/services';
-import { GestionRendimientoService } from '@data/services/gestion-rendimiento.service';
 import { EditTareaComponent } from './edit-tarea/edit-tarea.component';
 import { VerEvidenciaImagenComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-imagen/ver-evidencia-imagen.component';
 import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
 import { EvidenciaResponse } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
   selector: 'app-read-indicador-tarea',
@@ -35,7 +35,6 @@ export class ReadIndicadorTareaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
     // this.createForm();
   }
 
@@ -98,7 +97,8 @@ export class ReadIndicadorTareaComponent implements OnInit {
   }
 
    aprobarTarear(element, onDelete: boolean) {
-    console.log("aprobar", element, "bool ", onDelete);
+    // console.log("aprobar", element, "bool ", onDelete);
+
     // const dialogRef: MatDialogRef<AcceptRejectRequirementComponent> = this._dialog.open(AcceptRejectRequirementComponent, {
     //   disableClose: false,
     //   autoFocus: false,
@@ -114,7 +114,7 @@ export class ReadIndicadorTareaComponent implements OnInit {
   }
 
   rechazarTarea(element, onDelete: boolean){
-    console.log("rechazar", element, "bool ", onDelete);
+    // console.log("rechazar", element, "bool ", onDelete);
   }
 
   // showDialogUser(onDelete: boolean) {
