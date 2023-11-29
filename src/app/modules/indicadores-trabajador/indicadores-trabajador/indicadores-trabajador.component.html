@@ -131,7 +131,7 @@
                                     <mat-list>
                                         <mat-list-item *ngFor="let z of element.listIndicador">
                                             <!-- [disabled]="(element.estadoIndicador.codigo == '01' ) ? true : false" -->
-                                            <button mat-icon-button class="color-mensaje"
+                                            <button mat-icon-button class="color-mensaje" disabled
                                                 matTooltip="Ver evidencias asignadas"
                                                 (click)="verDetalleIndicadorYEvidencias(z)">
                                                 <mat-icon>library_books</mat-icon>
