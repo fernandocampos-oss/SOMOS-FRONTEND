@@ -1,16 +1,27 @@
-<h1 mat-dialog-title class="confirm-dialog__title">Confirmacion</h1>
+<h1 mat-dialog-title class="confirm-dialog__title">{{ data.title }}</h1>
 <div mat-dialog-content>
-  <!-- <p class="confirm-dialog__message">{{ data.message }}</p>
-  <p class="confirm-dialog__message" *ngIf="data.messageAdicional">{{ data.messageAdicional }}</p> -->
+  <p class="confirm-dialog__message">{{ data.message }}</p>
+  <p class="confirm-dialog__message" *ngIf="data.messageAdicional">{{ data.messageAdicional }}</p>
 </div>
-<div>
-  <button type="submit" class="confirm-dialog__button" mat-raised-button [mat-dialog-close]="true" color="warn">
-    <!-- <button color="primary" type="submit" class="confirm-dialog__button" mat-raised-button [mat-dialog-close]="true"
-      [class.is--warning]="isTypeWaring" [class.is--info]="isTypeInfo" [class.is--error]="isTypeError">
-      Aceptar
-    </button> -->
+<div mat-dialog-actions class="confirm-dialog__footer">
+  <button
+    color="primary"
+    type="submit"
+    class="confirm-dialog__button"
+    mat-raised-button
+    [mat-dialog-close]="true"
+    [class.is--warning]="isTypeWaring"
+    [class.is--info]="isTypeInfo"
+    [class.is--error]="isTypeError"
+  >
+    Aceptar
   </button>
-  <button type="button" class="confirm-dialog__button" mat-button mat-dialog-close>
+  <button
+    type="button"
+    class="confirm-dialog__button"
+    mat-button
+    mat-dialog-close
+  >
     Cancelar
   </button>
 </div>
