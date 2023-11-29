@@ -5,6 +5,7 @@ import { AppRoute } from '@data/constants';
 import { AdministrarUsuariosComponent } from './administrar-usuarios/administrar-usuarios.component';
 import { AdministrarInscripcionComponent } from './administrar-inscripcion/administrar-inscripcion.component';
 import { AdministrarProyectosComponent } from './administrar-proyectos/administrar-proyectos.component';
+import { AdministrarEncuestasComponent } from './administrar-encuestas/administrar-encuestas.component';
 
 const routes: Routes = [
   // {
@@ -33,6 +34,13 @@ const routes: Routes = [
     component: AdministrarProyectosComponent,
     data: {
       title: 'Administrar Proyectos de Renueva Essalud'
+    }
+  },
+  {
+    path: AppRoute.ADMINISTRAR_ENCUESTA,
+    component: AdministrarEncuestasComponent,
+    data: {
+      title: 'Administrar Encuestas'
     }
   },
 ];

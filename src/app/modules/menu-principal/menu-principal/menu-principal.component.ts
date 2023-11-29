@@ -32,6 +32,8 @@ export class MenuPrincipalComponent implements OnInit {
   mostrarEleccion = false;
   numDocUsuario = '';
 
+  idPublicacionCambiar = 100;
+
   onomasticos: OnomasticosResponse[] = [];
   today = new Date();
   interfazCelular: boolean;
@@ -202,6 +204,19 @@ export class MenuPrincipalComponent implements OnInit {
         obj: element
       }
       });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          const dialogRef2: MatDialogRef<EncuestaSimpleComponent> = this.dialog.open(EncuestaSimpleComponent, {
+            disableClose: false,
+            minWidth: '22em',
+            maxWidth:'40em',
+            autoFocus: false,
+            data:{
+              obj: element
+            }
+            });
+        }
+      });
   }
 
   showPublicacion(publicacionData){
@@ -366,7 +381,8 @@ export class MenuPrincipalComponent implements OnInit {
           idInscripcion: publicacionData.idInscripcion,
           pubData: {
             imagenBase64: publicacionData.imagenBase64,
-            titulo: publicacionData.titulo
+            titulo: publicacionData.titulo,
+            urlRedireccion: publicacionData.urlRedireccion
           }
         }
         });

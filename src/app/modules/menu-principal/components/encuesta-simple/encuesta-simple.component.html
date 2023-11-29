@@ -1,8 +1,52 @@
 <div *ngIf="esHora">
     <div *ngIf="mostrar">
         <div class="dialogEncuesta">
-            <h3>{{datosEncuesta.descripcion}}</h3>
-            <p style="text-align: center;">Seleccione un candidato</p>
+            <div class="tituloEstiloheader">
+                <h3 style="font-size: 22px;
+                font-weight: 900;
+                color: #0866ae;
+                text-transform: uppercase;">{{datosEncuesta.descripcion}}</h3>
+                <a #targetLink href="http://www.essalud.gob.pe/downloads/COMPROMISO_DEL_TRABAJADOR_PDP_HABILIDADES_BLANDAS.pdf" target="_blank"><button mat-raised-button color="primary" (click)="visualizarOpciones = false; targetLink.href"><mat-icon>open_in_new</mat-icon> Descargar la carta de compromiso</button></a>
+            </div>
+            <b style="font-size: 14px; text-align: center;">Descargue la carta de compromiso, esta debe enviarse al correo: leonardo.llerena@essalud.gob.pe</b>
+            <div class="infoAdicional">
+                <div class="contenedorTextos">
+                    <span class="encabezadoEstilo">Fecha</span>
+                    <span class="encabezadoEstilo">Régimen</span>
+                </div>
+                <div class="contenedorTextos">
+                    <span class="dataEstilo ordenSpan">20 - 28 Noviembre</span>
+                    <span class="dataEstilo ordenSpan">Trabajadores(as) 276, 728 y CAS</span>
+                </div>
+                <div class="contenedorTextos">
+                    <span class="encabezadoEstilo">Modalidad</span>
+                    <span class="encabezadoEstilo">Horas a compensar</span>
+                </div>
+                <div class="contenedorTextos">
+                    <span class="dataEstilo ordenSpan">Asíncrona (Grabadas)</span>
+                    <div class="subDivision dataEstilo">
+                        <span>Administrativos: 12 horas</span>
+                        <span>Asistencial: 16 horas</span>
+                    </div>
+                </div>
+                <!-- <div class="contenedorTextos">
+                    <span class="encabezadoEstilo">Fecha</span>
+                    <span class="dataEstilo">20 - 28 Noviembre</span>
+                    <span class="encabezadoEstilo">Modalidad</span>
+                    <span class="dataEstilo">Asíncrona (Grabadas)</span>
+                </div>
+                <div class="contenedorTextos">
+                    <span class="encabezadoEstilo">Régimen</span>
+                    <span class="dataEstilo">Trabajadores(as) 276, 728 y CAS</span>
+                    <span class="encabezadoEstilo">Horas a compensar</span>
+                    <div class="subDivision dataEstilo">
+                        <span>Administrativos: 12 horas</span>
+                        <span>Asistencial: 16 horas</span>
+                    </div>
+                </div> -->
+            </div>
+            <b style="text-align: center;" *ngIf="datosEncuesta.preguntas">{{datosEncuesta.preguntas[0].descripcion}}</b>
+            <!-- <p style="text-align: center;">Seleccione un candidato</p>
             <div class="separacion">
                 <ng-container *ngFor="let candidato of candMap, index as i">
                     <div class="elementos" *ngIf="i != candMap.length-1" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
@@ -32,45 +76,49 @@
                         <span>{{candMap[candMap.length-1].nombre | titlecase}}</span>
                     </div>
                 </div>
-            </div>
-            <!-- <mat-radio-group aria-label="Select an option">
+            </div> -->
+            <mat-radio-group aria-label="Select an option" *ngIf="datosEncuesta.preguntas">
                 <div class="containerOpciones">
-                    <div class="opcionesEncuestaSimple" (click)="enableDisableRule(1)"
+                    <div *ngFor="let option of datosEncuesta.preguntas[0].alternativas" class="opcionesEncuestaSimple" [ngStyle]="{'border-color': option.valor == seleccion ? 'rgb(72, 210, 72)' : null, 'filter': option.valor == seleccion ? 'brightness(1.25)': null}">
+                        <div class="options" (click)="chooseOption(option.valor)" [disabled]="visualizarOpciones">
+                            <img [src]="option.valor == 1 ? 'assets/images/encuestaCurso1.png' : 'assets/images/encuestaCurso2.png'">
+                        </div>
+                    </div>
+
+                    <!-- <div class="opcionesEncuestaSimple"
                     [ngClass]="{'confirm' : toggle, 'option': !toggle}">
                         <div class="options">
                             <img src="assets/images/creditCard.png">
                             <p>{{alternativas[0].descripcion}}</p>
                         </div>
                     </div>
-                    <div class="opcionesEncuestaSimple" (click)="enableDisableRule(2)"
+                    <div class="opcionesEncuestaSimple"
                     [ngClass]="{'confirm' : toggle2, 'option': !toggle2}">
                         <div class="options">
                             <img src="assets/images/moneyIcon.png">
                             <p>{{alternativas[1].descripcion}}</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-                <mat-grid-list cols="2" rowHeight="48px" gutterSize="6px">
-                    <mat-grid-tile [colspan]="1">
-                        <button class="selector" mat-raised-button color="primary"
-                        (click)="enableDisableRule(1)">Elegir</button>
+                <!-- <mat-grid-list cols="2" rowHeight="48px" gutterSize="6px">
+                    <mat-grid-tile *ngFor="let option of datosEncuesta.preguntas[0].alternativas" [colspan]="1">
+                        <button class="selector" mat-raised-button color="primary" [ngStyle]="{'background': option.valor == seleccion ? 'rgb(72, 210, 72)' : null}"
+                        (click)="chooseOption(option.valor)">Elegir</button>
                     </mat-grid-tile>
-                    <mat-grid-tile [colspan]="1">
-                        <button class="selector" mat-raised-button color="primary"
-                        (click)="enableDisableRule(2)">Elegir</button>
-                    </mat-grid-tile>
-                </mat-grid-list>
-            </mat-radio-group> -->
+                </mat-grid-list> -->
+            </mat-radio-group>
         </div>
             <mat-dialog-actions>
                     <button mat-button mat-dialog-close>Cerrar</button>
-                    <button mat-raised-button color="primary" (click)="sendConfirmation(selectedCandidato)">Enviar</button>
+                    <button mat-raised-button color="primary" (click)="sendConfirmation()" [disabled]="visualizarOpciones">Enviar</button>
             </mat-dialog-actions>
     </div>
     
-    <div class="dialogEncuesta encuestaHecha" *ngIf="!mostrar">
+    <div class="dialogEncuesta encuestaHecha" *ngIf="!mostrar" style="align-items: center;">
         <img src="assets/images/surveyCheck.png">
-        <h3>¡Usted ya emitió su voto!</h3>
+        <h3>¡Se registró su inscripción al curso!</h3>
+        <a #targetLink href="http://www.essalud.gob.pe/downloads/COMPROMISO_DEL_TRABAJADOR_PDP_HABILIDADES_BLANDAS.pdf" target="_blank"><button mat-raised-button color="primary" (click)="visualizarOpciones = false; targetLink.href"><mat-icon>open_in_new</mat-icon> Descargar la carta de compromiso</button></a>
+        <b style="font-size: 14px; text-align: center;">Recuerde que la carta de compromiso debe enviarse al correo: leonardo.llerena@essalud.gob.pe</b>
         <mat-dialog-actions align="center">
                 <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
         </mat-dialog-actions>

@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationService } from '@core/services';
 import { UserSession } from '@data/models';
 import { inscritosResponse } from '@data/models/inscripcion/inscripcion.model';
 import { AuthService } from '@data/services';
@@ -41,14 +42,13 @@ export class AdministrarInscripcionComponent implements OnInit {
   // resultadosVotacion: any;
 
   displayedColumns: string[] = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
-
-  headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
   
   constructor(
     private _router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private _authService   : AuthService,
+    private _notification   : NotificationService,
     public _servicerExcel: ExportExcelService,
     private inscripcionService: InscripcionService) { }
 
@@ -64,20 +64,19 @@ export class AdministrarInscripcionComponent implements OnInit {
   }
   
   getData(){
+    let headersTabla = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
     this.inscripcionService.getUsuariosInscritos(this.ctrlInscripcion.value).subscribe((data)=>{
-      console.log(data)
       this.dataInscripcion = data;
       this.inscripcionService.getDatosInscripcionPorId(this.ctrlInscripcion.value).subscribe((datosInscripcion)=>{
-        console.log(datosInscripcion);
+        // console.log((({ inscritos, ...o }) => o)(this.dataInscripcion));
         let idGrupo = 0;
 
         this.estructuraExtraInscripcion = datosInscripcion;
         if(this.estructuraExtraInscripcion.grupoActivo){
-          this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
+          // this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
           this.dataInscripcion.inscritos.sort(function (a, b) {
                 return b.fechaInscripcion.localeCompare(a.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
           });
-          console.log(this.dataInscripcion.inscritos)
           this.dataInscripcion.inscritos.forEach((x)=>{
             if(idGrupo != x.idLider && x.idLider == x.idUsuario){
               let cantVotacion = 0;
@@ -88,11 +87,10 @@ export class AdministrarInscripcionComponent implements OnInit {
               this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, cantVotos: cantVotacion, integrantes:this.dataInscripcion.inscritos.filter((z)=>{return x.idLider == z.idLider})});
             }
           })
-          console.log(this.grupos)
         }
         else{
-          if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion', 'accion'];
-          else this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
+          if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) {headersTabla.push('accion')} // = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion', 'accion'];
+          // else this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
           if (this.dataInscripcion.inscritos.length > 0) {
             this.dataInscripcion.inscritos.sort(function (a, b) {
                   return b.fechaInscripcion.localeCompare(a.fechaInscripcion);
@@ -105,11 +103,13 @@ export class AdministrarInscripcionComponent implements OnInit {
           }
         }
       })
+      this.displayedColumns = headersTabla;
     })
   }
 
   comprobarSiUrl(stringEvaluar: string): boolean{
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    // var regexp = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
     return regexp.test(stringEvaluar);
   }
 
@@ -134,25 +134,32 @@ export class AdministrarInscripcionComponent implements OnInit {
   }
 
   exportar(){
-    // if(this.idInscripcionSelected == 2){
-    //   this.headers.splice(0,0,'GRUPO');
-    //   if(this.esVotacion){
-    //     this.headers.splice(1,0,'VOTOS');
-    //   }
-    // }
-    // else{
-    //   this.headers = ['DNI','APELLIDOS Y NOMBRE','REG LABORAL','CELULAR','CORREO']
-    // }
-    this._servicerExcel.exportExcel(this.dataInscripcion.descripcion, this.headers, this.dataInscripcion.inscritos, this.dataInscripcion.votacionesResultado)
+    if (this.dataInscripcion.inscritos.length > 0) {
+      let headers = ['DNI','Apellidos y Nombres','Fec. Nacimiento','Red','Unidad Orgánica','Reg. Laboral','Celular','Correo'];
+      
+      if(this.estructuraExtraInscripcion.grupoActivo){
+        headers.splice(0,0,(this.estructuraExtraInscripcion.textoActivo ? `Grupo (${this.estructuraExtraInscripcion.textoDescripcion})`: 'Líder de grupo'));
+        if(this.dataInscripcion.votacionesResultado){
+          headers.splice(1,0,'Votos');
+        }
+      }
+      else{
+        if(this.estructuraExtraInscripcion.textoActivo){
+          headers.push(this.estructuraExtraInscripcion.textoDescripcion)
+        }
+        if(this.dataInscripcion.votacionesResultado){
+          headers.splice(0,0,'Votos');
+        }
+      }
+          
+      this._servicerExcel.exportExcel(headers, this.dataInscripcion, this.estructuraExtraInscripcion)
+    }
+    else{
+      this._notification.warning('Aún no hay registro de inscritos');
+    }
   }
 
-      // this.idIns = data.idInscripcion;
-      // this.descripcionInsc = data.descripcion;
-      // this.listInscritos = data.inscritos;
-      // this.esVotacion = data.votacion;
-      // this.esVotacionActivo = data.votoActivo;
   activarVotacion(){
-    console.log(this.dataInscripcion.idInscripcion, this.dataInscripcion.votoActivo)
     const dialogRef: MatDialogRef<ConfirmDialogComponent> = this.dialog.open(ConfirmDialogComponent, {
       disableClose: true,
       autoFocus: false,

@@ -19,20 +19,23 @@ export class ExportExcelService {
 
   constructor() { }
 
-  exportExcel(titulo, columnas: string[], inscritos :inscritosResponse[], esVotacion: any) {
+  exportExcel(columnas: string[], dataInscripcion: any, dataExtraInscripcion: any) {
+  // exportExcel(titulo, columnas: string[], inscritos :inscritosResponse[], esVotacion: any) {
     //Title, Header & Data
     // const regimen = excelData.regimen;
     // const header = excelData.headers;
     // const data = excelData.data;
-
+    console.log(columnas)
+    console.log(dataInscripcion)
+    console.log(dataExtraInscripcion)
     //Create a workbook with a worksheet
     let workbook = new Workbook();
-    let worksheet = workbook.addWorksheet('Data');
+    let worksheet = workbook.addWorksheet('Inscritos');
 
     worksheet.mergeCells(worksheet.getRow(3).getCell(1).address,worksheet.getRow(3).getCell(columnas.length).address);
     
     let titleReport = worksheet.getCell(worksheet.getRow(3).getCell(1).address);
-    titleReport.value = titulo;
+    titleReport.value = dataInscripcion.descripcion;
     titleReport.font = {
       name:'Times New Roman',
       size: 16,
@@ -42,16 +45,17 @@ export class ExportExcelService {
 
     this.formatoHeaders(worksheet,columnas);
 
-    this.formatoContenido(worksheet, inscritos, columnas.length, esVotacion);
+    this.formatoContenido(worksheet, dataInscripcion, columnas.length, dataExtraInscripcion);
 
     for (let i = 0; i < columnas.length; i++) {
       let maxLength = columnas[i].length;
-      for (let j = 0; j < inscritos.length; j++) {
+      for (let j = 0; j < dataInscripcion.inscritos.length; j++) {
         if (worksheet.getRow(j+6).getCell(i+1).value) {
           if(worksheet.getRow(j+6).getCell(i+1).value.toString().length > maxLength)
             maxLength = worksheet.getRow(j+6).getCell(i+1).value.toString().length;
         }
       }
+      
       worksheet.getColumn(i+1).width = maxLength + maxLength*0.6;
       // worksheet.getColumn(i+1).alignment = { wrapText:true};
     }
@@ -59,7 +63,7 @@ export class ExportExcelService {
     //Generate & Save Excel File
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: EXCEL_TYPE, });
-      fs.saveAs(blob, this.fileName + '_' + titulo + EXCEL_EXTENSION);
+      fs.saveAs(blob, this.fileName + '_' + dataInscripcion.descripcion + EXCEL_EXTENSION);
     });
   }
   
@@ -68,7 +72,7 @@ export class ExportExcelService {
       wb.getRow(5).getCell(i+1).value = values[i];
       wb.getRow(5).getCell(i+1).font = {
         name:'Times New Roman',
-        size: 16,
+        size: 14,
         bold: true,
       };
       wb.getRow(5).getCell(i+1).alignment = { horizontal: 'center'};
@@ -81,53 +85,58 @@ export class ExportExcelService {
     }
   }
 
-  formatoContenido(wb: Worksheet, values, cantHeaders, esVotacion){
-    if(values.some(x => x.idLider != null)){
+  formatoContenido(wb: Worksheet, dataInscripcion, cantHeaders, dataExtraInscripcion){
+    const datePipe = new DatePipe('en-US');
+  // formatoContenido(wb: Worksheet, values, cantHeaders, esVotacion){
+    if(dataExtraInscripcion.grupoActivo){
       let identificador = 0;
       // let position;
-      for (let i = 0; i < values.length; i++) {
-        if(values[i].idLider != identificador){
-          identificador = values[i].idLider;
-          // console.log(values[i].idLider)
-          // console.log(wb.getRow(i+6).getCell(1).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address)
-          // console.log(values.filter((z)=>{return values[i].idLider == z.idLider}))
-          wb.mergeCells(wb.getRow(i+6).getCell(1).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address);
-          if(esVotacion){
-            wb.mergeCells(wb.getRow(i+6).getCell(2).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(2).address);
-            if(esVotacion.find((votacionRes)=>{return votacionRes.idLider == identificador})){
-              wb.getRow(i+6).getCell(2).value = esVotacion.find((votacionRes)=>{return votacionRes.idLider == identificador}).votos;
+      for (let i = 0; i < dataInscripcion.inscritos.length; i++) {
+        if(dataInscripcion.inscritos[i].idLider != identificador){
+          identificador = dataInscripcion.inscritos[i].idLider;
+          wb.mergeCells(wb.getRow(i+6).getCell(1).address,wb.getRow(dataInscripcion.inscritos.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address);
+          if(dataInscripcion.votacionesResultado){
+            wb.mergeCells(wb.getRow(i+6).getCell(2).address,wb.getRow(dataInscripcion.inscritos.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(2).address);
+            if(dataInscripcion.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == identificador})){
+              wb.getRow(i+6).getCell(2).value = dataInscripcion.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == identificador}).votos;
             }
             else{
               wb.getRow(i+6).getCell(2).value = 0;
             }
           }
-          // if(identificador != values[0].idLider){
-          //   let identity = (i + 1 == values.length ? i +1: i)
-          //   wb.mergeCells(wb.getRow(position+6).getCell(1).address,wb.getRow(identity+5).getCell(1).address);
-          // } //aqui poner el merge;
-          // position = i;
         }
       }
-      for (let i = 0; i < values.length; i++) {
-        wb.getRow(i+6).getCell('A').value = values[i].descripcion;
-        if(esVotacion){
-          wb.getRow(i+6).getCell('C').value = values[i].numeroDocumento;
-          wb.getRow(i+6).getCell('D').value = values[i].nombreCompleto;
-          wb.getRow(i+6).getCell('E').value = values[i].regimen;
-          wb.getRow(i+6).getCell('F').value = values[i].numeroCelular;
-          wb.getRow(i+6).getCell('G').value = values[i].correo;
+      for (let i = 0; i < dataInscripcion.inscritos.length; i++) {
+        if(dataExtraInscripcion.textoActivo){
+          wb.getRow(i+6).getCell('A').value = dataInscripcion.inscritos[i].descripcion;
+        }
+        else if(dataInscripcion.inscritos[i].idLider == dataInscripcion.inscritos[i].idUsuario){
+          wb.getRow(i+6).getCell('A').value = dataInscripcion.inscritos[i].nombreCompleto;
+        }
+        if(dataInscripcion.votacionesResultado){
+          wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].numeroDocumento;
+          wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('E').value = datePipe.transform(dataInscripcion.inscritos[i].fechaNacimiento, 'dd/MM/yyyy');
+          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].red;
+          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].unidadOrganica;
+          wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].regimen;
+          wb.getRow(i+6).getCell('I').value = dataInscripcion.inscritos[i].numeroCelular;
+          wb.getRow(i+6).getCell('J').value = dataInscripcion.inscritos[i].correo;
         }
         else{
-          wb.getRow(i+6).getCell('B').value = values[i].numeroDocumento;
-          wb.getRow(i+6).getCell('C').value = values[i].nombreCompleto;
-          wb.getRow(i+6).getCell('D').value = values[i].regimen;
-          wb.getRow(i+6).getCell('E').value = values[i].numeroCelular;
-          wb.getRow(i+6).getCell('F').value = values[i].correo;
+          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].numeroDocumento;
+          wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('D').value = datePipe.transform(dataInscripcion.inscritos[i].fechaNacimiento, 'dd/MM/yyyy');
+          wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].red;
+          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].unidadOrganica;
+          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].regimen;
+          wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].numeroCelular;
+          wb.getRow(i+6).getCell('I').value = dataInscripcion.inscritos[i].correo;
         }
         for (let j = 0; j < cantHeaders; j++) {
           wb.getRow(i+6).getCell(j+1).font = {
             name: 'Calibri',
-            size: 16,
+            size: 14,
           }
           wb.getRow(i+6).getCell(j+1).alignment = { horizontal: 'center', vertical: 'middle'};
           wb.getRow(i+6).getCell(j+1).border = {
@@ -140,16 +149,37 @@ export class ExportExcelService {
       }
     }
     else{
-      for (let i = 0; i < values.length; i++) {
-        wb.getRow(i+6).getCell('A').value = values[i].numeroDocumento;
-        wb.getRow(i+6).getCell('B').value = values[i].nombreCompleto;
-        wb.getRow(i+6).getCell('C').value = values[i].regimen;
-        wb.getRow(i+6).getCell('D').value = values[i].numeroCelular;
-        wb.getRow(i+6).getCell('E').value = values[i].correo;
+      for (let i = 0; i < dataInscripcion.inscritos.length; i++) {
+        if (dataInscripcion.votacionesResultado) {
+          let votacionEncontrada = dataInscripcion.votacionesResultado.find((votacionRes)=>{return votacionRes.idInsPersona == dataInscripcion.inscritos.idInsPersona});
+          wb.getRow(i+6).getCell(1).value = (votacionEncontrada ? votacionEncontrada.votos : 0);
+          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].numeroDocumento;
+          wb.getRow(i+6).getCell('C').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('D').value = datePipe.transform(dataInscripcion.inscritos[i].fechaNacimiento, 'dd/MM/yyyy');
+          wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].red;
+          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].unidadOrganica;
+          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].regimen;
+          wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].numeroCelular;
+          wb.getRow(i+6).getCell('I').value = dataInscripcion.inscritos[i].correo;
+        }
+        else{
+          wb.getRow(i+6).getCell('A').value = dataInscripcion.inscritos[i].numeroDocumento;
+          wb.getRow(i+6).getCell('B').value = dataInscripcion.inscritos[i].nombreCompleto;
+          wb.getRow(i+6).getCell('C').value = datePipe.transform(dataInscripcion.inscritos[i].fechaNacimiento, 'dd/MM/yyyy');
+          wb.getRow(i+6).getCell('D').value = dataInscripcion.inscritos[i].red;
+          wb.getRow(i+6).getCell('E').value = dataInscripcion.inscritos[i].unidadOrganica;
+          wb.getRow(i+6).getCell('F').value = dataInscripcion.inscritos[i].regimen;
+          wb.getRow(i+6).getCell('G').value = dataInscripcion.inscritos[i].numeroCelular;
+          wb.getRow(i+6).getCell('H').value = dataInscripcion.inscritos[i].correo;
+          if(dataExtraInscripcion.textoActivo){
+            wb.getRow(i+6).getCell(cantHeaders).value = dataInscripcion.inscritos[i].descripcion;
+          }
+        }
+
         for (let j = 0; j < cantHeaders; j++) {
           wb.getRow(i+6).getCell(j+1).font = {
             name: 'Calibri',
-            size: 16,
+            size: 14,
           }
           wb.getRow(i+6).getCell(j+1).border = {
             top: {style:'thin'},
@@ -160,5 +190,83 @@ export class ExportExcelService {
         }
       }
     }
+    // if(values.some(x => x.idLider != null)){
+    //   let identificador = 0;
+    //   // let position;
+    //   for (let i = 0; i < values.length; i++) {
+    //     if(values[i].idLider != identificador){
+    //       identificador = values[i].idLider;
+    //       // console.log(values[i].idLider)
+    //       // console.log(wb.getRow(i+6).getCell(1).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address)
+    //       // console.log(values.filter((z)=>{return values[i].idLider == z.idLider}))
+    //       wb.mergeCells(wb.getRow(i+6).getCell(1).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(1).address);
+    //       if(esVotacion){
+    //         wb.mergeCells(wb.getRow(i+6).getCell(2).address,wb.getRow(values.filter((z)=>{return identificador == z.idLider}).length + i + 5).getCell(2).address);
+    //         if(esVotacion.find((votacionRes)=>{return votacionRes.idLider == identificador})){
+    //           wb.getRow(i+6).getCell(2).value = esVotacion.find((votacionRes)=>{return votacionRes.idLider == identificador}).votos;
+    //         }
+    //         else{
+    //           wb.getRow(i+6).getCell(2).value = 0;
+    //         }
+    //       }
+    //       // if(identificador != values[0].idLider){
+    //       //   let identity = (i + 1 == values.length ? i +1: i)
+    //       //   wb.mergeCells(wb.getRow(position+6).getCell(1).address,wb.getRow(identity+5).getCell(1).address);
+    //       // } //aqui poner el merge;
+    //       // position = i;
+    //     }
+    //   }
+    //   for (let i = 0; i < values.length; i++) {
+    //     wb.getRow(i+6).getCell('A').value = values[i].descripcion;
+    //     if(esVotacion){
+    //       wb.getRow(i+6).getCell('C').value = values[i].numeroDocumento;
+    //       wb.getRow(i+6).getCell('D').value = values[i].nombreCompleto;
+    //       wb.getRow(i+6).getCell('E').value = values[i].regimen;
+    //       wb.getRow(i+6).getCell('F').value = values[i].numeroCelular;
+    //       wb.getRow(i+6).getCell('G').value = values[i].correo;
+    //     }
+    //     else{
+    //       wb.getRow(i+6).getCell('B').value = values[i].numeroDocumento;
+    //       wb.getRow(i+6).getCell('C').value = values[i].nombreCompleto;
+    //       wb.getRow(i+6).getCell('D').value = values[i].regimen;
+    //       wb.getRow(i+6).getCell('E').value = values[i].numeroCelular;
+    //       wb.getRow(i+6).getCell('F').value = values[i].correo;
+    //     }
+    //     for (let j = 0; j < cantHeaders; j++) {
+    //       wb.getRow(i+6).getCell(j+1).font = {
+    //         name: 'Calibri',
+    //         size: 14,
+    //       }
+    //       wb.getRow(i+6).getCell(j+1).alignment = { horizontal: 'center', vertical: 'middle'};
+    //       wb.getRow(i+6).getCell(j+1).border = {
+    //         top: {style:'thin'},
+    //         left: {style:'thin'},
+    //         bottom: {style:'thin'},
+    //         right: {style:'thin'}
+    //       }        
+    //     }
+    //   }
+    // }
+    // else{
+    //   for (let i = 0; i < values.length; i++) {
+    //     wb.getRow(i+6).getCell('A').value = values[i].numeroDocumento;
+    //     wb.getRow(i+6).getCell('B').value = values[i].nombreCompleto;
+    //     wb.getRow(i+6).getCell('C').value = values[i].regimen;
+    //     wb.getRow(i+6).getCell('D').value = values[i].numeroCelular;
+    //     wb.getRow(i+6).getCell('E').value = values[i].correo;
+    //     for (let j = 0; j < cantHeaders; j++) {
+    //       wb.getRow(i+6).getCell(j+1).font = {
+    //         name: 'Calibri',
+    //         size: 16,
+    //       }
+    //       wb.getRow(i+6).getCell(j+1).border = {
+    //         top: {style:'thin'},
+    //         left: {style:'thin'},
+    //         bottom: {style:'thin'},
+    //         right: {style:'thin'}
+    //       }        
+    //     }
+    //   }
+    // }
   }
 }

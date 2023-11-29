@@ -6,6 +6,8 @@ import { NotificationService } from '@core/services';
 import { EleccionService } from '@data/services/eleccion.service';
 import { CandidatosResponse, EleccionActivaResponse } from '@data/models/eleccion/eleccion.model';
 import { UsuarioService } from '@data/services';
+import { MenuEncuestaShow, encuestaRespuesta } from '@data/models/menu-principal/menu-encuesta.model';
+import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-encuesta-simple',
@@ -14,22 +16,26 @@ import { UsuarioService } from '@data/services';
 })
 export class EncuestaSimpleComponent implements OnInit {
 
-  // datosEncuesta: MenuEncuestaShow;
+  datosEncuesta: MenuEncuestaShow = Object();
+
+  visualizarOpciones = true;
 
   esHora = true;
 
   candMap = [Object()];
 
   selectedCandidato: any;
-  datosEncuesta: EleccionActivaResponse = Object();
+  // datosEncuesta: EleccionActivaResponse = Object();
 
   candidatosBD: CandidatosResponse[];
+  
 
-  alternativas = [{valor:0, idAlternativa: 0, descripcion:''},{valor:0, idAlternativa: 0, descripcion:''}]
-  seleccion: number = 0;
+  // alternativas = [{valor:0, idAlternativa: 0, descripcion:''},{valor:0, idAlternativa: 0, descripcion:''}]
+  seleccion: number;
   mostrar = true;
   
   constructor(private _notification   : NotificationService,
+              private dialogRef: MatDialogRef<EncuestaSimpleComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private _serviceMenu: MenuPrincipalService,
               private userService: UsuarioService,
@@ -37,43 +43,43 @@ export class EncuestaSimpleComponent implements OnInit {
               private dialog          : MatDialog,) { }
 
   ngOnInit(): void {
-    this.eleccionesService.getEleccionActiva().subscribe((data)=>{
-      console.log(data);
-      if(data){
-        this.datosEncuesta = data;
-        if(data.candidatos.length % 2 == 0 && data.candidatos.length != 6){
-          document.documentElement.style.setProperty('--tamanio-array','2');
-        }
-        else{
-          document.documentElement.style.setProperty('--tamanio-array','3');
-        }
-        this.candidatosBD = data.candidatos;
-        this.candMap = data.candidatos.map((x)=> {return {idCandidato: x.idCandidato, idUsuario: x.idUsuario, unidad: '', numeroDocumento: x.numeroDocumento, nombre: x.nombres + ' ' + x.apellidos, selected: false, }})
-        for (let i = 0; i < this.candMap.length; i++) {
-          this.userService.get(this.candMap[i].idUsuario).subscribe((data)=>{
-            if(data){
-              this.candMap[i].unidad = data.red;
-            }
-          })
-        }
-        this.candMap.push({idCandidato: 0, numeroDocumento:'0', nombre: 'Ningún Candidato', selected: false, })
-        console.log(this.candMap)
-      }
-      else{
-        this.mostrar = false;
-      }
-    });
-    // this._serviceMenu.getEncuestaActiva().subscribe((data)=>{
-    //   if(data == null){
-    //     this.mostrar = false;
+    // this.eleccionesService.getEleccionActiva().subscribe((data)=>{
+    //   console.log(data);
+    //   if(data){
+    //     this.datosEncuesta = data;
+    //     if(data.candidatos.length % 2 == 0 && data.candidatos.length != 6){
+    //       document.documentElement.style.setProperty('--tamanio-array','2');
+    //     }
+    //     else{
+    //       document.documentElement.style.setProperty('--tamanio-array','3');
+    //     }
+    //     this.candidatosBD = data.candidatos;
+    //     this.candMap = data.candidatos.map((x)=> {return {idCandidato: x.idCandidato, idUsuario: x.idUsuario, unidad: '', numeroDocumento: x.numeroDocumento, nombre: x.nombres + ' ' + x.apellidos, selected: false, }})
+    //     for (let i = 0; i < this.candMap.length; i++) {
+    //       this.userService.get(this.candMap[i].idUsuario).subscribe((data)=>{
+    //         if(data){
+    //           this.candMap[i].unidad = data.red;
+    //         }
+    //       })
+    //     }
+    //     this.candMap.push({idCandidato: 0, numeroDocumento:'0', nombre: 'Ningún Candidato', selected: false, })
+    //     console.log(this.candMap)
     //   }
     //   else{
-    //     console.log(data);
-    //     const dataObj = Object(data);
-    //     this.datosEncuesta = data;
-    //     this.alternativas = dataObj.preguntas[0].alternativas;
+    //     this.mostrar = false;
     //   }
-    // })
+    // });
+    this._serviceMenu.getEncuestaActiva().subscribe((data)=>{
+      if(data == null){
+        this.mostrar = false;
+      }
+      else{
+        console.log(data);
+        // const dataObj = Object(data);
+        this.datosEncuesta = data;
+        // this.alternativas = dataObj.preguntas[0].alternativas;
+      }
+    })
     
   }
 
@@ -83,23 +89,48 @@ export class EncuestaSimpleComponent implements OnInit {
     this.selectedCandidato = cand;
   }
 
-  sendConfirmation(option){
-    if(!this.selectedCandidato){
+  sendConfirmation(){
+    if(!this.seleccion){
       this._notification.warning("Debe elegir una opción");
     }
-    else{
-      const dialogRef: MatDialogRef<ConfirmEncuestaSimpleComponent> = this.dialog.open(ConfirmEncuestaSimpleComponent, {
-        disableClose: false,
+    else{  
+      let optElegida = this.datosEncuesta.preguntas[0].alternativas.find((x)=>{return x.valor == this.seleccion})
+      const dialogRef: MatDialogRef<ConfirmDialogComponent> = this.dialog.open(ConfirmDialogComponent, {
+        disableClose: true,
         autoFocus: false,
-        data: {
-          opcion: option,
-          idEleccion: this.datosEncuesta.idEleccion,
-          idSegmento: this.datosEncuesta.idSegmento
-          // idEncuesta: this.identificadorEncuesta,
-          // encuesta: this._getModel()
+        data:{
+          type:0,
+          title:'Confirmar envío',
+          message: 'Una vez confirmado, no se podrá deshacer',
+          messageAdicional: `Esta eligiendo la siguiente opción: ${optElegida.descripcion}`
         }
       });
+
+      dialogRef.afterClosed().subscribe((data)=>{
+        if(data == true){
+          this._serviceMenu.sendEncuesta(1, this.getModelo()).subscribe((dataItem) => {
+            console.log(dataItem)
+            this.dialogRef.close("enviado");
+          });
+        }
+      })
     }
+    // if(!this.selectedCandidato){
+    //   this._notification.warning("Debe elegir una opción");
+    // }
+    // else{
+    //   const dialogRef: MatDialogRef<ConfirmEncuestaSimpleComponent> = this.dialog.open(ConfirmEncuestaSimpleComponent, {
+    //     disableClose: false,
+    //     autoFocus: false,
+    //     data: {
+    //       opcion: option,
+    //       // idEleccion: this.datosEncuesta.idEleccion,
+    //       // idSegmento: this.datosEncuesta.idSegmento
+    //       // idEncuesta: this.identificadorEncuesta,
+    //       // encuesta: this._getModel()
+    //     }
+    //   });
+    // }
   }
 
   getTooltip(nroDoc: string): string{
@@ -121,4 +152,20 @@ export class EncuestaSimpleComponent implements OnInit {
     return toolText;
   }
 
+  chooseOption(value){
+    this.seleccion = value;
+  }
+
+  public getModelo(): encuestaRespuesta{
+    return {
+      idSede: 1,
+      idGrupoPersonal: 1,
+      idAreaPersonal: 1,
+      idTiempoServicio: 1,
+      respuestas: [{
+        idPregunta: 1,
+        idAlternativa: this.seleccion
+      }]
+    };
+  }
 }

@@ -56,6 +56,10 @@
           <mat-icon mat-list-icon>library_books</mat-icon>
           <span class="option" matLine>Proyectos de Renueva EsSalud </span>
         </mat-list-item>
+        <mat-list-item *ngIf="user.id == 11511" routerLinkActive="active" [routerLink]="['/administracion/encuestas']" [routerLinkActiveOptions]="{ exact: true }"><!---------------------AQUI----------------------->
+          <mat-icon mat-list-icon>assignment</mat-icon>
+          <span class="option" matLine>Encuestas Asignadas </span>
+        </mat-list-item>
         <!-- modulo-gr -->
         <mat-list-item *ngIf="votanteSegmento == segmentoJefe" routerLinkActive="active" [routerLink]="['/gestion-rendimiento']" [routerLinkActiveOptions]="{ exact: true }">
           <mat-icon mat-list-icon>description</mat-icon>
