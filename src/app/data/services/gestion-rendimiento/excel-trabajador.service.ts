@@ -168,7 +168,8 @@ export class ExcelTrabajadorService {
 
     worksheet.mergeCells('I8:L8');
     let titleFechaMetaResult = worksheet.getCell('I8');
-    titleFechaMetaResult.value = '28/11/2023';
+    const datePipe = new DatePipe('en-US');
+    titleFechaMetaResult.value = datePipe.transform(listPrioridades[0].fechaAsignacionPrioridad, 'dd/MM/yyyy');
     titleFechaMetaResult.font = {
       name: 'Calibri',
       size: 8,
@@ -1331,7 +1332,7 @@ export class ExcelTrabajadorService {
     // worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
 
 
-    //iterativo ptincipal
+    //iterativo
     let contadorFilaMerge = 20;
     for (let i = 0; i < listPrioridades.length; i++) {
 

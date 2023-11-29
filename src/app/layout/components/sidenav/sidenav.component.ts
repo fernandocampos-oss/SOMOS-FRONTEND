@@ -18,6 +18,7 @@ import { AppRoute } from '@data/constants';
 import { SegmentoVotante } from '@data/enums';
 import { InscripcionService } from '@data/services/inscripcion.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
+import { environment } from '@env';
 
 @Component({
   selector: 'app-sidenav',
@@ -37,6 +38,8 @@ export class SidenavComponent implements OnInit {
   usuarioVotante: any;
   segmentoJefe: number;
   segmentoTrabajador: number;
+
+  activarmodulo: boolean=environment.modulogr;
 
   constructor(private dialog: MatDialog,
               private _menuService   : MenuService,

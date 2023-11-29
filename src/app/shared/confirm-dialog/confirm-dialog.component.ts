@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotificationType } from '@data/enums/notification-type.enum';
 export interface ConfirmDialog {
   title: string;
@@ -21,5 +21,4 @@ export class ConfirmDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialog) {}
 
   ngOnInit() {}
-
 }
