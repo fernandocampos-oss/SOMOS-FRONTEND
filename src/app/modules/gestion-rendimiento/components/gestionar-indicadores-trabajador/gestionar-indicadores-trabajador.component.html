@@ -9,11 +9,13 @@
         <mat-icon>add_circle</mat-icon>
         &nbsp; Asignar Nueva Prioridad Anual
     </button>
-    <button mat-raised-button class="has-success"
-        matTooltip="Descargar para todos los que tengan al menos una asignación" (click)="generarExcelDirectivo()">
-        <mat-icon>cloud_download</mat-icon>
-        &nbsp; Descargar Todos
-    </button>
+    <div *ngIf="listDataTable.length !== 0">
+        <button mat-raised-button class="has-success"
+            matTooltip="Descargar para todos los que tengan al menos una asignación" (click)="generarExcelDirectivo()">
+            <mat-icon>cloud_download</mat-icon>
+            &nbsp; Descargar Todos
+        </button>
+    </div>
 </div>
 <div *ngIf="listDataTable.length == 0" style="text-align: center"><br /><br />
     <p class="color-mensaje">Sin registros por mostrar, para visualizar debe añadir integrantes a su equipo</p>
@@ -101,7 +103,8 @@
                             <th mat-header-cell *matHeaderCellDef>Peso</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
-                                    <mat-list-item *ngFor="let indicador of element.listIndicador" style="font-size:14px">
+                                    <mat-list-item *ngFor="let indicador of element.listIndicador"
+                                        style="font-size:14px">
                                         {{indicador.peso}}%
                                         <!-- <button mat-icon-button class="has-warn" matTooltip="Asignar Peso"
                                             (click)="addPesoIndicador(indicador, i.listPrioridad)">
@@ -116,7 +119,7 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" style="font-size:14px">
-                                        <p mat-line *ngFor="let t of z.listEvidencia" >
+                                        <p mat-line *ngFor="let t of z.listEvidencia">
                                             <span>- {{t.descripcion}}</span>
                                             <button mat-icon-button class="primary-button"
                                                 matTooltip="Seguimiento de la evidencia"

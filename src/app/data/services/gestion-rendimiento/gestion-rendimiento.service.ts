@@ -69,6 +69,12 @@ export class GestionRendimientoService {
     return await this.http.put(url, model).toPromise();
   }
 
+  async sumaTotalPesoAllIndicadorByTrabajador(idVotante: number) {
+    const url = `${URL_BASE}/indicadores/peso-total/${idVotante}`;
+    console.log(url);
+    return await this.http.get<number>(url).toPromise();
+  }
+  
   async generarExcelTrabajador() {
     const url = `${URL_BASE}/indicadores/excel/trabajador`;
     console.log(url);

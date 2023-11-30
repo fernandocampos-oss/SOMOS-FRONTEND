@@ -48,6 +48,8 @@ export class AsignarPrioridadComponent implements OnInit {
   onChangeValueTipoValorMeta: number;
 
   confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
+  pesoTotalIndicadoresTrabajador: number;
+  showHelpCPlanilla = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -81,6 +83,7 @@ export class AsignarPrioridadComponent implements OnInit {
     let listtrabajadores = await this._grService.listarIntegrantesPorLider().then((data) => {
       if (data.length > 0) {
         this.listEquipo = data;
+        console.log("equipo", this.listEquipo)
       } else {
         this._notification.warning("Para crear indicadores primero debes registrar integrantes a tu equipo");
       }
@@ -93,6 +96,19 @@ export class AsignarPrioridadComponent implements OnInit {
         this.listTipoValorMeta = data;
       } else {
         this._notification.warning("Lista de tipo valor meta vacio");
+      }
+    });
+  }
+
+  onChangePesoVotante(event: any) {
+    // console.log(event.value.integrante.idVotante);
+    this.sumaTotalPesoIndicadoresByTrabajador(event.value.integrante.idVotante);
+  }
+
+  async sumaTotalPesoIndicadoresByTrabajador(idVotante: number) {
+    let peso = await this._grService.sumaTotalPesoAllIndicadorByTrabajador(idVotante).then((data) => {
+      if (data != null) {
+        this.pesoTotalIndicadoresTrabajador = data;
       }
     });
   }

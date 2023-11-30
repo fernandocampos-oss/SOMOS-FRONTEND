@@ -39,7 +39,7 @@ export class SidenavComponent implements OnInit {
   segmentoJefe: number;
   segmentoTrabajador: number;
 
-  activarmodulo: boolean=environment.modulogr;
+  activarModuloGr: boolean = environment.moduloGr;
 
   constructor(private dialog: MatDialog,
               private _menuService   : MenuService,

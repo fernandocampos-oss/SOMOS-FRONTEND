@@ -78,3 +78,18 @@ mat-grid-list {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+.descriptor {
+  width: 100%;
+  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  background:#e6effa;
+  font-weight: 600;
+  text-align: justify;
+  border-radius: 1rem;
+  // padding: 0.3rem;
+  box-shadow: 5px 5px 11px -9px black;
+  top: 2.5rem;
+  left: -1rem;
+}

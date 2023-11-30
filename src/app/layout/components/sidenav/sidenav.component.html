@@ -61,7 +61,7 @@
           <span class="option" matLine>Encuestas Asignadas </span>
         </mat-list-item>
         <!-- modulo-gr -->
-        <ng-container *ngIf="activarmodulo">
+        <ng-container *ngIf="activarModuloGr">
           <mat-list-item *ngIf="votanteSegmento == segmentoJefe" routerLinkActive="active" [routerLink]="['/gestion-rendimiento']" [routerLinkActiveOptions]="{ exact: true }">
             <mat-icon mat-list-icon>description</mat-icon>
             <span class="option" matLine>Gestión del rendimiento</span>
@@ -71,7 +71,6 @@
             <span class="option" matLine>Mis Indicadores/Productos</span>
           </mat-list-item>
         </ng-container>
-        
         
       </ng-container>
     </mat-nav-list>
