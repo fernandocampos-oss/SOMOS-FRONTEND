@@ -8,7 +8,9 @@ import { ActividadResponse, TipoValorMeta } from '@data/models/gestion-rendimien
 import { ActividadRequest, EvidenciaRequest, IndicadorRequest, PrioridadRequestDto, VotanteRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
+
 import * as moment from 'moment';
+import { AlertaPesoComponent } from '../alerta-peso/alerta-peso.component';
 
 @Component({
   selector: 'app-asignar-prioridad',
@@ -65,10 +67,6 @@ export class AsignarPrioridadComponent implements OnInit {
     this.listarTipoValorMeta();
   }
 
-  onKey(event) {
-    this.contadorTxtArea = event.target.value.length;
-  }
-
   async listarActividades() {
     let listActividades = await this._grService.listarActividades().then((data) => {
       if (data.length > 0) {
@@ -109,7 +107,24 @@ export class AsignarPrioridadComponent implements OnInit {
     let peso = await this._grService.sumaTotalPesoAllIndicadorByTrabajador(idVotante).then((data) => {
       if (data != null) {
         this.pesoTotalIndicadoresTrabajador = data;
+        this.showAlertaPeso(this.pesoTotalIndicadoresTrabajador);
       }
+    });
+  }
+
+  async showAlertaPeso(pesoTotalGrabado: number) {
+    const dialogRef: MatDialogRef<AlertaPesoComponent> = this._dialog.open(AlertaPesoComponent, {
+      disableClose: false,
+      width: '25%',
+      maxHeight: '100vh',
+      autoFocus: false,
+      data: {
+        peso: pesoTotalGrabado
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTable();
     });
   }
 

@@ -1,0 +1,18 @@
+.alert {
+    display: grid;
+
+    h2,
+    h3 {
+        justify-self: center;
+        text-align: center;
+    }
+
+    span {
+        justify-self: center;
+        text-align: center;
+    }
+}
+
+.outline {
+    color: var(--color-primary);
+}

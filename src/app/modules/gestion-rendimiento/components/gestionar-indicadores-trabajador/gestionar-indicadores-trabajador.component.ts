@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ReadIndicadorTareaComponent } from './dialogs/read-indicador-tarea/read-indicador-tarea.component';
 import { NotificationService, SnackbarService } from '@core/services';
-import { AddPesoComponent } from './dialogs/add-peso/add-peso.component';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
 import { NotificacionCorreoComponent } from './dialogs/notificacion-correo/notificacion-correo.component';
 import { AsignarIndicadorComponent } from './dialogs/asignar-indicador/asignar-indicador.component';
@@ -138,22 +137,22 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  async addPesoIndicador(indicador: any, listPrioridad: any) {
-    const dialogRef: MatDialogRef<AddPesoComponent> = this._dialog.open(AddPesoComponent, {
-      disableClose: false,
-      width: '15%',
-      maxHeight: '100vh',
-      autoFocus: false,
-      data: {
-        indicadorSeleccionado: indicador,
-        listPrioridad: listPrioridad
-      }
-    });
+  // async addPesoIndicador(indicador: any, listPrioridad: any) {
+  //   const dialogRef: MatDialogRef<AddPesoComponent> = this._dialog.open(AddPesoComponent, {
+  //     disableClose: false,
+  //     width: '15%',
+  //     maxHeight: '100vh',
+  //     autoFocus: false,
+  //     data: {
+  //       indicadorSeleccionado: indicador,
+  //       listPrioridad: listPrioridad
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadTable();
+  //   });
+  // }
 
   // editarIndicador(element, es_editar) {
   //   const dialogRef: MatDialogRef<RegistrarIndicadorTrabajadorComponent> = this._matDialog.open(RegistrarIndicadorTrabajadorComponent, {

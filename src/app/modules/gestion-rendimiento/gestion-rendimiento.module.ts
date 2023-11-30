@@ -14,12 +14,12 @@ import { GestionarIndicadoresTrabajadorComponent } from './components/gestionar-
 import { ReadIndicadorTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/read-indicador-tarea.component';
 import { EditTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/edit-tarea/edit-tarea.component';
 import { AceptarRechazarTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/aceptar-rechazar-tarea/aceptar-rechazar-tarea.component';
-import { AddPesoComponent } from './components/gestionar-indicadores-trabajador/dialogs/add-peso/add-peso.component';
 import { NotificacionCorreoComponent } from './components/gestionar-indicadores-trabajador/dialogs/notificacion-correo/notificacion-correo.component';
 import { AsignarIndicadorComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-indicador/asignar-indicador.component';
 import { GrEquipoComponent } from './components/gestionar-indicadores-trabajador/dialogs/gr-equipo/gr-equipo.component';
 import { AsignarPrioridadComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-prioridad/asignar-prioridad.component';
 import { AsignarEvidenciaComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-evidencia/asignar-evidencia.component';
+import { AlertaPesoComponent } from './components/gestionar-indicadores-trabajador/dialogs/alerta-peso/alerta-peso.component';
 
 @NgModule({
   declarations: [
@@ -30,12 +30,12 @@ import { AsignarEvidenciaComponent } from './components/gestionar-indicadores-tr
     ReadIndicadorTareaComponent,
     EditTareaComponent,
     AceptarRechazarTareaComponent,
-    AddPesoComponent,
     NotificacionCorreoComponent,
     AsignarIndicadorComponent,
     GrEquipoComponent,
     AsignarPrioridadComponent,
     AsignarEvidenciaComponent,
+    AlertaPesoComponent,
   ],
   imports: [
     CommonModule,

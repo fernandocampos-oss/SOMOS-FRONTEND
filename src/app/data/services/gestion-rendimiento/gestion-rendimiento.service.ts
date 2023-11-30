@@ -39,11 +39,11 @@ export class GestionRendimientoService {
     return await this.http.post(url, dto).toPromise();
   }
 
-  async asignarPesoIndicador(peso: number, idIndicador: number) {
-    const url = `${URL_BASE}/indicadores/asignar/peso/${peso}/indicador/${idIndicador}`;
-    console.log(url);
-    return await this.http.get<any>(url).toPromise();
-  }
+  // async asignarPesoIndicador(peso: number, idIndicador: number) {
+  //   const url = `${URL_BASE}/indicadores/asignar/peso/${peso}/indicador/${idIndicador}`;
+  //   console.log(url);
+  //   return await this.http.get<any>(url).toPromise();
+  // }
 
   async listarIndicadorPendiente() {
     const url = `${URL_BASE}/indicadores/listar/pendientes`;

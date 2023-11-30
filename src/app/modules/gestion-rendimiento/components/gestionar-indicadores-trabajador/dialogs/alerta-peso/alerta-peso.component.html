@@ -1,0 +1,21 @@
+<div *ngIf="pesoGrabado<100">
+    <div class="alert">
+        <div class="outline">
+            <mat-icon>check</mat-icon>
+        </div>
+        <h2>El peso total asignado en sus demas Indicadores/Productos es:</h2><br>
+        <h2>{{pesoGrabado}}%</h2>
+        <br>
+    </div>
+</div>
+<div *ngIf="pesoGrabado==100">
+    <div class="alert">
+        <div class="outline">
+            <mat-icon>priority_high</mat-icon>
+        </div>
+        <h2>El peso total es:</h2><br>
+        <h2>{{pesoGrabado}}%</h2>
+        <br>
+        <h3><strong>Ya no es posible asignar mas actividades</strong></h3>
+    </div>
+</div>

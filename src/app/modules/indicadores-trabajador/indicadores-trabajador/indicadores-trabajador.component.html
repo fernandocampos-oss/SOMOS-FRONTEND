@@ -1,14 +1,14 @@
 <div class="page">
     <div class="matero-page-header">
         <h1 class="matero-page-title"><mat-icon>description</mat-icon>Módulo de planificación<br>
-            <small class="mr-2">Aquí podrás definir los indicadores / productos</small><br><br>
+            <small class="mr-2">Aquí podrás visualizar tus Indicadores/Productos y Evidencias</small><br><br>
             <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
         </h1>
     </div>
     <div class="page__body">
         <div class="card shadow">
             <mat-tab-group class="tab-group">
-                <mat-tab label="Indicadores / Productos Pendientes">
+                <mat-tab label="Mi GDR">
                     <div class="actions">
                         <div *ngIf="listIndicadoresPendientes.length !== 0">
                             <button mat-raised-button color="primary" (click)="actualizarIndicadoresPendientes()">
