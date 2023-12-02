@@ -1,21 +1,26 @@
 <div class="page">
-    <div class="matero-page-header">
-      <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon>Módulo de planificación<br>
+  <div class="matero-page-header">
+    <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon>Módulo de
+      planificación<br>
       <small class="mr-2">Aqui podrás registrar tus indicadores / productos y gestionar tus trabajadores</small><br><br>
       <button mat-raised-button class="primary-button" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
-      </h1>
-    </div>
-    <div class="page__body">
-      <div class="card shadow">
-        <mat-tab-group>
-          <mat-tab label="Indicadores/Productos del Área" *ngIf="rol != trabajador">
-            <gestion-rendimiento-gestionar-indicadores-trabajador></gestion-rendimiento-gestionar-indicadores-trabajador>
+    </h1>
+  </div>
+  <div class="page__body">
+    <div class="card shadow">
+      <mat-tab-group>
+        <mat-tab label="Indicadores/Productos del Área" *ngIf="rol != trabajador">
+          <gestion-rendimiento-gestionar-indicadores-trabajador></gestion-rendimiento-gestionar-indicadores-trabajador>
+        </mat-tab>
+        <mat-tab label="Mi GDR" *ngIf="rol != trabajador">
+          <gestion-rendimiento-indicadores-pendientes-jefe></gestion-rendimiento-indicadores-pendientes-jefe>
+        </mat-tab>
+        <div *ngIf="condicionGr ==='03'">
+          <mat-tab label="Reportes GDR">
+            <app-reporte-usuario-gdr></app-reporte-usuario-gdr>
           </mat-tab>
-          <mat-tab label="Mi GDR" *ngIf="rol != trabajador">
-            <gestion-rendimiento-indicadores-pendientes-jefe></gestion-rendimiento-indicadores-pendientes-jefe>
-          </mat-tab>
-        </mat-tab-group>
-      </div>
+        </div>
+      </mat-tab-group>
     </div>
   </div>
-  
+</div>

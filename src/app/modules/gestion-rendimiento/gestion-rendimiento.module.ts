@@ -20,6 +20,7 @@ import { GrEquipoComponent } from './components/gestionar-indicadores-trabajador
 import { AsignarPrioridadComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-prioridad/asignar-prioridad.component';
 import { AsignarEvidenciaComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-evidencia/asignar-evidencia.component';
 import { AlertaPesoComponent } from './components/gestionar-indicadores-trabajador/dialogs/alerta-peso/alerta-peso.component';
+import { ReporteUsuarioGdrComponent } from './components/reporte-usuario-gdr/reporte-usuario-gdr.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AlertaPesoComponent } from './components/gestionar-indicadores-trabajad
     AsignarPrioridadComponent,
     AsignarEvidenciaComponent,
     AlertaPesoComponent,
+    ReporteUsuarioGdrComponent,
   ],
   imports: [
     CommonModule,
