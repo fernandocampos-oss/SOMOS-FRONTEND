@@ -32,7 +32,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  dataSource: MatTableDataSource<any>;
+  // dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['item', 'numero_documento', 'en_matriz', 'sectorista', 'nombre_completo', 'organo', 'unidad', 'sub_unidad', 'puesto', 'rol', 'meta', 'mes', 'plazo'];
 
   listTipoReporte: any[] = [
@@ -42,7 +42,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
     { cod: '04', descripcion: 'Reporte Mes de Julio 2023 - Etapa de Seguimiento - Ciclo 2023' }
   ];
 
-  dataSource_seguimientoEvidencia: any[] = [
+  dataSource_1: any[] = [
     {
       dni: "07570389",
       enMatriz: "#N\/A",
@@ -187,10 +187,10 @@ export class ReporteUsuarioGdrComponent implements OnInit {
 
   @ViewChild(MatSort) sort_2: MatSort;
   @ViewChild(MatPaginator) paginator_2: MatPaginator;
-  dataSource_2: MatTableDataSource<any>;
+  // dataSource_2: MatTableDataSource<any>;
   displayedColumns_2: string[] = ['item', 'numero_documento', 'nombre_completo', 'organo', 'unidad', 'sub_unidad', 'puesto', 'rol', 'meta', 'mes', 'plazo', 'status'];
 
-  dataSource_ReporteMes: any[] = [
+  dataSource_2: any[] = [
     {
      dni: "41989551",
      sectorista: "Nathaly",
@@ -564,7 +564,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   }
 
   onSelectionChangeTipoReporte(event: any) {
-    console.log("look", event.value);
+    console.log(event.value);
     this.onChangeValueTipoReporte = event.value;
   }
 

@@ -27,12 +27,7 @@ export class ReporteRequerimientosComponent implements OnInit {
   anioElegido: number;
   listData: any[] = [];
   evidenciaResponseDto: EvidenciaResponseDto;
-
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-  // dataSource: MatTableDataSource<any>;
-  // displayedColumns: string[] = ['item', 'requerimiento', 'fecha_asignacion', 'tipo_ingreso', 'avance', 'estado', 'acciones'];
-
+  
   constructor(
     private _fb: FormBuilder,
     private _grService: GestionRendimientoService,
@@ -41,29 +36,17 @@ export class ReporteRequerimientosComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    // this.form.controls.frmMesElegido.setValue(this.today.getMonth()+1);
     this.form.controls.frmAnioElegido.setValue(this.today.getFullYear());
 
   }
 
   createForm() {
     this.form = this._fb.group({
-      // frmMesElegido: [null],
       frmAnioElegido: [null],
     });
   }
 
   async generarReporte() {
-    // let result = await this._grService.reporteGeneralRequerimientos(this.form.value.frmAnioElegido).then((data) => {
-    //   if (data.length > 0) {
-    //     this.listData = data;
-    //     for (let i of this.listData) {
-    //       this.procesarExcel(i);
-    //     }
-    //   } else {
-    //     this._notification.warning("No se encontró requerimientos finalizados para el año " + this.form.value.frmAnioElegido);
-    //   }
-    // });
   }
 
   async procesarExcel(element) {

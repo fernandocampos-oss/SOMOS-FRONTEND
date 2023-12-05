@@ -120,7 +120,7 @@
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" style="font-size:14px">
                                         <p mat-line *ngFor="let t of z.listEvidencia">
-                                            <span>- {{t.descripcion}}</span>
+                                            <span>{{t.descripcion}}</span>
                                             <button mat-icon-button class="primary-button"
                                                 matTooltip="Seguimiento de la evidencia"
                                                 (click)="verIndicadorYtarea(t)">

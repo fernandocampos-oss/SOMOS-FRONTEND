@@ -32,5 +32,4 @@ export class AppRoute {
 
   static readonly RENUEVA_ESSALUD = 'renueva-essalud-v';
   static readonly ADMINISTRAR_ROL_RED = 'administrar-rol-red';
-  static readonly REPORTES = 'reportes';
 }

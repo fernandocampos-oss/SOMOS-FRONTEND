@@ -1,3 +1,4 @@
+import { ReportesModule } from './../modules/reportes/reportes.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
@@ -148,13 +149,6 @@ export const ROUTES: Routes = [
         loadChildren: () => 
           import('../modules/administrar-rol-red/administrar-rol-red.module').then(
             (m) => m.AdministrarRolRedModule
-          ),
-      },
-      {
-        path: AppRoute.REPORTES,
-        loadChildren: () => 
-          import('../modules/reportes/reportes.module').then(
-            (m) => m.ReportesModule
           ),
       },
     ],
