@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  modulogr: false,
+  moduloGr: false,
   apiUrl: 'https://apps.essalud.gob.pe/somos-essalud-service/api',
   environmentName: '',
 };
