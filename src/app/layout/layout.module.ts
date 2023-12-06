@@ -11,6 +11,8 @@ import { UserAvatarComponent } from './components/user-avatar/user-avatar.compon
 import { LayoutRoutingModule } from './layout-routing.module';
 import { ChangePasswComponent } from './components/sidenav/change-passw/change-passw/change-passw.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EditUserComponent } from './components/sidenav/edit-user/edit-user.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SidenavComponent,
     UserAvatarComponent,
     ChangePasswComponent,
+    EditUserComponent,
   ],
-  imports: [CommonModule, RouterModule, MaterialModule, LayoutRoutingModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, MaterialModule, LayoutRoutingModule, ReactiveFormsModule, MatGridListModule],
 })
 export class LayoutModule {}

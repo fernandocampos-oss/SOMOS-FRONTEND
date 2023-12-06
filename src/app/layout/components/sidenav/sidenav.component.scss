@@ -11,6 +11,14 @@ mat-list-item:hover {
   background-color: #d9fefc !important;//rgba(0, 0, 0, 0.04);
 }
 
+.optSidenav{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
 mat-sidenav {
   mat-nav-list {
     .menu-item {

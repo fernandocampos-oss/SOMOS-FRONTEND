@@ -5,12 +5,15 @@
   </div>
   <div class="sidenav__body">
     <div class="header-avatar">
-    <p class="ltitle">Bienvenido</p>
-    <img src="assets/images/avatar.png" alt="Essalud" class="sidenav__img" />
-      <b>{{ nombre | titlecase }}</b><br>
-      <h5 class="brand__description">{{ email }}</h5>
-      <mat-icon #tooltip="matTooltip" matTooltip="Cambiar contraseña" class="cursor" (click)="cambiar_contra()">lock</mat-icon>
-      <!-- <h4>Gerencia: {{ gerencia }}</h4> -->
+      <p class="ltitle">Bienvenido</p>
+      <img src="assets/images/avatar.png" alt="Essalud" class="sidenav__img" />
+        <b>{{ nombre | titlecase }}</b><br>
+        <h5 class="brand__description">{{ email }}</h5>
+        <div class="optSidenav">
+          <mat-icon #tooltip="matTooltip" matTooltip="Cambiar contraseña" class="cursor" (click)="cambiar_contra()">lock</mat-icon>
+          <mat-icon #tooltip="matTooltip" matTooltip="Editar Perfil" class="cursor" (click)="showEditPerfil()">edit</mat-icon>
+        </div>
+        <!-- <h4>Gerencia: {{ gerencia }}</h4> -->
     </div>  
     <mat-nav-list>
       <ng-container>
