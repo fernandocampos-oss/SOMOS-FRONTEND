@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ReadIndicadorTareaComponent } from './dialogs/read-indicador-tarea/read-indicador-tarea.component';
 import { NotificationService, SnackbarService } from '@core/services';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
 import { NotificacionCorreoComponent } from './dialogs/notificacion-correo/notificacion-correo.component';
@@ -10,6 +9,9 @@ import { AsignarPrioridadComponent } from './dialogs/asignar-prioridad/asignar-p
 import { AsignarEvidenciaComponent } from './dialogs/asignar-evidencia/asignar-evidencia.component';
 import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
+import { VerEvidenciaImagenComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-imagen/ver-evidencia-imagen.component';
+import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
+import { EditMasterComponent } from './dialogs/edit-master/edit-master.component';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -49,22 +51,6 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       if (data.length > 0) {
         this.listDataTable = data;
       }
-    });
-  }
-
-  verIndicadorYtarea(element) {
-    const dialogRef: MatDialogRef<ReadIndicadorTareaComponent> = this._dialog.open(ReadIndicadorTareaComponent, {
-      disableClose: false,
-      width: '40%',
-      //height: '780px',
-      autoFocus: false,
-      data: {
-        model: element
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // this.loadTable();
     });
   }
 
@@ -137,40 +123,51 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  // async addPesoIndicador(indicador: any, listPrioridad: any) {
-  //   const dialogRef: MatDialogRef<AddPesoComponent> = this._dialog.open(AddPesoComponent, {
-  //     disableClose: false,
-  //     width: '15%',
-  //     maxHeight: '100vh',
-  //     autoFocus: false,
-  //     data: {
-  //       indicadorSeleccionado: indicador,
-  //       listPrioridad: listPrioridad
-  //     }
-  //   });
+  editarEvidencia(element) {
+    const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadTable();
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTable();
+    });
+  }
 
-  // editarIndicador(element, es_editar) {
-  //   const dialogRef: MatDialogRef<RegistrarIndicadorTrabajadorComponent> = this._matDialog.open(RegistrarIndicadorTrabajadorComponent, {
-  //     disableClose: false,
-  //     width: '600px',
-  //     //height: '780px',
-  //     autoFocus: false,
-  //     data: {
-  //       esEditar: es_editar,
-  //       // esJefe: false,
-  //       model: element
-  //     }
-  //   });
+  verEvidenciaImagen(element) {
+    const dialogRef: MatDialogRef<VerEvidenciaImagenComponent> = this._dialog.open(VerEvidenciaImagenComponent, {
+      disableClose: false,
+      width: '50%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadTablePendiente();
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  verEvidenciaPdf(element) {
+    const dialogRef: MatDialogRef<VerEvidenciaPdfComponent> = this._dialog.open(VerEvidenciaPdfComponent, {
+      disableClose: false,
+      width: '70%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
 
   async notificarCorreo(email: string) {
     const dialogRef: MatDialogRef<NotificacionCorreoComponent> = this._dialog.open(NotificacionCorreoComponent, {

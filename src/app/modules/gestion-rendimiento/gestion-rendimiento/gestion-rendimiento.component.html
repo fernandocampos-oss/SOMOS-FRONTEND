@@ -16,8 +16,13 @@
           <gestion-rendimiento-indicadores-pendientes-jefe></gestion-rendimiento-indicadores-pendientes-jefe>
         </mat-tab>
         <div *ngIf="condicionGr ==='03'">
-          <mat-tab label="Reportes GDR">
+          <mat-tab label="Reportes">
             <app-reporte-usuario-gdr></app-reporte-usuario-gdr>
+          </mat-tab>
+        </div>
+        <div *ngIf="condicionGr ==='03'">
+          <mat-tab label="Buscar Reporte">
+            <app-buscar-reporte></app-buscar-reporte>
           </mat-tab>
         </div>
       </mat-tab-group>

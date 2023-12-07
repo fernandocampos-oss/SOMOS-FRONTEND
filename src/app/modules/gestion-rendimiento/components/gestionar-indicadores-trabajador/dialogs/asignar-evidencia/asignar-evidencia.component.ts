@@ -24,7 +24,7 @@ export class AsignarEvidenciaComponent implements OnInit {
   dataSource = this.listEvidencia;
   displayedColumns: string[] = ['item', 'tarea', 'plazo', 'Quitar'];
 
-  minFechaTarea = AppConfig.MAX_FECHA_NACIMIENTO;
+  minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
   listActividad: ActividadResponse[];
 
   formEvidenciasListadas = this._formBuilder.group({

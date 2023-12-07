@@ -1,115 +1,64 @@
 <br>
 <form [formGroup]="form" (ngSubmit)="generarReporte()">
     <mat-form-field appearance="outline">
-        <mat-label>Seleccione el año</mat-label>
+        <mat-label>Año</mat-label>
         <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
-            <mat-option *ngFor="let anio of anios" [value]="anio.anio">
-                {{anio.anio}}
+            <mat-option *ngFor="let a of listAnio" [value]="a">
+                {{a.anio}}
             </mat-option>
         </mat-select>
     </mat-form-field>
     &nbsp;
     <mat-form-field appearance="outline">
-        <mat-label>Seleccione el tipo de reporte</mat-label>
-        <mat-select [(value)]="anioElegido" formControlName="frmTipoReporte"
-        (selectionChange)="onSelectionChangeTipoReporte($event)">
+        <mat-label>Tipo de reporte</mat-label>
+        <mat-select formControlName="frmTipoReporte" (selectionChange)="onSelectionChangeTipoReporte($event)">
             <mat-option *ngFor="let r of listTipoReporte" [value]="r.cod">
                 {{r.descripcion}}
             </mat-option>
         </mat-select>
     </mat-form-field>
     &nbsp;
-    <button mat-icon-button class="primary-button" matTooltip="Reporte general" type="submit">
+    <mat-form-field appearance="outline">
+        <mat-label>Red</mat-label>
+        <mat-select [(ngModel)]="redItemSeleccionado" [ngModelOptions]="{standalone: true}" multiple>
+            <mat-option *ngFor="let r of listRed" [value]="r.codRed">
+                {{r.descripcion | titlecase}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Unidad orgánica</mat-label>
+        <input type="text" placeholder="Nombre de la unidad orgánica" matInput [formControl]="myControlUnidad"
+            [matAutocomplete]="autoUnidad">
+        <mat-autocomplete #autoUnidad="matAutocomplete" [displayWith]="displayFnUnidad"
+            (optionSelected)="onSelectionChangeUnidad($event)">
+            <mat-option *ngFor="let unidad of filteredOptionsUnidad | async" [value]="unidad">
+                {{unidad.descripcion}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    &nbsp;
+    <button mat-raised-button color="primary" type="submit">
         <mat-icon>search</mat-icon>
+        &nbsp; Buscar
     </button>
 </form>
 
 <div *ngIf="onChangeValueTipoReporte==='01'">
-    <button mat-raised-button class="has-success" >
+    <button mat-raised-button class="has-success">
         <mat-icon>cloud_download</mat-icon>
-        &nbsp; Descargar Formato 1
+        &nbsp; Descargar Formato Seguimiento
     </button>
-    <br>
-    <table mat-table [dataSource]="dataSource_1" style="width:100%">
+    <br><br><br>
+    <table mat-table [dataSource]="dataSource_seguimiento" style="width:100%">
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef>N°</th>
             <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
         </ng-container>
         <ng-container matColumnDef="numero_documento">
             <th mat-header-cell *matHeaderCellDef>DNI</th>
-            <td mat-cell *matCellDef="let element"> {{element.dni}} </td>
-        </ng-container>
-        <ng-container matColumnDef="en_matriz">
-            <th mat-header-cell *matHeaderCellDef>Se encuentra en la matriz</th>
-            <td mat-cell *matCellDef="let element"> {{element.enMatriz}} </td>
-        </ng-container>
-        <ng-container matColumnDef="sectorista">
-            <th mat-header-cell *matHeaderCellDef>Sectorista</th>
-            <td mat-cell *matCellDef="let element"> {{element.sectorista}} </td>
-        </ng-container>
-        <ng-container matColumnDef="nombre_completo">
-            <th mat-header-cell *matHeaderCellDef>Apellidos y nombres</th>
-            <td mat-cell *matCellDef="let element"> {{element.nombreCompleto}} </td>
-        </ng-container>
-        <ng-container matColumnDef="organo">
-            <th mat-header-cell *matHeaderCellDef>Nombre del órgano o unidad orgánica</th>
-            <td mat-cell *matCellDef="let element"> {{element.organo}} </td>
-        </ng-container>
-        <ng-container matColumnDef="unidad">
-            <th mat-header-cell *matHeaderCellDef>Nombre de la unidad orgánica</th>
-            <td mat-cell *matCellDef="let element"> {{element.unidad}} </td>
-        </ng-container>
-        <ng-container matColumnDef="sub_unidad">
-            <th mat-header-cell *matHeaderCellDef>Nombre de la sub unidad orgánica</th>
-            <td mat-cell *matCellDef="let element"> {{element.subUnidad}} </td>
-        </ng-container>
-        <ng-container matColumnDef="puesto">
-            <th mat-header-cell *matHeaderCellDef>Puesto</th>
-            <td mat-cell *matCellDef="let element"> {{element.puesto}} </td>
-        </ng-container>
-        <ng-container matColumnDef="rol">
-            <th mat-header-cell *matHeaderCellDef>Rol</th>
-            <td mat-cell *matCellDef="let element"> {{element.rol}} </td>
-        </ng-container>
-        <ng-container matColumnDef="meta">
-            <th mat-header-cell *matHeaderCellDef>Meta</th>
-            <td mat-cell *matCellDef="let element"> {{element.meta}} </td>
-        </ng-container>
-        <ng-container matColumnDef="mes">
-            <th mat-header-cell *matHeaderCellDef>Mes</th>
-            <td mat-cell *matCellDef="let element"> {{element.mes}} </td>
-        </ng-container>
-        <ng-container matColumnDef="plazo">
-            <th mat-header-cell *matHeaderCellDef>Plazo</th>
-            <td mat-cell *matCellDef="let element"> {{element.plazo}} </td>
-        </ng-container>
-    
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        <tr class="empty-row" *matNoDataRow>
-            <td class="empty-cell">Aún no tienes tareas asignadas</td>
-        </tr>
-    </table>
-</div>
-
-<div *ngIf="onChangeValueTipoReporte==='04'">
-    <button mat-raised-button class="has-success" >
-        <mat-icon>cloud_download</mat-icon>
-        &nbsp; Descargar Formato 2
-    </button>
-    <br>
-    <table mat-table [dataSource]="dataSource_2" style="width:100%">
-        <ng-container matColumnDef="item">
-            <th mat-header-cell *matHeaderCellDef>N°</th>
-            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
-        </ng-container>
-        <ng-container matColumnDef="numero_documento">
-            <th mat-header-cell *matHeaderCellDef>DNI</th>
-            <td mat-cell *matCellDef="let element"> {{element.dni}} </td>
-        </ng-container>
-        <ng-container matColumnDef="sectorista">
-            <th mat-header-cell *matHeaderCellDef>Sectorista</th>
-            <td mat-cell *matCellDef="let element"> {{element.sectorista}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.numero_documento}} </td>
         </ng-container>
         <ng-container matColumnDef="nombre_completo">
             <th mat-header-cell *matHeaderCellDef>Apellidos y nombres</th>
@@ -149,9 +98,110 @@
         </ng-container>
         <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            <td mat-cell *matCellDef="let element"></td>
         </ng-container>
-    
+        <ng-container matColumnDef="calificaicon">
+            <th mat-header-cell *matHeaderCellDef>calificaicon</th>
+            <td mat-cell *matCellDef="let element"> </td>
+        </ng-container>
+        <ng-container matColumnDef="verificacion_evidencia">
+            <th mat-header-cell *matHeaderCellDef>verificacion evidencia</th>
+            <td mat-cell *matCellDef="let element"> </td>
+        </ng-container>
+        <ng-container matColumnDef="verificacion_fecha">
+            <th mat-header-cell *matHeaderCellDef>verificacion fecha</th>
+            <td mat-cell *matCellDef="let element"> </td>
+        </ng-container>
+        <ng-container matColumnDef="notificacion_correo">
+            <th mat-header-cell *matHeaderCellDef>notificacion correo</th>
+            <td mat-cell *matCellDef="let element"> </td>
+        </ng-container>
+        <ng-container matColumnDef="notificacion_correo_fecha">
+            <th mat-header-cell *matHeaderCellDef>notificacion correo fecha</th>
+            <td mat-cell *matCellDef="let element"> </td>
+        </ng-container>
+        <ng-container matColumnDef="comentario">
+            <th mat-header-cell *matHeaderCellDef>comentario</th>
+            <td mat-cell *matCellDef="let element"> </td>
+        </ng-container>
+        <ng-container matColumnDef="registro_formato_gdr">
+            <th mat-header-cell *matHeaderCellDef>registro formato gdr</th>
+            <td mat-cell *matCellDef="let element"> </td>
+        </ng-container>
+        <ng-container matColumnDef="modificacion_meta_plazo">
+            <th mat-header-cell *matHeaderCellDef>modificacion meta plazo</th>
+            <td mat-cell *matCellDef="let element"> </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="empty-row" *matNoDataRow>
+            <td class="empty-cell">Aún no tienes tareas asignadas</td>
+        </tr>
+    </table>
+</div>
+
+<!-- matriz -->
+<div *ngIf="onChangeValueTipoReporte==='03'">
+    <button mat-raised-button class="has-success">
+        <mat-icon>cloud_download</mat-icon>
+        &nbsp; Descargar Formato Matriz
+    </button>
+    <br><br>
+    <table mat-table [dataSource]="dataSource_matriz" style="width:100%">
+        <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef>N°</th>
+            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+        </ng-container>
+        <ng-container matColumnDef="numero_documento">
+            <th mat-header-cell *matHeaderCellDef>DNI</th>
+            <td mat-cell *matCellDef="let element"> {{element.dni}} </td>
+        </ng-container>
+        <ng-container matColumnDef="nombre_completo">
+            <th mat-header-cell *matHeaderCellDef>Apellidos y nombres</th>
+            <td mat-cell *matCellDef="let element"> {{element.nombreCompleto}} </td>
+        </ng-container>
+        <ng-container matColumnDef="genero">
+            <th mat-header-cell *matHeaderCellDef>Genero</th>
+            <td mat-cell *matCellDef="let element"> {{element.genero}} </td>
+        </ng-container>
+        <ng-container matColumnDef="fecha_nacimiento">
+            <th mat-header-cell *matHeaderCellDef>fecha nacimiento</th>
+            <td mat-cell *matCellDef="let element"> {{element.fechaNacimiento}} </td>
+        </ng-container>
+        <ng-container matColumnDef="regimen_laboral">
+            <th mat-header-cell *matHeaderCellDef>regimen laboral</th>
+            <td mat-cell *matCellDef="let element"> {{element.regimenLaboral}} </td>
+        </ng-container>
+        <ng-container matColumnDef="correo">
+            <th mat-header-cell *matHeaderCellDef>Correo</th>
+            <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+        </ng-container>
+        <ng-container matColumnDef="organo">
+            <th mat-header-cell *matHeaderCellDef>Nombre del órgano o unidad orgánica</th>
+            <td mat-cell *matCellDef="let element"> {{element.organo}} </td>
+        </ng-container>
+        <ng-container matColumnDef="unidad">
+            <th mat-header-cell *matHeaderCellDef>Nombre de la unidad orgánica</th>
+            <td mat-cell *matCellDef="let element"> {{element.unidad}} </td>
+        </ng-container>
+        <ng-container matColumnDef="puesto">
+            <th mat-header-cell *matHeaderCellDef>Puesto</th>
+            <td mat-cell *matCellDef="let element"> {{element.puesto}} </td>
+        </ng-container>
+        <ng-container matColumnDef="segmento">
+            <th mat-header-cell *matHeaderCellDef>Rol</th>
+            <td mat-cell *matCellDef="let element"> {{element.segmento}} </td>
+        </ng-container>
+        <ng-container matColumnDef="rol">
+            <th mat-header-cell *matHeaderCellDef>Meta</th>
+            <td mat-cell *matCellDef="let element"> {{element.rol}} </td>
+        </ng-container>
+        <ng-container matColumnDef="indicador">
+            <th mat-header-cell *matHeaderCellDef>indicador</th>
+            <td mat-cell *matCellDef="let element"> {{element.indicador}} </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns_2"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
         <tr class="empty-row" *matNoDataRow>

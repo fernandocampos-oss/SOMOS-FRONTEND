@@ -9,11 +9,7 @@ import { SharedModule } from '@shared/shared.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { IndicadoresPendientesJefeComponent } from './components/indicadores-pendientes-jefe/indicadores-pendientes-jefe.component';
-import { RegistrarIndicadorJefeComponent } from './components/indicadores-pendientes-jefe/dialogs/registrar-indicador-jefe/registrar-indicador-jefe.component';
 import { GestionarIndicadoresTrabajadorComponent } from './components/gestionar-indicadores-trabajador/gestionar-indicadores-trabajador.component';
-import { ReadIndicadorTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/read-indicador-tarea.component';
-import { EditTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/edit-tarea/edit-tarea.component';
-import { AceptarRechazarTareaComponent } from './components/gestionar-indicadores-trabajador/dialogs/read-indicador-tarea/aceptar-rechazar-tarea/aceptar-rechazar-tarea.component';
 import { NotificacionCorreoComponent } from './components/gestionar-indicadores-trabajador/dialogs/notificacion-correo/notificacion-correo.component';
 import { AsignarIndicadorComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-indicador/asignar-indicador.component';
 import { GrEquipoComponent } from './components/gestionar-indicadores-trabajador/dialogs/gr-equipo/gr-equipo.component';
@@ -21,16 +17,15 @@ import { AsignarPrioridadComponent } from './components/gestionar-indicadores-tr
 import { AsignarEvidenciaComponent } from './components/gestionar-indicadores-trabajador/dialogs/asignar-evidencia/asignar-evidencia.component';
 import { AlertaPesoComponent } from './components/gestionar-indicadores-trabajador/dialogs/alerta-peso/alerta-peso.component';
 import { ReporteUsuarioGdrComponent } from './components/reporte-usuario-gdr/reporte-usuario-gdr.component';
+import { BuscarReporteComponent } from './components/buscar-reporte/buscar-reporte.component';
+import { VerDatosGdrComponent } from './components/buscar-reporte/dialogs/ver-datos-gdr/ver-datos-gdr.component';
+import { EditMasterComponent } from './components/gestionar-indicadores-trabajador/dialogs/edit-master/edit-master.component';
 
 @NgModule({
   declarations: [
     GestionRendimientoComponent,
     IndicadoresPendientesJefeComponent,
-    RegistrarIndicadorJefeComponent,
     GestionarIndicadoresTrabajadorComponent,
-    ReadIndicadorTareaComponent,
-    EditTareaComponent,
-    AceptarRechazarTareaComponent,
     NotificacionCorreoComponent,
     AsignarIndicadorComponent,
     GrEquipoComponent,
@@ -38,6 +33,9 @@ import { ReporteUsuarioGdrComponent } from './components/reporte-usuario-gdr/rep
     AsignarEvidenciaComponent,
     AlertaPesoComponent,
     ReporteUsuarioGdrComponent,
+    BuscarReporteComponent,
+    VerDatosGdrComponent,
+    EditMasterComponent,
   ],
   imports: [
     CommonModule,

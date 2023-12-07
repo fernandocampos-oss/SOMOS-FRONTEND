@@ -18,7 +18,7 @@
     </div>
 </div>
 <div *ngIf="listDataTable.length == 0" style="text-align: center"><br /><br />
-    <p class="color-mensaje">Sin registros por mostrar, para visualizar debe añadir integrantes a su equipo</p>
+    <p class="color-mensaje">Sin registros por mostrar, para visualizar agrega integrantes a tu equipo</p>
 </div>
 <div *ngIf="listDataTable.length !== 0"><br /><br />
     <b>Trabajadores</b>
@@ -120,16 +120,20 @@
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" style="font-size:14px">
                                         <p mat-line *ngFor="let t of z.listEvidencia">
-                                            <span>{{t.descripcion}}</span>
-                                            <button mat-icon-button class="primary-button"
-                                                matTooltip="Seguimiento de la evidencia"
-                                                (click)="verIndicadorYtarea(t)">
-                                                <mat-icon matListIcon>remove_red_eye</mat-icon>
-                                            </button>
-                                            <mat-divider></mat-divider>
-                                            <!-- <button mat-icon-button class="color-mensaje" matTooltip="Editar Indicador"
-                                                (click)="editarIndicador(element, true)">
+                                            <span>- {{t.descripcion}}</span>
+                                            <button mat-icon-button color="primary" matTooltip="Editar Evidencia"
+                                                (click)="editarEvidencia(t, true)">
                                                 <mat-icon>edit</mat-icon>
+                                            </button>
+                                            <!-- <button mat-icon-button color="primary"
+                                                [disabled]="t.sustentoExtensionFile !=='png'" matTooltip="Ver Imagen"
+                                                (click)="verEvidenciaImagen(data.model)">
+                                                <mat-icon>image</mat-icon>
+                                            </button>
+                                            <button mat-icon-button color="primary"
+                                                [disabled]="t.sustentoExtensionFile !=='pdf'"
+                                                matTooltip="Ver PDF" (click)="verEvidenciaPdf(data.model)">
+                                                <mat-icon>picture_as_pdf</mat-icon>
                                             </button> -->
                                         </p>
                                     </mat-list-item>
@@ -170,7 +174,7 @@
                             <th mat-header-cell *matHeaderCellDef colspan="8" class="centered">ETAPA DE PLANIFICACIÓN
                             </th>
                         </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="groupedColumns; sticky: true"></tr>
+                        <tr mat-header-row *matHeaderRowDef="groupedColumns; sticky: false"></tr>
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
