@@ -1,9 +1,12 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
+import { RequestUsuarioUpdateData } from '@data/models/usuario/usuario-update.model';
 import { AuthService } from '@data/services/auth.service';
 import { UsuarioService } from '@data/services/usuario.service';
+import { UpdateCorreoUserComponent } from '../change-passw/update-correo-user/update-correo-user.component';
 
 @Component({
   selector: 'app-edit-user',
@@ -13,6 +16,7 @@ import { UsuarioService } from '@data/services/usuario.service';
 export class EditUserComponent implements OnInit {
 
   distribucionTotal: number = 2;
+  correoComprobacion = '';
 
   applicationFile: any = File;
   retrievedImage: any;
@@ -25,17 +29,19 @@ export class EditUserComponent implements OnInit {
   dataUsuario = Object();
 
   formPerfil = this._fb.group({
-    frmCodPlanilla: [null],
-    frmCargo: [null],
-    frmRed: [null],
-    frmUnidad: [null],
+    frmCodPlanilla: [{value: null, disabled: true}],
+    frmCargo: [{value: null, disabled: true}],
+    frmRed: [{value: null, disabled: true}],
+    frmUnidad: [{value: null, disabled: true}],
     frmCorreo: [null, Validators.required],
     frmCelular: [null, Validators.required]
   })
 
   constructor(private _authService   : AuthService,
+              private dialog         : MatDialog,
               private _notification  : NotificationService,
               private responsive     : BreakpointObserver,
+              private _dialogRef     : MatDialogRef<void>,
               public _fb             : FormBuilder,
               private _userService   : UsuarioService,) { }
 
@@ -53,13 +59,24 @@ export class EditUserComponent implements OnInit {
       });
     this._userService.get(this._authService.getUserSession().id).subscribe(data =>{
       this.dataUsuario = data;
+      this.correoComprobacion = data.correo;
       this.formPerfil.controls.frmCodPlanilla.setValue(data.codigoPlanilla);
       this.formPerfil.controls.frmCargo.setValue(data.cargo);
       this.formPerfil.controls.frmRed.setValue(data.red);
       this.formPerfil.controls.frmUnidad.setValue(data.unidad);
       this.formPerfil.controls.frmCorreo.setValue(data.correo);
       this.formPerfil.controls.frmCelular.setValue(data.numeroCelular);
-      console.log(data)
+      if (this.dataUsuario.imagenPerfilBase64) {
+        this.retrievedImage = `data:image/png;base64,${this.dataUsuario.imagenPerfilBase64}`;
+        this.isImageUpdate = true;
+      }
+      if (this.dataUsuario.imagenFirmaBase64) {
+        this.firmaImage = `data:image/png;base64,${this.dataUsuario.imagenFirmaBase64}`;
+        this.isFirmaUpdate = true;
+      }
+    })
+    this.formPerfil.controls.frmCorreo.valueChanges.subscribe(val => {
+      this.formPerfil.controls.frmCorreo.setValue(val.replace(/\s/g, ""), { emitEvent: false })
     })
   }
 
@@ -110,7 +127,43 @@ export class EditUserComponent implements OnInit {
   removeFirma() {
     this.firmaFile = null;
     this.firmaImage = null;
-    this.isFirmaUpdate = true;
+    this.isFirmaUpdate = false;
   }
 
+  saveChanges(){
+    if (this.formPerfil.valid){
+      this._userService.updateDataUser(this._authService.getUserSession().id, this.getModelUpdate()).subscribe((data)=>{
+        console.log(data);
+        if (this.correoComprobacion != this.formPerfil.controls.frmCorreo.value) {
+          const dialogRef: MatDialogRef<UpdateCorreoUserComponent> = this.dialog.open(UpdateCorreoUserComponent, {
+              disableClose: true,
+              autoFocus: false,
+              data:{
+                correo: this.formPerfil.controls.frmCorreo.value
+              }
+            });
+        }
+        else{
+          this._notification.success('Datos actualizados Correctamente');
+          this._dialogRef.close();
+        }
+      })
+    }
+  }
+
+  getModelUpdate(): RequestUsuarioUpdateData{
+    let getImagenPerfil = null;
+    let getImagenFirma = null;
+
+    if (this.isImageUpdate) getImagenPerfil = this.retrievedImage.split(',')[1];
+    if (this.isFirmaUpdate) getImagenFirma = this.firmaImage.split(',')[1];
+    
+
+    return {
+      correo: this.formPerfil.controls.frmCorreo.value,
+      numeroCelular: this.formPerfil.controls.frmCelular.value,
+      imagenPerfilBase64: getImagenPerfil,
+      imagenFirmaBase64: getImagenFirma
+    }
+  }
 }

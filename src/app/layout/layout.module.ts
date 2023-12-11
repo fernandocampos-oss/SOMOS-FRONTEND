@@ -13,6 +13,7 @@ import { ChangePasswComponent } from './components/sidenav/change-passw/change-p
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditUserComponent } from './components/sidenav/edit-user/edit-user.component';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { UpdateCorreoUserComponent } from './components/sidenav/change-passw/update-correo-user/update-correo-user.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     UserAvatarComponent,
     ChangePasswComponent,
     EditUserComponent,
+    UpdateCorreoUserComponent,
   ],
   imports: [CommonModule, RouterModule, MaterialModule, LayoutRoutingModule, ReactiveFormsModule, MatGridListModule],
 })

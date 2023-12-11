@@ -2,7 +2,8 @@
     <div style="display: flex; gap: 0.25rem; width: 100%;" [ngStyle]="{'flex-direction': distribucionTotal == 2 ? 'row': 'column'}">
         <div style="display: flex; flex-direction: column; gap: 0.25rem; align-items: center; width: 100%;">
             <div class="contImagen">
-                <img src="assets/images/avatar.png" alt="Essalud" class="avatarImg"/>
+                <img *ngIf="!retrievedImage" src="assets/images/avatar.png" alt="Essalud" class="avatarImg"/>
+                <img *ngIf="retrievedImage" class="imgPerfil boxBorde" [src]="retrievedImage"/>
                 <div class="cursor iconoEditar" #tooltip="matTooltip" matTooltip="Cambiar Imagen" (click)="file.click()">
                     <mat-icon>add_photo_alternate</mat-icon>
                     <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files, 1)" />
@@ -69,5 +70,13 @@
                 </mat-form-field>
             </mat-grid-tile>
         </mat-grid-list>
+        <div style="display: flex; flex-direction: row; gap: 1.25rem; width: 100%; align-items: center; justify-content: center;">
+            <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
+    
+            <button mat-raised-button color="primary" (click)="saveChanges()">
+                Guardar
+            </button>
+
+        </div>
     </div>
 </div>

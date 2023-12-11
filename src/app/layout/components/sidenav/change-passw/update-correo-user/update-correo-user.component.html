@@ -1,0 +1,15 @@
+<div class="dialog">
+    <h1 mat-dialog-title class="dialog__title">Confirma el cambio de correo electrónico</h1>
+    <div mat-dialog-content>
+      <p>Ingresa el código enviado a <strong>{{data.correo}}</strong></p>
+      <mat-form-field class="w-100 mt-2" appearance="fill">
+        <mat-label>Código de verificación</mat-label>
+        <input matInput cdkFocusInitial [formControl]="ctrlToken"/>
+      </mat-form-field>
+    </div>
+    <div class="dialog__footer" mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="confirmChange()">Cambiar correo</button>
+    </div>
+  </div>
+  

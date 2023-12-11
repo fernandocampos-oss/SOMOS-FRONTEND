@@ -4,9 +4,15 @@
     align-items: center;
     gap: 0.25rem;
     background: #e6effa;
-    padding: 1.25rem 0.5rem;
+    padding: 1.25rem 0.5rem 0;
+    .imgPerfil{
+        width: 96px;
+        height: 96px;
+        border-radius: 99px;        
+    }
     .identificacionUsuario{
         display: flex;
+        text-align: center;
         flex-direction: column;
         align-items: center;
         gap: 0.0125rem;
@@ -21,13 +27,14 @@
         .iconoEditar{
             display: flex;
             border-radius: 99px;
+            border: 2px white solid;
             padding: 4px;
             font-size: 9px;
             background: var(--color-MiEssalud);
             color: white;
             position: absolute;
-            bottom: 8px;
-            right: 8px;
+            bottom: 2px;
+            right: 2px;
             .mat-icon{
                 width: 18px;
                 height: 18px;

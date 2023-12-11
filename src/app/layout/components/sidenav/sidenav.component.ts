@@ -31,6 +31,7 @@ export class SidenavComponent implements OnInit {
   asignacionesInscripciones = [];
   user: UserSession;
   gerencia: String = '';//Aqui se guarda la gerencia
+  dataPersona = Object();
   email: String = '';
   nombre: String = '';
   numDoc: string = '';
@@ -67,12 +68,14 @@ export class SidenavComponent implements OnInit {
     this.user = this._authService.getUserSession();
     console.log(JSON.parse(localStorage.getItem('RDTHRHRYHNYTN')!))
     this._userService.get(this.user.id).subscribe( data =>{
-      this.email = data.correo;
+      console.log(data)
+      this.dataPersona = data;
+      // this.email = data.correo;
       // this._zonaService.get(data.idZonaControl).subscribe(info=>{
       //   this.gerencia = info.descripcion;
       // })
-      this.nombre = data.nombres;
-      this.numDoc = data.numeroDocumento;
+      // this.nombre = data.nombres;
+      // this.numDoc = data.numeroDocumento;
     })
 
     this.getSegmentoModuloGR();
@@ -127,6 +130,12 @@ export class SidenavComponent implements OnInit {
           idUser: this.user.id
         }
       });
+    
+    dialogRef.afterClosed().subscribe(()=>{
+      this._userService.get(this.user.id).subscribe( data =>{
+        this.dataPersona = data;
+      })
+    })
   }
 
   open(option: string){
@@ -140,7 +149,7 @@ export class SidenavComponent implements OnInit {
         });
         break;
       case 'Mis boletas de pago':
-          if (this._boletaService.getIfInscritosBoleta(this.numDoc)) {
+          if (this._boletaService.getIfInscritosBoleta(this.dataPersona.numeroDocumento)) {
             this.router.navigate([AppRoute.MIS_BOLETAS]);
           }
           else{
