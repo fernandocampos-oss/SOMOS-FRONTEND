@@ -75,7 +75,6 @@ export class IndicadoresPendientesJefeComponent implements OnInit {
   async generarExcelTrabajador() {
     let load = await this._grService.generarExcelTrabajador().then((data: any) => {
       if (data != null) {
-        // console.log("service excel", data);
         this.servicioExcelEjecutor(data);
       }
     });

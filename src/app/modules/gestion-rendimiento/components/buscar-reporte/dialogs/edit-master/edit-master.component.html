@@ -1,0 +1,126 @@
+<div *ngIf="this.data.switch == 1">
+    <h3 mat-dialog-title>Editar Actividad</h3>
+    <form class="example-container" [formGroup]="formPrioridad" #frmPrioridad="ngForm"
+        (ngSubmit)="modificarPrioridad()">
+        <mat-form-field appearance="outline">
+            <mat-label>Seleccione el tipo de prioridad anual de gestión del órgano o unidad orgánica</mat-label>
+            <mat-select [(value)]="idActividadSeleccionado" formControlName="actividad">
+                <mat-option *ngFor="let a of listActividad" [value]="a.idActividad">
+                    {{a.descripcion}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha de asignación</mat-label>
+            <input matInput [min]="minFechaEvidencia" formControlName="fechaAsignacion"
+                [matDatepicker]="fechaPrioridadPicker" (focus)="fechaPrioridadPicker.open()"/>
+            <mat-datepicker-toggle matSuffix [for]="fechaPrioridadPicker"></mat-datepicker-toggle>
+            <mat-datepicker #fechaPrioridadPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancelar</button>
+            <button mat-raised-button color="primary" type="submit">
+                <mat-icon>done</mat-icon>&nbsp;
+                <span>Actualizar</span>
+            </button>
+        </mat-dialog-actions>
+    </form>
+</div>
+
+<div *ngIf="this.data.switch == 2">
+    <h3 mat-dialog-title>Editar Indicador</h3>
+    <form class="example-container" [formGroup]="formIndicador" #frmIndicador="ngForm"
+        (ngSubmit)="modificarIndicador()">
+        <mat-form-field appearance="outline">
+            <mat-label>Descripción</mat-label>
+            <input matInput formControlName="descripcion" minlength="1" maxlength="250" />
+        </mat-form-field>
+
+        <h4><strong>Valor Meta:</strong></h4>
+        <mat-form-field appearance="outline">
+            <mat-label>Unidad de Medida</mat-label>
+            <mat-select [(value)]="idTipoValorMetaSeleccionado" formControlName="tipoValorMeta">
+                <mat-option *ngFor="let t of listTipoValorMeta" [value]="t.idTipoValorMeta">
+                    {{t.descripcion | titlecase}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="this.idTipoValorMetaSeleccionado==1 || this.idTipoValorMetaSeleccionado==2">
+            <mat-form-field appearance="outline">
+                <mat-label>Valor numérico</mat-label>
+                <input matInput formControlName="valorMeta" maxlength="3" required />
+            </mat-form-field>
+        </div>
+        <div *ngIf="this.idTipoValorMetaSeleccionado==3 || this.idTipoValorMetaSeleccionado==4">
+            <mat-form-field appearance="outline">
+                <mat-label>Valor porcentual</mat-label>
+                <input matInput formControlName="valorMeta" minlength="1" maxlength="3" class="example-right-align"
+                    required />
+                <span matSuffix class="percent-align">%</span>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Peso Indicador/Producto</mat-label>
+            <input matInput formControlName="peso" class="example-right-align" type="number" minlength="1" maxlength="3"
+                (focus)="showHelpPeso = true" (focusout)="showHelpPeso = false" />
+            <span matSuffix class="percent-align">%</span>
+            <div *ngIf="(formIndicador.value.peso + this.data.pesoTotal)>100" class="descriptor">
+                <div *ngIf="showHelpPeso">
+                    <br>
+                    <p class="primary-button">¡Peso inválido!</p>
+                    <br>
+                    <p>El porcentaje total no debe superar el 100%</p>
+                    <br>
+                    <p>Ya tiene grabado {{this.data.pesoTotal}}% en los Indicadores/Productos</p>
+                </div>
+            </div>
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancelar</button>
+            <button mat-raised-button color="primary" type="submit"
+                [disabled]="(formIndicador.value.peso + this.data.pesoTotal)>100 || formIndicador.invalid || formIndicador.value.peso==0">
+                <mat-icon>done</mat-icon>&nbsp;
+                <span>Actualizar</span>
+            </button>
+        </mat-dialog-actions>
+    </form>
+
+</div>
+
+<div *ngIf="this.data.switch == 3">
+    <h3 mat-dialog-title>Editar Evidencia</h3>
+    <mat-dialog-content>
+        <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput [(ngModel)]="evidencia.descripcion" maxlength="250" required></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nuevo plazo</mat-label>
+                    <input matInput [(ngModel)]="evidencia.plazo" [min]="minFechaEvidencia"
+                        [matDatepicker]="fechaEvidenciaPicker" (focus)="fechaEvidenciaPicker.open()" required />
+                    <mat-datepicker-toggle matSuffix [for]="fechaEvidenciaPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fechaEvidenciaPicker></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-raised-button color="primary" (click)="modificarEvidencia()">
+            <mat-icon>done</mat-icon>&nbsp;
+            <span>Actualizar</span>
+        </button>
+    </mat-dialog-actions>
+</div>

@@ -23,10 +23,8 @@ export class TipoValorMeta {
   estado?: boolean;
 }
 
-export class IndicadorRequest {
+export class IndicadorResponse {
   idIndicador?: number;
-  descripcion?: string;
-  detalle?: string;
 }
 
 export class EvidenciaSustentoRequestDto {

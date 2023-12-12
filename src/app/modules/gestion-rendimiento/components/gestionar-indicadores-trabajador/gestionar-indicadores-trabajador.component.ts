@@ -11,7 +11,7 @@ import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { VerEvidenciaImagenComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-imagen/ver-evidencia-imagen.component';
 import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
-import { EditMasterComponent } from './dialogs/edit-master/edit-master.component';
+import { EditMasterComponent } from '../buscar-reporte/dialogs/edit-master/edit-master.component';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -25,6 +25,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   listDataTable: any[] = [];
   condicion_1: any;
   condicion_2: any;
+  porcentajeTotal: number = 0;
 
   constructor(
     private _dialog: MatDialog,
@@ -35,18 +36,17 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadTable();
-
+    this.loadTableJefe();
     this.getSegmentoModuloGR();
   }
 
   async actualizar() {
     this.listDataTable = [];
-    let update = await this.loadTable();
+    let update = await this.loadTableJefe();
     this._snackbar.success("La lista se encuentra actualizada.");
   }
 
-  async loadTable() {
+  async loadTableJefe() {
     let listPrioridades = await this._grService.listarPrioridadesPrincipal().then((data) => {
       if (data.length > 0) {
         this.listDataTable = data;
@@ -66,7 +66,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
+      this.loadTableJefe();
     });
     // this.loadTable();
   }
@@ -86,7 +86,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
+      this.loadTableJefe();
     });
   }
 
@@ -102,7 +102,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
+      this.loadTableJefe();
     });
 
   }
@@ -119,23 +119,61 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
+      this.loadTableJefe();
     });
   }
 
-  editarEvidencia(element) {
+  editarPrioridad(idPrioridad: number, idActividad: number, fechaAsignacion: any, control: number) {
     const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
       disableClose: false,
       width: '40%',
       //height: '780px',
       autoFocus: true,
       data: {
-        model: element
+        switch: control,
+        idPrioridad: idPrioridad,
+        idActividad: idActividad,
+        fechaAsignacion: fechaAsignacion
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
+      this.loadTableJefe();
+    });
+  }
+
+  editarIndicador(element: any, control: number) {
+    const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        switch: control,
+        indicador: element,
+        pesoTotal: this.porcentajeTotal
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableJefe();
+    });
+  }
+
+  editarEvidencia(element: any, control: number) {
+    const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        switch: control,
+        evidencia: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableJefe();
     });
   }
 
@@ -181,7 +219,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTable();
+      this.loadTableJefe();
     });
   }
 
@@ -201,7 +239,6 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   async generarExcelDirectivo() {
     let load = await this._grService.generarExcelDirectivo().then((data: any) => {
       if (data != null || data.length > 0) {
-        // console.log("service excel", data);
         for (let i of data) {
           if (i.listPrioridad.length > 0) {
             this.servicioExcelDirectivo(i);

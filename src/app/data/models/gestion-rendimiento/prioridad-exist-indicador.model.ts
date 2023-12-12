@@ -1,4 +1,5 @@
 import { TipoValorMeta } from "./gestion-rendimiento.model";
+import { ActividadRequest } from "./indicador-dto.model";
 
 export class PrioridadExistRequestDto {
     prioridad?: PrioridadExistDto;
@@ -26,4 +27,9 @@ export class IndicadorExistDto {
 export class EvidenciaExistDto {
     descripcion?: string;
     plazo?: String;
+}
+
+export class UpdatePrioridadDto { 
+    actividad?: ActividadRequest
+    fechaAsignacion?: String;
 }

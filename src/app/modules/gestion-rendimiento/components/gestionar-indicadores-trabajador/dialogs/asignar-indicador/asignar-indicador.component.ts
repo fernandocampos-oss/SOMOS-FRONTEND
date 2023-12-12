@@ -47,7 +47,7 @@ export class AsignarIndicadorComponent implements OnInit {
   confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
   porcentajeGrabado: number = 0;
 
-  showHelpCPlanilla = false;
+  showHelpPeso = false;
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -58,7 +58,6 @@ export class AsignarIndicadorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.listarTipoValorMeta();
     this.porcentajeGrabado = this.data.trabajador.pesoTotal;
   }

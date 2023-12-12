@@ -1,56 +1,83 @@
-<br>
+<br><br>
 <form [formGroup]="form" (ngSubmit)="generarReporte()">
-    <mat-form-field appearance="outline">
-        <mat-label>Año</mat-label>
-        <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
-            <mat-option *ngFor="let a of listAnio" [value]="a">
-                {{a.anio}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    &nbsp;
-    <mat-form-field appearance="outline">
-        <mat-label>Tipo de reporte</mat-label>
-        <mat-select formControlName="frmTipoReporte" (selectionChange)="onSelectionChangeTipoReporte($event)">
-            <mat-option *ngFor="let r of listTipoReporte" [value]="r.cod">
-                {{r.descripcion}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    &nbsp;
-    <mat-form-field appearance="outline">
-        <mat-label>Red</mat-label>
-        <mat-select [(ngModel)]="redItemSeleccionado" [ngModelOptions]="{standalone: true}" multiple>
-            <mat-option *ngFor="let r of listRed" [value]="r.codRed">
-                {{r.descripcion | titlecase}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    &nbsp;
-    <mat-form-field class="example-full-width" appearance="outline">
-        <mat-label>Unidad orgánica</mat-label>
-        <input type="text" placeholder="Nombre de la unidad orgánica" matInput [formControl]="myControlUnidad"
-            [matAutocomplete]="autoUnidad">
-        <mat-autocomplete #autoUnidad="matAutocomplete" [displayWith]="displayFnUnidad"
-            (optionSelected)="onSelectionChangeUnidad($event)">
-            <mat-option *ngFor="let unidad of filteredOptionsUnidad | async" [value]="unidad">
-                {{unidad.descripcion}}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
-    &nbsp;
-    <button mat-raised-button color="primary" type="submit">
-        <mat-icon>search</mat-icon>
-        &nbsp; Buscar
-    </button>
-</form>
+    <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
+        <mat-grid-tile [colspan]="1">
+            <mat-form-field appearance="outline">
+                <mat-label>Año</mat-label>
+                <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido" required>
+                    <mat-option *ngFor="let a of listAnio" [value]="a">
+                        {{a.anio}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
 
-<div *ngIf="onChangeValueTipoReporte==='01'">
-    <button mat-raised-button class="has-success">
-        <mat-icon>cloud_download</mat-icon>
-        &nbsp; Descargar Formato Seguimiento
-    </button>
-    <br><br><br>
+        <mat-grid-tile [colspan]="1">
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo de reporte</mat-label>
+                <mat-select formControlName="frmTipoReporte" (selectionChange)="onSelectionChangeTipoReporte($event)"
+                    required>
+                    <mat-option *ngFor="let r of listTipoReporte" [value]="r.cod">
+                        {{r.descripcion}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2">
+            <!-- <mat-form-field appearance="outline">
+                <mat-label>Red</mat-label>
+                <mat-select [(ngModel)]="redItemSeleccionado" [ngModelOptions]="{standalone: true}" multiple required>
+                    <mat-option *ngFor="let r of listRed" [value]="r.codRed">
+                        {{r.descripcion | titlecase}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+
+            <mat-form-field appearance="outline">
+                <mat-label>Redes disponibles</mat-label>
+                <mat-select [(ngModel)]="redItemSeleccionado" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngIf="listRed.length > 1">
+                        <mat-option [value]="'todos'" selected>Todos</mat-option>
+                        <mat-option *ngFor="let red of listRed" [value]="red.codRed">{{red.descripcion | titlecase}}</mat-option>
+                    </ng-container>
+                    <ng-container *ngIf="listRed.length == 1">
+                        <mat-option [value]="listRed[0].codRed" selected>{{listRed[0].descripcion | titlecase}}</mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Unidad orgánica</mat-label>
+                <input type="text" placeholder="Nombre de la unidad orgánica" matInput [formControl]="myControlUnidad"
+                    [matAutocomplete]="autoUnidad" required>
+                <mat-autocomplete #autoUnidad="matAutocomplete" [displayWith]="displayFnUnidad"
+                    (optionSelected)="onSelectionChangeUnidad($event)">
+                    <mat-option *ngFor="let unidad of filteredOptionsUnidad | async" [value]="unidad">
+                        {{unidad.descripcion}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <div style="text-align: center">
+        <button mat-raised-button type="submit" color="primary" class="search">
+            <mat-icon>search</mat-icon>&nbsp;
+            <span>Buscar</span>
+        </button>
+    </div>
+</form>
+<div *ngIf="onChangeValueTipoReporte==='01' && this.listReporteSeguimiento.length !== 0">
+    <div style="text-align: right">
+        <button mat-raised-button class="has-success" (click)="generarReporteSeguimientoAdmin()">
+            <mat-icon>cloud_download</mat-icon>
+            &nbsp; Descargar Formato
+        </button>
+    </div>
+    <br>
     <table mat-table [dataSource]="dataSource_seguimiento" style="width:100%">
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef>N°</th>
@@ -58,7 +85,7 @@
         </ng-container>
         <ng-container matColumnDef="numero_documento">
             <th mat-header-cell *matHeaderCellDef>DNI</th>
-            <td mat-cell *matCellDef="let element"> {{element.numero_documento}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.numeroDocumento}} </td>
         </ng-container>
         <ng-container matColumnDef="nombre_completo">
             <th mat-header-cell *matHeaderCellDef>Apellidos y nombres</th>
@@ -136,18 +163,20 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="empty-row" *matNoDataRow>
-            <td class="empty-cell">Aún no tienes tareas asignadas</td>
+            <td class="empty-cell">No se encontró registros</td>
         </tr>
     </table>
 </div>
 
 <!-- matriz -->
-<div *ngIf="onChangeValueTipoReporte==='03'">
-    <button mat-raised-button class="has-success">
-        <mat-icon>cloud_download</mat-icon>
-        &nbsp; Descargar Formato Matriz
-    </button>
-    <br><br>
+<div *ngIf="onChangeValueTipoReporte==='03'  && this.listReporteMatriz.length !== 0">
+    <div style="text-align: right">
+        <button mat-raised-button class="has-success" (click)="generarReporteMatrizAdmin()">
+            <mat-icon>cloud_download</mat-icon>
+            &nbsp; Descargar Formato
+        </button>
+    </div>
+    <br>
     <table mat-table [dataSource]="dataSource_matriz" style="width:100%">
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef>N°</th>
@@ -205,7 +234,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns_2"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
         <tr class="empty-row" *matNoDataRow>
-            <td class="empty-cell">Aún no tienes tareas asignadas</td>
+            <td class="empty-cell">No se encontró registros</td>
         </tr>
     </table>
 </div>

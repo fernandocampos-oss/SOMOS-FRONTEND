@@ -79,7 +79,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   async generarExcelTrabajador() {
     let load = await this._grService.generarExcelTrabajador().then((data: any) => {
       if (data != null) {
-        // console.log("service excel", data);
         this.servicioExcelEjecutor(data);
       }
     });
@@ -99,7 +98,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     jefe.codUnidad = main.evaluadorCodUnidad;
     jefe.numeroDocumento = main.evaluadorNumeroDocumento;
 
-    // console.log("data excel", main.listPrioridad);
     let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
   }
 

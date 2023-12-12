@@ -146,8 +146,6 @@ export class SidenavComponent implements OnInit {
         if (this.user.id == this.usuarioVotante.idUsuario) {
           console.log("Votante encontrado ", this.user.id, "-", this.usuarioVotante.idUsuario);
           this.votanteSegmento = this.usuarioVotante.idSegmento;
-        } else {
-          console.log("Votante no encontrado ", this.user.id, "-", this.usuarioVotante.idUsuario);
         }
       }
     });

@@ -9,7 +9,7 @@ import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { AsignarEvidenciaComponent } from '@modules/gestion-rendimiento/components/gestionar-indicadores-trabajador/dialogs/asignar-evidencia/asignar-evidencia.component';
 import { AsignarIndicadorComponent } from '@modules/gestion-rendimiento/components/gestionar-indicadores-trabajador/dialogs/asignar-indicador/asignar-indicador.component';
-import { EditMasterComponent } from '@modules/gestion-rendimiento/components/gestionar-indicadores-trabajador/dialogs/edit-master/edit-master.component';
+import { EditMasterComponent } from '../edit-master/edit-master.component';
 
 @Component({
   selector: 'app-ver-datos-gdr',
@@ -18,6 +18,7 @@ import { EditMasterComponent } from '@modules/gestion-rendimiento/components/ges
 })
 export class VerDatosGdrComponent implements OnInit {
   listIndicadoresAdmin: any[] = [];
+  porcentajeTotal: number = 0;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -37,7 +38,6 @@ export class VerDatosGdrComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
     this.loadTableAdmin();
   }
 
@@ -45,31 +45,21 @@ export class VerDatosGdrComponent implements OnInit {
     let listPendiente = await this._grService.listPendientesTrabajadorByVotanteAdmin(this.data.modal.idVotante).then((data) => {
       if (data.length > 0) {
         this.listIndicadoresAdmin = data;
-        console.log(this.listIndicadoresAdmin )
         this.dataSource = new MatTableDataSource(this.listIndicadoresAdmin);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }
-    });
-  }
-
-  editarEvidencia(element) {
-    const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
-      disableClose: false,
-      width: '40%',
-      //height: '780px',
-      autoFocus: true,
-      data: {
-        model: element
+      let suma = 0;
+      for (let a of this.listIndicadoresAdmin) {
+        let numero = 0;
+        numero = a.peso;
+        suma += numero;
       }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadTableAdmin();
+      this.porcentajeTotal = suma;
     });
   }
 
-  agregarIndicador(element, idVotante, i) {
+  agregarIndicador(element: any, idVotante: any, i: any) {
     const dialogRef: MatDialogRef<AsignarIndicadorComponent> = this._dialog.open(AsignarIndicadorComponent, {
       disableClose: true,
       width: '50%',
@@ -88,7 +78,7 @@ export class VerDatosGdrComponent implements OnInit {
     });
   }
 
-  agregarEvidencia(i) {
+  agregarEvidencia(i: any) {
     const dialogRef: MatDialogRef<AsignarEvidenciaComponent> = this._dialog.open(AsignarEvidenciaComponent, {
       disableClose: true,
       width: '50%',
@@ -102,7 +92,60 @@ export class VerDatosGdrComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadTableAdmin();
     });
+  }
 
+  editarPrioridad(idPrioridad: number, idActividad: number, fechaAsignacion: any, control: number) {
+    const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        switch: control,
+        idPrioridad: idPrioridad,
+        idActividad: idActividad,
+        fechaAsignacion: fechaAsignacion
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableAdmin();
+    });
+  }
+
+  editarIndicador(element: any, control: number) {
+    const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        switch: control,
+        indicador: element,
+        pesoTotal: this.porcentajeTotal
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableAdmin();
+    });
+  }
+
+  editarEvidencia(element: any, control: number) {
+    const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
+      disableClose: false,
+      width: '40%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        switch: control,
+        evidencia: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableAdmin();
+    });
   }
 
 }

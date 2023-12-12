@@ -81,7 +81,6 @@ export class AsignarPrioridadComponent implements OnInit {
     let listtrabajadores = await this._grService.listarIntegrantesPorLider().then((data) => {
       if (data.length > 0) {
         this.listEquipo = data;
-        console.log("equipo", this.listEquipo)
       } else {
         this._notification.warning("Para crear indicadores primero debes registrar integrantes a tu equipo");
       }
@@ -153,7 +152,6 @@ export class AsignarPrioridadComponent implements OnInit {
   }
 
   onSelectionChangeTipoValorMeta(event: any) {
-    // console.log(event.value);
     this.onChangeValueTipoValorMeta = event.value;
   }
 

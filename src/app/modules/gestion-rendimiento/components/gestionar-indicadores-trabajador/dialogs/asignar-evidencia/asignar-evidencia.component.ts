@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatTable } from '@angular/material/table';
 import { AppConfig } from '@core/configs';
 import { NotificationService } from '@core/services';
-import { ActividadResponse, IndicadorRequest } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { ActividadResponse, IndicadorResponse} from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 
 import * as moment from 'moment';
@@ -98,7 +98,7 @@ export class AsignarEvidenciaComponent implements OnInit {
       e = null;
     }
 
-    let indicador = new IndicadorRequest();
+    let indicador = new IndicadorResponse();
     indicador.idIndicador = this.data.element.idIndicador;
 
     return {

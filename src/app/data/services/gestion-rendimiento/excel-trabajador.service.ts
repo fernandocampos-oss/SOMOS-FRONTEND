@@ -13,6 +13,7 @@ const EXCEL_EXTENSION = '.xlsx';
 })
 export class ExcelTrabajadorService {
   fileName: string = "GDR_";
+  filaInicioFooter: number = 0;
 
   constructor() { }
 
@@ -104,7 +105,6 @@ export class ExcelTrabajadorService {
     //Blank Row 
     worksheet.addRow([]);
 
-    worksheet.mergeCells('A8:B8');
     let titleEntidad = worksheet.getCell('A8');
     titleEntidad.value = 'NOMBRE DE LA ENTIDAD';
     titleEntidad.font = {
@@ -127,8 +127,8 @@ export class ExcelTrabajadorService {
     };
     titleEntidad.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('C8:E8');
-    let titleEntidadResult = worksheet.getCell('C8');
+    worksheet.mergeCells('B8:E8');
+    let titleEntidadResult = worksheet.getCell('B8');
     titleEntidadResult.value = 'SEGURO SOCIAL DE SALUD - ESSALUD';
     titleEntidadResult.font = {
       name: 'Calibri',
@@ -970,10 +970,53 @@ export class ExcelTrabajadorService {
     };
     titlePuntuacion.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    //pie de pagina
+    //iterativo
+    let contadorFilaMerge = 20;
+    for (let i = 0; i < listPrioridades.length; i++) {
+
+      let contadorActividad = 0;
+      for (let j = 0; j < listPrioridades[i].listIndicador.length; j++) {
+        let numero = 0;
+        numero = listPrioridades[i].listIndicador[j].listEvidencia.length;
+        contadorActividad += numero;
+      }
+
+      //actividad
+      worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(1).address, worksheet.getRow(contadorFilaMerge + contadorActividad - 1).getCell(1).address);
+      worksheet.getRow(contadorFilaMerge).getCell(1).value = listPrioridades[i].prioridadNombre;
+      worksheet.getRow(contadorFilaMerge).getCell(1).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      worksheet.getRow(contadorFilaMerge).getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      worksheet.getColumn(1).width = 45;
+
+      //fila inicio para footer
+      this.filaInicioFooter = contadorFilaMerge + contadorActividad - 1;
+
+      for (let j = 0; j < listPrioridades[i].listIndicador.length; j++) {
+        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(2).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(2).address);
+        worksheet.getRow(contadorFilaMerge).getCell(2).value = listPrioridades[i].listIndicador[j].nombreIndicador;
+        worksheet.getRow(contadorFilaMerge).getCell(2).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+        worksheet.getRow(contadorFilaMerge).getCell(2).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+        worksheet.getColumn(2).width = 35;
+
+        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(3).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(3).address);
+        worksheet.getRow(contadorFilaMerge).getCell(3).value = listPrioridades[i].listIndicador[j].valorMeta;
+        worksheet.getRow(contadorFilaMerge).getCell(3).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+        worksheet.getRow(contadorFilaMerge).getCell(3).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+
+        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(4).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(4).address);
+        worksheet.getRow(contadorFilaMerge).getCell(4).value = listPrioridades[i].listIndicador[j].peso + "%";
+        worksheet.getRow(contadorFilaMerge).getCell(4).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+        worksheet.getRow(contadorFilaMerge).getCell(4).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+
+        this.formatoEvidencias(worksheet, listPrioridades[i].listIndicador[j].listEvidencia, contadorFilaMerge)
+        contadorFilaMerge += listPrioridades[i].listIndicador[j].listEvidencia.length;
+      }
+    }
+
+    //footer
     //RESULTADOS FINALES--------------------------------------------------------------
-    worksheet.mergeCells('A40', 'L40');
-    let resultados = worksheet.getCell('A40');
+    worksheet.mergeCells(`A${this.filaInicioFooter + 2}:L${this.filaInicioFooter + 2}`);
+    let resultados = worksheet.getCell(`A${this.filaInicioFooter + 2}`);
     resultados.value = 'RESULTADOS FINALES';
     resultados.font = {
       name: 'Calibri',
@@ -995,8 +1038,8 @@ export class ExcelTrabajadorService {
     };
     resultados.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A41', 'A42');
-    let puntuacionFinal = worksheet.getCell('A41');
+    worksheet.mergeCells(`A${this.filaInicioFooter + 3}:A${this.filaInicioFooter + 4}`);
+    let puntuacionFinal = worksheet.getCell(`A${this.filaInicioFooter + 3}`);
     puntuacionFinal.value = 'PUNTUACIÓN FINAL';
     puntuacionFinal.font = {
       name: 'Calibri',
@@ -1018,8 +1061,8 @@ export class ExcelTrabajadorService {
     };
     puntuacionFinal.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('B41', 'B42');
-    let calificacion = worksheet.getCell('B41');
+    worksheet.mergeCells(`B${this.filaInicioFooter + 3}:B${this.filaInicioFooter + 4}`);
+    let calificacion = worksheet.getCell(`B${this.filaInicioFooter + 3}`);
     calificacion.value = 'CALIFICACIÓN';
     calificacion.font = {
       name: 'Calibri',
@@ -1041,8 +1084,8 @@ export class ExcelTrabajadorService {
     };
     calificacion.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('C41', 'I42');
-    let feetback = worksheet.getCell('C42');
+    worksheet.mergeCells(`C${this.filaInicioFooter + 3}:I${this.filaInicioFooter + 4}`);
+    let feetback = worksheet.getCell(`C${this.filaInicioFooter + 3}`);
     feetback.value = 'RETROALIMENTACIÓN FINAL Y PLAN DE MEJORA';
     feetback.font = {
       name: 'Calibri',
@@ -1064,8 +1107,8 @@ export class ExcelTrabajadorService {
     };
     feetback.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J41', 'L42');
-    let meet = worksheet.getCell('J41');
+    worksheet.mergeCells(`J${this.filaInicioFooter + 3}:L${this.filaInicioFooter + 4}`);
+    let meet = worksheet.getCell(`J${this.filaInicioFooter + 3}`);
     meet.value = 'FECHA DE REUNIÓN DE RETROALIMENTACIÓN';
     meet.font = {
       name: 'Calibri',
@@ -1087,8 +1130,8 @@ export class ExcelTrabajadorService {
     };
     meet.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('A43', 'A44');
-    let puntuacion = worksheet.getCell('A43');
+    worksheet.mergeCells(`A${this.filaInicioFooter + 5}:A${this.filaInicioFooter + 6}`);
+    let puntuacion = worksheet.getCell(`A${this.filaInicioFooter + 5}`);
     puntuacion.value = '30.00';
     puntuacion.font = {
       name: 'Calibri',
@@ -1110,8 +1153,8 @@ export class ExcelTrabajadorService {
     };
     puntuacion.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('B43', 'B44');
-    let calificacionFinal = worksheet.getCell('B43');
+    worksheet.mergeCells(`B${this.filaInicioFooter + 5}:B${this.filaInicioFooter + 6}`);
+    let calificacionFinal = worksheet.getCell(`B${this.filaInicioFooter + 5}`);
     calificacionFinal.value = 'Rendimiento Sujeto a Observación';
     calificacionFinal.font = {
       name: 'Calibri',
@@ -1133,8 +1176,8 @@ export class ExcelTrabajadorService {
     };
     calificacionFinal.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    worksheet.mergeCells('C43:D43');
-    let capacitacion = worksheet.getCell('C43');
+    worksheet.mergeCells(`C${this.filaInicioFooter + 5}:D${this.filaInicioFooter + 5}`);
+    let capacitacion = worksheet.getCell(`C${this.filaInicioFooter + 5}`);
     capacitacion.value = 'Capacitaciones:';
     capacitacion.font = {
       name: 'Calibri',
@@ -1149,8 +1192,8 @@ export class ExcelTrabajadorService {
     };
     capacitacion.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('E43:I43');
-    let capacitacionRespuesta = worksheet.getCell('E43');
+    worksheet.mergeCells(`E${this.filaInicioFooter + 5}:I${this.filaInicioFooter + 5}`);
+    let capacitacionRespuesta = worksheet.getCell(`E${this.filaInicioFooter + 5}`);
     capacitacionRespuesta.value = '';
     capacitacionRespuesta.font = {
       name: 'Calibri',
@@ -1165,8 +1208,8 @@ export class ExcelTrabajadorService {
     };
     capacitacionRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('C44:D44');
-    let recomendaciones = worksheet.getCell('C44');
+    worksheet.mergeCells(`C${this.filaInicioFooter + 6}:D${this.filaInicioFooter + 6}`);
+    let recomendaciones = worksheet.getCell(`C${this.filaInicioFooter + 6}`);
     recomendaciones.value = 'Recomendaciones:';
     recomendaciones.font = {
       name: 'Calibri',
@@ -1181,8 +1224,8 @@ export class ExcelTrabajadorService {
     };
     recomendaciones.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('E44:I44');
-    let recomendacionRespuesta = worksheet.getCell('E44');
+    worksheet.mergeCells(`E${this.filaInicioFooter + 6}:I${this.filaInicioFooter + 6}`);
+    let recomendacionRespuesta = worksheet.getCell(`E${this.filaInicioFooter + 6}`);
     recomendacionRespuesta.value = '';
     recomendacionRespuesta.font = {
       name: 'Calibri',
@@ -1197,8 +1240,8 @@ export class ExcelTrabajadorService {
     };
     recomendacionRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('J43:L44');
-    let meetRespuesta = worksheet.getCell('J43');
+    worksheet.mergeCells(`J${this.filaInicioFooter + 5}:L${this.filaInicioFooter + 6}`);
+    let meetRespuesta = worksheet.getCell(`J${this.filaInicioFooter + 5}`);
     meetRespuesta.value = '';
     meetRespuesta.font = {
       name: 'Calibri',
@@ -1214,8 +1257,8 @@ export class ExcelTrabajadorService {
     meetRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
     //FIRMAS DE LOS RESULTADOS FINALES --------------------------------------------------------------
-    worksheet.mergeCells('A45', 'L45');
-    let firmaFinal = worksheet.getCell('A45');
+    worksheet.mergeCells(`A${this.filaInicioFooter + 7}:L${this.filaInicioFooter + 7}`);
+    let firmaFinal = worksheet.getCell(`A${this.filaInicioFooter + 7}`);
     firmaFinal.value = 'FIRMAS DE LOS RESULTADOS FINALES';
     firmaFinal.font = {
       name: 'Calibri',
@@ -1237,8 +1280,8 @@ export class ExcelTrabajadorService {
     };
     firmaFinal.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('A46', 'A47');
-    let firmaEvaluado = worksheet.getCell('A46');
+    worksheet.mergeCells(`A${this.filaInicioFooter + 8}:A${this.filaInicioFooter + 9}`);
+    let firmaEvaluado = worksheet.getCell(`A${this.filaInicioFooter + 8}`);
     firmaEvaluado.value = 'FIRMA EVALUADO/A';
     firmaEvaluado.font = {
       name: 'Calibri',
@@ -1260,8 +1303,8 @@ export class ExcelTrabajadorService {
     };
     firmaEvaluado.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('B46:D47');
-    let firmaEvaluadoRespuesta = worksheet.getCell('B46');
+    worksheet.mergeCells(`B${this.filaInicioFooter + 8}:D${this.filaInicioFooter + 9}`);
+    let firmaEvaluadoRespuesta = worksheet.getCell(`B${this.filaInicioFooter + 8}`);
     firmaEvaluadoRespuesta.value = '';
     firmaEvaluadoRespuesta.font = {
       name: 'Calibri',
@@ -1276,8 +1319,8 @@ export class ExcelTrabajadorService {
     };
     firmaEvaluadoRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('E46', 'E47');
-    let firmaEvaluador = worksheet.getCell('E46');
+    worksheet.mergeCells(`E${this.filaInicioFooter + 8}:E${this.filaInicioFooter + 9}`);
+    let firmaEvaluador = worksheet.getCell(`E${this.filaInicioFooter + 8}`);
     firmaEvaluador.value = 'FIRMA EVALUADOR/A';
     firmaEvaluador.font = {
       name: 'Calibri',
@@ -1299,8 +1342,8 @@ export class ExcelTrabajadorService {
     };
     firmaEvaluador.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    worksheet.mergeCells('F46:L47');
-    let firmaEvaluadorRespuesta = worksheet.getCell('F46');
+    worksheet.mergeCells(`F${this.filaInicioFooter + 8}:L${this.filaInicioFooter + 9}`);
+    let firmaEvaluadorRespuesta = worksheet.getCell(`F${this.filaInicioFooter + 8}`);
     firmaEvaluadorRespuesta.value = '';
     firmaEvaluadorRespuesta.font = {
       name: 'Calibri',
@@ -1315,61 +1358,6 @@ export class ExcelTrabajadorService {
     };
     firmaEvaluadorRespuesta.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    // //Footer Row
-    // let footerRow = worksheet.addRow([
-    //   'Fecha del Reporte '
-    // ]);
-    // footerRow.getCell(1).fill = {
-    //   type: 'pattern',
-    //   pattern: 'solid',
-    //   fgColor: { argb: 'd9e0f0' },
-    // };
-    // footerRow.getCell(1).font = {
-    //   name: 'Calibri',
-    //   size: 8,
-    // };
-    // //Merge Cells
-    // worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
-
-
-    //iterativo
-    let contadorFilaMerge = 20;
-    for (let i = 0; i < listPrioridades.length; i++) {
-
-      let contadorActividad = 0;
-      for (let j = 0; j < listPrioridades[i].listIndicador.length; j++) {
-        let numero = 0;
-        numero = listPrioridades[i].listIndicador[j].listEvidencia.length;
-        contadorActividad += numero;
-      }
-      //actividad
-      worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(1).address, worksheet.getRow(contadorFilaMerge + contadorActividad - 1).getCell(1).address);
-      worksheet.getRow(contadorFilaMerge).getCell(1).value = listPrioridades[i].prioridadNombre;
-      worksheet.getRow(contadorFilaMerge).getCell(1).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
-      worksheet.getRow(contadorFilaMerge).getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-      worksheet.getColumn(1).width = 45;
-
-      for (let j = 0; j < listPrioridades[i].listIndicador.length; j++) {
-        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(2).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(2).address);
-        worksheet.getRow(contadorFilaMerge).getCell(2).value = listPrioridades[i].listIndicador[j].nombreIndicador;
-        worksheet.getRow(contadorFilaMerge).getCell(2).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
-        worksheet.getRow(contadorFilaMerge).getCell(2).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-        worksheet.getColumn(2).width = 40;
-
-        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(3).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(3).address);
-        worksheet.getRow(contadorFilaMerge).getCell(3).value = listPrioridades[i].listIndicador[j].valorMeta;
-        worksheet.getRow(contadorFilaMerge).getCell(3).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
-        worksheet.getRow(contadorFilaMerge).getCell(3).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-
-        worksheet.mergeCells(worksheet.getRow(contadorFilaMerge).getCell(4).address, worksheet.getRow(contadorFilaMerge + listPrioridades[i].listIndicador[j].listEvidencia.length - 1).getCell(4).address);
-        worksheet.getRow(contadorFilaMerge).getCell(4).value = listPrioridades[i].listIndicador[j].peso + "%";
-        worksheet.getRow(contadorFilaMerge).getCell(4).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
-        worksheet.getRow(contadorFilaMerge).getCell(4).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-
-        this.formatoEvidencias(worksheet, listPrioridades[i].listIndicador[j].listEvidencia, contadorFilaMerge)
-        contadorFilaMerge += listPrioridades[i].listIndicador[j].listEvidencia.length;
-      }
-    }
 
     //Generate & Save Excel File
     workbook.xlsx.writeBuffer().then((data) => {
@@ -1391,6 +1379,7 @@ export class ExcelTrabajadorService {
         right: { style: 'thin' }
       };
       wb.getColumn(5).width = 35;
+
       // wb.getRow(i + position).getCell('D').value = datePipe.transform(listEvidencia[i].plazo, 'dd/MM/yyyy - hh:mm a');
       wb.getRow(i + position).getCell('F').value = datePipe.transform(listEvidencia[i].plazo, 'dd/MM/yyyy');
       wb.getRow(i + position).getCell('F').alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };

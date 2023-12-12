@@ -1,7 +1,7 @@
-import { IndicadorRequest } from "./gestion-rendimiento.model";
+import { IndicadorResponse } from "./gestion-rendimiento.model";
 
 export class IndicadorExistRequestDto {
-    indicador?: IndicadorRequest;
+    indicador?: IndicadorResponse;
     listEvidencia?: EvidenciaExistRequestDto[];
 }
 

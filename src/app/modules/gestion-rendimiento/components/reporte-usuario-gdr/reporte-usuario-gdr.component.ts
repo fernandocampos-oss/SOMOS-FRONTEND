@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol-sectorizacion.service';
 import { Observable } from 'rxjs';
 import { MatrizRequestDto, SeguimientoRequestDto } from '@data/models/gestion-rendimiento/reporte-gdr.model';
+import { ReporteAdministradorService } from '@data/services/gestion-rendimiento/reporte-administrador.service';
 
 interface Año {
   anio: number;
@@ -60,18 +61,21 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   filteredOptionsUnidad: Observable<any[]>;
   unidadSeleccionadoTmp: any;
 
+  listReporteSeguimiento: any[] = [];
+  listReporteMatriz: any[] = [];
+
   constructor(
     private _fb: FormBuilder,
     private _grService: GestionRendimientoService,
     private _notification: NotificationService,
     private _sectorizacionService: AsignacionRolSectorizacionService,
+    private _serviceReporteAdmin: ReporteAdministradorService,
   ) { }
 
   ngOnInit(): void {
     this.createForm();
     // this.form.controls.frmMesElegido.setValue(this.today.getMonth()+1);
     this.form.controls.frmAnioElegido.setValue(this.today.getFullYear());
-
     this.getListRedesAsignadas();
 
     this.getListAllUnidadOrganizativa();
@@ -93,7 +97,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   }
 
   onSelectionChangeTipoReporte(event: any) {
-    console.log("tipo reporte:", event.value);
+    console.log("tipo", event.value);
     this.onChangeValueTipoReporte = event.value;
   }
 
@@ -106,7 +110,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   }
   onSelectionChangeUnidad(event: any) {
     this.unidadSeleccionadoTmp = event.option.value;
-    console.log("unidad: ", this.unidadSeleccionadoTmp);
+    console.log("unidad ", this.unidadSeleccionadoTmp);
   }
 
   async getListRedesAsignadas() {
@@ -128,46 +132,107 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   async generarReporte() {
     if (this.onChangeValueTipoReporte === '01') {
       console.log(this.anioElegido.anio);
-      console.log(this.redItemSeleccionado[0]);
+      // console.log(this.redItemSeleccionado[0]);
+      console.log(this.redItemSeleccionado);
       console.log(this.unidadSeleccionadoTmp.codUnidad);
 
       let dto = new SeguimientoRequestDto();
       dto.anio = this.anioElegido.anio;
-      dto.codRed = this.redItemSeleccionado[0];
+      // dto.codRed = this.redItemSeleccionado[0];
+      dto.codRed = this.redItemSeleccionado;
       dto.codUnidad = this.unidadSeleccionadoTmp.codUnidad;
 
       let listRed = await this._grService.reporteGdrSeguimiento(dto).then((data) => {
-        if (data != null) {
-          console.log("result seguimiento: ", data)
-          this.dataSource_seguimiento = new MatTableDataSource(data);
+        if (data.length > 0) {
+          this.listReporteSeguimiento = data;
+          this.dataSource_seguimiento = new MatTableDataSource(this.listReporteSeguimiento);
           // this.dataSource.paginator = this.paginator;
           // this.dataSource.sort = this.sort;
+        } else {
+          this._notification.warning("No se encontró registros");
         }
       });
     } else if (this.onChangeValueTipoReporte === '03') {
       console.log(this.anioElegido.anio);
-      console.log(this.redItemSeleccionado[0]);
+      // console.log(this.redItemSeleccionado[0]);
+      console.log(this.redItemSeleccionado);
       console.log(this.unidadSeleccionadoTmp.codUnidad);
 
       let dto = new MatrizRequestDto();
       dto.anio = this.anioElegido.anio;
-      dto.codRed = this.redItemSeleccionado[0];
+      // dto.codRed = this.redItemSeleccionado[0];
+      dto.codRed = this.redItemSeleccionado;
       dto.codUnidad = this.unidadSeleccionadoTmp.codUnidad;
 
       let listRed = await this._grService.reporteGdrMatriz(dto).then((data) => {
-        if (data != null) {
-          console.log("result matriz: ", data)
-          this.dataSource_matriz = new MatTableDataSource(data);
+        if (data.length > 0) {
+          this.listReporteMatriz = data;
+          this.dataSource_matriz = new MatTableDataSource(this.listReporteMatriz);
           // this.dataSource.paginator = this.paginator;
           // this.dataSource.sort = this.sort;
+        } else {
+          this._notification.warning("No se encontró registros");
         }
       });
     }
 
   }
 
-  async procesarExcel(element) {
+  async generarReporteSeguimientoAdmin() {
+    let titulo = "Cuadro de Seguimiento Carga de Evidencias - GDR Ciclo " + this.today.getFullYear();
+    let columnas = [
+      'DNI',
+      'Apellidos y Nombres',
+      'Nombre del órgano o unidad orgánica',
+      'Nombre de la unidad orgánica',
+      'Nombre de la sub unidad orgánica',
+      'Puesto',
+      'Rol',
+      'Meta',
+      'Mes',
+      'Plazo',
+      'Status',
+      'Calificación',
+      'Verificación de Evidencia',
+      'Fecha de Verificación',
+      'Notificación por correo',
+      'Fecha Notificación por correo',
+      'Comentario',
+      'Registro en Formato de GDR',
+      'Modificación de Meta y/o Plazo',
+    ];
 
+    let excel = await this._serviceReporteAdmin.exportExcelSeguimiento(titulo, columnas, this.listReporteSeguimiento);
+  }
+
+  async generarReporteMatrizAdmin() {
+    console.log("excel matr", this.listReporteMatriz);
+    let titulo = "MATRIZ ÚNICA DE LA GESTIÓN DEL RENDIMIENTO - CICLO " + this.today.getFullYear();
+    let columnas = [
+      'Nº documento',
+      'Apellidos y Nombres',
+      'Género',
+      'Fecha de nacimiento',
+      'Regimen laboral',
+      'Correo electrónico',
+      'Tipo de órgano',
+      'Nombre del órgano o unidad orgánica',
+      'Nombre de la unidad orgánica',
+      'Nombre de la sub unidad orgánica',
+      'Puesto',
+      'Segmento',
+      'Rol',
+      'Sindicato',
+      'Indicador 1',
+      'Indicador 2',
+      '¿Llegó a la etapa de evaluación? (Si/No)',
+      '¿Recibirá calificación? (Si/No)',
+      'Puntuación final ',
+      'Calificación',
+      'Nivel de la mejora implementada',
+    ];
+
+    let excel = await this._serviceReporteAdmin.exportExcelMatriz(titulo, columnas, this.listReporteMatriz);
   }
 
 }

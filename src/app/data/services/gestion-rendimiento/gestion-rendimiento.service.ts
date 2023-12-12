@@ -4,8 +4,9 @@ import { environment } from '@env';
 import { Observable } from 'rxjs';
 import { ActividadResponse, EmailNotificacionRequestDto, EquipoRequest, EvidenciaResponseDto, EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { IndicadorExistRequestDto } from '@data/models/gestion-rendimiento/indicador-exist-evidencia.model';
-import { PrioridadExistRequestDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
+import { PrioridadExistRequestDto, UpdatePrioridadDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
 import { MatrizRequestDto, SeguimientoRequestDto } from '@data/models/gestion-rendimiento/reporte-gdr.model';
+import { EvidenciaRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
 
 const URL_BASE = `${environment.apiUrl}`;
 
@@ -57,6 +58,12 @@ export class GestionRendimientoService {
     return await this.http.post<Object[]>(url, dto).toPromise();
   }
 
+  async modificarPrioridad(id: number, model: UpdatePrioridadDto) {
+    const url = `${URL_BASE}/prioridades/modificar/${id}`;
+    console.log(url, model);
+    return await this.http.put(url, model).toPromise();
+  }
+
   async listarIndicadorPendiente() {
     const url = `${URL_BASE}/indicadores/listar/pendientes`;
     console.log(url);
@@ -81,8 +88,8 @@ export class GestionRendimientoService {
     return await this.http.post(url, indicadorRequest).toPromise();
   }
 
-  async modificarIndicador(idIndicador: number, model: any) {
-    const url = `${URL_BASE}/indicadores/modificar/${idIndicador}`;
+  async modificarIndicador(id: number, model: any) {
+    const url = `${URL_BASE}/indicadores/modificar/${id}`;
     console.log(url, model);
     return await this.http.put(url, model).toPromise();
   }
@@ -164,8 +171,8 @@ export class GestionRendimientoService {
     console.log(url);
     return await this.http.get<EvidenciaResponseDto>(url).toPromise();
   }
-
-  async modificarEvidencia(id: number, model: any) {
+  
+  async modificarEvidencia(id: number, model: EvidenciaRequest) {
     const url = `${URL_BASE}/evidencias/modificar/${id}`;
     console.log(url, model);
     return await this.http.put(url, model).toPromise();

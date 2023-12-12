@@ -7,7 +7,7 @@
                 <input matInput formControlName="frmDescripcionIndicador" minlength="1" maxlength="200" />
             </mat-form-field>
 
-            <h4>Valor Meta:</h4>
+            <h4><strong>Valor Meta:</strong></h4>
             <mat-form-field appearance="outline">
                 <mat-label>Unidad de Medida</mat-label>
                 <mat-select [(value)]="idValorMetaSeleccionado" formControlName="frmTipoValorMeta"
@@ -36,17 +36,16 @@
             <mat-form-field appearance="outline" class="size-field">
                 <mat-label>Peso del Indicador/Producto</mat-label>
                 <input matInput formControlName="frmPeso" class="example-right-align" type="number"
-                (focus)="showHelpCPlanilla = true" (focusout)="showHelpCPlanilla = false">
+                    (focus)="showHelpPeso = true" (focusout)="showHelpPeso = false">
                 <span matSuffix class="percent-align">%</span>
-                <!-- <mat-hint align="star" color="primary-button"> Porcentaje Total: {{porcentajeGrabado}}</mat-hint> -->
                 <div *ngIf="(formPrioridad.value.frmPeso + porcentajeGrabado)>100" class="descriptor">
-                    <div *ngIf="showHelpCPlanilla">
+                    <div *ngIf="showHelpPeso">
                         <br>
                         <p class="primary-button">¡Peso inválido!</p>
                         <br>
                         <p>El porcentaje total no debe superar el 100%</p>
                         <br>
-                        <p>Ya tiene grabado {{porcentajeGrabado}}% en los demas Indicadores/Productos</p>
+                        <p>Ya tiene grabado {{porcentajeGrabado}}% en los Indicadores/Productos</p>
                     </div>
                 </div>
             </mat-form-field>
@@ -57,8 +56,8 @@
             <div align="end">
                 <button mat-button mat-dialog-close color="primary">Cancelar</button>&nbsp;
                 <button mat-raised-button matStepperNext color="primary"
-                    [disabled]="(formPrioridad.value.frmPeso + porcentajeGrabado)>100 || formPrioridad.value.frmTipoValorMeta === ''">
-                    Siguiente
+                    [disabled]="(formPrioridad.value.frmPeso + porcentajeGrabado)>100 || formPrioridad.value.frmTipoValorMeta === '' || formPrioridad.invalid || formPrioridad.value.frmPeso==0">
+                    <span>Siguiente</span>
                     <mat-icon>chevron_right</mat-icon>
                 </button>
             </div>
@@ -126,12 +125,12 @@
                 <button mat-button mat-dialog-close color="primary">Cancelar</button>&nbsp;
                 <button mat-raised-button matStepperPrevious color="primary">
                     <mat-icon>chevron_left</mat-icon>
-                    Atrás
+                    <span>Atrás</span>
                 </button>
                 <button mat-raised-button color="primary" [disabled]="dataSource.length ==0" style="margin-left: 1rem;"
                     (click)="registrar()">
-                    <mat-icon>check</mat-icon>
-                    Asignar
+                    <mat-icon>check</mat-icon>&nbsp;
+                    <span>Asignar</span>
                 </button>
             </div>
         </form>

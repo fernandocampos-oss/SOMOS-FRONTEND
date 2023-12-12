@@ -63,6 +63,10 @@
                                     (click)="agregarIndicador(element, i.idVotante, i)">
                                     <mat-icon>add_circle</mat-icon>
                                 </button>
+                                <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
+                                    (click)="editarPrioridad(element.idPrioridad, element.idActividad, element.fechaAsignacionPrioridad, 1)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="indicador_producto">
@@ -78,7 +82,10 @@
                                             (click)="agregarEvidencia(x)">
                                             <mat-icon matListIcon>add_circle</mat-icon>
                                         </button>
-                                        <mat-divider></mat-divider>
+                                        <button mat-icon-button color="primary" matTooltip="Editar Indicador"
+                                            (click)="editarIndicador(x, 2)">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
@@ -106,10 +113,6 @@
                                     <mat-list-item *ngFor="let indicador of element.listIndicador"
                                         style="font-size:14px">
                                         {{indicador.peso}}%
-                                        <!-- <button mat-icon-button class="has-warn" matTooltip="Asignar Peso"
-                                            (click)="addPesoIndicador(indicador, i.listPrioridad)">
-                                            <mat-icon>add_circle</mat-icon>
-                                        </button> -->
                                     </mat-list-item>
                                 </mat-list>
                             </td>
@@ -122,7 +125,7 @@
                                         <p mat-line *ngFor="let t of z.listEvidencia">
                                             <span>- {{t.descripcion}}</span>
                                             <button mat-icon-button color="primary" matTooltip="Editar Evidencia"
-                                                (click)="editarEvidencia(t, true)">
+                                                (click)="editarEvidencia(t, 3)">
                                                 <mat-icon>edit</mat-icon>
                                             </button>
                                             <!-- <button mat-icon-button color="primary"

@@ -19,7 +19,7 @@ import { AlertaPesoComponent } from './components/gestionar-indicadores-trabajad
 import { ReporteUsuarioGdrComponent } from './components/reporte-usuario-gdr/reporte-usuario-gdr.component';
 import { BuscarReporteComponent } from './components/buscar-reporte/buscar-reporte.component';
 import { VerDatosGdrComponent } from './components/buscar-reporte/dialogs/ver-datos-gdr/ver-datos-gdr.component';
-import { EditMasterComponent } from './components/gestionar-indicadores-trabajador/dialogs/edit-master/edit-master.component';
+import { EditMasterComponent } from './components/buscar-reporte/dialogs/edit-master/edit-master.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { EditMasterComponent } from './components/gestionar-indicadores-trabajad
     ReporteUsuarioGdrComponent,
     BuscarReporteComponent,
     VerDatosGdrComponent,
-    EditMasterComponent,
+    EditMasterComponent
   ],
   imports: [
     CommonModule,
