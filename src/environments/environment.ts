@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  moduloGr: true,
+  moduloGr: false,
   // apiUrl: 'http://localhost:80/api',
   apiUrl: 'https://appsqa.essalud.gob.pe/marcaciones-service/api',
   environmentName: 'PÁGINA EN DESARROLLO (LOCAL)',

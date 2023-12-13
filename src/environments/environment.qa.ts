@@ -4,7 +4,7 @@
 
 export const environment = {
   production: true,
-  moduloGr: true,
+  moduloGr: false,
   apiUrl: 'https://appsqa.essalud.gob.pe/marcaciones-service/api',
   environmentName: 'PÁGINA EN DESARROLLO (QA)',
 };
