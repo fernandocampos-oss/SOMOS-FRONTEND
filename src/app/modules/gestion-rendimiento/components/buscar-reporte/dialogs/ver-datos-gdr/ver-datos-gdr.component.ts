@@ -60,6 +60,9 @@ export class VerDatosGdrComponent implements OnInit {
   }
 
   agregarIndicador(element: any, idVotante: any, i: any) {
+    let trabajador = new Object();
+    Object.assign(trabajador, { pesoTotal: element.peso });
+
     const dialogRef: MatDialogRef<AsignarIndicadorComponent> = this._dialog.open(AsignarIndicadorComponent, {
       disableClose: true,
       width: '50%',
@@ -69,7 +72,7 @@ export class VerDatosGdrComponent implements OnInit {
       data: {
         prioridadSelected: element,
         idVotante: this.data.modal.idVotante,
-        trabajador: i
+        trabajador: trabajador
       }
     });
 

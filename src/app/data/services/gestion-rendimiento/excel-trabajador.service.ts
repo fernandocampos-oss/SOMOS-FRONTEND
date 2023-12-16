@@ -70,7 +70,7 @@ export class ExcelTrabajadorService {
       name: 'Calibri',
       size: 8,
       bold: true,
-      color: { argb: 'ffffff' },
+      color: { argb: 'ffffff' }
     };
     titleEvaluador.fill = {
       type: 'pattern',

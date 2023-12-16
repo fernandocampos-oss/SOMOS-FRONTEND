@@ -5,10 +5,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService, SnackbarService } from '@core/services';
-import { ModalTareaComponent } from '../components/modal-tarea/modal-tarea.component';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
 import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
+import { RegistrarSustentoComponent } from '../components/registrar-sustento/registrar-sustento.component';
+import { VerImagenSustentoComponent } from '../components/ver-imagen-sustento/ver-imagen-sustento.component';
+import { VerPdfSustentoComponent } from '../components/ver-pdf-sustento/ver-pdf-sustento.component';
 
 @Component({
   selector: 'app-indicadores-trabajador',
@@ -21,7 +23,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'fecha_asignacion', 'acciones'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'fecha_asignacion'];
   groupedColumns: string[] = ['grouped'];
 
   constructor(
@@ -42,6 +44,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     let listPendiente = await this._grService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
         this.listIndicadoresPendientes = data;
+        console.log("ss", this.listIndicadoresPendientes)
         this.dataSource = new MatTableDataSource(this.listIndicadoresPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -52,23 +55,72 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   async actualizarIndicadoresPendientes() {
     this.listIndicadoresPendientes = [];
     let pendientes = await this.loadTablePendiente();
-    this._snackbar.success("La lista se encuentra actualizada");
+    this._snackbar.success("La lista se encuentra actualizada.");
   }
 
-  verDetalleIndicadorYEvidencias(element) {
-    const dialogRef: MatDialogRef<ModalTareaComponent> = this._matDialog.open(ModalTareaComponent, {
+  // verDetalleIndicadorYEvidencias(element) {
+  //   const dialogRef: MatDialogRef<ModalTareaComponent> = this._matDialog.open(ModalTareaComponent, {
+  //     disableClose: false,
+  //     width: '60%',
+  //     //height: '780px',
+  //     autoFocus: true,
+  //     data: {
+  //       model: element,
+  //       // auto: true,
+  //     }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.loadTablePendiente();
+  //   });
+  // }
+
+  registrarSustento(element) {
+    const dialogRef: MatDialogRef<RegistrarSustentoComponent> = this._matDialog.open(RegistrarSustentoComponent, {
       disableClose: false,
-      width: '60%',
+      width: '500px',
       //height: '780px',
       autoFocus: true,
       data: {
-        model: element,
-        // auto: true,
+        // idIndicador: this.data.model.idIndicador,
+        model: element
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadTablePendiente();
+    });
+  }
+
+  verImagenEvidencia(element) {
+    const dialogRef: MatDialogRef<VerImagenSustentoComponent> = this._matDialog.open(VerImagenSustentoComponent, {
+      disableClose: false,
+      width: '50%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTablePendiente();
+    });
+  }
+
+  verEvidenciaPdf(element) {
+    const dialogRef: MatDialogRef<VerPdfSustentoComponent> = this._matDialog.open(VerPdfSustentoComponent, {
+      disableClose: false,
+      width: '70%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTablePendiente();
     });
   }
 

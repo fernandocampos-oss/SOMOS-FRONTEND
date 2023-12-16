@@ -5,11 +5,11 @@ import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-r
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
-  selector: 'app-ver-evidencia-pdf',
-  templateUrl: './ver-evidencia-pdf.component.html',
-  styleUrls: ['./ver-evidencia-pdf.component.scss']
+  selector: 'app-ver-pdf-sustento',
+  templateUrl: './ver-pdf-sustento.component.html',
+  styleUrls: ['./ver-pdf-sustento.component.scss']
 })
-export class VerEvidenciaPdfComponent implements OnInit {
+export class VerPdfSustentoComponent implements OnInit {
 // pdfSrc = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 pdfSrc: string = "";
 evidenciaResponseDto: EvidenciaResponseDto;
@@ -47,5 +47,5 @@ async loadPdfFile() {
 //   }
 // });
 // }
-  
+
 }

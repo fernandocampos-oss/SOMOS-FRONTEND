@@ -1,16 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { EvidenciaResponseDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
-  selector: 'app-ver-evidencia-imagen',
-  templateUrl: './ver-evidencia-imagen.component.html',
-  styleUrls: ['./ver-evidencia-imagen.component.scss']
+  selector: 'app-ver-imagen-sustento',
+  templateUrl: './ver-imagen-sustento.component.html',
+  styleUrls: ['./ver-imagen-sustento.component.scss']
 })
-export class VerEvidenciaImagenComponent implements OnInit {
+export class VerImagenSustentoComponent implements OnInit {
   evidenciaResponseDto: EvidenciaResponseDto;
   evidenciaDescripcion: string = '';
   fileBase64: string;
@@ -61,6 +61,5 @@ export class VerEvidenciaImagenComponent implements OnInit {
       this._notification.error("Error al descargar imagen");
     }
   }
-
 
 }

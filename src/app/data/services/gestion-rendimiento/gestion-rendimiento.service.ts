@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ActividadResponse, EmailNotificacionRequestDto, EquipoRequest, EvidenciaResponseDto, EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { IndicadorExistRequestDto } from '@data/models/gestion-rendimiento/indicador-exist-evidencia.model';
 import { PrioridadExistRequestDto, UpdatePrioridadDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
-import { MatrizRequestDto, SeguimientoRequestDto } from '@data/models/gestion-rendimiento/reporte-gdr.model';
+import { SeguimientoRequestDto } from '@data/models/gestion-rendimiento/reporte-gdr.model';
 import { EvidenciaRequest } from '@data/models/gestion-rendimiento/indicador-dto.model';
 
 const URL_BASE = `${environment.apiUrl}`;
@@ -52,7 +52,7 @@ export class GestionRendimientoService {
     return await this.http.post<Object[]>(url, dto).toPromise();
   }
 
-  async reporteGdrMatriz(dto: MatrizRequestDto) {
+  async reporteGdrMatriz(dto: SeguimientoRequestDto) {
     const url = `${URL_BASE}/prioridades/reporte-matriz`;
     console.log(url, dto);
     return await this.http.post<Object[]>(url, dto).toPromise();
@@ -158,12 +158,6 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/evidencias/registrar/sustento`;
     console.log(url, dto);
     return await this.http.post(url, dto).toPromise();
-  }
-
-  async getEvidenciasByIndicador(idIndicador: number,) {
-    const url = `${URL_BASE}/evidencias/listar/indicador/${idIndicador}`;
-    console.log(url);
-    return await this.http.get<Object[]>(url).toPromise();
   }
 
   async getSustentoByEvidencia(id: number) {

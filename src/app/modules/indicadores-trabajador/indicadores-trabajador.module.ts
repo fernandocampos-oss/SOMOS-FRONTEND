@@ -6,19 +6,17 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@material';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { SharedModule } from '@shared/shared.module';
-import { RegistrarEvidenciaTrabajadorComponent } from './components/modal-tarea/registrar-evidencia-trabajador/registrar-evidencia-trabajador.component';
-import { ModalTareaComponent } from './components/modal-tarea/modal-tarea.component';
-import { VerEvidenciaImagenComponent } from './components/modal-tarea/ver-evidencia-imagen/ver-evidencia-imagen.component';
-import { VerEvidenciaPdfComponent } from './components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { RegistrarSustentoComponent } from './components/registrar-sustento/registrar-sustento.component';
+import { VerImagenSustentoComponent } from './components/ver-imagen-sustento/ver-imagen-sustento.component';
+import { VerPdfSustentoComponent } from './components/ver-pdf-sustento/ver-pdf-sustento.component';
 
 @NgModule({
   declarations: [
     IndicadoresTrabajadorComponent,
-    RegistrarEvidenciaTrabajadorComponent,
-    ModalTareaComponent,
-    VerEvidenciaImagenComponent,
-    VerEvidenciaPdfComponent
+    RegistrarSustentoComponent,
+    VerImagenSustentoComponent,
+    VerPdfSustentoComponent
   ],
   imports: [
     CommonModule,

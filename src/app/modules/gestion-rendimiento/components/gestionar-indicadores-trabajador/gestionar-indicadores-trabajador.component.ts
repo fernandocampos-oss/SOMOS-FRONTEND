@@ -1,3 +1,4 @@
+import { VerImagenSustentoComponent } from './../../../indicadores-trabajador/components/ver-imagen-sustento/ver-imagen-sustento.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService, SnackbarService } from '@core/services';
@@ -9,9 +10,8 @@ import { AsignarPrioridadComponent } from './dialogs/asignar-prioridad/asignar-p
 import { AsignarEvidenciaComponent } from './dialogs/asignar-evidencia/asignar-evidencia.component';
 import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
-import { VerEvidenciaImagenComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-imagen/ver-evidencia-imagen.component';
-import { VerEvidenciaPdfComponent } from '@modules/indicadores-trabajador/components/modal-tarea/ver-evidencia-pdf/ver-evidencia-pdf.component';
 import { EditMasterComponent } from '../buscar-reporte/dialogs/edit-master/edit-master.component';
+import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -178,7 +178,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   verEvidenciaImagen(element) {
-    const dialogRef: MatDialogRef<VerEvidenciaImagenComponent> = this._dialog.open(VerEvidenciaImagenComponent, {
+    const dialogRef: MatDialogRef<VerImagenSustentoComponent> = this._dialog.open(VerImagenSustentoComponent, {
       disableClose: false,
       width: '50%',
       //height: '780px',
@@ -193,7 +193,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   verEvidenciaPdf(element) {
-    const dialogRef: MatDialogRef<VerEvidenciaPdfComponent> = this._dialog.open(VerEvidenciaPdfComponent, {
+    const dialogRef: MatDialogRef<VerPdfSustentoComponent> = this._dialog.open(VerPdfSustentoComponent, {
       disableClose: false,
       width: '70%',
       //height: '780px',

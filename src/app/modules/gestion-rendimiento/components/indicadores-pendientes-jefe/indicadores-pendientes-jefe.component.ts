@@ -8,7 +8,9 @@ import { NotificationService, SnackbarService } from '@core/services';
 import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model';
 import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
-import { ModalTareaComponent } from '@modules/indicadores-trabajador/components/modal-tarea/modal-tarea.component';
+import { RegistrarSustentoComponent } from '@modules/indicadores-trabajador/components/registrar-sustento/registrar-sustento.component';
+import { VerImagenSustentoComponent } from '@modules/indicadores-trabajador/components/ver-imagen-sustento/ver-imagen-sustento.component';
+import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
 
 @Component({
   selector: 'gestion-rendimiento-indicadores-pendientes-jefe',
@@ -21,7 +23,7 @@ export class IndicadoresPendientesJefeComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'fecha_asignacion', 'acciones'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'fecha_asignacion'];
   groupedColumns: string[] = ['grouped'];
 
   constructor(
@@ -55,20 +57,52 @@ export class IndicadoresPendientesJefeComponent implements OnInit {
     this._snackbar.success("La lista se encuentra actualizada");
   }
 
-  verDetalleIndicadorYEvidencias(element) {
-    const dialogRef: MatDialogRef<ModalTareaComponent> = this._matDialog.open(ModalTareaComponent, {
+  registrarSustento(element) {
+    const dialogRef: MatDialogRef<RegistrarSustentoComponent> = this._matDialog.open(RegistrarSustentoComponent, {
       disableClose: false,
-      width: '60%',
+      width: '500px',
       //height: '780px',
       autoFocus: true,
       data: {
-        model: element,
-        // auto: true,
+        // idIndicador: this.data.model.idIndicador,
+        model: element
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadTablePendiente();
+    });
+  }
+
+  verImagenEvidencia(element) {
+    const dialogRef: MatDialogRef<VerImagenSustentoComponent> = this._matDialog.open(VerImagenSustentoComponent, {
+      disableClose: false,
+      width: '50%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTablePendiente();
+    });
+  }
+
+  verEvidenciaPdf(element) {
+    const dialogRef: MatDialogRef<VerPdfSustentoComponent> = this._matDialog.open(VerPdfSustentoComponent, {
+      disableClose: false,
+      width: '70%',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.loadTablePendiente();
     });
   }
 

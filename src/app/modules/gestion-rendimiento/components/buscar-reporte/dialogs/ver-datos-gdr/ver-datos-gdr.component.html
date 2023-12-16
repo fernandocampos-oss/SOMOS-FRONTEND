@@ -2,7 +2,6 @@
     <p class="color-mensaje">Sin registros por mostrar</p>
 </div>
 <div *ngIf="listIndicadoresAdmin.length !== 0">
-    <br>
     <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef>N°</th>
@@ -13,7 +12,7 @@
                 orgánica</th>
             <td mat-cell *matCellDef="let element">{{element.prioridadNombre ? element.prioridadNombre :'-'}}
                 <button mat-icon-button class="add-prioridad" matTooltip="Añadir nuevo Indicador/Producto"
-                    (click)="agregarIndicador(element, null, i)">
+                    (click)="agregarIndicador(element, null, null)">
                     <mat-icon>add_circle</mat-icon>
                 </button>
                 <button mat-icon-button color="primary" matTooltip="Editar Prioridad"

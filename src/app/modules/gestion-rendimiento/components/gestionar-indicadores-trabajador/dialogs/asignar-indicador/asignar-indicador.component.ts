@@ -59,6 +59,7 @@ export class AsignarIndicadorComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarTipoValorMeta();
+    console.log(this.data)
     this.porcentajeGrabado = this.data.trabajador.pesoTotal;
   }
 

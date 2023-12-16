@@ -127,9 +127,9 @@ th {
 
 .mat-list-base .mat-list-item,
 .mat-list-base .mat-list-option {
-    height: 200px;
+    height: 250px;
     // background-color: #e6effa;
-    border: 1px solid #bfd7f5;
+    border: 1px solid #cad2dc;
     font-size: none;
 
 }
@@ -145,4 +145,12 @@ th {
 
 .has-success {
     color: green;
+}
+
+.mat-header-row {
+    background-color: #e6effa;
+}
+
+.mat-table {
+    border: 1px solid #cad2dc;
 }

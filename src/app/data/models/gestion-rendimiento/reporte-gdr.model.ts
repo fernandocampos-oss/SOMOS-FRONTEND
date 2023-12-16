@@ -1,11 +1,6 @@
 export class SeguimientoRequestDto {
     anio?: number;
-    codRed?: string;
+    listCodRed?: string[];
     codUnidad?: string;
-}
-
-export class MatrizRequestDto {
-    anio?: number;
-    codRed?: string;
-    codUnidad?: string;
+    allRed?: boolean;
 }

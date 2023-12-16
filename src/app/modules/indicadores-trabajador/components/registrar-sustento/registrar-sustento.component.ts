@@ -1,16 +1,16 @@
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 
 @Component({
-  selector: 'app-registrar-evidencia-trabajador',
-  templateUrl: './registrar-evidencia-trabajador.component.html',
-  styleUrls: ['./registrar-evidencia-trabajador.component.scss']
+  selector: 'app-registrar-sustento',
+  templateUrl: './registrar-sustento.component.html',
+  styleUrls: ['./registrar-sustento.component.scss']
 })
-export class RegistrarEvidenciaTrabajadorComponent implements OnInit {
+export class RegistrarSustentoComponent implements OnInit {
   form: FormGroup;
   width: number;
   height: number;
@@ -164,6 +164,5 @@ export class RegistrarEvidenciaTrabajadorComponent implements OnInit {
       fileBase64: this.globalBase64
     };
   }
- 
 
 }

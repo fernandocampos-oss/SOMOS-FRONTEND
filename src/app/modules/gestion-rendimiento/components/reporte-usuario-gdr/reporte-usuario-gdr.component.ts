@@ -8,7 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol-sectorizacion.service';
 import { Observable } from 'rxjs';
-import { MatrizRequestDto, SeguimientoRequestDto } from '@data/models/gestion-rendimiento/reporte-gdr.model';
+import { SeguimientoRequestDto } from '@data/models/gestion-rendimiento/reporte-gdr.model';
 import { ReporteAdministradorService } from '@data/services/gestion-rendimiento/reporte-administrador.service';
 
 interface Año {
@@ -97,7 +97,6 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   }
 
   onSelectionChangeTipoReporte(event: any) {
-    console.log("tipo", event.value);
     this.onChangeValueTipoReporte = event.value;
   }
 
@@ -110,7 +109,6 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   }
   onSelectionChangeUnidad(event: any) {
     this.unidadSeleccionadoTmp = event.option.value;
-    console.log("unidad ", this.unidadSeleccionadoTmp);
   }
 
   async getListRedesAsignadas() {
@@ -130,52 +128,60 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   }
 
   async generarReporte() {
-    if (this.onChangeValueTipoReporte === '01') {
-      console.log(this.anioElegido.anio);
-      // console.log(this.redItemSeleccionado[0]);
-      console.log(this.redItemSeleccionado);
-      console.log(this.unidadSeleccionadoTmp.codUnidad);
-
-      let dto = new SeguimientoRequestDto();
-      dto.anio = this.anioElegido.anio;
-      // dto.codRed = this.redItemSeleccionado[0];
-      dto.codRed = this.redItemSeleccionado;
-      dto.codUnidad = this.unidadSeleccionadoTmp.codUnidad;
-
-      let listRed = await this._grService.reporteGdrSeguimiento(dto).then((data) => {
-        if (data.length > 0) {
-          this.listReporteSeguimiento = data;
-          this.dataSource_seguimiento = new MatTableDataSource(this.listReporteSeguimiento);
-          // this.dataSource.paginator = this.paginator;
-          // this.dataSource.sort = this.sort;
+    if (this.anioElegido !== undefined && this.onChangeValueTipoReporte !== '' && this.redItemSeleccionado !== undefined && this.unidadSeleccionadoTmp !== undefined) {
+      if (this.onChangeValueTipoReporte === '01') {
+        let dto = new SeguimientoRequestDto();
+        dto.anio = this.anioElegido.anio;
+        dto.codUnidad = this.unidadSeleccionadoTmp.codUnidad;
+        if (this.redItemSeleccionado === true) {
+          dto.allRed = true;
+          dto.listCodRed = [];
         } else {
-          this._notification.warning("No se encontró registros");
+          let redes: string[] = [];
+          redes.push(this.redItemSeleccionado);
+          dto.listCodRed = redes;
+          dto.allRed = false;
         }
-      });
-    } else if (this.onChangeValueTipoReporte === '03') {
-      console.log(this.anioElegido.anio);
-      // console.log(this.redItemSeleccionado[0]);
-      console.log(this.redItemSeleccionado);
-      console.log(this.unidadSeleccionadoTmp.codUnidad);
 
-      let dto = new MatrizRequestDto();
-      dto.anio = this.anioElegido.anio;
-      // dto.codRed = this.redItemSeleccionado[0];
-      dto.codRed = this.redItemSeleccionado;
-      dto.codUnidad = this.unidadSeleccionadoTmp.codUnidad;
-
-      let listRed = await this._grService.reporteGdrMatriz(dto).then((data) => {
-        if (data.length > 0) {
-          this.listReporteMatriz = data;
-          this.dataSource_matriz = new MatTableDataSource(this.listReporteMatriz);
-          // this.dataSource.paginator = this.paginator;
-          // this.dataSource.sort = this.sort;
+        let listRed = await this._grService.reporteGdrSeguimiento(dto).then((data) => {
+          if (data.length > 0) {
+            this.listReporteSeguimiento = data;
+            this.dataSource_seguimiento = new MatTableDataSource(this.listReporteSeguimiento);
+            // this.dataSource.paginator = this.paginator;
+            // this.dataSource.sort = this.sort;
+          } else {
+            this._notification.warning("No se encontró registros");
+          }
+        });
+      } else if (this.onChangeValueTipoReporte === '03') {
+        let dto = new SeguimientoRequestDto();
+        dto.anio = this.anioElegido.anio;
+        dto.codUnidad = this.unidadSeleccionadoTmp.codUnidad;
+        if (this.redItemSeleccionado === true) {
+          dto.allRed = true;
+          dto.listCodRed = [];
         } else {
-          this._notification.warning("No se encontró registros");
+          let redes: string[] = [];
+          redes.push(this.redItemSeleccionado);
+          dto.listCodRed = redes;
+          dto.allRed = false;
         }
-      });
+
+        let listRed = await this._grService.reporteGdrMatriz(dto).then((data) => {
+          if (data.length > 0) {
+            this.listReporteMatriz = data;
+            console.log(data);
+            this.dataSource_matriz = new MatTableDataSource(this.listReporteMatriz);
+            // this.dataSource.paginator = this.paginator;
+            // this.dataSource.sort = this.sort;
+          } else {
+            this._notification.warning("No se encontró registros");
+          }
+        });
+      }
+    } else {
+      this._notification.warning("Ingrese todos los campos para continuar");
     }
-
   }
 
   async generarReporteSeguimientoAdmin() {
@@ -206,7 +212,6 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   }
 
   async generarReporteMatrizAdmin() {
-    console.log("excel matr", this.listReporteMatriz);
     let titulo = "MATRIZ ÚNICA DE LA GESTIÓN DEL RENDIMIENTO - CICLO " + this.today.getFullYear();
     let columnas = [
       'Nº documento',
