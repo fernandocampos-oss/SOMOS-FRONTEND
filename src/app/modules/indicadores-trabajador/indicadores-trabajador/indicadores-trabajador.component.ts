@@ -23,8 +23,8 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta', 'fecha_asignacion'];
-  groupedColumns: string[] = ['grouped'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'logro_final', 'puntuacion_meta'];
+  // groupedColumns: string[] = ['grouped'];
 
   constructor(
     private _router: Router,
@@ -44,7 +44,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     let listPendiente = await this._grService.listarIndicadorPendiente().then((data) => {
       if (data.length > 0) {
         this.listIndicadoresPendientes = data;
-        console.log("ss", this.listIndicadoresPendientes)
         this.dataSource = new MatTableDataSource(this.listIndicadoresPendientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -57,23 +56,6 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     let pendientes = await this.loadTablePendiente();
     this._snackbar.success("La lista se encuentra actualizada.");
   }
-
-  // verDetalleIndicadorYEvidencias(element) {
-  //   const dialogRef: MatDialogRef<ModalTareaComponent> = this._matDialog.open(ModalTareaComponent, {
-  //     disableClose: false,
-  //     width: '60%',
-  //     //height: '780px',
-  //     autoFocus: true,
-  //     data: {
-  //       model: element,
-  //       // auto: true,
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.loadTablePendiente();
-  //   });
-  // }
 
   registrarSustento(element) {
     const dialogRef: MatDialogRef<RegistrarSustentoComponent> = this._matDialog.open(RegistrarSustentoComponent, {

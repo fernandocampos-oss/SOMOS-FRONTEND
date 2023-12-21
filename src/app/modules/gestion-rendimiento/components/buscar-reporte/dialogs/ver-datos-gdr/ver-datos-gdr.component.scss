@@ -129,9 +129,8 @@ th {
 .mat-list-base .mat-list-option {
     height: 250px;
     // background-color: #e6effa;
-    border: 1px solid #cad2dc;
+    // border: 1px solid #cad2dc;
     font-size: none;
-
 }
 
 ::ng-deep .mat-list .mat-list-item .mat-line {
@@ -153,4 +152,10 @@ th {
 
 .mat-table {
     border: 1px solid #cad2dc;
+}
+
+th.mat-header-cell, td.mat-cell {
+    text-align: center;
+    border: 1px solid #CCC;
+    padding: 0 !important;
 }

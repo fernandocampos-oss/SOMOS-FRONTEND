@@ -14,7 +14,7 @@
         <mat-form-field appearance="outline">
             <mat-label>Fecha de asignación</mat-label>
             <input matInput [min]="minFechaEvidencia" formControlName="fechaAsignacion"
-                [matDatepicker]="fechaPrioridadPicker" (focus)="fechaPrioridadPicker.open()"/>
+                [matDatepicker]="fechaPrioridadPicker" (focus)="fechaPrioridadPicker.open()" />
             <mat-datepicker-toggle matSuffix [for]="fechaPrioridadPicker"></mat-datepicker-toggle>
             <mat-datepicker #fechaPrioridadPicker></mat-datepicker>
         </mat-form-field>
@@ -64,7 +64,8 @@
             </mat-form-field>
         </div>
 
-        <mat-form-field appearance="outline">
+        <!-- validacion peso -->
+        <!-- <mat-form-field appearance="outline">
             <mat-label>Peso Indicador/Producto</mat-label>
             <input matInput formControlName="peso" class="example-right-align" type="number" minlength="1" maxlength="3"
                 (focus)="showHelpPeso = true" (focusout)="showHelpPeso = false" />
@@ -79,13 +80,21 @@
                     <p>Ya tiene grabado {{this.data.pesoTotal}}% en los Indicadores/Productos</p>
                 </div>
             </div>
+        </mat-form-field> -->
+
+        <mat-form-field appearance="outline">
+            <mat-label>Peso Indicador/Producto</mat-label>
+            <input matInput formControlName="peso" class="example-right-align" type="number" minlength="1"
+                maxlength="3" />
+            <span matSuffix class="percent-align">%</span>
         </mat-form-field>
 
         <mat-divider></mat-divider>
         <mat-dialog-actions align="end">
             <button mat-button mat-dialog-close>Cancelar</button>
             <button mat-raised-button color="primary" type="submit"
-                [disabled]="(formIndicador.value.peso + this.data.pesoTotal)>100 || formIndicador.invalid || formIndicador.value.peso==0">
+                [disabled]="formIndicador.invalid || formIndicador.value.peso==0">
+                <!-- [disabled]="(formIndicador.value.peso + this.data.pesoTotal)>100 || formIndicador.invalid || formIndicador.value.peso==0" -->
                 <mat-icon>done</mat-icon>&nbsp;
                 <span>Actualizar</span>
             </button>

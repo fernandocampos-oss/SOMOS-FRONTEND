@@ -20,8 +20,9 @@ import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/compone
 })
 export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'plazo', 'tipo_formula', 'comentario', 'logro_final', 'puntuacion_meta'];
-  groupedColumns: string[] = ['grouped'];
+  // groupedColumns: string[] = ['grouped'];
   // menuToggle = new EventEmitter<void>();
+
   listDataTable: any[] = [];
   condicion_1: any;
   condicion_2: any;

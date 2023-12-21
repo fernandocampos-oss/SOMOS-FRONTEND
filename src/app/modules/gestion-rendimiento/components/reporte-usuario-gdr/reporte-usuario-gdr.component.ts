@@ -170,7 +170,6 @@ export class ReporteUsuarioGdrComponent implements OnInit {
         let listRed = await this._grService.reporteGdrMatriz(dto).then((data) => {
           if (data.length > 0) {
             this.listReporteMatriz = data;
-            console.log(data);
             this.dataSource_matriz = new MatTableDataSource(this.listReporteMatriz);
             // this.dataSource.paginator = this.paginator;
             // this.dataSource.sort = this.sort;

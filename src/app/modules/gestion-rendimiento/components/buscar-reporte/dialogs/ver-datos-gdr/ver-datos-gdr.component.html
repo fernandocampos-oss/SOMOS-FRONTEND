@@ -5,7 +5,7 @@
     <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef>N°</th>
-            <td mat-cell *matCellDef="let element, index as i">{{i+1}}.</td>
+            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
         </ng-container>
         <ng-container matColumnDef="prioridad">
             <th mat-header-cell *matHeaderCellDef>Prioridades anuales de gestión del órgano o unidad
@@ -36,6 +36,7 @@
                             (click)="editarIndicador(x, 2)">
                             <mat-icon>edit</mat-icon>
                         </button>
+                        <mat-divider></mat-divider>
                     </mat-list-item>
                 </mat-list>
             </td>
@@ -87,6 +88,7 @@
                                 <mat-icon>picture_as_pdf</mat-icon>
                             </button> -->
                         </p>
+                        <mat-divider></mat-divider>
                     </mat-list-item>
                 </mat-list>
             </td>
@@ -100,12 +102,17 @@
                             <!-- <span class="demo-2">{{t.plazo | date: 'MMMM y' | titlecase}}</span> -->
                             <span class="demo-2">{{t.plazo | date: 'dd-MM-yyyy'}}</span>
                         </p>
+                        <mat-divider></mat-divider>
                     </mat-list-item>
                 </mat-list>
             </td>
         </ng-container>
         <ng-container matColumnDef="tipo_formula">
             <th mat-header-cell *matHeaderCellDef>Tipo fórmula</th>
+            <td mat-cell *matCellDef="let element"></td>
+        </ng-container>
+        <ng-container matColumnDef="comentario">
+            <th mat-header-cell *matHeaderCellDef>Comentarios</th>
             <td mat-cell *matCellDef="let element"></td>
         </ng-container>
         <ng-container matColumnDef="logro_final">
@@ -123,12 +130,30 @@
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="grouped">
-            <th mat-header-cell *matHeaderCellDef colspan="8" class="centered">ETAPA DE
-                PLANIFICACIÓN
+        <!-- Header row first group -->
+        <ng-container matColumnDef="header-row-first-group">
+            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="8">
+                ETAPA DE PLANIFICACIÓN
             </th>
         </ng-container>
-        <tr mat-header-row *matHeaderRowDef="groupedColumns; sticky: false"></tr>
+
+        <!-- Header row second group -->
+        <ng-container matColumnDef="header-row-second-group">
+            <th mat-header-cell *matHeaderCellDef [attr.colspan]="1">ETAPA DE SEGUIMIENTO</th>
+        </ng-container>
+
+        <!-- Header row third group -->
+        <ng-container matColumnDef="header-row-third-group">
+            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2">ETAPA DE EVALUACIÓN</th>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['header-row-first-group', 'header-row-second-group', 'header-row-third-group']"></tr>
+
+        <!-- <ng-container matColumnDef="grouped">
+            <th mat-header-cell *matHeaderCellDef colspan="11" class="centered">ETAPA DE PLANIFICACIÓN
+            </th>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="groupedColumns; sticky: false"></tr> -->
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -172,6 +172,8 @@ export class ReporteAdministradorService {
             maxLength = worksheet.getRow(j + 6).getCell(i + 1).value.toString().length;
         }
       }
+      // worksheet.getColumn(i + 1).width = 25;
+      // worksheet.getColumn(i + 1).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
       worksheet.getColumn(i + 1).width = maxLength + maxLength * 0.6;
     }
 

@@ -55,8 +55,8 @@ export class BuscarReporteComponent implements OnInit {
   async verDatosGDR(element: any) {
     const dialogRef: MatDialogRef<VerDatosGdrComponent> = this._dialog.open(VerDatosGdrComponent, {
       disableClose: false,
-      width: '80%',
-      maxHeight: '80vh',
+      width: '100%',
+      maxHeight: '100vh',
       autoFocus: false,
       data: {
         modal: element
