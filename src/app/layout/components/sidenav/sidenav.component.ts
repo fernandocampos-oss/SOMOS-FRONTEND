@@ -66,9 +66,9 @@ export class SidenavComponent implements OnInit {
   ngOnInit(): void {
     this._initialize();
     this.user = this._authService.getUserSession();
-    console.log(JSON.parse(localStorage.getItem('RDTHRHRYHNYTN')!))
+    // console.log(JSON.parse(localStorage.getItem('RDTHRHRYHNYTN')!))
     this._userService.get(this.user.id).subscribe( data =>{
-      console.log(data)
+      // console.log(data)
       this.dataPersona = data;
       // this.email = data.correo;
       // this._zonaService.get(data.idZonaControl).subscribe(info=>{
@@ -149,7 +149,8 @@ export class SidenavComponent implements OnInit {
         });
         break;
       case 'Mis boletas de pago':
-          if (this._boletaService.getIfInscritosBoleta(this.dataPersona.numeroDocumento)) {
+        this._boletaService.getIfInscritosBoleta().subscribe((data)=>{
+          if(data){
             this.router.navigate([AppRoute.MIS_BOLETAS]);
           }
           else{
@@ -160,7 +161,8 @@ export class SidenavComponent implements OnInit {
               autoFocus: false,
             });
           }
-          break;
+        })
+        break;
     }
   }
 

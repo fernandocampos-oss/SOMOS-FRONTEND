@@ -1,5 +1,5 @@
 <div class="contenedor">
-   <div class="header"><b>Cronograma de Pagos - 2023</b></div>
+   <div class="header"><b>Cronograma de Pagos - 2024</b></div>
    <button mat-icon-button mat-dialog-close color="warn" class="closeButton" aria-label="Example icon button with a heart icon">
      X
    </button>
@@ -16,7 +16,6 @@
        </mat-button-toggle>
    </mat-button-toggle-group>
    
-   
    <mat-grid-list cols="6" rowHeight="35px" gutterSize="0px" class="tablaContenidos">
        <div *ngFor="let items of data, index as i">
            <mat-grid-tile [colspan]="2" class="periodosPago txtCenter">
@@ -29,7 +28,7 @@
                <span>{{items.fecRec}}</span>
            </mat-grid-tile> -->
            <mat-grid-tile [colspan]="4" class="dataPago">
-               <span>{{items.diaPago}} - {{items.fecPago.split('/')[0]}}</span>
+               <span>{{items.fecPago == '-' ? '-' : (items.fecPago | date:'EEEE') | titlecase}} - {{items.fecPago == '-' ? '-' : (items.fecPago | date:'dd') | titlecase}}</span>
            </mat-grid-tile>
            <!-- <mat-grid-tile [colspan]="2" class="dataPago">
                <span>{{items.fecPago}}</span>

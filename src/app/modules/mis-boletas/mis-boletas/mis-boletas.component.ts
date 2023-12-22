@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@data/services';
+import { AuthService, UsuarioService } from '@data/services';
 import { BoletaService } from '@data/services/boleta.service';
 
 interface Mes{
@@ -62,10 +62,16 @@ export class MisBoletasComponent implements OnInit {
   constructor(private _router       : Router,
               private _fb           : FormBuilder,
               private authService   : AuthService,
+              private userService   : UsuarioService,
               private boletaService : BoletaService,
               private route         : ActivatedRoute,) { }
 
   ngOnInit(): void {
+    this.userService.get(this.authService.getUserSession().id).subscribe((data)=>{
+      this.boletaService.getBoletas(data.codigoPlanilla).subscribe((data)=>{
+        console.log(data);
+      })
+    })
     this.form.controls.frmMesElegido.setValue(this.today.getMonth()+1);
     this.form.controls.frmAnioElegido.setValue(this.today.getFullYear());
   }

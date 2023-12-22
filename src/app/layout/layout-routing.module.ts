@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { AppRoute } from '../data/constants/app-route.constant';
 import { MenuPrincipalAdminComponent } from '@modules/menu-principal-admin/menu-principal-admin/menu-principal-admin.component';
+import { BoletasAuthGuard } from '@core/guards/boletas-auth.guard';
 
 export const ROUTES: Routes = [
   {
@@ -82,6 +83,7 @@ export const ROUTES: Routes = [
       },
       {
         path: AppRoute.MIS_BOLETAS,
+        canActivate:[BoletasAuthGuard],
         loadChildren: () =>
           import('../modules/mis-boletas/mis-boletas.module').then(
             (m) => m.MisBoletasModule

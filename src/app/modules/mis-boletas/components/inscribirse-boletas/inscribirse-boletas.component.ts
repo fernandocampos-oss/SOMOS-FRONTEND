@@ -28,8 +28,9 @@ export class InscribirseBoletasComponent implements OnInit {
     })
   }
   inscribirseBoletas(){
-    this._boletaService.addInscritosBoleta(this.numDoc);
-    this.dialogRef.close();
-    this.router.navigate([AppRoute.MIS_BOLETAS]);
+    this._boletaService.acceptTerminos().subscribe((data)=>{
+      this.dialogRef.close();
+      this.router.navigate([AppRoute.MIS_BOLETAS]);
+    })
   }
 }
