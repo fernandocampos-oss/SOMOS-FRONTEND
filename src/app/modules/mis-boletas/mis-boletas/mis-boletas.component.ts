@@ -8,6 +8,9 @@ import { BoletaPago } from '@data/models/boleta/boleta-pago.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { VerBoletaComponent } from '@modules/mis-boletas/components/ver-boleta/ver-boleta.component';
 import { BoletaHistorial } from '@data/models/boleta/boleta-historial.model';
+import {
+  InscribirseBoletasComponent
+} from '@modules/mis-boletas/components/inscribirse-boletas/inscribirse-boletas.component';
 
 interface Mes{
   num: string;
@@ -65,6 +68,8 @@ export class MisBoletasComponent implements OnInit {
 
   pdfSrc: string;
 
+  inscrito: boolean;
+
   constructor(private _router       : Router,
               private _fb           : FormBuilder,
               private _matDialog     : MatDialog,
@@ -74,6 +79,17 @@ export class MisBoletasComponent implements OnInit {
               private route         : ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.boletaService.getIfInscritosBoleta().subscribe(inscrito => {
+      this.inscrito = inscrito;
+      if (inscrito) {
+        this.cargar();
+      } else {
+        this.aceptarTerminos();
+      }
+    });
+  }
+
+  cargar() {
     const numMes = this.today.getMonth() + 1 + '';
     this.mesElegido = numMes.padStart(2, '0');
     this.anioElegido = this.today.getFullYear() + '';
@@ -90,6 +106,7 @@ export class MisBoletasComponent implements OnInit {
   listar() {
     this.boletaService.listarHistorial().subscribe(data => {
       this.listAcciones = data;
+      this.tablaAcciones.renderRows();
     });
   }
 
@@ -128,33 +145,35 @@ export class MisBoletasComponent implements OnInit {
     return descripcion;
   }
 
-  desafiliar(){
-    // this.boletaService.deleteInscritosBoleta(localStorage.getItem('DTGRGHRTHRTERH').split('"')[1])
-    // this._router.navigate([''], { relativeTo: this.route });
+  aceptarTerminos() {
+    const dialogRef: MatDialogRef<InscribirseBoletasComponent> = this._matDialog.open(InscribirseBoletasComponent, {
+      disableClose: true,
+      minWidth: '350px',
+      maxWidth: '30%',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.cargar();
+      }
+    });
   }
   
   showBoleta(element: BoletaPago){
-    this.showPdf(element.pdfBase64, element.descripcion + ' ' + element.anio);
-    // this.listAcciones.push({
-    //   periodo: element.periodo,
-    //   descripcion: element.descripcion,
-    //   fecha: new Date(),
-    //   tipo: element.tipoBoleta,
-    //   accion: "Visualización"
-    // })
-    // this.tablaAcciones.renderRows();
+    const descripcion = element.descripcion + ' ' + element.anio;
+    this.showPdf(element.pdfBase64, descripcion);
+    this.boletaService.registrarAccion(2, descripcion, element.tipoBoleta).subscribe(() => {
+      this.listar();
+    });
   }
 
   downloadBoleta(element: BoletaPago){
+    const descripcion = element.descripcion + ' ' + element.anio;
     this.downloadPdf(element.pdfBase64, element.periodo);
-    // this.listAcciones.push({
-    //   periodo: element.periodo,
-    //   descripcion: element.descripcion,
-    //   fecha: new Date(),
-    //   tipo: element.tipoBoleta,
-    //   accion: "Descarga"
-    // })
-    // this.tablaAcciones.renderRows();
+    this.boletaService.registrarAccion(3, descripcion, element.tipoBoleta).subscribe(() => {
+      this.listar();
+    });
   }
 
   downloadPdf(pdfBase64: string, periodo: string) {

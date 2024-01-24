@@ -20,6 +20,9 @@
         <mat-checkbox (change)="habilitado = !habilitado" color="primary" [checked]="habilitado">
         Acepto los términos y condiciones de uso
         </mat-checkbox>
-        <button mat-raised-button color="primary" [disabled]="!habilitado" (click)="inscribirseBoletas()">Aceptar</button>
+        <div>
+            <button mat-raised-button color="primary" [disabled]="!habilitado" (click)="inscribirseBoletas()" style='margin-right: 1rem'>Aceptar</button>
+            <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+        </div>
     </div>
 </div>

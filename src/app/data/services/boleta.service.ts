@@ -33,4 +33,13 @@ export class BoletaService {
     return this._httpClient.get<BoletaHistorial[]>(url);
   }
 
+  registrarAccion(tipoAccion: number, detalle: string, tipoBoleta: string) {
+    const body = {
+      detalle,
+      tipoBoleta,
+    };
+    const url = `${URL_BASE}/accion/${tipoAccion}`;
+    return this._httpClient.post(url, body);
+  }
+
 }
