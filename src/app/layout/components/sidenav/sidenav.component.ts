@@ -148,7 +148,7 @@ export class SidenavComponent implements OnInit {
           autoFocus: false,
         });
         break;
-      case 'Mis boletas de pago':
+      case 'Mis Boletas de Pago':
         this._boletaService.getIfInscritosBoleta().subscribe((data)=>{
           if(data){
             this.router.navigate([AppRoute.MIS_BOLETAS]);

@@ -4,14 +4,17 @@ import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, UsuarioService } from '@data/services';
 import { BoletaService } from '@data/services/boleta.service';
+import { BoletaPago } from '@data/models/boleta/boleta-pago.model';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { VerBoletaComponent } from '@modules/mis-boletas/components/ver-boleta/ver-boleta.component';
 
 interface Mes{
-  num: number;
+  num: string;
   descripcion: string;
 }
 
 interface Año{
-  anio: number;
+  anio: string;
 }
 
 @Component({
@@ -26,8 +29,9 @@ export class MisBoletasComponent implements OnInit {
   today = new Date();
 
   displayedColumnsBoletas: string[] = ['anio', 'mes', 'regimen', 'tipoBoleta', 'periodo', 'descripcion', 'accion'];
-  listBoletas = [{anio: '2023', mes: 'Julio', regimen:'R.L.728 Administrati', tipo:'Mensual', periodo: '2023-07', descripcion:'Boleta Mes de Julio'},
-  {anio: '2023', mes: 'Julio', regimen:'R.L.728 Administrati', tipo:'Gratificación', periodo: '2023-07', descripcion:'Boleta Mes de Julio'},];
+  // listBoletas = [{anio: '2023', mes: 'Julio', regimen:'R.L.728 Administrati', tipo:'Mensual', periodo: '2023-07', descripcion:'Boleta Mes de Julio'},
+  // {anio: '2023', mes: 'Julio', regimen:'R.L.728 Administrati', tipo:'Gratificación', periodo: '2023-07', descripcion:'Boleta Mes de Julio'},];
+  listBoletas: BoletaPago[] = [];
 
   displayedColumnsAcciones: string[] = ['periodo', 'descripcion', 'fecha', 'accion'];
   listAcciones = [{periodo: '2023-07', descripcion:'Boleta Mes de Julio', tipo: 'Mensual', fecha:new Date('9/28/2023, 11:00:00'), accion:'Descarga'}];
@@ -38,50 +42,84 @@ export class MisBoletasComponent implements OnInit {
   });
 
   meses: Mes[] = [
-    {num: 1,descripcion: 'Enero'},
-    {num: 2,descripcion: 'Febrero'},
-    {num: 3,descripcion: 'Marzo'},
-    {num: 4,descripcion: 'Abril'},
-    {num: 5,descripcion: 'Mayo'},
-    {num: 6,descripcion: 'Junio'},
-    {num: 7,descripcion: 'Julio'},
-    {num: 8,descripcion: 'Agosto'},
-    {num: 9,descripcion: 'Setiembre'},
-    {num: 10,descripcion: 'Octubre'},
-    {num: 11,descripcion: 'Noviembre'},
-    {num: 12,descripcion: 'Diciembre'},
+    {num: '01', descripcion: 'Enero'},
+    {num: '02', descripcion: 'Febrero'},
+    {num: '03', descripcion: 'Marzo'},
+    {num: '04', descripcion: 'Abril'},
+    {num: '05', descripcion: 'Mayo'},
+    {num: '06', descripcion: 'Junio'},
+    {num: '07', descripcion: 'Julio'},
+    {num: '08', descripcion: 'Agosto'},
+    {num: '09', descripcion: 'Setiembre'},
+    {num: '10', descripcion: 'Octubre'},
+    {num: '11', descripcion: 'Noviembre'},
+    {num: '12', descripcion: 'Diciembre'},
   ];
   anios: Año[] = [
-    // {anio: 2021},
-    // {anio: 2022},
-    {anio: 2023},
+    {anio: '2021'},
+    {anio: '2022'},
+    {anio: '2023'},
+    {anio: '2024'}
   ];
-  mesElegido: number;
-  anioElegido: number;
+  mesElegido: string;
+  anioElegido: string;
+
+  pdfSrc: string;
 
   constructor(private _router       : Router,
               private _fb           : FormBuilder,
+              private _matDialog     : MatDialog,
               private authService   : AuthService,
               private userService   : UsuarioService,
               private boletaService : BoletaService,
-              private route         : ActivatedRoute,) { }
+              private route         : ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.userService.get(this.authService.getUserSession().id).subscribe((data)=>{
-      this.boletaService.getBoletas(data.codigoPlanilla).subscribe((data)=>{
-        console.log(data);
-      })
-    })
-    this.form.controls.frmMesElegido.setValue(this.today.getMonth()+1);
-    this.form.controls.frmAnioElegido.setValue(this.today.getFullYear());
+    const numMes = this.today.getMonth() + 1 + '';
+    this.mesElegido = numMes.padStart(2, '0');
+    this.anioElegido = this.today.getFullYear() + '';
+    this.form.controls.frmMesElegido.setValue(this.mesElegido);
+    this.form.controls.frmAnioElegido.setValue(this.anioElegido);
+    this.buscar();
   }
 
   back(){
     this._router.navigate([''], { relativeTo: this.route });
   }
 
-  Actualizar(){
+  buscar(){
+    this.listBoletas = [];
+    this.anioElegido = this.form.get('frmAnioElegido').value;
+    this.boletaService.buscarBoletaPago(this.anioElegido, this.mesElegido).subscribe(boleta => {
+      if (boleta.pdfBase64) {
+        boleta.anio = this.anioElegido;
+        boleta.mes = this.mesElegido;
+        boleta.periodo = this.anioElegido + '-' + this.mesElegido;
+        boleta.descripcion = this.obtenerDescripcion(this.mesElegido);
+        this.listBoletas.push(boleta);
+        this.pdfSrc = boleta.pdfBase64;
+      }
+      this.tablaBoletas.renderRows();
+    });
+  }
 
+  obtenerDescripcion(mes: string): string {
+    let descripcion = '';
+    switch (mes) {
+      case '01': descripcion = 'Boleta Mes de Enero'; break;
+      case '02': descripcion = 'Boleta Mes de Febrero'; break;
+      case '03': descripcion = 'Boleta Mes de Marzo'; break;
+      case '04': descripcion = 'Boleta Mes de Abril'; break;
+      case '05': descripcion = 'Boleta Mes de Mayo'; break;
+      case '06': descripcion = 'Boleta Mes de Junio'; break;
+      case '07': descripcion = 'Boleta Mes de Julio'; break;
+      case '08': descripcion = 'Boleta Mes de Agosto'; break;
+      case '09': descripcion = 'Boleta Mes de Setiembre'; break;
+      case '10': descripcion = 'Boleta Mes de Octubre'; break;
+      case '11': descripcion = 'Boleta Mes de Noviembre'; break;
+      case '12': descripcion = 'Boleta Mes de Diciembre'; break;
+    }
+    return descripcion;
   }
 
   desafiliar(){
@@ -89,25 +127,75 @@ export class MisBoletasComponent implements OnInit {
     this._router.navigate([''], { relativeTo: this.route });
   }
   
-  showBoleta(element){
+  showBoleta(element: BoletaPago){
+    this.showPdf(element.pdfBase64, element.descripcion + ' ' + element.anio);
     this.listAcciones.push({
       periodo: element.periodo,
       descripcion: element.descripcion,
       fecha: new Date(),
-      tipo: element.tipo,
+      tipo: element.tipoBoleta,
       accion: "Visualización"
     })
     this.tablaAcciones.renderRows();
   }
 
-  downloadBoleta(element){
+  downloadBoleta(element: BoletaPago){
+    this.downloadPdf(element.pdfBase64, element.periodo);
     this.listAcciones.push({
       periodo: element.periodo,
       descripcion: element.descripcion,
       fecha: new Date(),
-      tipo: element.tipo,
+      tipo: element.tipoBoleta,
       accion: "Descarga"
     })
     this.tablaAcciones.renderRows();
   }
+
+  downloadPdf(pdfBase64: string, periodo: string) {
+    const blob = this.base64ToBlob(pdfBase64, 'application/pdf');
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'boleta-pago-' + periodo + '.pdf';
+    link.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  base64ToBlob(base64: string, mimeType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: mimeType });
+  }
+
+  showPdf(pdfBase64: string, descripcion: string) {
+    const dialogRef: MatDialogRef<VerBoletaComponent> = this._matDialog.open(VerBoletaComponent, {
+      disableClose: false,
+      width: '70%',
+      // height: '780px',
+      autoFocus: true,
+      data: {
+        pdfBase64,
+        descripcion,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
 }

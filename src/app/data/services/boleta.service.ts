@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
+import { BoletaPago } from '@data/models/boleta/boleta-pago.model';
 
 const URL_BASE = `${environment.apiUrl}/pagos`;
-// const URL_BASE = `http://localhost/api/pagos`;
-
 
 @Injectable({
   providedIn: 'root'
@@ -37,4 +36,10 @@ export class BoletaService {
   deleteInscritosBoleta(numDocumento: string){
     this.inscritosTemp.splice(this.inscritosTemp.findIndex(x => x.numDoc === numDocumento),1);
   }
+
+  buscarBoletaPago(anio: string, mes: string) {
+    const url = `${URL_BASE}/busqueda/anio/${anio}/mes/${mes}`;
+    return this._httpClient.get<BoletaPago>(url);
+  }
+
 }

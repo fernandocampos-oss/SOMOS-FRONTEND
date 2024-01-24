@@ -2,31 +2,34 @@
     <div class="matero-page-header" style="display: flex;">
         <h1 class="matero-page-title">
             <div>
-                <mat-icon>payment</mat-icon> Mis Boletas de pago<br>
-                <small class="mr-2">Visualiza los usuarios en tus redes asignadas y obtén reportes.</small><br>
+                <mat-icon>payment</mat-icon> Mis Boletas de Pago<br>
+<!--                <small class="mr-2">Visualiza los usuarios en tus redes asignadas y obtén reportes.</small><br>-->
                 <div class="optionsBar">
                   <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
                   <button mat-raised-button color="warn" (click)="desafiliar()"><mat-icon>clear</mat-icon> Desafiliarme de ver mis boletas</button>
                 </div>
             </div>
         </h1>
-        <div class="optSearchBoleta" [formGroup]="form" (ngSubmit)="Actualizar()">
+        <form [formGroup]="form" (ngSubmit)="buscar()">
+          <div class="optSearchBoleta">
             <mat-form-field appearance="outline">
               <mat-label>Mes</mat-label>
               <mat-select [(value)]="mesElegido" formControlName="frmMesElegido">
-                  <mat-option *ngFor="let mes of meses" [value]="mes.num">{{mes.descripcion}}</mat-option>
+                <mat-option *ngFor="let mes of meses" [value]="mes.num">{{mes.descripcion}}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Año</mat-label>
-              <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
-                  <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
-              </mat-select>
+<!--              <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">-->
+<!--                <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>-->
+<!--              </mat-select>-->
+              <input matInput type='number' formControlName="frmAnioElegido">
             </mat-form-field>
             <div class="containerSearch">
               <button mat-raised-button color="primary" class="searchBoleta" type="submit">Buscar</button>
             </div>
-        </div>
+          </div>
+        </form>
     </div>
     <div class="page__body">
       <div class="card shadow">
@@ -55,7 +58,7 @@
             <ng-container matColumnDef="tipoBoleta">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Boleta</th>
                 <td mat-cell *matCellDef="let element">
-                  {{element.tipo}}
+                  {{element.tipoBoleta}}
                 </td>
             </ng-container>
             
