@@ -10,10 +10,10 @@ export class BoletasAuthGuard implements CanActivate {
   constructor(private _boletaService: BoletaService, private _router: Router) {}
 
   canActivate(): boolean {
-    this._router.navigate([`/`]);
-    return false;
-    this._boletaService.getIfInscritosBoleta().subscribe((data)=>{
-      return data;
-    });
+    // this._router.navigate([`/`]);
+    return true;
+    // this._boletaService.getIfInscritosBoleta().subscribe((data)=>{
+    //   return data;
+    // });
   }
 }

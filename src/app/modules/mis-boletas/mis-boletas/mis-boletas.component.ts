@@ -7,6 +7,7 @@ import { BoletaService } from '@data/services/boleta.service';
 import { BoletaPago } from '@data/models/boleta/boleta-pago.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { VerBoletaComponent } from '@modules/mis-boletas/components/ver-boleta/ver-boleta.component';
+import { BoletaHistorial } from '@data/models/boleta/boleta-historial.model';
 
 interface Mes{
   num: string;
@@ -29,12 +30,10 @@ export class MisBoletasComponent implements OnInit {
   today = new Date();
 
   displayedColumnsBoletas: string[] = ['anio', 'mes', 'regimen', 'tipoBoleta', 'periodo', 'descripcion', 'accion'];
-  // listBoletas = [{anio: '2023', mes: 'Julio', regimen:'R.L.728 Administrati', tipo:'Mensual', periodo: '2023-07', descripcion:'Boleta Mes de Julio'},
-  // {anio: '2023', mes: 'Julio', regimen:'R.L.728 Administrati', tipo:'Gratificación', periodo: '2023-07', descripcion:'Boleta Mes de Julio'},];
   listBoletas: BoletaPago[] = [];
 
-  displayedColumnsAcciones: string[] = ['periodo', 'descripcion', 'fecha', 'accion'];
-  listAcciones = [{periodo: '2023-07', descripcion:'Boleta Mes de Julio', tipo: 'Mensual', fecha:new Date('9/28/2023, 11:00:00'), accion:'Descarga'}];
+  displayedColumnsAcciones: string[] = ['fecha', 'accion', 'descripcion', 'tipo'];
+  listAcciones: BoletaHistorial[] = [];
 
   form = this._fb.group({
     frmMesElegido: [null],
@@ -81,10 +80,17 @@ export class MisBoletasComponent implements OnInit {
     this.form.controls.frmMesElegido.setValue(this.mesElegido);
     this.form.controls.frmAnioElegido.setValue(this.anioElegido);
     this.buscar();
+    this.listar();
   }
 
   back(){
     this._router.navigate([''], { relativeTo: this.route });
+  }
+
+  listar() {
+    this.boletaService.listarHistorial().subscribe(data => {
+      this.listAcciones = data;
+    });
   }
 
   buscar(){
@@ -123,32 +129,32 @@ export class MisBoletasComponent implements OnInit {
   }
 
   desafiliar(){
-    this.boletaService.deleteInscritosBoleta(localStorage.getItem('DTGRGHRTHRTERH').split('"')[1])
-    this._router.navigate([''], { relativeTo: this.route });
+    // this.boletaService.deleteInscritosBoleta(localStorage.getItem('DTGRGHRTHRTERH').split('"')[1])
+    // this._router.navigate([''], { relativeTo: this.route });
   }
   
   showBoleta(element: BoletaPago){
     this.showPdf(element.pdfBase64, element.descripcion + ' ' + element.anio);
-    this.listAcciones.push({
-      periodo: element.periodo,
-      descripcion: element.descripcion,
-      fecha: new Date(),
-      tipo: element.tipoBoleta,
-      accion: "Visualización"
-    })
-    this.tablaAcciones.renderRows();
+    // this.listAcciones.push({
+    //   periodo: element.periodo,
+    //   descripcion: element.descripcion,
+    //   fecha: new Date(),
+    //   tipo: element.tipoBoleta,
+    //   accion: "Visualización"
+    // })
+    // this.tablaAcciones.renderRows();
   }
 
   downloadBoleta(element: BoletaPago){
     this.downloadPdf(element.pdfBase64, element.periodo);
-    this.listAcciones.push({
-      periodo: element.periodo,
-      descripcion: element.descripcion,
-      fecha: new Date(),
-      tipo: element.tipoBoleta,
-      accion: "Descarga"
-    })
-    this.tablaAcciones.renderRows();
+    // this.listAcciones.push({
+    //   periodo: element.periodo,
+    //   descripcion: element.descripcion,
+    //   fecha: new Date(),
+    //   tipo: element.tipoBoleta,
+    //   accion: "Descarga"
+    // })
+    // this.tablaAcciones.renderRows();
   }
 
   downloadPdf(pdfBase64: string, periodo: string) {
