@@ -1,16 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatTable } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, UsuarioService } from '@data/services';
 import { BoletaService } from '@data/services/boleta.service';
 import { BoletaPago } from '@data/models/boleta/boleta-pago.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { VerBoletaComponent } from '@modules/mis-boletas/components/ver-boleta/ver-boleta.component';
-import { BoletaHistorial } from '@data/models/boleta/boleta-historial.model';
-import {
-  InscribirseBoletasComponent
-} from '@modules/mis-boletas/components/inscribirse-boletas/inscribirse-boletas.component';
+import { InscribirseBoletasComponent } from '@modules/mis-boletas/components/inscribirse-boletas/inscribirse-boletas.component';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 interface Mes{
   num: string;
@@ -32,11 +31,14 @@ export class MisBoletasComponent implements OnInit {
   @ViewChild('tablaAcciones') tablaAcciones: MatTable<any>;
   today = new Date();
 
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSourceAcciones: MatTableDataSource<any>;
+
   displayedColumnsBoletas: string[] = ['anio', 'mes', 'regimen', 'tipoBoleta', 'periodo', 'descripcion', 'accion'];
   listBoletas: BoletaPago[] = [];
 
   displayedColumnsAcciones: string[] = ['fecha', 'accion', 'descripcion', 'tipo'];
-  listAcciones: BoletaHistorial[] = [];
 
   form = this._fb.group({
     frmMesElegido: [null],
@@ -105,7 +107,9 @@ export class MisBoletasComponent implements OnInit {
 
   listar() {
     this.boletaService.listarHistorial().subscribe(data => {
-      this.listAcciones = data;
+      this.dataSourceAcciones = new MatTableDataSource(data);
+      this.dataSourceAcciones.paginator = this.paginator;
+      this.dataSourceAcciones.sort = this.sort;
       this.tablaAcciones.renderRows();
     });
   }

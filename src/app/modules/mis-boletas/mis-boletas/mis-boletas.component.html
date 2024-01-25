@@ -99,7 +99,7 @@
             </div>
         </h1>
         <div class="card shadow alignCard">
-            <table mat-table #tablaAcciones [dataSource]="listAcciones" matSort style="width: 100%;">
+            <table mat-table #tablaAcciones [dataSource]="dataSourceAcciones" matSort style="width: 100%;">
             
                 <ng-container matColumnDef="fecha">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha y Hora</th>
@@ -132,6 +132,7 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsAcciones"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsAcciones;"></tr>
               </table>
+              <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
         </div>
       </div>
     </div>
