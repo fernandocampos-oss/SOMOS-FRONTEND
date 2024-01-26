@@ -73,6 +73,7 @@ export class MisBoletasComponent implements OnInit {
   anioElegido: string;
   tipoElegido: string;
   tipoDescripcion: string;
+  busquedaResultado: string;
 
   pdfSrc: string;
 
@@ -130,16 +131,20 @@ export class MisBoletasComponent implements OnInit {
   }
 
   buscarBoleta(){
+    this.busquedaResultado = 'Buscando...';
     this.listBoletas = [];
     this.anioElegido = this.form.get('frmAnioElegido').value;
     this.boletaService.buscarBoletaPago(this.anioElegido, this.mesElegido, this.tipoElegido).subscribe(boleta => {
       if (boleta.pdfBase64) {
+        this.busquedaResultado = '';
         boleta.anio = this.anioElegido;
         boleta.mes = this.mesElegido;
         boleta.periodo = this.anioElegido + '-' + this.mesElegido;
         boleta.descripcion = this.obtenerDescripcion(this.mesElegido);
         this.listBoletas.push(boleta);
         this.pdfSrc = boleta.pdfBase64;
+      } else {
+        this.busquedaResultado = 'Búsqueda sin resultados';
       }
       this.tablaBoletas.renderRows();
     });
