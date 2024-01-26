@@ -72,8 +72,8 @@ export class MisBoletasComponent implements OnInit {
   mesElegido: string;
   anioElegido: string;
   tipoElegido: string;
-  tipoDescripcion: string;
-  busquedaResultado: string;
+  tipoDescripcion = 'Mensual';
+  busquedaResultado = '';
 
   pdfSrc: string;
 
