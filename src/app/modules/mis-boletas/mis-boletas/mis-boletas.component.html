@@ -10,7 +10,7 @@
                 </div>
             </div>
         </h1>
-        <form [formGroup]="form" (ngSubmit)="buscar()">
+        <form [formGroup]="form" (ngSubmit)="buscarBoleta()">
           <div class="optSearchBoleta">
             <mat-form-field appearance="outline">
               <mat-label>Mes</mat-label>
@@ -24,6 +24,13 @@
 <!--                <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>-->
 <!--              </mat-select>-->
               <input matInput type='number' formControlName="frmAnioElegido">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo</mat-label>
+              <mat-select [(value)]="tipoElegido" formControlName="frmTipoElegido">
+                <mat-option *ngFor="let tipo of listTipos" [value]="tipo.tipo"
+                            (click)='tipoDescripcion=tipo.descripcion'>{{tipo.descripcion}}</mat-option>
+              </mat-select>
             </mat-form-field>
             <div class="containerSearch">
               <button mat-raised-button color="primary" class="searchBoleta" type="submit">Buscar</button>

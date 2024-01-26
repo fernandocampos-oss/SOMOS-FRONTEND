@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@env';
 import { BoletaPago } from '@data/models/boleta/boleta-pago.model';
 import { BoletaHistorial } from '@data/models/boleta/boleta-historial.model';
+import { BoletaTipo } from '@data/models/boleta/boleta-tipo.model';
 
 const URL_BASE = `${environment.apiUrl}/pagos`;
 
@@ -23,14 +24,19 @@ export class BoletaService {
     return this._httpClient.post(url,{});
   }
 
-  buscarBoletaPago(anio: string, mes: string) {
-    const url = `${URL_BASE}/busqueda/anio/${anio}/mes/${mes}`;
+  buscarBoletaPago(anio: string, mes: string, tipo: string) {
+    const url = `${URL_BASE}/busqueda?anio=${anio}&mes=${mes}&tipo=${tipo}`;
     return this._httpClient.get<BoletaPago>(url);
   }
 
   listarHistorial() {
     const url = `${URL_BASE}/historial/actividades`;
     return this._httpClient.get<BoletaHistorial[]>(url);
+  }
+
+  listarTipos() {
+    const url = `${URL_BASE}/tipos`;
+    return this._httpClient.get<BoletaTipo[]>(url);
   }
 
   registrarAccion(tipoAccion: number, detalle: string, tipoBoleta: string) {

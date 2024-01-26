@@ -10,6 +10,8 @@ import { VerBoletaComponent } from '@modules/mis-boletas/components/ver-boleta/v
 import { InscribirseBoletasComponent } from '@modules/mis-boletas/components/inscribirse-boletas/inscribirse-boletas.component';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { BoletaTipo } from '@data/models/boleta/boleta-tipo.model';
+import { BoletaHistorial } from '@data/models/boleta/boleta-historial.model';
 
 interface Mes{
   num: string;
@@ -33,16 +35,18 @@ export class MisBoletasComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  dataSourceAcciones: MatTableDataSource<any>;
+  dataSourceAcciones: MatTableDataSource<BoletaHistorial> = new MatTableDataSource([]);
 
   displayedColumnsBoletas: string[] = ['anio', 'mes', 'regimen', 'tipoBoleta', 'periodo', 'descripcion', 'accion'];
   listBoletas: BoletaPago[] = [];
+  listTipos: BoletaTipo[] = [];
 
   displayedColumnsAcciones: string[] = ['fecha', 'accion', 'descripcion', 'tipo'];
 
   form = this._fb.group({
     frmMesElegido: [null],
     frmAnioElegido: [null],
+    frmTipoElegido: [''],
   });
 
   meses: Mes[] = [
@@ -67,6 +71,8 @@ export class MisBoletasComponent implements OnInit {
   ];
   mesElegido: string;
   anioElegido: string;
+  tipoElegido: string;
+  tipoDescripcion: string;
 
   pdfSrc: string;
 
@@ -95,17 +101,26 @@ export class MisBoletasComponent implements OnInit {
     const numMes = this.today.getMonth() + 1 + '';
     this.mesElegido = numMes.padStart(2, '0');
     this.anioElegido = this.today.getFullYear() + '';
+    this.tipoElegido = '';
     this.form.controls.frmMesElegido.setValue(this.mesElegido);
     this.form.controls.frmAnioElegido.setValue(this.anioElegido);
-    this.buscar();
-    this.listar();
+    this.form.controls.frmTipoElegido.setValue(this.tipoElegido);
+    this.cargarTipos();
+    this.buscarBoleta();
+    this.listarHistorial();
   }
 
   back(){
     this._router.navigate([''], { relativeTo: this.route });
   }
 
-  listar() {
+  cargarTipos() {
+    this.boletaService.listarTipos().subscribe(data => {
+      this.listTipos = data;
+    });
+  }
+
+  listarHistorial() {
     this.boletaService.listarHistorial().subscribe(data => {
       this.dataSourceAcciones = new MatTableDataSource(data);
       this.dataSourceAcciones.paginator = this.paginator;
@@ -114,10 +129,10 @@ export class MisBoletasComponent implements OnInit {
     });
   }
 
-  buscar(){
+  buscarBoleta(){
     this.listBoletas = [];
     this.anioElegido = this.form.get('frmAnioElegido').value;
-    this.boletaService.buscarBoletaPago(this.anioElegido, this.mesElegido).subscribe(boleta => {
+    this.boletaService.buscarBoletaPago(this.anioElegido, this.mesElegido, this.tipoElegido).subscribe(boleta => {
       if (boleta.pdfBase64) {
         boleta.anio = this.anioElegido;
         boleta.mes = this.mesElegido;
@@ -167,16 +182,16 @@ export class MisBoletasComponent implements OnInit {
   showBoleta(element: BoletaPago){
     const descripcion = element.descripcion + ' ' + element.anio;
     this.showPdf(element.pdfBase64, descripcion);
-    this.boletaService.registrarAccion(2, descripcion, element.tipoBoleta).subscribe(() => {
-      this.listar();
+    this.boletaService.registrarAccion(2, descripcion, this.tipoDescripcion).subscribe(() => {
+      this.listarHistorial();
     });
   }
 
   downloadBoleta(element: BoletaPago){
     const descripcion = element.descripcion + ' ' + element.anio;
     this.downloadPdf(element.pdfBase64, element.periodo);
-    this.boletaService.registrarAccion(3, descripcion, element.tipoBoleta).subscribe(() => {
-      this.listar();
+    this.boletaService.registrarAccion(3, descripcion, this.tipoDescripcion).subscribe(() => {
+      this.listarHistorial();
     });
   }
 
