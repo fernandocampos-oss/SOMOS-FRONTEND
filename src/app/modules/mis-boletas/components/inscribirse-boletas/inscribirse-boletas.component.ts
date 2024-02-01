@@ -13,7 +13,6 @@ import { BoletaService } from '@data/services/boleta.service';
 export class InscribirseBoletasComponent implements OnInit {
 
   habilitado = false;
-  numDoc = '';
 
   constructor(
     private router         : Router,
@@ -23,13 +22,17 @@ export class InscribirseBoletasComponent implements OnInit {
     private _boletaService : BoletaService) { }
 
   ngOnInit(): void {
-    this._userService.get(this._authService.getUserSession().id).subscribe((data)=>{
-      this.numDoc = data.numeroDocumento;
-    })
   }
+
   inscribirseBoletas(){
-    this._boletaService.addInscritosBoleta(this.numDoc);
-    this.dialogRef.close();
-    this.router.navigate([AppRoute.MIS_BOLETAS]);
+    this._boletaService.acceptTerminos().subscribe((data)=> {
+      this.dialogRef.close(true);
+      this.router.navigate([AppRoute.MIS_BOLETAS]);
+    });
+  }
+
+  cancelar() {
+    this.dialogRef.close(false);
+    this.router.navigate([`/`]);
   }
 }

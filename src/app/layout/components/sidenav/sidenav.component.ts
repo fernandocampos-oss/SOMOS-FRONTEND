@@ -19,6 +19,7 @@ import { SegmentoVotante } from '@data/enums';
 import { InscripcionService } from '@data/services/inscripcion.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { environment } from '@env';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 @Component({
   selector: 'app-sidenav',
@@ -30,6 +31,7 @@ export class SidenavComponent implements OnInit {
   asignacionesInscripciones = [];
   user: UserSession;
   gerencia: String = '';//Aqui se guarda la gerencia
+  dataPersona = Object();
   email: String = '';
   nombre: String = '';
   numDoc: string = '';
@@ -66,12 +68,14 @@ export class SidenavComponent implements OnInit {
     this.user = this._authService.getUserSession();
     // console.log(JSON.parse(localStorage.getItem('RDTHRHRYHNYTN')!))
     this._userService.get(this.user.id).subscribe( data =>{
-      this.email = data.correo;
+      // console.log(data)
+      this.dataPersona = data;
+      // this.email = data.correo;
       // this._zonaService.get(data.idZonaControl).subscribe(info=>{
       //   this.gerencia = info.descripcion;
       // })
-      this.nombre = data.nombres;
-      this.numDoc = data.numeroDocumento;
+      // this.nombre = data.nombres;
+      // this.numDoc = data.numeroDocumento;
     })
 
     this.getSegmentoModuloGR();
@@ -113,6 +117,27 @@ export class SidenavComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => { });
   }
+
+  showEditPerfil(){
+    const dialogRef: MatDialogRef<EditUserComponent> = this.dialog.open(EditUserComponent, {
+        disableClose: false,
+        minWidth: '340px',
+        width: '90vw',
+        maxWidth: '600px',
+        maxHeight: '90vh',
+        autoFocus: false,
+        data:{
+          idUser: this.user.id
+        }
+      });
+    
+    dialogRef.afterClosed().subscribe(()=>{
+      this._userService.get(this.user.id).subscribe( data =>{
+        this.dataPersona = data;
+      })
+    })
+  }
+
   open(option: string){
     switch (option) {
       case 'Cronograma de Pagos':
@@ -123,8 +148,9 @@ export class SidenavComponent implements OnInit {
           autoFocus: false,
         });
         break;
-      case 'Mis boletas de pago':
-          if (this._boletaService.getIfInscritosBoleta(this.numDoc)) {
+      case 'Mis Boletas de Pago':
+        this._boletaService.getIfInscritosBoleta().subscribe((data)=>{
+          if(data){
             this.router.navigate([AppRoute.MIS_BOLETAS]);
           }
           else{
@@ -135,7 +161,8 @@ export class SidenavComponent implements OnInit {
               autoFocus: false,
             });
           }
-          break;
+        })
+        break;
     }
   }
 

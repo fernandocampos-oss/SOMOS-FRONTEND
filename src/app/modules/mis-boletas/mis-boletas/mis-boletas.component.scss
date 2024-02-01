@@ -22,11 +22,38 @@
 .optSearchBoleta{
   padding: 20px;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   .containerSearch{
     .searchBoleta{
       height: 59px;
-      margin: 0.25em 0;
+      margin: 0.25em 0 1em 0;
     }
   }
+}
+
+.mat-form-field {
+  width: 10rem;
+  box-sizing: border-box;
+}
+
+.mat-elevation-z8 {
+  overflow-x: auto;
+  display: block;
+}
+
+.header-search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.text-search-box {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.text-search-result {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
 }

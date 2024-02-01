@@ -70,12 +70,12 @@ const data: MenuItem[] = [
   //     icon: 'airplanemode_active',
   //     label: 'Mis vacaciones',
   // },
-  // {
-  //     path: AppRoute.MIS_BOLETAS,
-  //     icon: 'payment',
-  //     label: 'Mis boletas de pago',
-  //     type: 2,
-  // },
+  {
+      path: AppRoute.MIS_BOLETAS,
+      icon: 'payment',
+      label: 'Mis Boletas de Pago',
+      type: 2,
+  },
   // {
   //   path: '',
   //   icon: 'contact_mail',

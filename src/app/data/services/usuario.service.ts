@@ -4,7 +4,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@env';
 import { UsuarioNombres, Usuario, UsuarioRegisterUpdate } from '@data/models';
 import { UsuarioPassword } from '@data/models/usuario/usuario-password.model';
+import { RequestConfirmCorreo, RequestUsuarioUpdateData } from '@data/models/usuario/usuario-update.model';
 
+// const URL_BASE = `http://localhost/api/usuarios`;
 const URL_BASE = `${environment.apiUrl}/usuarios`;
 
 @Injectable({ providedIn: 'root' })
@@ -40,5 +42,15 @@ export class UsuarioService {
   delete(id: number) {
     const url = `${URL_BASE}/${id}`;
     return this._httpClient.delete(url);
+  }
+
+  updateDataUser(id: number, model: RequestUsuarioUpdateData){
+    const url = `${URL_BASE}/${id}/actualizar-datos`;
+    return this._httpClient.put(url, model);
+  }
+
+  updateCorreoChange(id: number, model: RequestConfirmCorreo){
+    const url = `${URL_BASE}/${id}/cambiar-correo`;
+    return this._httpClient.put<any>(url, model);
   }
 }

@@ -1,0 +1,82 @@
+<div class="contenedorInfoUsuario">
+    <div style="display: flex; gap: 0.25rem; width: 100%;" [ngStyle]="{'flex-direction': distribucionTotal == 2 ? 'row': 'column'}">
+        <div style="display: flex; flex-direction: column; gap: 0.25rem; align-items: center; width: 100%;">
+            <div class="contImagen">
+                <img *ngIf="!retrievedImage" src="assets/images/avatar.png" alt="Essalud" class="avatarImg"/>
+                <img *ngIf="retrievedImage" class="imgPerfil boxBorde" [src]="retrievedImage"/>
+                <div class="cursor iconoEditar" #tooltip="matTooltip" matTooltip="Cambiar Imagen" (click)="file.click()">
+                    <mat-icon>add_photo_alternate</mat-icon>
+                    <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files, 1)" />
+                </div>
+            </div>
+            <div class="identificacionUsuario">
+                <span class="text-medium text-black">{{dataUsuario.nombres | titlecase}} {{dataUsuario.apellidos | titlecase}}</span>
+                <span class="text-small">N° de documento: <span class="text-black">{{dataUsuario.numeroDocumento}}</span></span>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.25rem; width: 100%; align-items: center;">        
+            <div class="contenedorFirma">
+                <input hidden #fileFirma type="file" accept="Image/*" (change)="onChangeImage(fileFirma.files, 2)"/>
+                <img class="preview__img imgSubida boxBorde" [src]="firmaImage" *ngIf="firmaImage"/>
+                <img class="imgAusente" src="assets/svg/empty-data.svg" *ngIf="!firmaImage">
+                <h3 *ngIf="!firmaImage">No se ha adjuntado firma aún.</h3>
+            </div>
+            <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix (click)="fileFirma.click()"
+                    color="primary" *ngIf="!firmaImage">
+              <mat-icon>add_photo_alternate</mat-icon> Cargar Firma
+            </button>
+            <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeFirma()"
+                    color="warn" *ngIf="firmaImage">
+              <mat-icon>clear</mat-icon> Remover Firma
+            </button>
+        </div>
+    </div>
+    <div [formGroup]="formPerfil" class="contenedorForm">
+        <mat-grid-list [cols]="this.distribucionTotal" rowHeight="90px" gutterSize="6px" class="contenedorDatos">
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Código de Planilla</mat-label>
+                    <input matInput formControlName="frmCodPlanilla" readonly>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Cargo</mat-label>
+                    <input matInput formControlName="frmCargo" readonly>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Red</mat-label>
+                    <input matInput formControlName="frmRed" readonly>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Unidad Orgánica</mat-label>
+                    <input matInput formControlName="frmUnidad" readonly>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Correo</mat-label>
+                    <input matInput formControlName="frmCorreo">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Celular</mat-label>
+                    <input type="number" matInput formControlName="frmCelular">
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <div style="display: flex; flex-direction: row; gap: 1.25rem; width: 100%; align-items: center; justify-content: center;">
+            <button mat-raised-button mat-dialog-close type="button">Cancelar</button>
+    
+            <button mat-raised-button color="primary" (click)="saveChanges()">
+                Guardar
+            </button>
+
+        </div>
+    </div>
+</div>

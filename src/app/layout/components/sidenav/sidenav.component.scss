@@ -11,6 +11,14 @@ mat-list-item:hover {
   background-color: #d9fefc !important;//rgba(0, 0, 0, 0.04);
 }
 
+.optSidenav{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
 mat-sidenav {
   mat-nav-list {
     .menu-item {
@@ -39,7 +47,8 @@ mat-sidenav {
   &__img {
     display: block;
     width: 6rem;
-    margin: auto;
+    height: 6rem;
+    margin: 0 auto;
   }
   &__img2 {
     display: block;
@@ -119,3 +128,11 @@ h5{
 // .listItemImage{
 //   height: ;
 // }
+
+.imgBorde{
+  border: var(--color-bordes);
+  border-style: solid;
+  margin: 0.5rem auto;
+  border-radius: 99px;
+  border-width: 2.5px;
+}

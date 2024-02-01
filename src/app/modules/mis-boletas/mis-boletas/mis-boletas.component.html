@@ -1,35 +1,42 @@
 <div class="page">
-    <div class="matero-page-header" style="display: flex;">
+    <div class="matero-page-header header-search" style="display: flex;">
         <h1 class="matero-page-title">
             <div>
-                <mat-icon>payment</mat-icon> Mis Boletas de pago<br>
-                <small class="mr-2">Visualiza los usuarios en tus redes asignadas y obtén reportes.</small><br>
+                <mat-icon>payment</mat-icon> Mis Boletas de Pago<br>
+<!--                <small class="mr-2">Visualiza los usuarios en tus redes asignadas y obtén reportes.</small><br>-->
                 <div class="optionsBar">
                   <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
-                  <button mat-raised-button color="warn" (click)="desafiliar()"><mat-icon>clear</mat-icon> Desafiliarme de ver mis boletas</button>
+<!--                  <button mat-raised-button color="warn" (click)="desafiliar()"><mat-icon>clear</mat-icon> Desafiliarme de ver mis boletas</button>-->
                 </div>
             </div>
         </h1>
-        <div class="optSearchBoleta" [formGroup]="form" (ngSubmit)="Actualizar()">
+        <form [formGroup]="form" (ngSubmit)="buscarBoleta()">
+          <div class="optSearchBoleta">
             <mat-form-field appearance="outline">
               <mat-label>Mes</mat-label>
               <mat-select [(value)]="mesElegido" formControlName="frmMesElegido">
-                  <mat-option *ngFor="let mes of meses" [value]="mes.num">{{mes.descripcion}}</mat-option>
+                <mat-option *ngFor="let mes of meses" [value]="mes.num">{{mes.descripcion}}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Año</mat-label>
-              <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
-                  <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
+              <input matInput type='number' formControlName="frmAnioElegido">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo</mat-label>
+              <mat-select [(value)]="tipoElegido" formControlName="frmTipoElegido">
+                <mat-option *ngFor="let tipo of listTipos" [value]="tipo.tipo"
+                            (click)='tipoDescripcion=tipo.descripcion'>{{tipo.descripcion}}</mat-option>
               </mat-select>
             </mat-form-field>
             <div class="containerSearch">
               <button mat-raised-button color="primary" class="searchBoleta" type="submit">Buscar</button>
             </div>
-        </div>
+          </div>
+        </form>
     </div>
     <div class="page__body">
-      <div class="card shadow">
+      <div class="card shadow mat-elevation-z8">
         <table mat-table #tablaBoletas [dataSource]="listBoletas" matSort style="width: 100%;">
             <ng-container matColumnDef="anio">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Año</th>
@@ -55,7 +62,7 @@
             <ng-container matColumnDef="tipoBoleta">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Boleta</th>
                 <td mat-cell *matCellDef="let element">
-                  {{element.tipo}}
+                  {{element.tipoBoleta}}
                 </td>
             </ng-container>
             
@@ -87,7 +94,10 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsBoletas"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumnsBoletas;"></tr>
-          </table>
+        </table>
+        <div class='text-search-box'>
+          <span class='text-search-result'>{{ busquedaResultado }}</span>
+        </div>
       </div>
       <div class="segundoCard">
         <h1 class="matero-page-title">
@@ -95,40 +105,41 @@
                 <mat-icon>payment</mat-icon> Registro de Actividad<br>
             </div>
         </h1>
-        <div class="card shadow alignCard">
-            <table mat-table #tablaAcciones [dataSource]="listAcciones" matSort style="width: 100%;">
-            
-                <ng-container matColumnDef="periodo">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Periodo</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{element.periodo}}
-                  </td>
-                </ng-container>
-            
-                <ng-container matColumnDef="descripcion">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción de la Boleta</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{element.descripcion}} - {{element.tipo}}
-                  </td>
-                </ng-container>
+        <div class="card shadow alignCard mat-elevation-z8">
+            <table mat-table #tablaAcciones [dataSource]="dataSourceAcciones" matSort style="width: 100%;">
             
                 <ng-container matColumnDef="fecha">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha y Hora</th>
                   <td mat-cell *matCellDef="let element">
-                    {{element.fecha | date:'dd/MM/yyyy hh:mm a'}}
+                    {{element.fechaCreacion | date:'dd/MM/yyyy hh:mm a'}}
                   </td>
                 </ng-container>
             
                 <ng-container matColumnDef="accion">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Acción</th>
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Acción Realizada</th>
                   <td mat-cell *matCellDef="let element">
                     {{element.accion}}
+                  </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="descripcion">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Detalle de la Actividad</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.detalle}}
+                  </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="tipo">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.tipoBoleta}}
                   </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsAcciones"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsAcciones;"></tr>
-              </table>
+            </table>
+              <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
         </div>
       </div>
     </div>
