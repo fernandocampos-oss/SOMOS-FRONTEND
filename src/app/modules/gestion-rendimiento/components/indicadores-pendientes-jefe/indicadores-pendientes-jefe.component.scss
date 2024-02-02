@@ -27,12 +27,12 @@ table {
     width: 100%;
 }
 
-.color-mensaje {
-    color: var(--color-bordes);
-}
-
 .has-success {
     color: var(--color-success);
+}
+
+.color-mensaje {
+    color: var(--color-bordes);
 }
 
 // ul {
@@ -120,7 +120,7 @@ th {
 .mat-list-base .mat-list-option {
     height: 250px;
     // background-color: #e6effa;
-    border: 1px solid #cad2dc;
+    // border: 1px solid #cad2dc;
     font-size: none;
 
 }
@@ -136,4 +136,10 @@ th {
 
 .mat-table {
     border: 1px solid #cad2dc;
+}
+
+th.mat-header-cell, td.mat-cell {
+    text-align: center;
+    border: 1px solid #CCC;
+    padding: 0 !important;
 }
