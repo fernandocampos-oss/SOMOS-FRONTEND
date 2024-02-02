@@ -1,71 +1,37 @@
 <form [formGroup]="form">
-    <h2 mat-dialog-title>Registrar Evidencia</h2>
-    <mat-dialog-content>
-      <mat-form-field appearance="outline">
-        <mat-label>Descripción de la evidencia</mat-label>
-        <textarea matInput (keyup)="onKey($event)" formControlName="frmDescripcion" rows="5" type="text" minlength="15" maxlength="300" required>
+  <h2 mat-dialog-title>Registrar Evidencia</h2>
+  <mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción de la evidencia</mat-label>
+      <textarea matInput (keyup)="onKey($event)" formControlName="frmDescripcion" rows="5" type="text" minlength="15"
+        maxlength="300" required>
         </textarea>
-        <mat-hint align="end">Máx. {{contadorTxtArea}} / 300</mat-hint>
-      </mat-form-field>
-      <br><br>
-      <p>Elija el tipo de sustento que desea enviar. <strong>(Máx. 2MB.)</strong></p>
-  
-      <div class="datosPdf">
-        <mat-radio-group name="opciones" [(ngModel)]="operacionSeleccionada" [ngModelOptions]="{standalone: true}">
-          <mat-radio-button *ngFor="let tipo of tipoArchivo" name="opciones" [value]="tipo" style="margin: 10px">
-            {{tipo}}
-          </mat-radio-button>
-        </mat-radio-group>
-      </div>
-  
-      <div *ngIf="operacionSeleccionada=='Imagen'">
-        <div class="cargaImg">
-          <div class="imageBox">
-            <div style="text-align: center">
-              <button type="button" class="preview__button btnColor" mat-raised-button MatPrefix (click)="file.click()"
-                *ngIf="!retrievedImage">
-                <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
-              </button>
-              <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()"
-                color="warn" *ngIf="retrievedImage">
-                <mat-icon>clear</mat-icon> Remover Imagen
-              </button>
-            </div>
-            <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)" />
-            <img class="preview__img" [src]="retrievedImage" *ngIf="retrievedImage" />
-            <img class="preview__img" src="assets/images/imgPlaceholder.png" *ngIf="!retrievedImage" />
-          </div>
-        </div>
-      </div>
-  
-      <!-- pdf -->
-      <div class="cargaImg" *ngIf="operacionSeleccionada=='PDF'">
-        <div class="pdfContainer">
-          <div class="datosPdf">
-            <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix
-              (click)="filePdf.click()" color="primary" *ngIf="!retrievedPdf" [disabled]='estadoInscripcion'>
-              <mat-icon>attach_file</mat-icon> Cargar PDF
-            </button>
-            <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removePdf()" color="warn"
-              *ngIf="retrievedPdf" [disabled]='estadoInscripcion'>
-              <mat-icon>clear</mat-icon> Remover PDF
-            </button>
-          </div>
-          <div class="datosPdf">
-            <h5 *ngIf="retrievedPdf">{{nombrePdf}}</h5>
-            <img class="preview__img" src="assets/images/pdfSelected.png" *ngIf="retrievedPdf" (click)='downloadPdf()'
-              matTooltip="Descargar PDF" matTooltipPosition="right" style='cursor: pointer;' />
-            <img class="preview__img" src="assets/images/pdfPlaceholder.png" *ngIf="!retrievedPdf" />
-          </div>
-          <input hidden #filePdf type="file" name="Upload" accept="application/pdf"
-            (change)="onChangeFile(filePdf.files)">
-        </div>
-      </div>
-    </mat-dialog-content>
-  
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close type="button">Cancelar</button>
-      <button mat-raised-button class="btnsave" type="submit" (click)="registrarEvidencia()"
-        [disabled]="this.nameImage === ''" [disabled]="this.pdfExtension === ''">Enviar</button>
-    </mat-dialog-actions>
-  </form>
+      <mat-hint align="end">Máx. {{contadorTxtArea}} / 300</mat-hint>
+    </mat-form-field>
+    <br>
+
+    <div class="datosPdf">
+      <button type="button" class="preview__button btnOptionsActive" mat-raised-button MatPrefix
+        (click)="filePdf.click()" color="primary" *ngIf="!retrievedPdf">
+        <mat-icon>attach_file</mat-icon> Cargar PDF <strong>(Máx. 4MB)</strong>
+      </button>
+      <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removePdf()" color="warn"
+        *ngIf="retrievedPdf">
+        <mat-icon>clear</mat-icon> Remover Archivo
+      </button>
+    </div>
+    <div>
+      <h5 *ngIf="retrievedPdf">{{nombrePdf}}</h5>
+      <img class="preview__img" src="assets/images/pdfSelected.png" *ngIf="retrievedPdf" (click)='downloadPdf()'
+        matTooltip="Descargar PDF" matTooltipPosition="right" style='cursor: pointer;' />
+      <img class="preview__img" src="assets/images/pdfPlaceholder.png" *ngIf="!retrievedPdf" />
+    </div>
+    <input hidden #filePdf type="file" name="Upload" accept="application/pdf" (change)="onChangeFilePdf(filePdf.files)">
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-raised-button class="btnsave" type="submit" (click)="registrarEvidencia()"
+      [disabled]="this.pdfExtension === ''">Enviar</button>
+  </mat-dialog-actions>
+</form>

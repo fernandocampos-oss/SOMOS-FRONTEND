@@ -8,14 +8,12 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { SharedModule } from '@shared/shared.module';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { RegistrarSustentoComponent } from './components/registrar-sustento/registrar-sustento.component';
-import { VerImagenSustentoComponent } from './components/ver-imagen-sustento/ver-imagen-sustento.component';
 import { VerPdfSustentoComponent } from './components/ver-pdf-sustento/ver-pdf-sustento.component';
 
 @NgModule({
   declarations: [
     IndicadoresTrabajadorComponent,
     RegistrarSustentoComponent,
-    VerImagenSustentoComponent,
     VerPdfSustentoComponent
   ],
   imports: [

@@ -9,7 +9,6 @@ import { Persona, RowsBody } from '@data/models/gestion-rendimiento/excel-model'
 import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { RegistrarSustentoComponent } from '../components/registrar-sustento/registrar-sustento.component';
-import { VerImagenSustentoComponent } from '../components/ver-imagen-sustento/ver-imagen-sustento.component';
 import { VerPdfSustentoComponent } from '../components/ver-pdf-sustento/ver-pdf-sustento.component';
 
 @Component({
@@ -60,7 +59,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
   registrarSustento(element) {
     const dialogRef: MatDialogRef<RegistrarSustentoComponent> = this._matDialog.open(RegistrarSustentoComponent, {
       disableClose: false,
-      width: '500px',
+      width: '780px',
       //height: '780px',
       autoFocus: true,
       data: {
@@ -74,26 +73,10 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  verImagenEvidencia(element) {
-    const dialogRef: MatDialogRef<VerImagenSustentoComponent> = this._matDialog.open(VerImagenSustentoComponent, {
-      disableClose: false,
-      width: '50%',
-      //height: '780px',
-      autoFocus: true,
-      data: {
-        model: element
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // this.loadTablePendiente();
-    });
-  }
-
   verEvidenciaPdf(element) {
     const dialogRef: MatDialogRef<VerPdfSustentoComponent> = this._matDialog.open(VerPdfSustentoComponent, {
       disableClose: false,
-      width: '70%',
+      width: '80%',
       //height: '780px',
       autoFocus: true,
       data: {

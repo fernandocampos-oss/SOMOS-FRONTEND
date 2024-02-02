@@ -131,16 +131,11 @@
                                                 (click)="editarEvidencia(t, 3)">
                                                 <mat-icon>edit</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button color="primary"
-                                                [disabled]="t.sustentoExtensionFile !=='png'" matTooltip="Ver Imagen"
-                                                (click)="verEvidenciaImagen(data.model)">
-                                                <mat-icon>image</mat-icon>
-                                            </button>
-                                            <button mat-icon-button color="primary"
-                                                [disabled]="t.sustentoExtensionFile !=='pdf'"
-                                                matTooltip="Ver PDF" (click)="verEvidenciaPdf(data.model)">
+                                            <button mat-icon-button color="warn"
+                                                [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
+                                                (click)="verEvidenciaPdf(t)">
                                                 <mat-icon>picture_as_pdf</mat-icon>
-                                            </button> -->
+                                            </button>
                                         </p>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>

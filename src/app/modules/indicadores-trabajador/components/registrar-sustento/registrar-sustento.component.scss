@@ -8,7 +8,7 @@
     }
 
     &__button {
-        width: 50%;
+        width: 40%;
         margin-bottom: 1rem;
     }
 }
@@ -16,22 +16,6 @@
 .btnColor {
     background-color: var(--color-MiEssalud);
     color: white;
-}
-
-.cargaImg {
-    ::ng-deep .mat-grid-tile-content {
-        align-items: flex-start;
-    }
-}
-
-.imageBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    img {
-        height: 16rem;
-    }
 }
 
 form {

@@ -1,4 +1,3 @@
-import { VerImagenSustentoComponent } from './../../../indicadores-trabajador/components/ver-imagen-sustento/ver-imagen-sustento.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService, SnackbarService } from '@core/services';
@@ -178,25 +177,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  verEvidenciaImagen(element) {
-    const dialogRef: MatDialogRef<VerImagenSustentoComponent> = this._dialog.open(VerImagenSustentoComponent, {
-      disableClose: false,
-      width: '50%',
-      //height: '780px',
-      autoFocus: true,
-      data: {
-        model: element
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-    });
-  }
-
   verEvidenciaPdf(element) {
     const dialogRef: MatDialogRef<VerPdfSustentoComponent> = this._dialog.open(VerPdfSustentoComponent, {
       disableClose: false,
-      width: '70%',
+      width: '80%',
       //height: '780px',
       autoFocus: true,
       data: {

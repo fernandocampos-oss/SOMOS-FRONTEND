@@ -19,25 +19,25 @@ export class GestionRendimientoService {
 
   async listarActividades() {
     const url = `${URL_BASE}/prioridades/listar/actividades`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<ActividadResponse[]>(url).toPromise();
   }
 
   async listarPrioridadesPrincipal() {
     const url = `${URL_BASE}/prioridades/listar-principal`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async generarExcelDirectivo() {
     const url = `${URL_BASE}/prioridades/excel/directivo`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async sendCorreoNotificacion(dto: EmailNotificacionRequestDto) {
     const url = `${URL_BASE}/prioridades/correo-notificar`;
-    console.log(url, dto);
+    // console.log(url, dto);
     return await this.http.post(url, dto).toPromise();
   }
 
@@ -48,127 +48,127 @@ export class GestionRendimientoService {
 
   async reporteGdrSeguimiento(dto: SeguimientoRequestDto) {
     const url = `${URL_BASE}/prioridades/reporte-seguimiento`;
-    console.log(url, dto);
+    // console.log(url, dto);
     return await this.http.post<Object[]>(url, dto).toPromise();
   }
 
   async reporteGdrMatriz(dto: SeguimientoRequestDto) {
     const url = `${URL_BASE}/prioridades/reporte-matriz`;
-    console.log(url, dto);
+    // console.log(url, dto);
     return await this.http.post<Object[]>(url, dto).toPromise();
   }
 
   async modificarPrioridad(id: number, model: UpdatePrioridadDto) {
     const url = `${URL_BASE}/prioridades/modificar/${id}`;
-    console.log(url, model);
+    // console.log(url, model);
     return await this.http.put(url, model).toPromise();
   }
 
   async listarIndicadorPendiente() {
     const url = `${URL_BASE}/indicadores/listar/pendientes`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async listPendientesTrabajadorByVotanteAdmin(idVotante: number) {
     const url = `${URL_BASE}/indicadores/listar/pendientes/admin/${idVotante}`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async listarTipoValorMeta() {
     const url = `${URL_BASE}/indicadores/listar/tipoValorMeta`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async registrarIndicador(indicadorRequest: any) {
     const url = `${URL_BASE}/indicadores/registrar`;
-    console.log(url, indicadorRequest);
+    // console.log(url, indicadorRequest);
     return await this.http.post(url, indicadorRequest).toPromise();
   }
 
   async modificarIndicador(id: number, model: any) {
     const url = `${URL_BASE}/indicadores/modificar/${id}`;
-    console.log(url, model);
+    // console.log(url, model);
     return await this.http.put(url, model).toPromise();
   }
 
   async sumaTotalPesoAllIndicadorByTrabajador(idVotante: number) {
     const url = `${URL_BASE}/indicadores/peso-total/${idVotante}`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<number>(url).toPromise();
   }
 
   async generarExcelTrabajador() {
     const url = `${URL_BASE}/indicadores/excel/trabajador`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async listarIntegrantesPorLider() {
     const url = `${URL_BASE}/equipos/listar`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async listarVotantes() {
     const url = `${URL_BASE}/equipos/listar/votantes`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async eliminarTrabajador(idEquipo: number) {
     const url = `${URL_BASE}/equipos/eliminar?idEquipo=${idEquipo}`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get(url).toPromise();
   }
 
   async registrarTrabajador(equipoRequest: EquipoRequest) {
     const url = `${URL_BASE}/equipos/registrar`;
-    console.log(url, equipoRequest);
+    // console.log(url, equipoRequest);
     return await this.http.post(url, equipoRequest).toPromise();
   }
 
   async getVotanteByIdUsuario() {
     const url = `${URL_BASE}/equipos/obtener/votante/segmento`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object>(url).toPromise();
   }
 
   async findVotanteByNombre(nombre: string) {
     const url = `${URL_BASE}/equipos/buscar/nombre?nombre=${nombre}`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
   async registrarEvidenciaExistIndicador(dto: IndicadorExistRequestDto) {
     const url = `${URL_BASE}/evidencias/registrar/exist-indicador`;
-    console.log(url, dto);
+    // console.log(url, dto);
     return await this.http.post(url, dto).toPromise();
   }
 
   async registrarIndicadorExistPrioridad(dto: PrioridadExistRequestDto) {
     const url = `${URL_BASE}/evidencias/registrar/exist-prioridad`;
-    console.log(url, dto);
+    // console.log(url, dto);
     return await this.http.post(url, dto).toPromise();
   }
 
   async crearSustentoEvidencia(dto: EvidenciaSustentoRequestDto) {
     const url = `${URL_BASE}/evidencias/registrar/sustento`;
-    console.log(url, dto);
+    // console.log(url, dto);
     return await this.http.post(url, dto).toPromise();
   }
 
   async getSustentoByEvidencia(id: number) {
     const url = `${URL_BASE}/evidencias/obtener/evidencia/${id}`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<EvidenciaResponseDto>(url).toPromise();
   }
   
   async modificarEvidencia(id: number, model: EvidenciaRequest) {
     const url = `${URL_BASE}/evidencias/modificar/${id}`;
-    console.log(url, model);
+    // console.log(url, model);
     return await this.http.put(url, model).toPromise();
   }
 
