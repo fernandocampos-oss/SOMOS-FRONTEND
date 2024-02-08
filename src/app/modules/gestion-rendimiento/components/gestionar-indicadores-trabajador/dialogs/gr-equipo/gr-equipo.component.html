@@ -4,7 +4,7 @@
 <br>
 <div style="text-align: center">
   <mat-form-field appearance="outline">
-    <mat-label>Ingrese nombre o apellido</mat-label>
+    <mat-label>Ingrese nombre</mat-label>
     <input type="text" matInput [formControl]="integranteControl" [matAutocomplete]="autoTrabajador">
     <mat-autocomplete #autoTrabajador="matAutocomplete" [displayWith]="displayFnTrabajador"
       (optionSelected)="onSelectionChangePersonal($event)">

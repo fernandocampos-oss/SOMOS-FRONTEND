@@ -23,6 +23,8 @@ export class RegistrarSustentoComponent implements OnInit {
   pdfExtension: string = '';
   contadorTxtArea: number = 0;
 
+  calificacion : string = '';
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _notification: NotificationService,
@@ -79,37 +81,60 @@ export class RegistrarSustentoComponent implements OnInit {
   }
 
   async registrarEvidencia() {
-    // if (this.retrievedImage == undefined || !this.form.valid) {
-    //   this._notification.warning(
-    //     'Complete todos los campos obligatorios e ingrese una imagen'
-    //   );
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
-    // else {
-    const model = this._getModel();
+    if (this.form.value.frmDescripcion == undefined || this.form.value.frmDescripcion == "") {
+      this._notification.warning('Complete todos los campos obligatorios');
+      this.form.markAllAsTouched();
+      return;
+    } else {
+      const model = this._getModel();
 
-    let register = await this._requerimientoService.crearSustentoEvidencia(model).then((data) => {
+      let register = await this._requerimientoService.crearSustentoEvidencia(model).then((data) => {
       this._notification.success("Evidencia registrada correctamente")
-    });
-    this._dialogRef.closeAll();
-    // }
+      });
+      this._dialogRef.closeAll();
+    }
   }
 
   private _getModel(): EvidenciaSustentoRequestDto {
     let completo = this.nameImage;
     const nombreFile = completo.lastIndexOf('.');
-    // // archivo.nombre = completo.substring(0, nombreFile);
-    // // archivo.extension = completo.substring(nombreFile + 1);
+    // archivo.nombre = completo.substring(0, nombreFile);
+    // archivo.extension = completo.substring(nombreFile + 1);
 
     this.globalBase64 = this.retrievedPdf.split(',')[1];
     this.globalextension = this.pdfExtension.split('/')[1];
+
+    if (this.data.model.sustentoFechaRegistro == null) {
+      const dateCurrent = new Date();
+
+      let fechaSustento = dateCurrent.toISOString().split("T")[0];
+      let fechaPlazo = this.data.model.plazo.split("T")[0];
+
+      console.log("fechaSustento: ", fechaSustento, "fechaPlazo: ", fechaPlazo);
+
+      var first = new Date(fechaSustento);
+      var second = new Date(fechaPlazo);
+
+      if (first < second) {
+        console.log(first, "es menor que", second);
+        this.calificacion = 'Presentó evidencia dentro de la fecha';
+      }
+      else if (first > second) {
+        console.log(first, "es mayor que", second);
+        this.calificacion = 'Se pasó de la fecha'; 
+      }
+      else if (first == second) {
+        console.log(first, "es igual que", second);
+        this.calificacion = 'Presentó evidencia dentro de la fecha';
+      }
+    }
 
     return {
       idEvidencia: this.data.model.idEvidencia,
       sustentoDescripcion: this.form.value.frmDescripcion,
       extension: this.globalextension,
-      fileBase64: this.globalBase64
+      fileBase64: this.globalBase64,
+      calificacion: this.calificacion
     };
   }
 

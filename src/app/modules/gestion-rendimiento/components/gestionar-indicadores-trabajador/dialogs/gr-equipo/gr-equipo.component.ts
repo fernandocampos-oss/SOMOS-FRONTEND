@@ -73,7 +73,6 @@ export class GrEquipoComponent implements OnInit {
     this.trabajadorSeleccionadoTmp = event.option.value;
   }
 
-
   async loadTable() {
     let listtrabajadores = await this._grService.listarIntegrantesPorLider().then((data) => {
       if (data.length > 0) {
