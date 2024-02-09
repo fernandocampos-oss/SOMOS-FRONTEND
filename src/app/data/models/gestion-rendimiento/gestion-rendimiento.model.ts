@@ -32,6 +32,7 @@ export class EvidenciaSustentoRequestDto {
   sustentoDescripcion?: string;
   extension?: string;
   fileBase64?: string;
+  calificacion?: string;
 }
 
 export class EvidenciaResponseDto {
