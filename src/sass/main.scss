@@ -263,3 +263,40 @@ input.hide-spinner[type='number'] {
 .cursor {
   cursor: pointer;
 }
+
+.workersTable th{
+  background: #0077C8;
+  color: #FFFFFF;
+}
+
+.contentEvi{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: normal;
+  align-items: normal;
+  align-content: normal;
+}
+.eviItem:nth-child(1){
+  display: block;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+}
+.eviItem:nth-child(2) {
+  display: block;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+}
+.eviItem span.date{
+  font-size: 0.7rem;
+  color: #666666;
+}
+.eviItem span{
+  display: block;
+}

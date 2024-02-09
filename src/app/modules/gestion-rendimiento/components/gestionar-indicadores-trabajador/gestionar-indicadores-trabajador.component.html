@@ -34,6 +34,12 @@
                         <span>{{i.trabajadorNombre | titlecase}} {{i.trabajadorApellido | titlecase}}</span>
                     </mat-panel-title>
                     <mat-panel-description>
+                        <div class="editData">
+                            <button mat-button color="primary">
+                                <mat-icon>edit</mat-icon>
+                                &nbsp; Editar
+                            </button>
+                        </div>
                         <div class="send-email">
                             <button mat-button color="primary" (click)="notificarCorreo(i.email)"
                                 [disabled]="(i.listPrioridad.length === 0) ? true : false">
@@ -49,7 +55,7 @@
                     <p class="color-mensaje">Sin registros por mostrar</p>
                 </div>
                 <div *ngIf="i.listPrioridad.length !== 0">
-                    <table mat-table [dataSource]="i.listPrioridad">
+                    <table mat-table [dataSource]="i.listPrioridad" class="workersTable">
                         <ng-container matColumnDef="item">
                             <th mat-header-cell *matHeaderCellDef>N°</th>
                             <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
@@ -125,30 +131,49 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" style="font-size:14px">
-                                        <p mat-line *ngFor="let t of z.listEvidencia">
+                                        <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
+                                            <!-- -->
+                                            <div class="eviItem">
+                                                <span>
+                                                    - {{t.descripcion}}
+                                                </span>
+                                                <span class="date">
+                                                    ({{t.plazo | date: 'dd-MM-yyyy'}})
+                                                </span>
+                                            </div>
+                                            <div class="eviItem">
+                                                <button mat-icon-button color="warn"
+                                                    [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
+                                                    (click)="verEvidenciaPdf(t)">
+                                                    <mat-icon>picture_as_pdf</mat-icon>
+                                                </button>
+                                            </div>
+                                            <!--
                                             <span>- {{t.descripcion}}</span>
                                             <button mat-icon-button color="primary" matTooltip="Editar Evidencia"
                                                 (click)="editarEvidencia(t, 3)">
                                                 <mat-icon>edit</mat-icon>
-                                            </button>
+                                            </button> 
                                             <button mat-icon-button color="warn"
                                                 [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
                                                 (click)="verEvidenciaPdf(t)">
                                                 <mat-icon>picture_as_pdf</mat-icon>
                                             </button>
-                                        </p>
+                                            -->
+                                        </div>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
                         </ng-container>
+                        <!-- 
                         <ng-container matColumnDef="plazo">
                             <th mat-header-cell *matHeaderCellDef>Plazo</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" style="font-size:14px">
                                         <p matLine *ngFor="let t of z.listEvidencia">
-                                            <!-- <span class="demo-2">{{t.plazo | date: 'MMMM y' | titlecase}}</span> -->
+                                            <span class="demo-2">{{t.plazo | date: 'MMMM y' | titlecase}}</span>
                                             <span class="demo-2">{{t.plazo | date: 'dd-MM-yyyy'}}</span>
                                         </p>
                                         <mat-divider></mat-divider>
@@ -156,6 +181,7 @@
                                 </mat-list>
                             </td>
                         </ng-container>
+                        -->
                         <ng-container matColumnDef="tipo_formula">
                             <th mat-header-cell *matHeaderCellDef>Tipo fórmula</th>
                             <td mat-cell *matCellDef="let element"></td>
