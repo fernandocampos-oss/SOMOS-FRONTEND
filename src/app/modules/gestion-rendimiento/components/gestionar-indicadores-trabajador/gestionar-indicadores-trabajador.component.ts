@@ -251,4 +251,22 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
   }
 
+  abrirEditor(idVotante:number, registro:any){
+    //console.log("Capturado:",registro);
+    let info:any = {
+      "idPersona":idVotante,
+      "prioridad":registro
+    }
+    const dialogRef: MatDialogRef<AsignarPrioridadComponent> = this._dialog.open(AsignarPrioridadComponent, {
+      disableClose: true,
+      width: '60%',
+      maxHeight: '80vh',
+      autoFocus: false,
+      data: info
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableJefe();
+    });
+  }
 }

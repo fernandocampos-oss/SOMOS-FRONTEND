@@ -24,7 +24,7 @@ export class AsignarPrioridadComponent implements OnInit {
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   displayedColumns: string[] = ['item', 'evidencia', 'plazo', 'Quitar'];
-  listEvidencia: Array<{ descripcion: string, plazo: String }> = [];
+  listEvidencia: Array<{ descripcion: string, plazo: String, idEvidencia: 0}> = [];
   dataSource = this.listEvidencia;
 
   listActividad: ActividadResponse[];
@@ -62,9 +62,66 @@ export class AsignarPrioridadComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listarActividades();
+    /*this.listarActividades();
     this.listarEquipo();
-    this.listarTipoValorMeta();
+    this.listarTipoValorMeta();*/
+    this.listaGeneral();
+  }
+
+  async listaGeneral(){
+    await this._grService.listarActividades().then((data) => {
+      if (data.length > 0) {
+        this.listActividad = data;
+      } else {
+        this._notification.warning("Lista de actividades vacia");
+      }
+      this._grService.listarIntegrantesPorLider().then((data) => {
+        if (data.length > 0) {
+          this.listEquipo = data;
+        } else {
+          this._notification.warning("Para crear indicadores primero debes registrar integrantes a tu equipo");
+        }
+        this._grService.listarTipoValorMeta().then((data) => {
+          if (data.length > 0) {
+            this.listTipoValorMeta = data;
+          } else {
+            this._notification.warning("Lista de tipo valor meta vacio");
+          }
+          this.validarEntrante();
+        });
+      });
+    });
+  }
+
+  validarEntrante(){
+    //console.log("Persona Enviada:",this.data);
+    if(this.data.idPersona != undefined){
+      let unTraba:any = this.listEquipo.find((dtEquipo:any)=>dtEquipo.integrante.idVotante == this.data.idPersona);
+      this.formPrioridad.controls["frmTrabajador"].setValue(unTraba);
+      this.sumaTotalPesoIndicadoresByTrabajador(this.data.idPersona);
+      let infActividad:any = this.listActividad.find((dtActi:any)=>dtActi.idActividad == this.data.prioridad.idActividad);
+      this.formPrioridad.controls["frmActividad"].setValue(infActividad);
+      this.formPrioridad.controls["frmDescripcionIndicador"].setValue(this.data.prioridad.prioridadNombre);
+      this.formPrioridad.controls["frmTipoValorMeta"].setValue(this.data.prioridad.listIndicador[0].idTipoValorMeta);
+      this.onChangeValueTipoValorMeta = this.data.prioridad.listIndicador[0].idTipoValorMeta;
+      this.formPrioridad.controls["frmPeso"].setValue(this.data.prioridad.listIndicador[0].peso);
+      this.formPrioridad.controls["frmValorMeta"].setValue(this.data.prioridad.listIndicador[0].valorMeta);
+      //this.listEvidencia = this.data.prioridad.listIndicador[0].listEvidencia;
+      this.listEvidencia = [];
+      if(this.data.prioridad.listIndicador[0].listEvidencia.length > 0){
+        this.data.prioridad.listIndicador[0].listEvidencia.forEach((dtEvi:any)=>{
+          let fecha = new Date(dtEvi.plazo);
+          this.listEvidencia.push({
+            descripcion: dtEvi.descripcion,
+            plazo: moment(fecha).format('YYYY-MM-DDTHH:mm:ss'),
+            idEvidencia: dtEvi.idEvidencia
+          });
+        });
+        //console.log("Evidencias:",this.listEvidencia);
+        this.dataSource = this.listEvidencia;
+        this.table.renderRows();
+      }
+    }
   }
 
   async listarActividades() {
@@ -137,7 +194,8 @@ export class AsignarPrioridadComponent implements OnInit {
         this.listEvidencia.push({
           descripcion: this.formEvidencia.value.frmDescripcion,
           // plazo: this.formTareasListadas.value.frmDateTarea._d.toLocaleDateString()
-          plazo: moment(this.formEvidencia.value.frmPlazo._d).format('YYYY-MM-DDTHH:mm:ss')
+          plazo: moment(this.formEvidencia.value.frmPlazo._d).format('YYYY-MM-DDTHH:mm:ss'),
+          idEvidencia:0
         });
       } else {
         this._notification.warning("Máximo 6 evidencias por Indicador/Producto");
