@@ -36,7 +36,7 @@
         </form>
     </div>
     <div class="page__body">
-      <div class="card shadow mat-elevation-z8">
+      <div class="card shadow no-padd mat-elevation-z8">
         <table mat-table #tablaBoletas [dataSource]="listBoletas" matSort style="width: 100%;">
             <ng-container matColumnDef="anio">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Año</th>
@@ -105,7 +105,7 @@
                 <mat-icon>payment</mat-icon> Registro de Actividad<br>
             </div>
         </h1>
-        <div class="card shadow alignCard mat-elevation-z8">
+        <div class="card shadow no-padd alignCard mat-elevation-z8">
             <table mat-table #tablaAcciones [dataSource]="dataSourceAcciones" matSort style="width: 100%;">
             
                 <ng-container matColumnDef="fecha">
