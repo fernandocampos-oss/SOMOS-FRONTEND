@@ -18,7 +18,7 @@ import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/compone
   styleUrls: ['./gestionar-indicadores-trabajador.component.scss']
 })
 export class GestionarIndicadoresTrabajadorComponent implements OnInit {
-  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'valor_meta', 'peso', 'evidencia', 'tipo_formula', 'comentario', 'logro_final', 'puntuacion_meta'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'evidencia', 'tipo_formula', 'comentario', 'logro_final', 'puntuacion_meta'];
   // groupedColumns: string[] = ['grouped'];
   // menuToggle = new EventEmitter<void>();
 

@@ -300,3 +300,61 @@ input.hide-spinner[type='number'] {
 .eviItem span{
   display: block;
 }
+
+/********************************************************
+Nuevo parche CSS (Ini) 
+*********************************************************/
+
+.card.no-padd{
+  padding: 0 0 15px !important;
+}
+
+.anotherTable th.mat-header-cell, .anotherTable td.mat-header-cell{
+  padding: 0px 5px !important; 
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+.anotherTable th.mat-header-cell, .anotherTable td.mat-cell, td.mat-footer-cell {
+  padding: 0px 5px !important; 
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.anotherTable th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
+  padding-left: 5px !important;
+}
+.anotherTable .mat-list-base .mat-list-item, .anotherTable .mat-list-base .mat-list-option{
+  height: auto !important;
+}
+
+.mat-expansion-panel-body{
+  padding: 0 12px 16px !important;
+}
+.matrixCube{
+  padding: 10px 15px !important;
+}
+.matrixCube *{
+  padding: 0 !important;
+}
+.metapeso b{
+  font-weight: 600 !important;
+  color: #000000;
+}
+.pesoTotal{
+  width: auto;
+  height: 36px;
+  background: #8ca6b7; /* #0077C8 */
+  color: #FFFFFF;
+  -webkit-border-radius: 18px;
+  -moz-border-radius: 18px;
+  border-radius: 18px;
+  padding: 8px 15px;
+}
+.pesoTotal b{
+  font-weight: 600 !important;
+}
+/*************** Nuevo parche CSS (Ini) *****************/ 
