@@ -41,7 +41,7 @@
                             </button>
                         </div>-->
                         <div class="pesoTotal">
-                            Peso Total: <b>23</b>%
+                            Peso Total: <b>{{i.pesoTotal}}</b>% ss
                         </div>
                         <div class="send-email">
                             <button mat-button color="primary" (click)="notificarCorreo(i.email)"
@@ -248,8 +248,10 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
+                    <!-- 
                     <br />
                     <span><strong>Peso Total:</strong> {{i.pesoTotal}}%</span>
+                    -->
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
