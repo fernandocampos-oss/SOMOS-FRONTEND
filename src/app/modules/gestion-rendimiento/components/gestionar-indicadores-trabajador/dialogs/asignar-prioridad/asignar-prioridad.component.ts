@@ -25,6 +25,7 @@ export class AsignarPrioridadComponent implements OnInit {
   idIndicador:number = 0;
   idPrioridad:number = 0;
   idEviEditar:number = 0;
+  activaEdicion:boolean = false;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   displayedColumns: string[] = ['item', 'evidencia', 'plazo', 'Quitar'];
