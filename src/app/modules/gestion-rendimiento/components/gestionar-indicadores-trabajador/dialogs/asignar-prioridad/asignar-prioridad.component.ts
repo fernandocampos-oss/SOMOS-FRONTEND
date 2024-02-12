@@ -24,10 +24,11 @@ export class AsignarPrioridadComponent implements OnInit {
   contadorTxtArea: number = 0;
   idIndicador:number = 0;
   idPrioridad:number = 0;
+  idEviEditar:number = 0;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   displayedColumns: string[] = ['item', 'evidencia', 'plazo', 'Quitar'];
-  listEvidencia: Array<{ descripcion: string, plazo: String, idEvidencia: 0}> = [];
+  listEvidencia: Array<{ descripcion: string, plazo: String, idEvidencia: number, tiene: number}> = [];
   dataSource = this.listEvidencia;
 
   listActividad: ActividadResponse[];
@@ -142,10 +143,12 @@ export class AsignarPrioridadComponent implements OnInit {
       if(infIndicador.listEvidencia.length > 0){
         infIndicador.listEvidencia.forEach((dtEvi:any)=>{
           let fecha = new Date(dtEvi.plazo);
+          let tienepdf:number = (dtEvi.sustentoDescripcion == null?0:1);
           this.listEvidencia.push({
             descripcion: dtEvi.descripcion,
             plazo: moment(fecha).format('YYYY-MM-DDTHH:mm:ss'),
-            idEvidencia: dtEvi.idEvidencia
+            idEvidencia: dtEvi.idEvidencia,
+            tiene: tienepdf
           });
         });
         //console.log("Evidencias:",this.listEvidencia);
@@ -226,7 +229,8 @@ export class AsignarPrioridadComponent implements OnInit {
           descripcion: this.formEvidencia.value.frmDescripcion,
           // plazo: this.formTareasListadas.value.frmDateTarea._d.toLocaleDateString()
           plazo: moment(this.formEvidencia.value.frmPlazo._d).format('YYYY-MM-DDTHH:mm:ss'),
-          idEvidencia:0
+          idEvidencia:0,
+          tiene:0
         });
         this.dataSource = this.listEvidencia;
       } else {
@@ -306,6 +310,15 @@ export class AsignarPrioridadComponent implements OnInit {
         }else{
           this._grService.modificarIndicador(this.idIndicador, indicador).then((data) => {
             if (data = 1) {
+              this.listEvidencia.forEach((dtEvi:any)=>{
+                if(dtEvi.tiene == 0){
+                  this._grService.modificarEvidencia(dtEvi.idEvidencia, {descripcion: dtEvi.descripcion, plazo:dtEvi.plazo}).then((dataE) => {
+                    /*if (dataE != 1) {
+                      this._notification.error("Actualizar Evidencia: Error");
+                    }*/
+                  });
+                }
+              });
               this._notification.success("Indicador actualizado");
               this._dialog.closeAll();
             } else {
@@ -324,5 +337,44 @@ export class AsignarPrioridadComponent implements OnInit {
     let actividad = new ActividadRequest();
     actividad.idActividad = this.idActividadSeleccionado;
   }*/
+  actualizarTarea(){
+    if (this.formEvidencia.value.frmDescripcion == undefined || this.formEvidencia.value.frmPlazo == undefined ||
+      this.formEvidencia.value.frmDescripcion == '' || this.formEvidencia.value.frmPlazo == '') {
+      this._notification.warning("Ingrese todos los campos para continuar");
+    } else {
+      if (this.listEvidencia.length <= 5) {
+        this.listEvidencia.forEach((dtEvi:any)=>{
+          if(this.idEviEditar == dtEvi.idEvidencia){
+            dtEvi.descripcion = this.formEvidencia.value.frmDescripcion;
+            dtEvi.plazo = moment(this.formEvidencia.value.frmPlazo._d).format('YYYY-MM-DDTHH:mm:ss');
+          }
+        });
+        /*this.listEvidencia.push({
+          descripcion: this.formEvidencia.value.frmDescripcion,
+          // plazo: this.formTareasListadas.value.frmDateTarea._d.toLocaleDateString()
+          plazo: moment(this.formEvidencia.value.frmPlazo._d).format('YYYY-MM-DDTHH:mm:ss'),
+          idEvidencia:0
+        });*/
+        this.dataSource = this.listEvidencia;
+      } else {
+        this._notification.warning("Máximo 6 evidencias por Indicador/Producto");
+      }
+      this.table.renderRows();
+      this.idEviEditar = 0;
+    }
+  }
+  
+  editarTarea(idTarea:number){
+    this.idEviEditar = idTarea;
+    let infEvi:any = this.listEvidencia.find((dtEvi:any)=>dtEvi.idEvidencia == idTarea);
+    this.formEvidencia.controls["frmDescripcion"].setValue(infEvi.descripcion);
+    let fecha = new Date(infEvi.plazo);
+    //this.minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
+    this.minFechaEvidencia = fecha;
+    this.formEvidencia.controls["frmPlazo"].setValue(fecha);
+  }
 
+  cancelaEdicion(){
+    this.idEviEditar = 0;
+  }
 }

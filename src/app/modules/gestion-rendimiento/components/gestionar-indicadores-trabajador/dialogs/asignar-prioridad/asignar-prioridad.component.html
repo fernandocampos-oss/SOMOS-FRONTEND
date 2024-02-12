@@ -91,7 +91,7 @@
                         <input matInput formControlName="frmDescripcion">
                     </mat-form-field>
                 </mat-grid-tile>
-                <mat-grid-tile [colspan]="5">
+                <mat-grid-tile [colspan]="(idIndicador==0?5:4)">
                     <mat-form-field appearance="outline">
                         <mat-label>Plazo máximo</mat-label>
                         <input matInput formControlName="frmPlazo" [min]="minFechaEvidencia"
@@ -100,9 +100,13 @@
                         <mat-datepicker #fechaTareaPicker></mat-datepicker>
                     </mat-form-field>
                 </mat-grid-tile>
-                <mat-grid-tile [colspan]="1">
-                    <button mat-raised-button color="primary" class="botonPoi"
+                <mat-grid-tile [colspan]="(idIndicador==0?1:2)">
+                    <button mat-raised-button color="primary" class="botonPoi" *ngIf="idIndicador==0"
                         (click)="crearTarea(); formEvidencia.reset()">Añadir</button>
+                    <button mat-raised-button color="warn" class="botonPoiWarn" *ngIf="idIndicador>0" [disabled]="idEviEditar==0"
+                        (click)="cancelaEdicion(); formEvidencia.reset()">Cancelar</button>
+                    <button mat-raised-button color="primary" class="botonPoi" *ngIf="idIndicador>0" [disabled]="idEviEditar==0"
+                        (click)="actualizarTarea(); formEvidencia.reset()">Actualizar</button>
                 </mat-grid-tile>
             </mat-grid-list>
             <div style="max-height: 260px; overflow-y: auto;">
@@ -120,10 +124,15 @@
                         <td mat-cell *matCellDef="let element"> {{element.plazo | date: 'dd-MM-yyyy'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="Quitar">
-                        <th mat-header-cell *matHeaderCellDef width="10%">Quitar</th>
+                        <!--<th mat-header-cell *matHeaderCellDef width="10%">Quitar</th>-->
+                        <th mat-header-cell *matHeaderCellDef width="10%">Acciones</th>
                         <td mat-cell *matCellDef="let element;index as i">
                             <button mat-icon-button class="primary-button" *ngIf="element.idEvidencia == 0" matTooltip="Quitar" (click)="deleteTarea(i)">
                                 <mat-icon>cancel</mat-icon>
+                            </button>
+                            <button mat-icon-button color="primary" matTooltip="Editar Evidencia" *ngIf="element.idEvidencia > 0  && element.tiene == 0"
+                                (click)="editarTarea(element.idEvidencia)">
+                                <mat-icon>edit</mat-icon>
                             </button>
                         </td>
                     </ng-container>
