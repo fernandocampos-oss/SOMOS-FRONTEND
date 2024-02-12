@@ -251,11 +251,17 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
   }
 
-  abrirEditor(idVotante:number, registro:any){
-    //console.log("Capturado:",registro);
+  abrirEditor(idVotante:number, registro:any, idInd:number){
+    /*console.log("Capturado:",registro);
+    let indicador:any = registro.listIndicador.find((dtInd:any)=>dtInd.idIndicador == idInd);
+    let indicador = {...aux};
+    registro.listIndicador = [];
+    console.log("Capturado:",indicador);
+    registro.listIndicador.push(indicador);*/
     let info:any = {
       "idPersona":idVotante,
-      "prioridad":registro
+      "prioridad":registro,
+      "idIndicador": idInd
     }
     const dialogRef: MatDialogRef<AsignarPrioridadComponent> = this._dialog.open(AsignarPrioridadComponent, {
       disableClose: true,

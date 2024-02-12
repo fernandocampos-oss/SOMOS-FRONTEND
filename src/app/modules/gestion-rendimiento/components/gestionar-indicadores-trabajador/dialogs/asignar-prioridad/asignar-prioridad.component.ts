@@ -11,6 +11,7 @@ import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel
 
 import * as moment from 'moment';
 import { AlertaPesoComponent } from '../alerta-peso/alerta-peso.component';
+import { UpdatePrioridadDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
 
 @Component({
   selector: 'app-asignar-prioridad',
@@ -21,6 +22,8 @@ export class AsignarPrioridadComponent implements OnInit {
   isLinear = false;
   minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
   contadorTxtArea: number = 0;
+  idIndicador:number = 0;
+  idPrioridad:number = 0;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   displayedColumns: string[] = ['item', 'evidencia', 'plazo', 'Quitar'];
@@ -94,14 +97,22 @@ export class AsignarPrioridadComponent implements OnInit {
   }
 
   validarEntrante(){
-    //console.log("Persona Enviada:",this.data);
+    console.log("Persona Enviada:",this.data);
+    this.idIndicador = 0;
+    this.idPrioridad = 0;
     if(this.data.idPersona != undefined){
+      //this.idIndicador = this.data.prioridad.listIndicador[0].idIndicador;
+      let infIndicador:any = this.data.prioridad.listIndicador.find((dtInd:any)=>dtInd.idIndicador == this.data.idIndicador);
+      console.log("Indicador:",infIndicador);
+      this.idPrioridad = this.data.prioridad.idPrioridad;
+      this.idIndicador = this.data.idIndicador;
       let unTraba:any = this.listEquipo.find((dtEquipo:any)=>dtEquipo.integrante.idVotante == this.data.idPersona);
       this.formPrioridad.controls["frmTrabajador"].setValue(unTraba);
       this.sumaTotalPesoIndicadoresByTrabajador(this.data.idPersona);
       let infActividad:any = this.listActividad.find((dtActi:any)=>dtActi.idActividad == this.data.prioridad.idActividad);
       this.formPrioridad.controls["frmActividad"].setValue(infActividad);
       this.formPrioridad.controls["frmDescripcionIndicador"].setValue(this.data.prioridad.prioridadNombre);
+      /*
       this.formPrioridad.controls["frmTipoValorMeta"].setValue(this.data.prioridad.listIndicador[0].idTipoValorMeta);
       this.onChangeValueTipoValorMeta = this.data.prioridad.listIndicador[0].idTipoValorMeta;
       this.formPrioridad.controls["frmPeso"].setValue(this.data.prioridad.listIndicador[0].peso);
@@ -110,6 +121,26 @@ export class AsignarPrioridadComponent implements OnInit {
       this.listEvidencia = [];
       if(this.data.prioridad.listIndicador[0].listEvidencia.length > 0){
         this.data.prioridad.listIndicador[0].listEvidencia.forEach((dtEvi:any)=>{
+          let fecha = new Date(dtEvi.plazo);
+          this.listEvidencia.push({
+            descripcion: dtEvi.descripcion,
+            plazo: moment(fecha).format('YYYY-MM-DDTHH:mm:ss'),
+            idEvidencia: dtEvi.idEvidencia
+          });
+        });
+        //console.log("Evidencias:",this.listEvidencia);
+        this.dataSource = this.listEvidencia;
+        this.table.renderRows();
+      }
+      */
+      this.formPrioridad.controls["frmTipoValorMeta"].setValue(infIndicador.idTipoValorMeta);
+      this.onChangeValueTipoValorMeta = infIndicador.idTipoValorMeta;
+      this.formPrioridad.controls["frmPeso"].setValue(infIndicador.peso);
+      this.formPrioridad.controls["frmValorMeta"].setValue(infIndicador.valorMeta);
+      //this.listEvidencia = this.data.prioridad.listIndicador[0].listEvidencia;
+      this.listEvidencia = [];
+      if(infIndicador.listEvidencia.length > 0){
+        infIndicador.listEvidencia.forEach((dtEvi:any)=>{
           let fecha = new Date(dtEvi.plazo);
           this.listEvidencia.push({
             descripcion: dtEvi.descripcion,
@@ -197,11 +228,13 @@ export class AsignarPrioridadComponent implements OnInit {
           plazo: moment(this.formEvidencia.value.frmPlazo._d).format('YYYY-MM-DDTHH:mm:ss'),
           idEvidencia:0
         });
+        this.dataSource = this.listEvidencia;
       } else {
         this._notification.warning("Máximo 6 evidencias por Indicador/Producto");
       }
       this.table.renderRows();
     }
+    console.log("Agregar:",this.listEvidencia);
   }
 
   deleteTarea(index) {
@@ -244,11 +277,20 @@ export class AsignarPrioridadComponent implements OnInit {
       evidencias.push(e);
     }
 
-    let prioridadDto = new PrioridadRequestDto();
-    prioridadDto.actividad = actividad;
-    prioridadDto.votante = votante;
-    prioridadDto.indicador = indicador;
-    prioridadDto.listEvidencia = evidencias;
+    let prioridadDto:any = null;
+    if(this.data.idPersona == undefined){
+      prioridadDto = new PrioridadRequestDto();
+      prioridadDto.actividad = actividad;
+      prioridadDto.votante = votante;
+      prioridadDto.indicador = indicador;
+      prioridadDto.listEvidencia = evidencias;
+    }else{
+      /*prioridadDto = new UpdatePrioridadDto();
+      prioridadDto.actividad = actividad;
+      let modelTipo = new TipoValorMeta();
+      modelTipo.idTipoValorMeta = this.idTipoValorMetaSeleccionado;*/
+
+    }
 
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false
@@ -256,16 +298,31 @@ export class AsignarPrioridadComponent implements OnInit {
     this.confirmDialogRef.componentInstance.confirmMessage = '¿Estas seguro de continuar?';
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
-
-        this._grService.registrarIndicador(prioridadDto).then(data => {
-          this._notification.success("Se registró correctamente");
-          this._dialog.closeAll();
-        });
+        if(this.data.idPersona == undefined){
+          this._grService.registrarIndicador(prioridadDto).then(data => {
+            this._notification.success("Se registró correctamente");
+            this._dialog.closeAll();
+          });
+        }else{
+          this._grService.modificarIndicador(this.idIndicador, indicador).then((data) => {
+            if (data = 1) {
+              this._notification.success("Indicador actualizado");
+              this._dialog.closeAll();
+            } else {
+              this._notification.error("Actualizar Indicador: Error");
+            }
+          });
+        }
         // this._dialog.closeAll();
       }
       this.confirmDialogRef = null;
     });
 
   }
+
+  /*async modificar(){
+    let actividad = new ActividadRequest();
+    actividad.idActividad = this.idActividadSeleccionado;
+  }*/
 
 }

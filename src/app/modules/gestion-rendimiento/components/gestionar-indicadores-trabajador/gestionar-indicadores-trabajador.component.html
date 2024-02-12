@@ -65,17 +65,13 @@
                                 orgánica</th>
                             <td mat-cell *matCellDef="let element">
                                 {{element.prioridadNombre ? element.prioridadNombre :'-'}}
-                                <!--<button mat-icon-button class="add-prioridad"
+                                <button mat-icon-button class="add-prioridad"
                                     matTooltip="Añadir nuevo Indicador/Producto"
                                     (click)="agregarIndicador(element, i.idVotante, i)">
                                     <mat-icon>add_circle</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
                                     (click)="editarPrioridad(element.idPrioridad, element.idActividad, element.fechaAsignacionPrioridad, 1)">
-                                    <mat-icon>edit</mat-icon>
-                                </button>-->
-                                <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
-                                    (click)="abrirEditor(i.idVotante, element)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
                             </td>
@@ -87,15 +83,19 @@
                                     <mat-list-item *ngFor="let x of element.listIndicador" style="font-size:14px">
                                         <p matLine>
                                             <span class="demo-2">{{x.nombreIndicador}}</span>
-                                            <!--<button mat-icon-button class="has-success"
+                                            <button mat-icon-button class="has-success"
                                                 matTooltip="Añadir nueva evidencia para este Indicador/Producto"
                                                 (click)="agregarEvidencia(x)">
                                                 <mat-icon matListIcon>add_circle</mat-icon>
                                             </button>
-                                            <button mat-icon-button color="primary" matTooltip="Editar Indicador"
+                                            <!--<button mat-icon-button color="primary" matTooltip="Editar Indicador"
                                                 (click)="editarIndicador(x, 2)">
                                                 <mat-icon>edit</mat-icon>
                                             </button>-->
+                                            <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
+                                                (click)="abrirEditor(i.idVotante, element, x.idIndicador)">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
                                         </p>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
@@ -145,25 +145,24 @@
                                                     ({{t.plazo | date: 'dd-MM-yyyy'}})
                                                 </span>
                                             </div>
-                                            <div class="eviItem">
+                                            <!--<div class="eviItem">
                                                 <button mat-icon-button color="warn"
                                                     [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
                                                     (click)="verEvidenciaPdf(t)">
                                                     <mat-icon>picture_as_pdf</mat-icon>
                                                 </button>
                                             </div>
-                                            <!--
+                                            
                                             <span>- {{t.descripcion}}</span>
                                             <button mat-icon-button color="primary" matTooltip="Editar Evidencia"
                                                 (click)="editarEvidencia(t, 3)">
                                                 <mat-icon>edit</mat-icon>
-                                            </button> 
+                                            </button> -->
                                             <button mat-icon-button color="warn"
                                                 [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
                                                 (click)="verEvidenciaPdf(t)">
                                                 <mat-icon>picture_as_pdf</mat-icon>
                                             </button>
-                                            -->
                                         </div>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
