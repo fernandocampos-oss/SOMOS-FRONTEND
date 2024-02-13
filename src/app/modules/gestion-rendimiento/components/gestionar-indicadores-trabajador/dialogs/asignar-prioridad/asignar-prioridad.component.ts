@@ -102,7 +102,9 @@ export class AsignarPrioridadComponent implements OnInit {
     console.log("Persona Enviada:",this.data);
     this.idIndicador = 0;
     this.idPrioridad = 0;
+    this.activaEdicion = false;
     if(this.data.idPersona != undefined){
+      this.activaEdicion = true;
       //this.idIndicador = this.data.prioridad.listIndicador[0].idIndicador;
       let infIndicador:any = this.data.prioridad.listIndicador.find((dtInd:any)=>dtInd.idIndicador == this.data.idIndicador);
       console.log("Indicador:",infIndicador);
@@ -157,6 +159,7 @@ export class AsignarPrioridadComponent implements OnInit {
         this.table.renderRows();
       }
     }
+    this.habEdiTarea();
   }
 
   async listarActividades() {
@@ -367,6 +370,8 @@ export class AsignarPrioridadComponent implements OnInit {
   
   editarTarea(idTarea:number){
     this.idEviEditar = idTarea;
+    this.activaEdicion = false;
+    this.habEdiTarea();
     let infEvi:any = this.listEvidencia.find((dtEvi:any)=>dtEvi.idEvidencia == idTarea);
     this.formEvidencia.controls["frmDescripcion"].setValue(infEvi.descripcion);
     let fecha = new Date(infEvi.plazo);
@@ -376,6 +381,18 @@ export class AsignarPrioridadComponent implements OnInit {
   }
 
   cancelaEdicion(){
+    this.activaEdicion = true;
+    this.habEdiTarea();
     this.idEviEditar = 0;
+  }
+
+  habEdiTarea(){
+    if(this.activaEdicion == true){
+      this.formEvidencia.controls["frmDescripcion"].disable();
+      this.formEvidencia.controls["frmPlazo"].disable();
+    }else{
+      this.formEvidencia.controls["frmDescripcion"].enable();
+      this.formEvidencia.controls["frmPlazo"].enable();
+    }
   }
 }
