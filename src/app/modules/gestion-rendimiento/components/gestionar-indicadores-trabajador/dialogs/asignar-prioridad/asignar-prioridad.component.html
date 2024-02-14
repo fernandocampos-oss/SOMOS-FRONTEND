@@ -23,7 +23,7 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Indicador / Producto</mat-label>
-                <input matInput formControlName="frmDescripcionIndicador" minlength="1" maxlength="200" />
+                <input matInput formControlName="frmDescripcionIndicador" minlength="1" maxlength="200" (keypress)="validaTexto($event)" />
             </mat-form-field>
 
             <h4><strong>Valor Meta:</strong></h4>
@@ -40,7 +40,7 @@
             <div *ngIf="onChangeValueTipoValorMeta ==1 || onChangeValueTipoValorMeta ==2">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor Numérico</mat-label>
-                    <input matInput formControlName="frmValorMeta" maxlength="3" required />
+                    <input matInput formControlName="frmValorMeta" maxlength="3" (keypress)="validaNumero($event)" required />
                 </mat-form-field>
             </div>
             <div *ngIf="onChangeValueTipoValorMeta ==4">
@@ -88,7 +88,7 @@
                 <mat-grid-tile [colspan]="6">
                     <mat-form-field appearance="outline">
                         <mat-label>Evidencia a presentar</mat-label>
-                        <input matInput formControlName="frmDescripcion">
+                        <input matInput formControlName="frmDescripcion" (keypress)="validaTexto($event)" maxlength="300">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="(idIndicador==0?5:4)">

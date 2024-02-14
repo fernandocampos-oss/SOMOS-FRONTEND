@@ -19,6 +19,9 @@ import { UpdatePrioridadDto } from '@data/models/gestion-rendimiento/prioridad-e
   styleUrls: ['./asignar-prioridad.component.scss']
 })
 export class AsignarPrioridadComponent implements OnInit {
+  expNumero:RegExp = /^[0-9]{1,3}$/;
+  expTexto:RegExp = /^[a-zA-Z\u00C1\u00C9\u00CD\u00D3\u00F3\u00FA\u00d1\u00f1\u00e1\u00e9\u00ed\u00f3\u00fa0-9,.\- \'\"\(\)\[\]]{1,200}$/;
+  //expTexto:RegExp = /^[a-zA-ZÀ-ÿ\u00f1\u00d1,.\- \'\"\(\)\[\]]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
   isLinear = false;
   minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
   contadorTxtArea: number = 0;
@@ -26,6 +29,7 @@ export class AsignarPrioridadComponent implements OnInit {
   idPrioridad:number = 0;
   idEviEditar:number = 0;
   activaEdicion:boolean = false;
+  contador:number = 0;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   displayedColumns: string[] = ['item', 'evidencia', 'plazo', 'Quitar'];
@@ -38,15 +42,15 @@ export class AsignarPrioridadComponent implements OnInit {
   formPrioridad = this._formBuilder.group({
     frmTrabajador: ['', Validators.required],
     frmActividad: ['', Validators.required],
-    frmDescripcionIndicador: ['', Validators.required],
+    frmDescripcionIndicador: ['', [Validators.required, Validators.pattern(this.expTexto)]],
     // frmDetalleIndicador: ['', Validators.required],    
     frmTipoValorMeta: ['', Validators.required],
-    frmValorMeta: [''],
-    frmPeso: ['', Validators.required],
+    frmValorMeta: ['',[Validators.pattern(this.expNumero)]],
+    frmPeso: ['', [Validators.required]],
   });
 
   formEvidencia = this._formBuilder.group({
-    frmDescripcion: [''],
+    frmDescripcion: ['',[Validators.pattern(this.expTexto), Validators.maxLength(300)]],
     frmPlazo: [''],
   });
 
@@ -394,5 +398,19 @@ export class AsignarPrioridadComponent implements OnInit {
       this.formEvidencia.controls["frmDescripcion"].enable();
       this.formEvidencia.controls["frmPlazo"].enable();
     }
+  }
+
+  validaNumero(event:any){
+    const inputValue: string = String.fromCharCode(event.keyCode);
+    return this.expNumero.test(inputValue);
+  }
+
+  validaTexto(event:any){
+    const inputValue: string = String.fromCharCode(event.keyCode);
+    return this.expTexto.test(inputValue);
+  }
+
+  onKey(event){
+    this.contador = event.target.value.length
   }
 }

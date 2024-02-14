@@ -9,13 +9,13 @@
         <mat-icon>add_circle</mat-icon>
         &nbsp; Asignar Nueva Prioridad Anual
     </button>
-    <div *ngIf="listDataTable.length !== 0">
+    <!--<div *ngIf="listDataTable.length !== 0">
         <button mat-raised-button class="has-success"
             matTooltip="Descargar para todos los que tengan al menos una asignación" (click)="generarExcelDirectivo()">
             <mat-icon>cloud_download</mat-icon>
             &nbsp; Descargar Todos
         </button>
-    </div>
+    </div>-->
 </div>
 <div *ngIf="listDataTable.length == 0" style="text-align: center"><br /><br />
     <p class="color-mensaje">Sin registros por mostrar, para visualizar debe agregar integrantes en la opcion <strong>Mi
@@ -44,7 +44,7 @@
                             Peso Total: <b>{{i.pesoTotal}}</b>%
                         </div>
                         <div class="send-email">
-                            <button mat-button color="primary" (click)="notificarCorreo(i.email)"
+                            <button mat-button color="primary" (click)="$event.stopPropagation(); notificarCorreo(i.email)"
                                 [disabled]="(i.listPrioridad.length === 0) ? true : false">
                                 <mat-icon>email</mat-icon>
                                 &nbsp; Notificar
@@ -220,7 +220,7 @@
 
                         <!-- Header row first group -->
                         <ng-container matColumnDef="header-row-first-group">
-                            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="6">
+                            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="5">
                                 ETAPA DE PLANIFICACIÓN
                             </th>
                         </ng-container>
