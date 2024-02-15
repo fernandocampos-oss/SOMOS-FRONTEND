@@ -67,7 +67,9 @@
                             <th mat-header-cell *matHeaderCellDef>Prioridades anuales de gestión del órgano o unidad
                                 orgánica</th>
                             <td mat-cell *matCellDef="let element">
-                                {{element.prioridadNombre ? element.prioridadNombre :'-'}}
+                                <div class="eviItem">
+                                    <span class="demo-2">{{element.prioridadNombre ? element.prioridadNombre :'-'}}</span>
+                                </div>
                                 <button mat-icon-button class="add-prioridad"
                                     matTooltip="Añadir nuevo Indicador/Producto"
                                     (click)="agregarIndicador(element, i.idVotante, i)">
@@ -150,7 +152,7 @@
                             <th mat-header-cell *matHeaderCellDef>Evidencia</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
-                                    <mat-list-item *ngFor="let z of element.listIndicador" style="font-size:14px">
+                                    <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
                                         <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
                                             <!-- -->
                                             <div class="eviItem">
