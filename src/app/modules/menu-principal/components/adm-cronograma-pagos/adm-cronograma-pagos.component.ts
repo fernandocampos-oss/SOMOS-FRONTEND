@@ -6,6 +6,7 @@ import { CronogramaPago, TipoContrato } from '@data/models/menu-principal/menu-c
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { SnackbarService } from '@core/services';
 
 @Component({
   selector: 'app-adm-cronograma-pagos',
@@ -33,7 +34,8 @@ export class AdmCronogramaPagosComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private boletaService: BoletaService,
-    private menuPrincipalService: MenuPrincipalService
+    private menuPrincipalService: MenuPrincipalService,
+    private snackbar: SnackbarService
   ) {
     this.currentYear = new Date().getFullYear();
   }
@@ -87,20 +89,21 @@ export class AdmCronogramaPagosComponent implements OnInit {
       this.getPaymentScheduleFilteredList(this.contractTypeId - 1).forEach(c => {
         const formName = c.idCronogramaPago + 'Schedule';
         const monthDate: Date = this.dateFormList[this.contractTypeId - 1].get(formName).value;
-        // const formattedMonthDate = monthDate.format('DD/MM/YYYY');
         const associatedPaymentTypes = this.dateFormList[this.contractTypeId - 1].get(formName + 'PaymentTypes').value;
         const data: CronogramaPago = {
           idCronogramaPago: c.idCronogramaPago,
           idTipoContrato: c.idTipoContrato,
           descripcionPeriodo: c.descripcionPeriodo,
           fecha: monthDate,
-          tipoPagoAsociados: associatedPaymentTypes
+          tipoPagoAsociados: associatedPaymentTypes,
+          fechaMinima: c.fechaMinima,
+          fechaMaxima: c.fechaMaxima
         };
         paymentScheduleUpdate.push(data);
       });
       console.log(paymentScheduleUpdate);
       this.menuPrincipalService.actualizarCronogramaPago(paymentScheduleUpdate).subscribe( c => {
-        console.log('Cronograma actualizado');
+        this.snackbar.success('Cronograma actualizado');
       });
     }
   }
