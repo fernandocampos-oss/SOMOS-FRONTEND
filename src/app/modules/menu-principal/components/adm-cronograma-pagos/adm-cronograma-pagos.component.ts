@@ -54,8 +54,13 @@ export class AdmCronogramaPagosComponent implements OnInit {
         .filter(p => p.idTipoContrato === t.idTipoContrato)
         .forEach(c => {
           const formName = c.idCronogramaPago + 'Schedule';
-          this.dateFormList[i].addControl(formName, this.fb.control(c.fecha, Validators.required));
-          this.dateFormList[i].addControl(formName + 'PaymentTypes', this.fb.control(c.tipoPagoAsociados, Validators.required));
+          if (c.requerido) {
+            this.dateFormList[i].addControl(formName, this.fb.control(c.fecha, Validators.required));
+            this.dateFormList[i].addControl(formName + 'PaymentTypes', this.fb.control(c.tipoPagoAsociados, Validators.required));
+          } else {
+            this.dateFormList[i].addControl(formName, this.fb.control(null));
+            this.dateFormList[i].addControl(formName + 'PaymentTypes', this.fb.control(null));
+          }
         });
     });
     console.log(this.dateFormList);
@@ -87,18 +92,24 @@ export class AdmCronogramaPagosComponent implements OnInit {
     if (this.dateFormList[this.contractTypeId - 1].valid) {
       const paymentScheduleUpdate: CronogramaPago[] = [];
       this.getPaymentScheduleFilteredList(this.contractTypeId - 1).forEach(c => {
-        const formName = c.idCronogramaPago + 'Schedule';
-        const monthDate: Date = this.dateFormList[this.contractTypeId - 1].get(formName).value;
-        const associatedPaymentTypes = this.dateFormList[this.contractTypeId - 1].get(formName + 'PaymentTypes').value;
-        const data: CronogramaPago = {
-          idCronogramaPago: c.idCronogramaPago,
-          idTipoContrato: c.idTipoContrato,
-          descripcionPeriodo: c.descripcionPeriodo,
-          fecha: monthDate,
-          tipoPagoAsociados: associatedPaymentTypes,
-          fechaMinima: c.fechaMinima,
-          fechaMaxima: c.fechaMaxima
-        };
+        let data: CronogramaPago;
+        if (c.requerido) {
+          const formName = c.idCronogramaPago + 'Schedule';
+          const monthDate: Date = this.dateFormList[this.contractTypeId - 1].get(formName).value;
+          const associatedPaymentTypes = this.dateFormList[this.contractTypeId - 1].get(formName + 'PaymentTypes').value;
+          data = {
+            idCronogramaPago: c.idCronogramaPago,
+            idTipoContrato: c.idTipoContrato,
+            descripcionPeriodo: c.descripcionPeriodo,
+            fecha: monthDate,
+            tipoPagoAsociados: associatedPaymentTypes,
+            fechaMinima: c.fechaMinima,
+            fechaMaxima: c.fechaMaxima,
+            requerido: c.requerido
+          };
+        } else {
+          data = c;
+        }
         paymentScheduleUpdate.push(data);
       });
       console.log(paymentScheduleUpdate);

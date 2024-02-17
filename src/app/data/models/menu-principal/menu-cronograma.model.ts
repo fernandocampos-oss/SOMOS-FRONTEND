@@ -6,6 +6,7 @@ export class CronogramaPago {
     tipoPagoAsociados: number[];
     fechaMinima: Date;
     fechaMaxima: Date;
+    requerido: boolean;
 }
 
 export class TipoContrato {
