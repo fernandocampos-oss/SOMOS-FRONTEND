@@ -25,6 +25,7 @@ import { DatosIntegranteComponent } from './components/form-renueva-essalud/dato
 import { ConfirmInscripcionComponent } from './components/form-renueva-essalud/confirm-inscripcion/confirm-inscripcion.component';
 import { RegisterInscripcionComponent } from './components/inscripciones/register-inscripcion/register-inscripcion.component';
 import { RegisterVoteInscripcionComponent } from './components/inscripciones/register-vote-inscripcion/register-vote-inscripcion.component';
+import { AdmCronogramaPagosComponent } from './components/adm-cronograma-pagos/adm-cronograma-pagos.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { RegisterVoteInscripcionComponent } from './components/inscripciones/reg
     ConfirmInscripcionComponent,
     RegisterInscripcionComponent,
     RegisterVoteInscripcionComponent,
+    AdmCronogramaPagosComponent,
 
   ],
   imports: [

@@ -4,6 +4,8 @@ import { environment } from '@env';
 import { OnomasticosRequest, OnomasticosResponse } from '@data/models/menu-principal/menu-principal.model';
 import { MenuEncuestaShow, encuestaRespuesta } from '@data/models/menu-principal/menu-encuesta.model';
 import { PublicacionRequest, PublicacionResponse } from '@data/models/menu-principal/menu-publicacion.model';
+import { BoletaTipo } from '@data/models/boleta/boleta-tipo.model';
+import { CronogramaPago, TipoContrato } from '@data/models/menu-principal/menu-cronograma.model';
 
 const URL_BASE = `${environment.apiUrl}`;
 
@@ -71,6 +73,21 @@ export class MenuPrincipalService {
   async getListRedesAsignadas() {
     const url = `${URL_BASE}/usuarios-redes/redes-asignadas`;
     return await this._httpClient.get<any[]>(url).toPromise();
+  }
+
+  async listarTiposContratos() {
+    const url = `${URL_BASE}/cronogramas/tipos-contratos`;
+    return await this._httpClient.get<TipoContrato[]>(url).toPromise();
+  }
+
+  async listarCronogramaPago() {
+    const url = `${URL_BASE}/cronogramas/pagos`;
+    return await this._httpClient.get<CronogramaPago[]>(url).toPromise();
+  }
+
+  actualizarCronogramaPago(cronogramaPago: CronogramaPago[]) {
+    const url = `${URL_BASE}/cronogramas/pagos`;
+    return this._httpClient.put<void>(url, cronogramaPago);
   }
 
 }
