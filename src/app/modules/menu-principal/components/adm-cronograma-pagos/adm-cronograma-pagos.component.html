@@ -23,13 +23,19 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Tipos de boletas</mat-label>
+          <mat-label>Tipos de boletas asociadas</mat-label>
           <mat-select [formControl]="dateFormList[i].get(schedule.idCronogramaPago + 'SchedulePaymentTypes')" [disabled]="!schedule.requerido" multiple>
             <mat-option *ngFor="let type of paymentTypesList" [value]="type.idTipoBoleta">{{type.descripcion}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </ng-container>
-    <button mat-raised-button color="primary" (click)="saveChanges()" class='btn-save'><mat-icon>save</mat-icon> Guardar cambios</button>
   </ng-container>
 </form>
+<div *ngFor="let form of dateFormList; let i = index" class="div-btn-save">
+  <ng-container *ngIf="contractTypeId == i + 1">
+    <button [@fadeInOut] mat-raised-button color="primary" *ngIf="dateFormList.length > 0" (click)="saveChanges()">
+      <mat-icon>save</mat-icon> Guardar cambios
+    </button>
+  </ng-container>
+</div>

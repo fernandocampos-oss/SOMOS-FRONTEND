@@ -6,7 +6,7 @@ import { CronogramaPago, TipoContrato } from '@data/models/menu-principal/menu-c
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { SnackbarService } from '@core/services';
+import { NotificationService } from '@core/services';
 
 @Component({
   selector: 'app-adm-cronograma-pagos',
@@ -35,7 +35,7 @@ export class AdmCronogramaPagosComponent implements OnInit {
     private fb: FormBuilder,
     private boletaService: BoletaService,
     private menuPrincipalService: MenuPrincipalService,
-    private snackbar: SnackbarService
+    private notificacion: NotificationService
   ) {
     this.currentYear = new Date().getFullYear();
   }
@@ -63,7 +63,6 @@ export class AdmCronogramaPagosComponent implements OnInit {
           }
         });
     });
-    console.log(this.dateFormList);
   }
 
   getPaymentScheduleFilteredList(i: number): CronogramaPago[] {
@@ -112,11 +111,15 @@ export class AdmCronogramaPagosComponent implements OnInit {
         }
         paymentScheduleUpdate.push(data);
       });
-      console.log(paymentScheduleUpdate);
       this.menuPrincipalService.actualizarCronogramaPago(paymentScheduleUpdate).subscribe( c => {
-        this.snackbar.success('Cronograma actualizado');
+        const contractType: TipoContrato = this.getContractType(this.contractTypeId);
+        this.notificacion.success('Cronograma ' + contractType.descripcion + ' actualizado');
       });
     }
+  }
+
+  getContractType(id: number): TipoContrato {
+    return this.contractTypesList.find(c => c.idTipoContrato === id);
   }
 
   onToggleChange(event: MatButtonToggleChange): void {
