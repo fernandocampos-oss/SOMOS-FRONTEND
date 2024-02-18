@@ -1,0 +1,51 @@
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.closeButton {
+  margin-left: auto;
+}
+
+.mat-button-toggle-group.optPagos {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.mat-button-toggle {
+  flex: 1;
+  width: 0;
+}
+
+.mat-button-toggle{
+  background: #e6effa;
+}
+.mat-button-toggle-checked{
+  background: #226bb2;
+  color: white;
+}
+
+.form-field-container {
+  width: 30%;
+  margin-bottom: 16px;
+}
+
+.mat-form-field-div {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.04);
+  padding: 5px;
+}
+
+.div-btn-save {
+  margin-top: 1rem;
+  text-align: right;
+}
