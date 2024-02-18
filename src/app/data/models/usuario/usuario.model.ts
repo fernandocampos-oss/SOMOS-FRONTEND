@@ -14,5 +14,6 @@ export class Usuario {
   red: string;
   idZonaControl: number;
   idRol: Role;
-  unidad: string
+  unidad: string;
+  regimen: string;
 }

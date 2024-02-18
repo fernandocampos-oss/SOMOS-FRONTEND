@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuPrincipalService } from '@data/services/menu-principal.service';
 import { CronogramaPago, TipoContrato } from '@data/models/menu-principal/menu-cronograma.model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { AuthService, UsuarioService } from '@data/services';
 
 interface Calendario{
   fecPago: string;
@@ -22,6 +23,8 @@ export class ShowPaymentCalendarComponent implements OnInit {
 
   constructor(
     private menuPrincipalService: MenuPrincipalService,
+    private usuarioService: UsuarioService,
+    private authService: AuthService
   ) {
     this.currentYear = new Date().getFullYear();
   }
@@ -34,6 +37,7 @@ export class ShowPaymentCalendarComponent implements OnInit {
   async loadContractTypes() {
     await this.menuPrincipalService.listarTiposContratos().then(data => {
       this.contractTypesList = data;
+      this.findContractTypeUserByRegimen();
     });
   }
 
@@ -42,6 +46,29 @@ export class ShowPaymentCalendarComponent implements OnInit {
       this.paymentScheduleList = data;
       this.paymentScheduleFilteredList = this.paymentScheduleList.filter(p => p.idTipoContrato === this.contractTypeId);
     });
+  }
+
+  findContractTypeUserByRegimen() {
+    this.usuarioService.find(this.authService.getUserSession().id).subscribe(data => {
+      this.findContractTypeIdByRegimen(data.regimen);
+    });
+  }
+
+  findContractTypeIdByRegimen(regimen: string) {
+    if (regimen) {
+      let regimenFound = false;
+      this.contractTypesList.filter(c => c.codigo).forEach(c => {
+        c.codigo.split(',').forEach(cod => {
+          if (regimen.toUpperCase().includes(cod.toUpperCase())) {
+            this.contractTypeId = c.idTipoContrato;
+            regimenFound = true;
+          }
+        });
+        if (regimenFound) {
+          return;
+        }
+      });
+    }
   }
 
   onToggleChange(event: MatButtonToggleChange): void {

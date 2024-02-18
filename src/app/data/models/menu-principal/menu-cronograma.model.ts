@@ -12,4 +12,5 @@ export class CronogramaPago {
 export class TipoContrato {
     idTipoContrato: number;
     descripcion: string;
+    codigo: string;
 }
