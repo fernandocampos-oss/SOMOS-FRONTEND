@@ -49,6 +49,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   async loadTableJefe() {
     let listPrioridades = await this._grService.listarPrioridadesPrincipal().then((data) => {
       if (data.length > 0) {
+        console.log("info:",data);
         this.listDataTable = data;
       }
     });
@@ -123,7 +124,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  editarPrioridad(idPrioridad: number, idActividad: number, fechaAsignacion: any, control: number) {
+  editarPrioridad(idPrioridad: number, idActividad: number, fechaAsignacion: any, control: number, nombreActual:string) {
     const dialogRef: MatDialogRef<EditMasterComponent> = this._dialog.open(EditMasterComponent, {
       disableClose: false,
       width: '40%',
@@ -133,7 +134,8 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         switch: control,
         idPrioridad: idPrioridad,
         idActividad: idActividad,
-        fechaAsignacion: fechaAsignacion
+        fechaAsignacion: fechaAsignacion,
+        nombreActual: nombreActual
       }
     });
 
@@ -251,7 +253,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
   }
 
-  abrirEditor(idVotante:number, registro:any, idInd:number){
+  abrirEditor(idVotante:number, registro:any, idInd:number, nombrePrioridad:string){
     /*console.log("Capturado:",registro);
     let indicador:any = registro.listIndicador.find((dtInd:any)=>dtInd.idIndicador == idInd);
     let indicador = {...aux};
@@ -261,7 +263,8 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let info:any = {
       "idPersona":idVotante,
       "prioridad":registro,
-      "idIndicador": idInd
+      "idIndicador": idInd,
+      "nomPrioridad":nombrePrioridad
     }
     const dialogRef: MatDialogRef<AsignarPrioridadComponent> = this._dialog.open(AsignarPrioridadComponent, {
       disableClose: true,

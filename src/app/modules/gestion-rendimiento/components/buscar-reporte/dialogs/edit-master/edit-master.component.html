@@ -1,14 +1,25 @@
 <div *ngIf="this.data.switch == 1">
-    <h3 mat-dialog-title>Editar Actividad</h3>
+    <h3 mat-dialog-title>Editar Prioridad</h3>
     <form class="example-container" [formGroup]="formPrioridad" #frmPrioridad="ngForm"
         (ngSubmit)="modificarPrioridad()">
-        <mat-form-field appearance="outline">
+        <!-- <mat-form-field appearance="outline">
             <mat-label>Seleccione el tipo de prioridad anual de gestión del órgano o unidad orgánica</mat-label>
             <mat-select [(value)]="idActividadSeleccionado" formControlName="actividad">
                 <mat-option *ngFor="let a of listActividad" [value]="a.idActividad">
                     {{a.descripcion}}
                 </mat-option>
             </mat-select>
+        </mat-form-field>-->
+
+        <mat-form-field appearance="outline">
+            <mat-label>Editar la prioridad anual de gestión del órgano o unidad
+                orgánica</mat-label>
+            <!-- <mat-select formControlName="frmActividad" [disabled]="idIndicador>0">
+                <mat-option *ngFor="let a of listActividad" [value]="a">
+                    {{a.descripcion}}
+                </mat-option>
+            </mat-select> -->
+            <input matInput formControlName="frmDescripcionPrioridad" minlength="1" maxlength="250" (keypress)="validaTexto($event)" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">

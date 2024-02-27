@@ -22,6 +22,10 @@ export class IndicadorExistDto {
     peso?: number;
     tipoValorMeta?: TipoValorMeta
     valorMeta?: number;
+    /* Modificación Prioridad - Inicio */
+    flDesPrioridad?: string;
+    desPrioridad?: string;
+    /* Modificación Prioridad - Fin */
 }
 
 export class EvidenciaExistDto {
@@ -32,4 +36,5 @@ export class EvidenciaExistDto {
 export class UpdatePrioridadDto { 
     actividad?: ActividadRequest
     fechaAsignacion?: String;
+    prioridadNombre?: string;
 }

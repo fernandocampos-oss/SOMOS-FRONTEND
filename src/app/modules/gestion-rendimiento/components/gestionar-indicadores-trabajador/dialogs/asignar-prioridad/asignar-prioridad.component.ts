@@ -28,6 +28,11 @@ export class AsignarPrioridadComponent implements OnInit {
   idIndicador:number = 0;
   idPrioridad:number = 0;
   idEviEditar:number = 0;
+  nombrePrioridad:string = "";
+  /* Modificación Prioridad - Inicio */
+  desPrioridad:string = null;
+  flPrioridad:string = '1';
+  /* Modificación Prioridad - Fin */
   activaEdicion:boolean = false;
   contador:number = 0;
 
@@ -42,6 +47,7 @@ export class AsignarPrioridadComponent implements OnInit {
   formPrioridad = this._formBuilder.group({
     frmTrabajador: ['', Validators.required],
     frmActividad: ['', Validators.required],
+    frmDescripcionPrioridad: ['', [Validators.required, Validators.pattern(this.expTexto)]],
     frmDescripcionIndicador: ['', [Validators.required, Validators.pattern(this.expTexto)]],
     // frmDetalleIndicador: ['', Validators.required],    
     frmTipoValorMeta: ['', Validators.required],
@@ -74,6 +80,7 @@ export class AsignarPrioridadComponent implements OnInit {
     /*this.listarActividades();
     this.listarEquipo();
     this.listarTipoValorMeta();*/
+    this.flPrioridad = '1';
     this.listaGeneral();
   }
 
@@ -103,23 +110,37 @@ export class AsignarPrioridadComponent implements OnInit {
   }
 
   validarEntrante(){
-    console.log("Persona Enviada:",this.data);
     this.idIndicador = 0;
     this.idPrioridad = 0;
     this.activaEdicion = false;
+    this.desPrioridad = null;
+    this.flPrioridad = '1';
+    let infActividad:any;
+    infActividad = this.listActividad.find((dtActi:any)=>dtActi.idActividad == 1);
+    this.formPrioridad.controls["frmActividad"].setValue(infActividad);
     if(this.data.idPersona != undefined){
       this.activaEdicion = true;
+      console.log("Data:",this.data);
       //this.idIndicador = this.data.prioridad.listIndicador[0].idIndicador;
       let infIndicador:any = this.data.prioridad.listIndicador.find((dtInd:any)=>dtInd.idIndicador == this.data.idIndicador);
       console.log("Indicador:",infIndicador);
       this.idPrioridad = this.data.prioridad.idPrioridad;
       this.idIndicador = this.data.idIndicador;
+      /* Modificación Prioridad - Inicio */
+      this.desPrioridad = this.data.nomPrioridad;
+      this.flPrioridad = infIndicador.flDesPrioridad + '';
+      /* Modificación Prioridad - Fin */
       let unTraba:any = this.listEquipo.find((dtEquipo:any)=>dtEquipo.integrante.idVotante == this.data.idPersona);
       this.formPrioridad.controls["frmTrabajador"].setValue(unTraba);
       this.sumaTotalPesoIndicadoresByTrabajador(this.data.idPersona);
-      let infActividad:any = this.listActividad.find((dtActi:any)=>dtActi.idActividad == this.data.prioridad.idActividad);
+      if(this.flPrioridad == '0'){
+        infActividad = this.listActividad.find((dtActi:any)=>dtActi.idActividad == this.data.prioridad.idActividad);
+      }
       this.formPrioridad.controls["frmActividad"].setValue(infActividad);
-      this.formPrioridad.controls["frmDescripcionIndicador"].setValue(this.data.prioridad.prioridadNombre);
+      this.formPrioridad.controls["frmDescripcionPrioridad"].setValue(this.data.nomPrioridad);
+      this.formPrioridad.controls["frmDescripcionPrioridad"].disable();
+      this.formPrioridad.controls["frmDescripcionIndicador"].setValue(infIndicador.nombreIndicador);
+      /*this.formPrioridad.controls["frmDescripcionIndicador"].disable();*/
       /*
       this.formPrioridad.controls["frmTipoValorMeta"].setValue(this.data.prioridad.listIndicador[0].idTipoValorMeta);
       this.onChangeValueTipoValorMeta = this.data.prioridad.listIndicador[0].idTipoValorMeta;
@@ -163,6 +184,7 @@ export class AsignarPrioridadComponent implements OnInit {
         this.table.renderRows();
       }
     }
+    console.log("Fl:",this.flPrioridad);
     this.habEdiTarea();
   }
 
@@ -263,7 +285,12 @@ export class AsignarPrioridadComponent implements OnInit {
     // console.log(this.formPrioridad.value.frmActividad.idActividad);
 
     let actividad = new ActividadRequest();
-    actividad.idActividad = this.formPrioridad.value.frmActividad.idActividad;
+    if(this.flPrioridad == '0'){
+      actividad.idActividad = this.formPrioridad.value.frmActividad.idActividad;
+    }else{
+      this.flPrioridad = '1';
+      actividad.idActividad = 1; 
+    }
     let votante = new VotanteRequest();
     votante.idVotante = this.formPrioridad.value.frmTrabajador.integrante.idVotante;
 
@@ -274,6 +301,10 @@ export class AsignarPrioridadComponent implements OnInit {
     indicador.descripcion = this.formPrioridad.value.frmDescripcionIndicador;
     indicador.peso = this.formPrioridad.value.frmPeso;
     indicador.tipoValorMeta = tipoValorMeta;
+    /* Modificación Prioridad - Inicio */
+    indicador.desPrioridad = this.formPrioridad.value.frmDescripcionPrioridad;
+    indicador.flDesPrioridad = this.flPrioridad;
+    /* Modificación Prioridad - Fin */
     if (this.formPrioridad.value.frmTipoValorMeta == 3) {
       indicador.valorMeta = 100;
     } else {
@@ -296,6 +327,9 @@ export class AsignarPrioridadComponent implements OnInit {
       prioridadDto.votante = votante;
       prioridadDto.indicador = indicador;
       prioridadDto.listEvidencia = evidencias;
+      if(indicador.flDesPrioridad == '1'){
+        prioridadDto.prioridadNombre = indicador.desPrioridad;
+      }
     }else{
       /*prioridadDto = new UpdatePrioridadDto();
       prioridadDto.actividad = actividad;
@@ -303,7 +337,7 @@ export class AsignarPrioridadComponent implements OnInit {
       modelTipo.idTipoValorMeta = this.idTipoValorMetaSeleccionado;*/
 
     }
-
+    console.log("Para grabar: ",indicador.flDesPrioridad);
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false
     });
@@ -412,5 +446,9 @@ export class AsignarPrioridadComponent implements OnInit {
 
   onKey(event){
     this.contador = event.target.value.length
+  }
+
+  valida(){
+    console.log("Valida Frm:",this.formPrioridad);
   }
 }
