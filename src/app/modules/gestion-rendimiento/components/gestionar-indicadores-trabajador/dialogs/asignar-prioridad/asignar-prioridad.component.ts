@@ -128,7 +128,13 @@ export class AsignarPrioridadComponent implements OnInit {
       this.idIndicador = this.data.idIndicador;
       /* Modificación Prioridad - Inicio */
       this.desPrioridad = this.data.nomPrioridad;
-      this.flPrioridad = infIndicador.flDesPrioridad + '';
+      this.flPrioridad = infIndicador.flDesPrioridad;
+      console.log("FL 1:",this.flPrioridad);
+      if(this.flPrioridad === null){
+        this.flPrioridad = '1';
+        this.desPrioridad = this.data.descripcion;
+      }
+      console.log("FL 3:",this.flPrioridad);
       /* Modificación Prioridad - Fin */
       let unTraba:any = this.listEquipo.find((dtEquipo:any)=>dtEquipo.integrante.idVotante == this.data.idPersona);
       this.formPrioridad.controls["frmTrabajador"].setValue(unTraba);
@@ -184,7 +190,7 @@ export class AsignarPrioridadComponent implements OnInit {
         this.table.renderRows();
       }
     }
-    console.log("Fl:",this.flPrioridad);
+    console.log("Fl 2:",this.flPrioridad);
     this.habEdiTarea();
   }
 

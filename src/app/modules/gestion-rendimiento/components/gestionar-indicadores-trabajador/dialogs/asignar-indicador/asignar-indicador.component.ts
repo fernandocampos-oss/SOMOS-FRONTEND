@@ -19,6 +19,8 @@ export class AsignarIndicadorComponent implements OnInit {
   isLinear = false;
   minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
   contadorTxtArea: number = 0;
+  nomPrioridad: string = "";
+  flPrioridad: '1';
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   displayedColumns: string[] = ['item', 'evidencia', 'plazo', 'Quitar'];
@@ -61,6 +63,8 @@ export class AsignarIndicadorComponent implements OnInit {
     this.listarTipoValorMeta();
     console.log(this.data)
     this.porcentajeGrabado = this.data.trabajador.pesoTotal;
+    console.log("Data: ",this.data);
+    this.nomPrioridad = this.data.descripcion;
   }
 
   onKey(event) {
@@ -118,6 +122,8 @@ export class AsignarIndicadorComponent implements OnInit {
     indicador.descripcion = this.formPrioridad.value.frmDescripcionIndicador;
     indicador.peso = Number(this.formPrioridad.value.frmPeso);
     indicador.tipoValorMeta = tipoValorMeta;
+    indicador.flDesPrioridad = '1';
+    indicador.desPrioridad = this.data.prioridadSelected.prioridadNombre;
     if (this.formPrioridad.value.frmTipoValorMeta == 3) {
       indicador.valorMeta = 100;
     } else {
