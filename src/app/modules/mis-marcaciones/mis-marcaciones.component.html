@@ -23,11 +23,15 @@
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="1">
+<!--            <mat-form-field appearance="outline">-->
+<!--              <mat-label>Año</mat-label>-->
+<!--              <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">-->
+<!--                  <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>-->
+<!--              </mat-select>-->
+<!--            </mat-form-field>-->
             <mat-form-field appearance="outline">
               <mat-label>Año</mat-label>
-              <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido">
-                  <mat-option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</mat-option>
-              </mat-select>
+              <input matInput type='number' [(ngModel)]="anioElegido" formControlName="frmAnioElegido">
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="1">
