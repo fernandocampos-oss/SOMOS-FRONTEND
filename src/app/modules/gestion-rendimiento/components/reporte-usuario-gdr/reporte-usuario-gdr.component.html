@@ -2,14 +2,18 @@
 <form [formGroup]="form" (ngSubmit)="generarReporte()">
     <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
         <mat-grid-tile [colspan]="1">
-            <mat-form-field appearance="outline">
+            <!-- <mat-form-field appearance="outline">
                 <mat-label>Año</mat-label>
                 <mat-select [(value)]="anioElegido" formControlName="frmAnioElegido" required>
                     <mat-option *ngFor="let a of listAnio" [value]="a">
                         {{a.anio}}
                     </mat-option>
                 </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
+            <mat-form-field appearance="outline">
+                <mat-label>Año</mat-label>
+                <input matInput type='number' formControlName="frmAnioElegido" required>
+              </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1">
@@ -25,20 +29,10 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="2">
-            <!-- <mat-form-field appearance="outline">
-                <mat-label>Red</mat-label>
-                <mat-select [(ngModel)]="redItemSeleccionado" [ngModelOptions]="{standalone: true}" multiple required>
-                    <mat-option *ngFor="let r of listRed" [value]="r.codRed">
-                        {{r.descripcion | titlecase}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field> -->
-
             <mat-form-field appearance="outline">
                 <mat-label>Red</mat-label>
                 <mat-select [(ngModel)]="redItemSeleccionado" [ngModelOptions]="{standalone: true}">
                     <ng-container *ngIf="listRed.length > 1">
-                        <!-- <mat-option [value]="''" selected>Todos</mat-option> -->
                         <mat-option [value]="true" selected>Todos</mat-option>
                         <mat-option *ngFor="let red of listRed" [value]="red.codRed">{{red.descripcion |
                             titlecase}}</mat-option>
@@ -68,7 +62,7 @@
 
     <div style="text-align: center">
         <button mat-raised-button type="submit" color="primary" class="search"
-            [disabled]="this.anioElegido == undefined || this.onChangeValueTipoReporte == '' || this.redItemSeleccionado == undefined || this.unidadSeleccionadoTmp == undefined">
+            [disabled]="this.onChangeValueTipoReporte == '' || this.redItemSeleccionado == undefined || this.unidadSeleccionadoTmp == undefined">
             <mat-icon>search</mat-icon>&nbsp;
             <span>Buscar</span>
         </button>

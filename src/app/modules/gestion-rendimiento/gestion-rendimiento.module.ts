@@ -20,6 +20,8 @@ import { ReporteUsuarioGdrComponent } from './components/reporte-usuario-gdr/rep
 import { BuscarReporteComponent } from './components/buscar-reporte/buscar-reporte.component';
 import { VerDatosGdrComponent } from './components/buscar-reporte/dialogs/ver-datos-gdr/ver-datos-gdr.component';
 import { EditMasterComponent } from './components/buscar-reporte/dialogs/edit-master/edit-master.component';
+import { AdministrarVotanteComponent } from './components/administrar-votante/administrar-votante.component';
+import { PanelObservadoComponent } from './components/administrar-votante/dialogs/panel-observado/panel-observado.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { EditMasterComponent } from './components/buscar-reporte/dialogs/edit-ma
     ReporteUsuarioGdrComponent,
     BuscarReporteComponent,
     VerDatosGdrComponent,
-    EditMasterComponent
+    EditMasterComponent,
+    AdministrarVotanteComponent,
+    PanelObservadoComponent
   ],
   imports: [
     CommonModule,

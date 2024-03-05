@@ -52,3 +52,17 @@ export class EmailNotificacionRequestDto {
   email?: string;
   url?: String;
 }
+
+export class CargaMasivaVotante {
+  numeroDocumento?: string;
+  nombres?: string;
+  apellidos?: string;
+  idSegmento?: number;
+}
+
+export class VotanteSegmentoVotante {
+  idSegmento?: number;
+  codCondicion?: string;
+}
+
+

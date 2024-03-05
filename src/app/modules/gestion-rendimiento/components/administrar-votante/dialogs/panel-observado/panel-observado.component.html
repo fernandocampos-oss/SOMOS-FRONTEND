@@ -1,0 +1,29 @@
+<div *ngIf="listObservados.length !== 0">
+    <p class="color-mensaje">Proceso terminado con observaciones.</p><br />
+    <p>Estos usuarios no fueron registrados porque no tienen accesos creados, el usuario debera registrarse en la plataforma</p>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>N°</th>
+            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+        </ng-container>
+        <ng-container matColumnDef="dni">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
+            <td mat-cell *matCellDef="let element">{{element.numeroDocumento}}</td>
+        </ng-container>
+        <ng-container matColumnDef="nombres">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres</th>
+            <td mat-cell *matCellDef="let element">{{element.nombres}}</td>
+        </ng-container>
+        <ng-container matColumnDef="apellidos">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellidos</th>
+            <td mat-cell *matCellDef="let element"> {{element.apellidos}}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="empty-row" *matNoDataRow>
+            <td class="empty-cell">Sin registros por mostrar</td>
+        </tr>
+    </table>
+    <!-- <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator> -->
+</div>
