@@ -100,6 +100,7 @@ export class MisMarcacionesComponent implements OnInit {
               private responsive  : BreakpointObserver,) {}
 
   ngOnInit(): void {
+    this.anioElegido = this.today.getFullYear();
     this.responsive.observe([
       Breakpoints.HandsetLandscape,
       Breakpoints.XSmall,   

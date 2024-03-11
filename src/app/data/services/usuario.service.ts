@@ -26,6 +26,12 @@ export class UsuarioService {
     const url = `${URL_BASE}/${id}`;
     return this._httpClient.get<Usuario>(url);
   }
+
+  find(id: number) {
+    const url = `${URL_BASE}/find/${id}`;
+    return this._httpClient.get<Usuario>(url);
+  }
+
   getNombres(mostrarTodos: boolean) {
     const url = `${URL_BASE}/nombres`;
     const params = new HttpParams().set('mostrarTodos', mostrarTodos);

@@ -17,6 +17,9 @@ import { AppRoute } from '@data/constants';
 import { Role } from '@data/enums';
 import { RegisterInscripcionComponent } from '../components/inscripciones/register-inscripcion/register-inscripcion.component';
 import { RegisterVoteInscripcionComponent } from '../components/inscripciones/register-vote-inscripcion/register-vote-inscripcion.component';
+import {
+  AdmCronogramaPagosComponent
+} from '@modules/menu-principal/components/adm-cronograma-pagos/adm-cronograma-pagos.component';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -172,6 +175,13 @@ export class MenuPrincipalComponent implements OnInit {
             autoFocus: false,
           });
           break;
+      case 5:
+        const dialogRef5: MatDialogRef<AdmCronogramaPagosComponent> = this.dialog.open(AdmCronogramaPagosComponent, {
+          disableClose: false,
+          width: '70vw',
+          maxHeight: '50em'
+        });
+        break;
     }
   }
 
