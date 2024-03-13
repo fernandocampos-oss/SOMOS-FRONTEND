@@ -23,13 +23,7 @@ interface Año {
 export class ReporteUsuarioGdrComponent implements OnInit {
   form: FormGroup;
   today = new Date();
-
-  listAnio: Año[] = [
-    { anio: 2023 },
-    { anio: 2024 },
-  ];
   anioElegido: any;
-
   onChangeValueTipoReporte: string = '';
 
   @ViewChild(MatSort) sort: MatSort;
@@ -74,7 +68,6 @@ export class ReporteUsuarioGdrComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    // this.form.controls.frmMesElegido.setValue(this.today.getMonth()+1);
     this.form.controls.frmAnioElegido.setValue(this.today.getFullYear());
     this.getListRedesAsignadas();
 
@@ -128,10 +121,11 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   }
 
   async generarReporte() {
-    if (this.anioElegido !== undefined && this.onChangeValueTipoReporte !== '' && this.redItemSeleccionado !== undefined && this.unidadSeleccionadoTmp !== undefined) {
+    this.anioElegido = this.form.get('frmAnioElegido').value;
+    if (this.onChangeValueTipoReporte !== '' && this.redItemSeleccionado !== undefined && this.unidadSeleccionadoTmp !== undefined) {
       if (this.onChangeValueTipoReporte === '01') {
         let dto = new SeguimientoRequestDto();
-        dto.anio = this.anioElegido.anio;
+        dto.anio = this.anioElegido;
         dto.codUnidad = this.unidadSeleccionadoTmp.codUnidad;
         if (this.redItemSeleccionado === true) {
           dto.allRed = true;
@@ -155,7 +149,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
         });
       } else if (this.onChangeValueTipoReporte === '03') {
         let dto = new SeguimientoRequestDto();
-        dto.anio = this.anioElegido.anio;
+        dto.anio = this.anioElegido;
         dto.codUnidad = this.unidadSeleccionadoTmp.codUnidad;
         if (this.redItemSeleccionado === true) {
           dto.allRed = true;

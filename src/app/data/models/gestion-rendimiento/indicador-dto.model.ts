@@ -5,6 +5,7 @@ export class PrioridadRequestDto {
     votante?: VotanteRequest;
     indicador?: IndicadorRequest;
     listEvidencia?: EvidenciaRequest[];
+    prioridadNombre?: string;
   }
 
   export class ActividadRequest {
@@ -23,6 +24,10 @@ export class PrioridadRequestDto {
     tipoValorMeta?: TipoValorMeta
     valorMeta?: number;
     peso?: number;
+    /* Modificación Prioridad - Inicio */
+    flDesPrioridad?: string;
+    desPrioridad?: string;
+    /* Modificación Prioridad - Fin */
   }
 
   export class EvidenciaRequest {

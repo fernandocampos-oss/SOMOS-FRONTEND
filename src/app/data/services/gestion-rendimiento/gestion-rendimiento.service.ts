@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
-import { ActividadResponse, EmailNotificacionRequestDto, EquipoRequest, EvidenciaResponseDto, EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
+import { ActividadResponse, CargaMasivaVotante, EmailNotificacionRequestDto, EquipoRequest, EvidenciaResponseDto, EvidenciaSustentoRequestDto, VotanteSegmentoVotante } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { IndicadorExistRequestDto } from '@data/models/gestion-rendimiento/indicador-exist-evidencia.model';
 import { PrioridadExistRequestDto, UpdatePrioridadDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
 import { SeguimientoRequestDto } from '@data/models/gestion-rendimiento/reporte-gdr.model';
@@ -168,6 +168,24 @@ export class GestionRendimientoService {
   
   async modificarEvidencia(id: number, model: EvidenciaRequest) {
     const url = `${URL_BASE}/evidencias/modificar/${id}`;
+    // console.log(url, model);
+    return await this.http.put(url, model).toPromise();
+  }
+
+  async procesarExcelVotante(personas: CargaMasivaVotante[]) {
+    const url = `${URL_BASE}/equipos/carga/excel/votante`;
+    console.log(url, personas);
+    return await this.http.post<CargaMasivaVotante[]>(url, personas).toPromise();
+  }
+
+  async listarVotantePerfil() {
+    const url = `${URL_BASE}/equipos/listar/perfil/votantes`;
+    console.log(url);
+    return await this.http.get<Object[]>(url).toPromise();
+  }
+
+  async actualizarSegmentoVotante(id: number, model: VotanteSegmentoVotante) {
+    const url = `${URL_BASE}/equipos/modificar/votante/${id}`;
     // console.log(url, model);
     return await this.http.put(url, model).toPromise();
   }

@@ -16,6 +16,7 @@ import * as moment from 'moment';
   styleUrls: ['./edit-master.component.scss']
 })
 export class EditMasterComponent implements OnInit {
+  expTexto:RegExp = /^[a-zA-Z\u00C1\u00C9\u00CD\u00D3\u00F3\u00FA\u00d1\u00f1\u00e1\u00e9\u00ed\u00f3\u00fa0-9,.\- \'\"\(\)\[\]]{1,200}$/;
   minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
   evidencia: EvidenciaRequest;
   indicador: IndicadorRequest;
@@ -72,9 +73,11 @@ export class EditMasterComponent implements OnInit {
   }
 
   getInitPrioridad() {
+    this.idActividadSeleccionado = 1;
     this.formPrioridad = new FormGroup({
-      'actividad': new FormControl(this.data.idActividad),
-      'fechaAsignacion': new FormControl(new Date(this.data.fechaAsignacion))
+      /*'actividad': new FormControl(this.data.idActividad),*/
+      'fechaAsignacion': new FormControl(new Date(this.data.fechaAsignacion)),
+      'frmDescripcionPrioridad': new FormControl(this.data.nombreActual)
     });
     this.idActividadSeleccionado = this.data.idActividad;
   }
@@ -102,6 +105,8 @@ export class EditMasterComponent implements OnInit {
     let model = new UpdatePrioridadDto();
     model.actividad = actividad;
     model.fechaAsignacion = moment(this.formPrioridad.value['fechaAsignacion']).format('YYYY-MM-DDTHH:mm:ss');
+    model.prioridadNombre = this.formPrioridad.value['frmDescripcionPrioridad'];
+    
 
     if (model != null) {
       let update = await this._grService.modificarPrioridad(this.data.idPrioridad, model).then((data) => {
@@ -156,6 +161,11 @@ export class EditMasterComponent implements OnInit {
         }
       });
     }
+  }
+
+  validaTexto(event:any){
+    const inputValue: string = String.fromCharCode(event.keyCode);
+    return this.expTexto.test(inputValue);
   }
 
 }

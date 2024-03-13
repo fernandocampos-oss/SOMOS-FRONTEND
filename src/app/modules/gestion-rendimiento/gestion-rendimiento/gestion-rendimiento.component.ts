@@ -42,7 +42,6 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
     let load = await this._grService.getVotanteByIdUsuario().then((data: any) => {
       if (data) {
         if (data.codCondicion != null) {
-          console.log(data)
           this.condicionGr = data.codCondicion;
         }
       }

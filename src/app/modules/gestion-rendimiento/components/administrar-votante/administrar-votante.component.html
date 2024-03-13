@@ -1,0 +1,66 @@
+<br />
+<div style="text-align: center">
+    <button mat-raised-button [disabled]="isLoadingUpload" (click)="fileInput.click()" class="color-upload">
+        <mat-icon>attach_file</mat-icon>
+        <span> {{nameFile ? nameFile: 'Seleccionar Excel'}}</span>
+    </button>
+
+    <input #file type="file" name="file" file accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        class="file" (change)="onFileSelected($event)" class="file-upload" hidden #fileInput />
+</div>
+<br />
+<div style="text-align: center">
+    <button mat-raised-button color="primary" [disabled]="isLoadingProcess==false" (click)="procesar()">
+        <mat-icon>cached</mat-icon>
+        <span>&nbsp;Procesar</span>
+    </button>
+    <br /><br />
+    <p class="color-mensaje">{{mensajeProceso}}</p>
+</div>
+<br />
+
+<div style="text-align: right">
+    <mat-form-field appearance="outline">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="filtrarTable($event)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+</div>
+
+<div *ngIf="listVotantes.length !== 0">
+    <table mat-table #tablaVotantes [dataSource]="dataSource" matSort style="width:100%">
+        <!-- <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>N°</th>
+            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+        </ng-container> -->
+        <ng-container matColumnDef="dni">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
+            <td mat-cell *matCellDef="let element">{{element.numeroDocumento}}</td>
+        </ng-container>
+        <ng-container matColumnDef="nombres">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres y Apellidos</th>
+            <td mat-cell *matCellDef="let element">{{element.nombres | titlecase}}, {{element.apellidos | titlecase}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="segmento">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Segmento</th>
+            <td mat-cell *matCellDef="let element">
+                <!-- <mat-form-field> -->
+                <mat-select [(ngModel)]="element.idSegmento"
+                    (selectionChange)="actualizarSegmentoVotante(element.idSegmento, element.idVotante)">
+                    <mat-option *ngFor="let s of listSegmento" [value]="s.cod">
+                        {{s.descripcion}}
+                    </mat-option>
+                </mat-select>
+                <!-- </mat-form-field> -->
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="empty-row" *matNoDataRow>
+            <td class="empty-cell">Sin registros por mostrar</td>
+        </tr>
+    </table>
+    <mat-paginator [pageSize]="15" [pageSizeOptions]="[15, 50, 100]" showFirstLastButtons></mat-paginator>
+</div>

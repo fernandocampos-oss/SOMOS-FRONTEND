@@ -76,7 +76,7 @@
                                     <mat-icon>add_circle</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
-                                    (click)="editarPrioridad(element.idPrioridad, element.idActividad, element.fechaAsignacionPrioridad, 1)">
+                                    (click)="editarPrioridad(element.idPrioridad, element.idActividad, element.fechaAsignacionPrioridad, 1, element.prioridadNombre)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
                             </td>
@@ -97,7 +97,7 @@
                                                     <mat-icon matListIcon>add_circle</mat-icon>
                                                 </button>
                                                 <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
-                                                    (click)="abrirEditor(i.idVotante, element, x.idIndicador)">
+                                                    (click)="abrirEditor(i.idVotante, element, x.idIndicador, element.prioridadNombre)">
                                                     <mat-icon>edit</mat-icon>
                                                 </button>
                                             </div>
