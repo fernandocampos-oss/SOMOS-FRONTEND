@@ -52,13 +52,13 @@
                 </mat-select>
             </mat-form-field>
 
-            <div *ngIf="onChangeValueTipoValorMeta ==1 || onChangeValueTipoValorMeta ==2">
+            <div *ngIf="onChangeValueTipoValorMeta == 1 || onChangeValueTipoValorMeta == 2 || onChangeValueTipoValorMeta == 5">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor Numérico</mat-label>
                     <input matInput formControlName="frmValorMeta" maxlength="3" (keypress)="validaNumero($event)" required />
                 </mat-form-field>
             </div>
-            <div *ngIf="onChangeValueTipoValorMeta ==4">
+            <div *ngIf="onChangeValueTipoValorMeta == 3 || onChangeValueTipoValorMeta == 4 || onChangeValueTipoValorMeta == 6">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor porcentual</mat-label>
                     <input matInput formControlName="frmValorMeta" minlength="1" maxlength="3"
