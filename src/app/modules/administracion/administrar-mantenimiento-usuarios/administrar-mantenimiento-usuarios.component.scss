@@ -1,0 +1,79 @@
+.optionsBar{
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  button{
+    padding: 0 24px;
+    //   background-color: var(--color-MiEssalud);
+  }
+}
+
+.alignCard{
+  margin-top: 0;
+}
+
+.segundoCard{
+  margin-top: 1rem;
+  .matero-page-title{
+    color: #666666;
+    padding: 10px;
+  }
+}
+.optSearchBoleta{
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  .containerSearch{
+    .searchBoleta{
+      height: 59px;
+      margin: 0.25em 0 1em 0;
+    }
+  }
+}
+
+.mat-form-field {
+  //width: 10rem;
+  box-sizing: border-box;
+}
+
+.mat-elevation-z8 {
+  overflow-x: auto;
+  display: block;
+}
+
+.header-search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.text-search-box {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.text-search-result {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+}
+
+.identificacionUsuario{
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.0125rem;
+}
+
+.text-{
+  &black{
+    font-weight: 700;
+  }
+  &small{
+    font-size: 14px;
+  }
+  &medium{
+    font-size: 20px;
+  }
+}

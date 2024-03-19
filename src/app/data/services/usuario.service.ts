@@ -32,6 +32,11 @@ export class UsuarioService {
     return this._httpClient.get<Usuario>(url);
   }
 
+  findByNumeroDocumento(numeroDocumento: string) {
+    const url = `${URL_BASE}/find/numero-documento/${numeroDocumento}`;
+    return this._httpClient.get<Usuario>(url);
+  }
+
   getNombres(mostrarTodos: boolean) {
     const url = `${URL_BASE}/nombres`;
     const params = new HttpParams().set('mostrarTodos', mostrarTodos);
@@ -52,6 +57,11 @@ export class UsuarioService {
 
   updateDataUser(id: number, model: RequestUsuarioUpdateData){
     const url = `${URL_BASE}/${id}/actualizar-datos`;
+    return this._httpClient.put(url, model);
+  }
+
+  updateDataUserAdmin(id: number, model: RequestUsuarioUpdateData){
+    const url = `${URL_BASE}/${id}/actualizar-datos-administrador`;
     return this._httpClient.put(url, model);
   }
 

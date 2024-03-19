@@ -1,0 +1,84 @@
+<div class="page">
+  <div class="matero-page-header header-search" style="display: flex;">
+    <h1 class="matero-page-title">
+      <div>
+        <mat-icon>people</mat-icon> Mantenimiento de Usuarios<br>
+        <div class="optionsBar">
+          <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+        </div>
+      </div>
+    </h1>
+  </div>
+  <div class="page__body">
+    <div class="card shadow no-padd mat-elevation-z8">
+      <div class="optSearchBoleta">
+        <mat-form-field appearance="outline">
+          <mat-label>Número de documento</mat-label>
+          <input matInput type="text" maxlength='20' [(ngModel)]="numeroDocumento"/>
+        </mat-form-field>
+        <div class="containerSearch">
+          <button mat-raised-button color="primary" class="searchBoleta" (click)="buscarUsuario()" [disabled]='!numeroDocumento'>Buscar</button>
+        </div>
+      </div>
+      <div class="contenedorInfoUsuario">
+        <div style="display: flex; gap: 0.25rem; width: 100%;" [ngStyle]="{'flex-direction': 'row'}">
+          <div style="display: flex; flex-direction: column; gap: 0.25rem; align-items: center; width: 100%;">
+            <div class="identificacionUsuario">
+              <span class="text-medium" style='color:#666666'>Actualización de usuario</span>
+              <span class="text-medium text-black" *ngIf='dataUsuario && dataUsuario.idUsuario'>{{dataUsuario.nombres | titlecase}} {{dataUsuario.apellidos | titlecase}}</span>
+              <span class="text-small" *ngIf='dataUsuario && dataUsuario.idUsuario'>N° de documento: <span class="text-black">{{dataUsuario.numeroDocumento}}</span></span>
+            </div>
+          </div>
+        </div>
+        <div [formGroup]="formPerfil" class="contenedorForm">
+          <mat-grid-list [cols]="2" rowHeight="90px" gutterSize="6px" class="contenedorDatos">
+            <mat-grid-tile>
+              <mat-form-field appearance="outline">
+                <mat-label>Código de Planilla</mat-label>
+                <input matInput formControlName="frmCodPlanilla" readonly>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field appearance="outline">
+                <mat-label>Cargo</mat-label>
+                <input matInput formControlName="frmCargo" readonly>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field appearance="outline">
+                <mat-label>Red</mat-label>
+                <input matInput formControlName="frmRed" readonly>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field appearance="outline">
+                <mat-label>Unidad Orgánica</mat-label>
+                <input matInput formControlName="frmUnidad" readonly>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field appearance="outline">
+                <mat-label>Correo</mat-label>
+                <input matInput formControlName="frmCorreo" [readonly]='!(dataUsuario && dataUsuario.idUsuario)'>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <mat-form-field appearance="outline">
+                <mat-label>Celular</mat-label>
+                <input type="number" matInput formControlName="frmCelular" [readonly]='!(dataUsuario && dataUsuario.idUsuario)'>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <div style="display: flex; flex-direction: row; gap: 1.25rem; width: 100%; align-items: center; justify-content: center;">
+            <button mat-raised-button mat-dialog-close type="button" (click)='limpiar()' [disabled]='!(dataUsuario && dataUsuario.idUsuario)'>Limpiar</button>
+
+            <button mat-raised-button color="primary" (click)="guardarCambios()" [disabled]='!(dataUsuario && dataUsuario.idUsuario)'>
+              Guardar
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

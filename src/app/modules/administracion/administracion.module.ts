@@ -15,6 +15,7 @@ import { SharedModule } from '@shared/shared.module';
 import { AdministrarProyectosComponent } from './administrar-proyectos/administrar-proyectos.component';
 import { VistaPreviaProyectoComponent } from './administrar-proyectos/vista-previa-proyecto/vista-previa-proyecto.component';
 import { AdministrarEncuestasComponent } from './administrar-encuestas/administrar-encuestas.component';
+import { AdministrarMantenimientoUsuariosComponent } from './administrar-mantenimiento-usuarios/administrar-mantenimiento-usuarios.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { AdministrarEncuestasComponent } from './administrar-encuestas/administr
     AdministrarInscripcionComponent,
     AdministrarProyectosComponent,
     VistaPreviaProyectoComponent,
-    AdministrarEncuestasComponent
+    AdministrarEncuestasComponent,
+    AdministrarMantenimientoUsuariosComponent
   ],
   imports: [
     CommonModule,
