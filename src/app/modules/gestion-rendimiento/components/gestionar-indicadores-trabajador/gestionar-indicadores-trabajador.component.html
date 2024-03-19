@@ -9,13 +9,13 @@
         <mat-icon>add_circle</mat-icon>
         &nbsp; Asignar Nueva Prioridad Anual
     </button>
-    <!--<div *ngIf="listDataTable.length !== 0">
+    <div *ngIf="listDataTable.length !== 0">
         <button mat-raised-button class="has-success"
             matTooltip="Descargar para todos los que tengan al menos una asignación" (click)="generarExcelDirectivo()">
             <mat-icon>cloud_download</mat-icon>
             &nbsp; Descargar Todos
         </button>
-    </div>-->
+    </div>
 </div>
 <div *ngIf="listDataTable.length == 0" style="text-align: center"><br /><br />
     <p class="color-mensaje">Sin registros por mostrar, para visualizar debe agregar integrantes en la opcion <strong>Mi
