@@ -6,6 +6,9 @@ import { AdministrarUsuariosComponent } from './administrar-usuarios/administrar
 import { AdministrarInscripcionComponent } from './administrar-inscripcion/administrar-inscripcion.component';
 import { AdministrarProyectosComponent } from './administrar-proyectos/administrar-proyectos.component';
 import { AdministrarEncuestasComponent } from './administrar-encuestas/administrar-encuestas.component';
+import {
+  AdministrarMantenimientoUsuariosComponent
+} from '@modules/administracion/administrar-mantenimiento-usuarios/administrar-mantenimiento-usuarios.component';
 
 const routes: Routes = [
   // {
@@ -20,6 +23,13 @@ const routes: Routes = [
     component: AdministrarUsuariosComponent,
     data: {
       title: 'Administrar Usuarios Plataforma'
+    }
+  },
+  {
+    path: AppRoute.ADMINISTRAR_MANTENIMIENTO_USUARIOS,
+    component: AdministrarMantenimientoUsuariosComponent,
+    data: {
+      title: 'Administrar Mantenimiento Usuarios'
     }
   },
   {
