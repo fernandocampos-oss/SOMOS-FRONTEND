@@ -1,15 +1,16 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER, ErrorHandler } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import LocaleEsPe from '@angular/common/locales/es-PE.js';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { environment } from '@env';
 
 // Interceptors
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
@@ -32,6 +33,12 @@ import { AppConfig } from '@core/configs';
 import { MatIconModule } from '@angular/material/icon';
 
 registerLocaleData(LocaleEsPe);
+
+// -----------------------------
+// SENTRY INTEGRATION
+// -----------------------------
+import * as Sentry from '@sentry/angular-ivy';
+// -----------------------------
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -72,6 +79,24 @@ registerLocaleData(LocaleEsPe);
       multi: true,
     },
     { provide: LOCALE_ID, useValue: 'es-PE' },
+    // -----------------------------
+    // SENTRY INTEGRATION
+    // -----------------------------
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({ showDialog: environment.sentry.showDialog })
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router]
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true
+    }
+    // -----------------------------
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -4,6 +4,37 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+// -----------------------------
+// SENTRY INTEGRATION
+// -----------------------------
+
+// npm install --save @sentry/angular-ivy
+import * as Sentry from '@sentry/angular-ivy';
+
+Sentry.init({
+  dsn: environment.sentry.dsn,
+  environment: environment.sentry.environment,
+  release: environment.sentry.release,
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.replayIntegration({
+      maskAllText: false,
+      blockAllMedia: true,
+      mutationBreadcrumbLimit: 150,
+      mutationLimit: 500
+    }),
+    Sentry.replayCanvasIntegration()
+  ],
+  // Performance Monitoring
+  tracesSampleRate: environment.sentry.tracesSampleRate,
+  tracePropagationTargets: ['localhost', 'appsqa.essalud.gob.pe', 'apps.essalud.gob.pe'],
+  // Session Replay
+  replaysSessionSampleRate: environment.sentry.replaysSessionSampleRate,
+  replaysOnErrorSampleRate: environment.sentry.replaysOnErrorSampleRate,
+});
+
+// -----------------------------
+
 if (environment.production) {
   enableProdMode();
 }
