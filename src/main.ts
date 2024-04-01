@@ -2,7 +2,7 @@ import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import { environment } from '@env';
 
 // -----------------------------
 // SENTRY INTEGRATION
@@ -19,7 +19,7 @@ Sentry.init({
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration({
       maskAllText: false,
-      blockAllMedia: true,
+      blockAllMedia: false,
       mutationBreadcrumbLimit: 150,
       mutationLimit: 500
     }),
