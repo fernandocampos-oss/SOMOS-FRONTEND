@@ -20,6 +20,7 @@ Sentry.init({
     Sentry.replayIntegration({
       maskAllText: false,
       blockAllMedia: false,
+      maskAllInputs: false,
       mutationBreadcrumbLimit: 150,
       mutationLimit: 500,
       networkCaptureBodies: true,
