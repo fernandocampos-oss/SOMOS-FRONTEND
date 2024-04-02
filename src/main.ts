@@ -21,7 +21,9 @@ Sentry.init({
       maskAllText: false,
       blockAllMedia: false,
       mutationBreadcrumbLimit: 150,
-      mutationLimit: 500
+      mutationLimit: 500,
+      networkCaptureBodies: true,
+      networkDetailAllowUrls: ['appsqa.essalud.gob.pe', 'apps.essalud.gob.pe']
     }),
     Sentry.replayCanvasIntegration()
   ],
