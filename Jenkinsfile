@@ -17,6 +17,7 @@ pipeline {
     environment {
         GROUP_ID = '47a9c151-9643-4efd-b66d-92b98ba5896a'
         APPLICATION_ID = '9e675ed3-21ff-48df-8e29-dce45e814c94'
+        SENTRY_RELEASE = 'somos-essalud-web@develop'
     }
 
     options {
@@ -53,6 +54,7 @@ pipeline {
                 script {
                     nodejsLib.npmInstall('--legacy-peer-deps')
                     nodejsLib.buildAngularProject()
+                    nodejsLib.npmRunSentrySourceMaps()
                     commonLib.showWsFiles()
                 }
             }

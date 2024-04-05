@@ -2,13 +2,14 @@
   "name": "marcacion",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
+    "ng": "ng && npm run sentry:sourcemaps",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ngcc"
+    "postinstall": "ngcc",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org essalud-h7 --project somos-essalud-web dist && sentry-cli sourcemaps upload --org essalud-h7 --project somos-essalud-web dist --release $SENTRY_RELEASE"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "@auth0/angular-jwt": "^4.2.0",
     "@ngneat/until-destroy": "^8.1.1",
     "@sentry/angular-ivy": "^7.109.0",
+    "@sentry/cli": "^2.31.0",
     "@swimlane/ngx-charts": "^20.1.2",
     "@zxing/browser": "0.0.9",
     "@zxing/library": "^0.18.6",
