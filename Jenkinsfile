@@ -55,6 +55,7 @@ pipeline {
                     nodejsLib.npmInstall('--legacy-peer-deps')
                     nodejsLib.buildAngularProject()
                     nodejsLib.npmRunSentrySourceMaps()
+                    nodejsLib.deleteSourceMaps()
                     commonLib.showWsFiles()
                 }
             }
