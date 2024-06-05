@@ -49,18 +49,6 @@ pipeline {
             }
         }
 
-        stage('Build Project') {
-            steps {
-                script {
-                    nodejsLib.npmInstall('--legacy-peer-deps')
-                    nodejsLib.buildAngularProject()
-                    nodejsLib.npmRunSentrySourceMaps()
-                    nodejsLib.deleteSourceMaps()
-                    commonLib.showWsFiles()
-                }
-            }
-        }
-
         stage('Build Image') {
             steps {
                 script { dockerLib.buildImage() }
