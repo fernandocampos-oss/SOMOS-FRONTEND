@@ -22,6 +22,7 @@ import { VerDatosGdrComponent } from './components/buscar-reporte/dialogs/ver-da
 import { EditMasterComponent } from './components/buscar-reporte/dialogs/edit-master/edit-master.component';
 import { AdministrarVotanteComponent } from './components/administrar-votante/administrar-votante.component';
 import { PanelObservadoComponent } from './components/administrar-votante/dialogs/panel-observado/panel-observado.component';
+import { CalificarComponent } from './components/gestionar-indicadores-trabajador/dialogs/calificar/calificar.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { PanelObservadoComponent } from './components/administrar-votante/dialog
     AsignarIndicadorComponent,
     GrEquipoComponent,
     AsignarPrioridadComponent,
+    CalificarComponent,
     AsignarEvidenciaComponent,
     AlertaPesoComponent,
     ReporteUsuarioGdrComponent,

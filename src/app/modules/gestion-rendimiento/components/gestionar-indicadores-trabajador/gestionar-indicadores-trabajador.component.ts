@@ -11,6 +11,7 @@ import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { EditMasterComponent } from '../buscar-reporte/dialogs/edit-master/edit-master.component';
 import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
+import { CalificarComponent } from './dialogs/calificar/calificar.component';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -267,6 +268,23 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       "nomPrioridad":nombrePrioridad
     }
     const dialogRef: MatDialogRef<AsignarPrioridadComponent> = this._dialog.open(AsignarPrioridadComponent, {
+      disableClose: true,
+      width: '60%',
+      maxHeight: '80vh',
+      autoFocus: false,
+      data: info
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableJefe();
+    });
+  }
+
+  abrirCalificar(idEvidencia:number){
+    let info:any = {
+      "idEvidencia":idEvidencia,
+    }
+    const dialogRef: MatDialogRef<CalificarComponent> = this._dialog.open(CalificarComponent, {
       disableClose: true,
       width: '60%',
       maxHeight: '80vh',
