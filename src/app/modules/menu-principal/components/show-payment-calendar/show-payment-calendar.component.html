@@ -1,22 +1,61 @@
 <div class="contenedor">
-   <div class="header"><b>Cronograma de Pagos - {{ currentYear }}</b></div>
-   <button mat-icon-button mat-dialog-close color="warn" class="closeButton" aria-label="Example icon button with a heart icon">
-     X
-   </button>
-   <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onToggleChange($event)" class="optPagos" [value]="contractTypeId">
-       <mat-button-toggle *ngFor="let type of contractTypesList" [value]="type.idTipoContrato" aria-label="Text align left">
-         <span>{{ type.descripcion }}</span>
-       </mat-button-toggle>
-   </mat-button-toggle-group>
-   
-   <mat-grid-list cols="6" rowHeight="35px" gutterSize="0px" class="tablaContenidos" *ngIf="paymentScheduleList.length > 0">
-       <div *ngFor="let item of paymentScheduleFilteredList, index as i">
-           <mat-grid-tile [colspan]="2" class="periodosPago txtCenter">
-              <span>{{ item.descripcionPeriodo }}</span>
-           </mat-grid-tile>
-           <mat-grid-tile [colspan]="4" class="dataPago">
-               <span>{{ item.fecha ? (item.fecha | date:'EEEE' | titlecase) : '-' }} - {{ item.fecha ? (item.fecha | date:'dd' | titlecase ) : '-' }}</span>
-           </mat-grid-tile>
-       </div>
-   </mat-grid-list>
+  <div class="header"><b>Cronograma de Pagos - 2024</b></div>
+  <button mat-icon-button mat-dialog-close color="warn" class="closeButton" aria-label="Example icon button with a heart icon">
+    X
+  </button>
+  <!-- <span>Seleccione su tipo de Pago</span><br> -->
+  <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onValChange($event.value)" class="optPagos" value="2">
+    <mat-button-toggle value="1" aria-label="Text align left">
+      <span>Pensionistas D.L 20530</span>
+    </mat-button-toggle>
+    <mat-button-toggle value="2" aria-label="Text align center">
+      <span>D.LEG 276 - D.LEG 728</span>
+    </mat-button-toggle>
+    <mat-button-toggle value="3" aria-label="Text align right">
+      <span>D.LEG 1057 - CAS Regular</span>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-grid-list cols="6" rowHeight="35px" gutterSize="0px" class="tablaContenidos">
+    <div *ngFor="let items of data, index as i">
+      <mat-grid-tile [colspan]="2" class="periodosPago txtCenter">
+        <span>{{periodosPago[i]}}</span>
+      </mat-grid-tile>
+      <!-- <mat-grid-tile [colspan]="1">
+         <span>{{items.diaRec}}</span>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1">
+          <span>{{items.fecRec}}</span>
+      </mat-grid-tile> -->
+      <mat-grid-tile [colspan]="4" class="dataPago">
+        <span>{{items.fecPago == '-' ? '-' : (items.fecPago | date:'EEEE') | titlecase}} - {{items.fecPago == '-' ? '-' : (items.fecPago | date:'dd') | titlecase}}</span>
+      </mat-grid-tile>
+      <!-- <mat-grid-tile [colspan]="2" class="dataPago">
+          <span>{{items.fecPago}}</span>
+      </mat-grid-tile> -->
+    </div>
+  </mat-grid-list>
 </div>
+
+<!--<div class="contenedor">-->
+<!--   <div class="header"><b>Cronograma de Pagos - {{ currentYear }}</b></div>-->
+<!--   <button mat-icon-button mat-dialog-close color="warn" class="closeButton" aria-label="Example icon button with a heart icon">-->
+<!--     X-->
+<!--   </button>-->
+<!--   <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onToggleChange($event)" class="optPagos" [value]="contractTypeId">-->
+<!--       <mat-button-toggle *ngFor="let type of contractTypesList" [value]="type.idTipoContrato" aria-label="Text align left">-->
+<!--         <span>{{ type.descripcion }}</span>-->
+<!--       </mat-button-toggle>-->
+<!--   </mat-button-toggle-group>-->
+<!--   -->
+<!--   <mat-grid-list cols="6" rowHeight="35px" gutterSize="0px" class="tablaContenidos" *ngIf="paymentScheduleList.length > 0">-->
+<!--       <div *ngFor="let item of paymentScheduleFilteredList, index as i">-->
+<!--           <mat-grid-tile [colspan]="2" class="periodosPago txtCenter">-->
+<!--              <span>{{ item.descripcionPeriodo }}</span>-->
+<!--           </mat-grid-tile>-->
+<!--           <mat-grid-tile [colspan]="4" class="dataPago">-->
+<!--               <span>{{ item.fecha ? (item.fecha | date:'EEEE' | titlecase) : '-' }} - {{ item.fecha ? (item.fecha | date:'dd' | titlecase ) : '-' }}</span>-->
+<!--           </mat-grid-tile>-->
+<!--       </div>-->
+<!--   </mat-grid-list>-->
+<!--</div>-->

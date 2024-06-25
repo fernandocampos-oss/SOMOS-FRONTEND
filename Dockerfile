@@ -1,12 +1,28 @@
-FROM nginx:alpine
+FROM node:16-alpine AS builder
 
-#outputPath: dist
-ARG DIST_PATH
+ARG BUILD
+ARG BASE_HREF=/
 
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
+COPY package.json package-lock.json ./
+RUN npm install --legacy-peer-deps
+COPY . .
+
+RUN if [ -z "$BUILD" ]; then \
+        npm run build -- --base-href=${BASE_HREF}; \
+    else \
+        npm run build -- --configuration ${BUILD} --base-href=${BASE_HREF}; \
+    fi
+
+FROM nginx:alpine as deploy
+
+ARG DIST_PATH=dist
+
+WORKDIR /usr/share/nginx/html
+
+RUN rm -rf *
+COPY --from=builder /app/${DIST_PATH} .
 COPY default.conf /etc/nginx/conf.d/
-
-COPY ${DIST_PATH} /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
