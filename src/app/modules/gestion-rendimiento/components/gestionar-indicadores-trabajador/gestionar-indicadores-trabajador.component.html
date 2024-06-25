@@ -209,7 +209,33 @@
                         </ng-container>
                         <ng-container matColumnDef="comentario">
                             <th mat-header-cell *matHeaderCellDef>Comentario</th>
-                            <td mat-cell *matCellDef="let element"></td>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
+                                        <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
+                                            <!-- -->
+                                            <div class="eviItem">
+                                                <span>
+                                                    {{t.comentario}}
+                                                    <p *ngIf="t.calificacion == 0">No entregado</p> 
+                                                    <p *ngIf="t.calificacion == 1">En proceso de logro</p> 
+                                                    <p *ngIf="t.calificacion == 2">Entregado</p> 
+                                                    <p *ngIf="t.calificacion == 3">Logrado</p> 
+                                                </span>
+                                            </div>
+                                            
+                                            <button mat-icon-button color="warn"
+                                                matTooltip="Agregar Calificación"
+                                                (click)="abrirCalificar(t.idEvidencia)">
+                                                <mat-icon *ngIf="t.comentario!=null">edit</mat-icon>
+                                                <mat-icon *ngIf="t.comentario==null">add_circle</mat-icon>
+                                            </button>
+                                            <br>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                    </mat-list-item>
+                                </mat-list>
+                            </td>
                         </ng-container>
                         <ng-container matColumnDef="logro_final">
                             <th mat-header-cell *matHeaderCellDef>Logro final por meta</th>
@@ -223,7 +249,7 @@
                         <!-- Header row first group -->
                         <ng-container matColumnDef="header-row-first-group">
                             <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="5">
-                                ETAPA DE PLANIFICACIÓN
+                                ETAPA DE PLANIFICACIÓN  
                             </th>
                         </ng-container>
 
