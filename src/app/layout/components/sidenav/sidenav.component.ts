@@ -177,5 +177,9 @@ export class SidenavComponent implements OnInit {
       }
     });
   }
+
+  openLinkCAFAE() {
+    window.open('https://www.gob.pe/institucion/essalud/campa%C3%B1as/68712-elecciones-cafae-essalud', '_blank');
+  }
 	
 }
