@@ -1,0 +1,104 @@
+::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  .size-field {
+    width: 35%;
+  }
+  
+  mat-grid-list {
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  
+  .mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .botonPoi {
+    height: 70%;
+    align-self: flex-start;
+    margin-top: 2px;
+    width: 100%;
+    color: white;
+    background-color: var(--color-MiEssalud);
+  }
+  
+  .botonPoiWarn {
+    height: 70%;
+    align-self: flex-start;
+    margin-top: 2px;
+    width: 100%;
+    color: white;
+    background-color: var(--color-danger);
+  }
+  
+  .mat-mdc-form-field {
+    margin-top: 16px;
+  }
+  
+  .primary-button {
+    color: var(--color-danger);
+  }
+  
+  // numeric input
+  .example-right-align {
+    text-align: right;
+  }
+  
+  .percent-align {
+    position: relative;
+    top: -3px;
+  }
+  
+  .mat-column-item {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 8% !important;
+    width: 3% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  
+  .mat-column-plazo {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 8% !important;
+    width: 5% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  
+  .descriptor {
+    width: 100%;
+    font-size: 12px;
+    position: absolute;
+    z-index: 1;
+    background:#e6effa;
+    font-weight: 600;
+    text-align: justify;
+    border-radius: 1rem;
+    // padding: 0.3rem;
+    box-shadow: 5px 5px 11px -9px black;
+    top: 2.5rem;
+    left: -1rem;
+  }

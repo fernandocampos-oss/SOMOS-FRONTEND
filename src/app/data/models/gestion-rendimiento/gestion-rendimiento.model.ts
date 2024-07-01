@@ -40,6 +40,8 @@ export class EvidenciaResponseDto {
   evidenciaFechaRegistro?: string;
   fileBase64?: string;
   extension?: string;
+  comentario?: string;
+  calificacion?: number;
 }
 
 export class EvidenciaResponse {
