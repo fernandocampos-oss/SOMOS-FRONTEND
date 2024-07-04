@@ -107,7 +107,7 @@ span.birthDescrp{
   border-radius: 11px;
   border-width: 2.5px;
 }
-.boxSST, .boxEncuesta, .boxSST-2, .boxSistemas, .boxRenueva{
+.boxSST, .boxEncuesta, .boxSST-2, .boxSistemas, .boxRenueva, .boxAccidente{
   cursor: pointer;
   font-weight: bold;
   align-content: center;
@@ -126,6 +126,16 @@ span.birthDescrp{
   background-image: url(~src/assets/images/renuevaBoton.png);
   background-size: contain;
 }
+
+.boxAccidente{
+  height: 7.5vw;
+  width: 100%;
+  background-image: url(~src/assets/images/btnBackgroundAccidente.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 .boxSistemas{
   padding-left: 5vw;
   height: 7.5vw;

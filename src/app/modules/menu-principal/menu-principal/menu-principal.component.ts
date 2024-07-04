@@ -88,6 +88,8 @@ export class MenuPrincipalComponent implements OnInit {
   path = AppRoute.ADMINISTRAR_ROL_RED;
   pathRenueva = AppRoute.RENUEVA_ESSALUD;
 
+  mostrarOpcAccidente: boolean = true;
+
   //roles
   rolCentral = Role.ADMIN_CENTRAL;
   rolRed = Role.ADMIN_SEDE;
