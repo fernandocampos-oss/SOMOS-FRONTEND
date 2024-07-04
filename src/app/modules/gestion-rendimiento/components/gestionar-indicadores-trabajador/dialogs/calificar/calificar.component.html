@@ -1,0 +1,32 @@
+<div>
+    <h3 mat-dialog-title>Seguimiento</h3>
+    <mat-dialog-content>
+        <mat-grid-list cols="6" rowHeight="110px" gutterSize="6px">
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Comentario</mat-label>
+                    <textarea matInput [(ngModel)]="evidenciaResponseDto.comentario" (keypress)="validaTexto($event)" maxlength="250" required></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Calificación</mat-label>
+                    <mat-select [(ngModel)]="evidenciaResponseDto.calificacion" required>
+                        <mat-option [value]="1">En proceso de logro</mat-option>
+                        <mat-option [value]="0">No entregado</mat-option>
+                        <mat-option [value]="2">Entregado</mat-option>
+                        <mat-option [value]="3">Logrado</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-raised-button color="primary" (click)="moficarCalificacion()">
+            <mat-icon>done</mat-icon>&nbsp;
+            <span>Actualizar</span>
+        </button>  
+    </mat-dialog-actions>
+</div>

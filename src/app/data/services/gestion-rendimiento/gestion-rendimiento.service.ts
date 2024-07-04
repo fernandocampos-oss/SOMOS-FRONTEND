@@ -190,4 +190,9 @@ export class GestionRendimientoService {
     return await this.http.put(url, model).toPromise();
   }
 
+  async actualizarCalificacionEvidencia(id: number, comentario: string, calificacion: number){
+    const url = `${URL_BASE}/evidencias/modificar/calificacion`;
+    return await this.http.put(url, {'idEvidencia':id,'comentario':comentario, 'calificacion':calificacion}).toPromise();
+  }
+
 }
