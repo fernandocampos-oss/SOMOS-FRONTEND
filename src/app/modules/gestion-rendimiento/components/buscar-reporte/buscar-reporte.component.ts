@@ -24,7 +24,7 @@ export class BuscarReporteComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['item', 'numero_documento', 'nombre', 'apellido', 'acciones'];
+  displayedColumns: string[] = ['item', 'numero_documento', 'codigo_planilla', 'apellido', 'nombre', 'acciones'];
 
   listVotantes: any[] = [];
 

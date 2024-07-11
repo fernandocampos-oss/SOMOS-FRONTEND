@@ -18,7 +18,7 @@
 
         <mat-grid-tile [colspan]="1">
             <mat-form-field appearance="outline">
-                <mat-label>Tipo de reporte</mat-label>
+                <mat-label>Etapa del Ciclo GDR</mat-label>
                 <mat-select formControlName="frmTipoReporte" (selectionChange)="onSelectionChangeTipoReporte($event)"
                     required>
                     <mat-option *ngFor="let r of listTipoReporte" [value]="r.cod">
@@ -30,8 +30,8 @@
 
         <mat-grid-tile [colspan]="2">
             <mat-form-field appearance="outline">
-                <mat-label>Red</mat-label>
-                <mat-select [(ngModel)]="redItemSeleccionado" [ngModelOptions]="{standalone: true}">
+                <mat-label>Órgano Central</mat-label>
+                <mat-select [(ngModel)]="redItemSeleccionado" [ngModelOptions]="{standalone: true}" (selectionChange)="onSelectionChange($event)">
                     <ng-container *ngIf="listRed.length > 1">
                         <mat-option [value]="true" selected>Todos</mat-option>
                         <mat-option *ngFor="let red of listRed" [value]="red.codRed">{{red.descripcion |
@@ -49,8 +49,8 @@
             <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Unidad orgánica</mat-label>
                 <input type="text" placeholder="Nombre de la unidad orgánica" matInput [formControl]="myControlUnidad"
-                    [matAutocomplete]="autoUnidad" required>
-                <mat-autocomplete #autoUnidad="matAutocomplete" [displayWith]="displayFnUnidad"
+                    [matAutocomplete]="autoUnidad" required> <!-- [displayWith]="displayFnUnidad" -->
+                <mat-autocomplete #autoUnidad="matAutocomplete"  autoActiveFirstOption 
                     (optionSelected)="onSelectionChangeUnidad($event)">
                     <mat-option *ngFor="let unidad of filteredOptionsUnidad | async" [value]="unidad">
                         {{unidad.descripcion}}

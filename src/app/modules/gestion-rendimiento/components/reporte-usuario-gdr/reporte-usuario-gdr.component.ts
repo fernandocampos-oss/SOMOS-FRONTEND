@@ -81,6 +81,16 @@ export class ReporteUsuarioGdrComponent implements OnInit {
 
   }
 
+  onSelectionChange(event:any){
+    let selectedValue = event.value;
+    this.filteredOptionsUnidad = this.myControlUnidad.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => typeof value === 'string' ? value : value.descripcion),
+      map(descripcion => descripcion ? this._filterUnidad(descripcion) : this.listUnidad.slice())
+    );
+  }
+
   createForm() {
     this.form = this._fb.group({
       frmAnioElegido: [null],
@@ -107,7 +117,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
   async getListRedesAsignadas() {
     let listRed = await this._sectorizacionService.getListRed().then((data) => {
       if (data != null) {
-        this.listRed = data;
+        this.listRed = data.filter((item:any)=>item.codRed == '0100');
       }
     });
   }
@@ -139,7 +149,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
 
         let listRed = await this._grService.reporteGdrSeguimiento(dto).then((data) => {
           if (data.length > 0) {
-            this.listReporteSeguimiento = data;
+            this.listReporteSeguimiento = data.filter((item:any)=>item.codRed == '0100');
             this.dataSource_seguimiento = new MatTableDataSource(this.listReporteSeguimiento);
             // this.dataSource.paginator = this.paginator;
             // this.dataSource.sort = this.sort;
@@ -163,7 +173,7 @@ export class ReporteUsuarioGdrComponent implements OnInit {
 
         let listRed = await this._grService.reporteGdrMatriz(dto).then((data) => {
           if (data.length > 0) {
-            this.listReporteMatriz = data;
+            this.listReporteMatriz = data.filter((item:any)=>item.codRed == '0100');
             this.dataSource_matriz = new MatTableDataSource(this.listReporteMatriz);
             // this.dataSource.paginator = this.paginator;
             // this.dataSource.sort = this.sort;
