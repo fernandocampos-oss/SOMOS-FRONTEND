@@ -137,7 +137,8 @@ export class GestionRendimientoService {
   }
 
   async findVotanteByNombre(nombre: string) {
-    const url = `${URL_BASE}/equipos/buscar/nombre?nombre=${nombre}`;
+    //const url = `${URL_BASE}/equipos/buscar/nombre?nombre=${nombre}`;
+    const url = `${URL_BASE}/equipos/buscar/nombre2?nombre=${nombre}`;
     // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }

@@ -9,19 +9,19 @@
   <div class="page__body">
     <div class="card shadow no-padd">
       <mat-tab-group>
-        <mat-tab label="Indicadores/Productos del Área" *ngIf="rol != trabajador">
+        <mat-tab label="Registro de nuevo Formato GDR" *ngIf="rol != trabajador">
           <gestion-rendimiento-gestionar-indicadores-trabajador></gestion-rendimiento-gestionar-indicadores-trabajador>
         </mat-tab>
-        <mat-tab label="Mi GDR" *ngIf="rol != trabajador">
+        <mat-tab label="Formato GDR" *ngIf="rol != trabajador">
           <gestion-rendimiento-indicadores-pendientes-jefe></gestion-rendimiento-indicadores-pendientes-jefe>
         </mat-tab>
         <div *ngIf="condicionGr ==='03'">
-          <mat-tab label="Reportes">
+          <mat-tab label="Información Formato GDR">
             <app-reporte-usuario-gdr></app-reporte-usuario-gdr>
           </mat-tab>
         </div>
         <div *ngIf="condicionGr ==='03'">
-          <mat-tab label="Buscar Reporte">
+          <mat-tab label="Buscar Formato GDR Excel">
             <app-buscar-reporte></app-buscar-reporte>
           </mat-tab>
         </div>
