@@ -137,7 +137,8 @@ export class GestionRendimientoService {
   }
 
   async findVotanteByNombre(nombre: string) {
-    const url = `${URL_BASE}/equipos/buscar/nombre?nombre=${nombre}`;
+    //const url = `${URL_BASE}/equipos/buscar/nombre?nombre=${nombre}`;
+    const url = `${URL_BASE}/equipos/buscar/nombre2?nombre=${nombre}`;
     // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
@@ -188,6 +189,11 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/equipos/modificar/votante/${id}`;
     // console.log(url, model);
     return await this.http.put(url, model).toPromise();
+  }
+
+  async actualizarCalificacionEvidencia(id: number, comentario: string, calificacion: number){
+    const url = `${URL_BASE}/evidencias/modificar/calificacion`;
+    return await this.http.put(url, {'idEvidencia':id,'comentario':comentario, 'calificacion':calificacion}).toPromise();
   }
 
 }
