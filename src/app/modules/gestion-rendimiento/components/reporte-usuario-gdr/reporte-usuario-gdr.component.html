@@ -52,7 +52,7 @@
                     [matAutocomplete]="autoUnidad" required> <!-- [displayWith]="displayFnUnidad" -->
                 <mat-autocomplete #autoUnidad="matAutocomplete"  autoActiveFirstOption 
                     (optionSelected)="onSelectionChangeUnidad($event)">
-                    <mat-option *ngFor="let unidad of filteredOptionsUnidad | async" [value]="unidad">
+                    <mat-option *ngFor="let unidad of filteredOptionsUnidad | async" [value]="unidad.descripcion">
                         {{unidad.descripcion}}
                     </mat-option>
                 </mat-autocomplete>
