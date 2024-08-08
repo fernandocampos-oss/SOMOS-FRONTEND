@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ajax }from 'rxjs/ajax';
+import { ajax } from 'rxjs/ajax';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShowSstComponent } from '../components/show-sst/show-sst.component';
 import { RegisterDatosEncuestaComponent } from '../components/register-datos-encuesta/register-datos-encuesta.component';
@@ -22,7 +22,7 @@ import {
 } from '@modules/menu-principal/components/adm-cronograma-pagos/adm-cronograma-pagos.component';
 import { ShowPausaActivaComponent } from '../components/show-pausa-activa/show-pausa-activa.component';
 
-interface fechas_Imp{ // Provisional: para tener las fechas importantes
+interface fechas_Imp { // Provisional: para tener las fechas importantes
   descripcion: string;
   dia: Date;
 }
@@ -48,28 +48,28 @@ export class MenuPrincipalComponent implements OnInit {
   rol: number;
   identificador: number;
   fechas: fechas_Imp[] = [
-    {descripcion:'No Hay Fecha',dia: new Date('12/21/2012 00:00:00')},
-    {descripcion:'Día del Trabajo',dia: new Date('05/01/2024 00:00:00')},
-    {descripcion:'Batalla de Arica y Día de la Bandera',dia: new Date('06/07/2024 00:00:00')},
-    {descripcion:'Día de San Pedro y San Pablo',dia: new Date('06/29/2024 00:00:00')},
-    {descripcion:'Día de la Fuerza Aérea del Perú',dia: new Date('07/23/2024 00:00:00')},
-    {descripcion:'Día no laborable para el sector público',dia: new Date('07/26/2024 00:00:00')},
-    {descripcion:'Día de la Independencia',dia: new Date('07/28/2024 00:00:00')},
-    {descripcion:'Fiestas Patrias',dia: new Date('07/29/2024 00:00:00')},
-    {descripcion:'Batalla de Junín',dia: new Date('08/06/2024 00:00:00')},   
-    {descripcion:'Santa Rosa de Lima',dia: new Date('08/30/2024 00:00:00')},
-    {descripcion:'Día no laborable para el sector público',dia: new Date('10/07/2024 00:00:00')},
-    {descripcion:'Combate de Angamos',dia: new Date('10/08/2024 00:00:00')},
-    {descripcion:'Día de Todos los Santos',dia: new Date('11/01/2024 00:00:00')},
-    {descripcion:'Día no laborable para el sector público',dia: new Date('12/06/2024 00:00:00')},
-    {descripcion:'Inmaculada Concepción',dia: new Date('12/08/2024 00:00:00')},
-    {descripcion:'Batalla de Ayacucho',dia: new Date('12/09/2024 00:00:00')},
-    {descripcion:'Día no laborable para el sector público',dia: new Date('12/23/2024 00:00:00')},
-    {descripcion:'Día no laborable para el sector público',dia: new Date('12/24/2024 00:00:00')},
-    {descripcion:'Día no laborable para el sector público',dia: new Date('12/25/2024 00:00:00')},
-    {descripcion:'Navidad',dia: new Date('12/30/2024 00:00:00')},
-    {descripcion:'Día no laborable para el sector público',dia: new Date('12/31/2024 00:00:00')},
-    {descripcion:'Prueba 4',dia: new Date('01/01/2022 00:00:00')},
+    { descripcion: 'No Hay Fecha', dia: new Date('12/21/2012 00:00:00') },
+    { descripcion: 'Día del Trabajo', dia: new Date('05/01/2024 00:00:00') },
+    { descripcion: 'Batalla de Arica y Día de la Bandera', dia: new Date('06/07/2024 00:00:00') },
+    { descripcion: 'Día de San Pedro y San Pablo', dia: new Date('06/29/2024 00:00:00') },
+    { descripcion: 'Día de la Fuerza Aérea del Perú', dia: new Date('07/23/2024 00:00:00') },
+    { descripcion: 'Día no laborable para el sector público', dia: new Date('07/26/2024 00:00:00') },
+    { descripcion: 'Día de la Independencia', dia: new Date('07/28/2024 00:00:00') },
+    { descripcion: 'Fiestas Patrias', dia: new Date('07/29/2024 00:00:00') },
+    { descripcion: 'Batalla de Junín', dia: new Date('08/06/2024 00:00:00') },
+    { descripcion: 'Santa Rosa de Lima', dia: new Date('08/30/2024 00:00:00') },
+    { descripcion: 'Día no laborable para el sector público', dia: new Date('10/07/2024 00:00:00') },
+    { descripcion: 'Combate de Angamos', dia: new Date('10/08/2024 00:00:00') },
+    { descripcion: 'Día de Todos los Santos', dia: new Date('11/01/2024 00:00:00') },
+    { descripcion: 'Día no laborable para el sector público', dia: new Date('12/06/2024 00:00:00') },
+    { descripcion: 'Inmaculada Concepción', dia: new Date('12/08/2024 00:00:00') },
+    { descripcion: 'Batalla de Ayacucho', dia: new Date('12/09/2024 00:00:00') },
+    { descripcion: 'Día no laborable para el sector público', dia: new Date('12/23/2024 00:00:00') },
+    { descripcion: 'Día no laborable para el sector público', dia: new Date('12/24/2024 00:00:00') },
+    { descripcion: 'Día no laborable para el sector público', dia: new Date('12/25/2024 00:00:00') },
+    { descripcion: 'Navidad', dia: new Date('12/30/2024 00:00:00') },
+    { descripcion: 'Día no laborable para el sector público', dia: new Date('12/31/2024 00:00:00') },
+    { descripcion: 'Prueba 4', dia: new Date('01/01/2022 00:00:00') },
   ]
 
   publicacionAnclada: PublicacionResponse;
@@ -99,14 +99,14 @@ export class MenuPrincipalComponent implements OnInit {
   roles: any;
 
   constructor(private dialog: MatDialog,
-              private _menuService:MenuPrincipalService,
-              private responsive  : BreakpointObserver,
-              private userService  : UsuarioService,
-              private _authService: AuthService) { }
+    private _menuService: MenuPrincipalService,
+    private responsive: BreakpointObserver,
+    private userService: UsuarioService,
+    private _authService: AuthService) { }
 
   ngOnInit(): void {
-    this.userService.get(this._authService.getUserSession().id).subscribe(data=>{
-      if(this._menuService.returnPadron(data.numeroDocumento)){
+    this.userService.get(this._authService.getUserSession().id).subscribe(data => {
+      if (this._menuService.returnPadron(data.numeroDocumento)) {
         this.mostrarEleccion = true;
       }
     })
@@ -114,27 +114,27 @@ export class MenuPrincipalComponent implements OnInit {
     this.identificador = this.nearestDay(this.today);
     this.responsive.observe([
       Breakpoints.XSmall
-      ])
+    ])
       .subscribe(result => {
         this.interfazCelular = false;
         if (result.matches) {
           this.interfazCelular = true;
         }
       });
-    
+
     this.actualizarPublicaciones();
-    
-    this.convertirDiaMes(this.today.getDate(), this.today.getMonth()+1);
+
+    this.convertirDiaMes(this.today.getDate(), this.today.getMonth() + 1);
     this.CargarOnomasticos();
-    if(this.identificador != 0){
-      this.getDateDiff(this.fechas[this.identificador].dia,this.today);// Provisional: para tener las fechas importantes
-      setInterval(() => {  
-      var Actualidad = new Date();
-      this.getDateDiff(this.fechas[this.identificador].dia,Actualidad);
+    if (this.identificador != 0) {
+      this.getDateDiff(this.fechas[this.identificador].dia, this.today);// Provisional: para tener las fechas importantes
+      setInterval(() => {
+        var Actualidad = new Date();
+        this.getDateDiff(this.fechas[this.identificador].dia, Actualidad);
       }, 30000); // Mil es 1 seg
     }
-    else{
-      this.daysLeft= 0;
+    else {
+      this.daysLeft = 0;
       this.hoursLeft = 0;
       this.minutesLeft = 0;
     }
@@ -146,15 +146,15 @@ export class MenuPrincipalComponent implements OnInit {
     // else{ this.encuestaNombre = data.descripcion}});
   }
 
-  open(cuadro: number){
+  open(cuadro: number) {
     switch (cuadro) {
       case 1:
-      const dialogRef: MatDialogRef<ShowSstComponent> = this.dialog.open(ShowSstComponent, {
+        const dialogRef: MatDialogRef<ShowSstComponent> = this.dialog.open(ShowSstComponent, {
           disableClose: false,
           width: '80%',
           autoFocus: false,
         });
-          break;
+        break;
       // case 2:
       //   const dialogRef2: MatDialogRef<RegisterDatosEncuestaComponent> = this.dialog.open(RegisterDatosEncuestaComponent, {
       //     disableClose: true,
@@ -170,20 +170,20 @@ export class MenuPrincipalComponent implements OnInit {
       case 3:
         const dialogRef3: MatDialogRef<AdmPublicaciones> = this.dialog.open(AdmPublicaciones, {
           disableClose: false,
-          width:'70vw',
-          maxHeight:'50em',
+          width: '70vw',
+          maxHeight: '50em',
         });
         dialogRef3.afterClosed().subscribe(result => {
           this.actualizarPublicaciones()
         });
-          break;
+        break;
       case 4:
         const dialogRef4: MatDialogRef<ShowSistemasComponent> = this.dialog.open(ShowSistemasComponent, {
-            disableClose: false,
-            width: '70%',
-            autoFocus: false,
-          });
-          break;
+          disableClose: false,
+          width: '70%',
+          autoFocus: false,
+        });
+        break;
       case 5:
         const dialogRef5: MatDialogRef<AdmCronogramaPagosComponent> = this.dialog.open(AdmCronogramaPagosComponent, {
           disableClose: false,
@@ -194,17 +194,17 @@ export class MenuPrincipalComponent implements OnInit {
     }
   }
 
-  actualizarPublicaciones(){
-    this._menuService.getPublicaciones().subscribe( (data) => {
+  actualizarPublicaciones() {
+    this._menuService.getPublicaciones().subscribe((data) => {
       console.log(data)
       this.publicaciones = data;
 
       this.publicaciones.sort(({ votoActivo: stateA = false }, { votoActivo: stateB = false }) =>
-      Number(stateB) - Number(stateA));
+        Number(stateB) - Number(stateA));
 
       this.publicacionAnclada = null;
 
-      this.publicaciones.forEach((x)=>{
+      this.publicaciones.forEach((x) => {
         if (x.idPublicacion == 56) {
           this.publicacionAnclada = x;
         }
@@ -213,32 +213,32 @@ export class MenuPrincipalComponent implements OnInit {
     );
   }
 
-  showEncuestaSimple(element){
+  showEncuestaSimple(element) {
     const dialogRef: MatDialogRef<EncuestaSimpleComponent> = this.dialog.open(EncuestaSimpleComponent, {
       disableClose: false,
       minWidth: '22em',
-      maxWidth:'40em',
+      maxWidth: '40em',
       autoFocus: false,
-      data:{
+      data: {
         obj: element
       }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if(result){
-          const dialogRef2: MatDialogRef<EncuestaSimpleComponent> = this.dialog.open(EncuestaSimpleComponent, {
-            disableClose: false,
-            minWidth: '22em',
-            maxWidth:'40em',
-            autoFocus: false,
-            data:{
-              obj: element
-            }
-            });
-        }
-      });
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const dialogRef2: MatDialogRef<EncuestaSimpleComponent> = this.dialog.open(EncuestaSimpleComponent, {
+          disableClose: false,
+          minWidth: '22em',
+          maxWidth: '40em',
+          autoFocus: false,
+          data: {
+            obj: element
+          }
+        });
+      }
+    });
   }
 
-  showPublicacion(publicacionData){
+  showPublicacion(publicacionData) {
     const dialogRef: MatDialogRef<ShowPublicacionComponent> = this.dialog.open(ShowPublicacionComponent, {
       disableClose: false,
       width: '728px',
@@ -246,66 +246,66 @@ export class MenuPrincipalComponent implements OnInit {
       maxHeight: '780px',
       autoFocus: false,
       data: {
-        obj : publicacionData
+        obj: publicacionData
       }
     });
   }
 
-  nearestDay(hoy: Date){
+  nearestDay(hoy: Date) {
     const target = hoy.getTime();
     var nearest = Infinity;
     var winner = -1;
-    this.fechas.forEach(function(diaDate, index){
-      if((diaDate.dia.getMonth() >= hoy.getMonth() && diaDate.dia.getDate() > hoy.getDate()
-      && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getMonth() > hoy.getMonth() && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getFullYear() > hoy.getFullYear())){
-        var diaD:number;
+    this.fechas.forEach(function (diaDate, index) {
+      if ((diaDate.dia.getMonth() >= hoy.getMonth() && diaDate.dia.getDate() > hoy.getDate()
+        && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getMonth() > hoy.getMonth() && diaDate.dia.getFullYear() >= hoy.getFullYear()) || (diaDate.dia.getFullYear() > hoy.getFullYear())) {
+        var diaD: number;
         if (diaDate.dia instanceof Date) {
-          diaD = diaDate.dia.getTime();   
+          diaD = diaDate.dia.getTime();
         }
         var distance = Math.abs(diaD - target);
-        if ( distance < nearest && distance>= 0){
+        if (distance < nearest && distance >= 0) {
           nearest = distance;
           winner = index;
         }
       }
     });
-    if(winner == -1)
+    if (winner == -1)
       winner = 0;
     return winner;
   }
-  convertirDiaMes(dia: number, mes: number){
+  convertirDiaMes(dia: number, mes: number) {
     if (dia >= 10) {
       this.parametros.diaConsulta = dia.toString();
     }
-    else{
+    else {
       this.parametros.diaConsulta = `0${dia.toString()}`;
     }
 
     if (mes >= 10) {
       this.parametros.mesConsulta = mes.toString();
     }
-    else{
+    else {
       this.parametros.mesConsulta = `0${mes.toString()}`;
     }
   }
 
-  CargarOnomasticos(){
-    this._menuService.searchOnomasticos(this.parametros).subscribe(data=>{
+  CargarOnomasticos() {
+    this._menuService.searchOnomasticos(this.parametros).subscribe(data => {
       if (data.length > 0) {
-        this.onomasticos = data.sort((a,b) => a.nombres.localeCompare(b.nombres));
+        this.onomasticos = data.sort((a, b) => a.nombres.localeCompare(b.nombres));
       } else {
-        this.onomasticos=null;
+        this.onomasticos = null;
       }
     });
   }
 
-  ActualizarOnomasticos(fecha: string){
+  ActualizarOnomasticos(fecha: string) {
     this.parametros.diaConsulta = `${fecha[0]}${fecha[1]}`;
     this.parametros.mesConsulta = `${fecha[3]}${fecha[4]}`;
     this.CargarOnomasticos();
   }
 
-  getDateDiff(endDate: Date, startDate: Date){
+  getDateDiff(endDate: Date, startDate: Date) {
     var delta = Math.abs(Number(endDate) - Number(startDate)) / 1000;
 
     // calculate (and subtract) whole days
@@ -321,7 +321,7 @@ export class MenuPrincipalComponent implements OnInit {
     delta -= this.minutesLeft * 60;
   }
 
-  changeVisual(option: number){
+  changeVisual(option: number) {
     switch (option) {
       case 1:
         this.showPublicaciones = true;
@@ -362,41 +362,41 @@ export class MenuPrincipalComponent implements OnInit {
     }
   }
 
-  showinscripcionView(publicacionData){
-    if(publicacionData.votoActivo){
+  showinscripcionView(publicacionData) {
+    if (publicacionData.votoActivo) {
       const dialogRef: MatDialogRef<RegisterVoteInscripcionComponent> = this.dialog.open(RegisterVoteInscripcionComponent, {
         disableClose: false,
         minWidth: '22em',
         width: '1000px',
-        maxWidth:'40em',
+        maxWidth: '40em',
         autoFocus: false,
-        data:{
+        data: {
           idInscripcion: publicacionData.idInscripcion
         }
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
-        if(result){
+        if (result) {
           const dialogRef2: MatDialogRef<RegisterVoteInscripcionComponent> = this.dialog.open(RegisterVoteInscripcionComponent, {
             disableClose: false,
             minWidth: '22em',
             width: '1000px',
-            maxWidth:'40em',
+            maxWidth: '40em',
             autoFocus: false,
-            data:{
+            data: {
               idInscripcion: publicacionData.idInscripcion
             }
-            });
+          });
         }
       });
     }
-    else{
+    else {
       const dialogRef: MatDialogRef<RegisterInscripcionComponent> = this.dialog.open(RegisterInscripcionComponent, {
         disableClose: false,
         // minWidth: '22em',
-        maxWidth:'480px',
+        maxWidth: '480px',
         autoFocus: false,
-        data:{
+        data: {
           idInscripcion: publicacionData.idInscripcion,
           pubData: {
             imagenBase64: publicacionData.imagenBase64,
@@ -404,34 +404,33 @@ export class MenuPrincipalComponent implements OnInit {
             urlRedireccion: publicacionData.urlRedireccion
           }
         }
-        });
-  
-        dialogRef.afterClosed().subscribe(result => {
-          if(result){
-            const dialogRef2: MatDialogRef<RegisterInscripcionComponent> = this.dialog.open(RegisterInscripcionComponent, {
-              disableClose: false,
-              // minWidth: '22em',
-              maxWidth:'480px',
-              autoFocus: false,
-              data:{
-                idInscripcion: publicacionData.idInscripcion,
-                pubData: {
-                  imagenBase64: publicacionData.imagenBase64,
-                  titulo: publicacionData.titulo
-                }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          const dialogRef2: MatDialogRef<RegisterInscripcionComponent> = this.dialog.open(RegisterInscripcionComponent, {
+            disableClose: false,
+            // minWidth: '22em',
+            maxWidth: '480px',
+            autoFocus: false,
+            data: {
+              idInscripcion: publicacionData.idInscripcion,
+              pubData: {
+                imagenBase64: publicacionData.imagenBase64,
+                titulo: publicacionData.titulo
               }
-              });
-          }
-        });
+            }
+          });
+        }
+      });
     }
   }
 
-  openCapacitacion() {
-    window.open('https://capacitacion.essalud.gob.pe/', '_blank');
-}
+  // openCapacitacion() {
+  //   window.open('https://capacitacion.essalud.gob.pe/', '_blank');
+  // }
 
-
-  openPausaActiva(){
+  openPausaActiva() {
     const dialogRef: MatDialogRef<ShowPausaActivaComponent> = this.dialog.open(ShowPausaActivaComponent, {
       disableClose: false,
       width: '780px',
