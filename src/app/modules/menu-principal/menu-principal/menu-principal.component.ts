@@ -20,6 +20,7 @@ import { RegisterVoteInscripcionComponent } from '../components/inscripciones/re
 import {
   AdmCronogramaPagosComponent
 } from '@modules/menu-principal/components/adm-cronograma-pagos/adm-cronograma-pagos.component';
+import { ShowPausaActivaComponent } from '../components/show-pausa-activa/show-pausa-activa.component';
 
 interface fechas_Imp{ // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -423,6 +424,19 @@ export class MenuPrincipalComponent implements OnInit {
           }
         });
     }
+  }
+
+  openPausaActiva(){
+    const dialogRef: MatDialogRef<ShowPausaActivaComponent> = this.dialog.open(ShowPausaActivaComponent, {
+      disableClose: false,
+      width: '780px',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        // model: element
+      }
+    });
+
   }
 
 }

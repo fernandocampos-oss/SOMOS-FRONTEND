@@ -146,8 +146,23 @@
   </div>
   <!-- <div class="boxBorde boxRenueva" [routerLink]="['/' + pathRenueva]">
     </div> -->
-  <div class="boxBorde boxSST" (click)="open(1)">
+  <!-- <div class="boxBorde boxSST" (click)="open(1)">
+  </div> -->
+  <div class="grupo">
+    <div class="column">
+      <div class="panel-capacitacion" (click)="openPausaActiva()">
+        <h4>1</h4>
+        
+      </div>
+    </div>
+    <div class="column">
+      <div class="panel-pausa" [routerLink]="['/show-pausa-activa']" target="_blank">
+        <h4>2</h4>
+
+      </div>
+    </div>
   </div>
+
   <a href="http://10.0.0.200:8580/sctr-demo/index.html" target="_blank">
     <div *ngIf="mostrarOpcAccidente===true" class="boxBorde boxAccidente">
     </div>

@@ -1,0 +1,13 @@
+<div class="video-container">
+  <video #videoPlayer width="100%" (ended)="onVideoEnded()" controls>
+    <source [src]="pathVideo" type="video/mp4">
+    El navegador no soporta el archivo multimedia.
+  </video>
+</div>
+
+<div class="button-container" style="text-align: center;">
+  <button mat-raised-button color="primary" [disabled]="!isVideoEnded" (click)="downloadPDF()">
+    Material de pausas activas en el trabajo
+  </button>
+</div>
+<br>

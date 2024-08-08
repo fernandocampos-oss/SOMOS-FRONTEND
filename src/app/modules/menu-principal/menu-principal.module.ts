@@ -26,6 +26,7 @@ import { ConfirmInscripcionComponent } from './components/form-renueva-essalud/c
 import { RegisterInscripcionComponent } from './components/inscripciones/register-inscripcion/register-inscripcion.component';
 import { RegisterVoteInscripcionComponent } from './components/inscripciones/register-vote-inscripcion/register-vote-inscripcion.component';
 import { AdmCronogramaPagosComponent } from './components/adm-cronograma-pagos/adm-cronograma-pagos.component';
+import { ShowPausaActivaComponent } from './components/show-pausa-activa/show-pausa-activa.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { AdmCronogramaPagosComponent } from './components/adm-cronograma-pagos/a
     RegisterInscripcionComponent,
     RegisterVoteInscripcionComponent,
     AdmCronogramaPagosComponent,
+    ShowPausaActivaComponent,
 
   ],
   imports: [
