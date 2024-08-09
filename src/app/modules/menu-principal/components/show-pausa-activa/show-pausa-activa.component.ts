@@ -15,6 +15,8 @@ export class ShowPausaActivaComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    const video: HTMLVideoElement = document.getElementById('myVideo') as HTMLVideoElement;
+    video.play();
   }
 
   onVideoEnded() {

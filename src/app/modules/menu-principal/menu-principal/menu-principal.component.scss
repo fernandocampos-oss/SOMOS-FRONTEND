@@ -526,32 +526,32 @@ mat-grid-list {
   margin-top: 0.4rem;
 }
 
-// .panel-capacitacion {
-//   cursor: pointer;
-//   border: var(--color-bordes);
-//   border-style: solid;
-//   border-radius: 11px;
-//   border-width: 2.5px;
+.panel-capacitacion {
+  cursor: pointer;
+  border: var(--color-bordes);
+  border-style: solid;
+  border-radius: 11px;
+  border-width: 2.5px;
 
-//   height: 6.1vw;
-//   width: 100%;
-//   background-image: url(~src/assets/images/btn_capacitacion.png);
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   background-position: center;
-// }
+  height: 6.1vw;
+  width: 100%;
+  background-image: url(~src/assets/images/btn_capacitacion.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 
-// .panel-pausa {
-//   cursor: pointer;
-//   border: var(--color-bordes);
-//   border-style: solid;
-//   border-radius: 11px;
-//   border-width: 2.5px;
+.panel-pausa {
+  cursor: pointer;
+  border: var(--color-bordes);
+  border-style: solid;
+  border-radius: 11px;
+  border-width: 2.5px;
 
-//   height: 6.1vw;
-//   width: 100%;
-//   background-image: url(~src/assets/images/btn_pausa_activa.png);
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   background-position: center;
-// }
+  height: 6.1vw;
+  width: 100%;
+  background-image: url(~src/assets/images/btn_pausa_activa.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}

@@ -1,5 +1,5 @@
 <div class="video-container">
-  <video #videoPlayer width="100%" (ended)="onVideoEnded()" controls>
+  <video #videoPlayer id="myVideo" width="100%" (ended)="onVideoEnded()" controls>
     <source [src]="pathVideo" type="video/mp4">
     El navegador no soporta el archivo multimedia.
   </video>
