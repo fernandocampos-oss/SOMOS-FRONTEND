@@ -426,9 +426,9 @@ export class MenuPrincipalComponent implements OnInit {
     }
   }
 
-  // openCapacitacion() {
-  //   window.open('https://capacitacion.essalud.gob.pe/', '_blank');
-  // }
+  openCapacitacion() {
+    window.open('https://capacitacion.essalud.gob.pe/', '_blank');
+  }
 
   openPausaActiva() {
     const dialogRef: MatDialogRef<ShowPausaActivaComponent> = this.dialog.open(ShowPausaActivaComponent, {

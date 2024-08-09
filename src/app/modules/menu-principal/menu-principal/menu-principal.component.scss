@@ -522,28 +522,20 @@ mat-grid-list {
 .grupo {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* Dos columnas de igual tamaño */
-  gap: 20px;
-  /* Espacio entre las columnas */
+  gap: 5px;
   margin-top: 0.4rem;
 }
 
 .panel-capacitacion {
   cursor: pointer;
-  // font-weight: bold;
-  // text-align: center;
-  // display: flex;
-  // color: white;
-  // font-size: 0.5rem;
-  
   border: var(--color-bordes);
   border-style: solid;
   border-radius: 11px;
   border-width: 2.5px;
 
-  height: 7.5vw;
+  height: 6.1vw;
   width: 100%;
-  background-image: url(~src/assets/images/imgPlaceholder.png);
+  background-image: url(~src/assets/images/btn_capacitacion.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -551,20 +543,14 @@ mat-grid-list {
 
 .panel-pausa {
   cursor: pointer;
-  // font-weight: bold;
-  // text-align: center;
-  // display: flex;
-  // color: white;
-  // font-size: 0.5rem;
-  
   border: var(--color-bordes);
   border-style: solid;
   border-radius: 11px;
   border-width: 2.5px;
 
-  height: 7.5vw;
+  height: 6.1vw;
   width: 100%;
-  background-image: url(~src/assets/images/imgPlaceholder.png);
+  background-image: url(~src/assets/images/btn_pausa_activa.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
