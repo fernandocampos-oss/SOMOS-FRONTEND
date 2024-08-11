@@ -1,13 +1,29 @@
+<div class="auth__header">
+  <h2 class="auth__title">
+    Manipulación manual de carga
+    <!-- <span>
+      Manipulación manual de carga
+    </span> -->
+  </h2>
+</div>
+
 <div class="video-container">
   <video #videoPlayer id="myVideo" width="100%" (ended)="onVideoEnded()" controls>
     <source [src]="pathVideo" type="video/mp4">
     El navegador no soporta el archivo multimedia.
   </video>
 </div>
+<br>
+<div class="auth__header">
+  <h2 class="auth__title">
+    Pausas activas en el Trabajo
+  </h2>
+</div>
 
 <div class="button-container" style="text-align: center;">
-  <button mat-raised-button color="primary" [disabled]="!isVideoEnded" (click)="downloadPDF()">
-    Material de pausas activas en el trabajo
+  <button mat-raised-button color="primary" style="border-radius: 1.75rem;" [disabled]="!isVideoEnded"
+    (click)="downloadPDF()">
+    <mat-icon>cloud_download</mat-icon>
+    <span>&nbsp;&nbsp;Descargar Material</span>
   </button>
 </div>
-<br>
