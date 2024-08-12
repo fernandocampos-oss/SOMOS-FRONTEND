@@ -8,7 +8,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 export class ShowPausaActivaComponent implements OnInit {
   pathVideo?: string = 'https://portal.essalud.gob.pe/wp-content/uploads/2024/08/SEGURIDAD_Y_SALUD_EN_EL_TRABAJO_08082024.mp4';
   pathFile?: string = 'https://portal.essalud.gob.pe/wp-content/uploads/2024/08/pausas_activas_en_el_trabajo_08082024.pdf';
-  isVideoEnded: boolean = false;
+  // isVideoEnded: boolean = false;
 
   @ViewChild('videoPlayer') videoPlayer: ElementRef<HTMLVideoElement>;
 
@@ -20,7 +20,7 @@ export class ShowPausaActivaComponent implements OnInit {
   }
 
   onVideoEnded() {
-    this.isVideoEnded = true;
+    // this.isVideoEnded = true;
   }
 
   downloadPDF() {
