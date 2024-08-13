@@ -433,9 +433,12 @@ export class MenuPrincipalComponent implements OnInit {
   openPausaActiva() {
     const dialogRef: MatDialogRef<ShowPausaActivaComponent> = this.dialog.open(ShowPausaActivaComponent, {
       disableClose: false,
-      width: '780px',
-      //height: '780px',
       autoFocus: true,
+      width: '75vw',
+      height: '75vh',
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      panelClass: 'auto-resize-dialog',
       data: {
         // model: element
       }

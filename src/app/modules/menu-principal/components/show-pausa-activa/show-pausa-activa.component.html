@@ -1,29 +1,35 @@
-<div class="auth__header">
-  <h2 class="auth__title">
-    Manipulación manual de carga
-    <!-- <span>
-      Manipulación manual de carga
-    </span> -->
-  </h2>
-</div>
+<mat-dialog-content>
+  <div class="dialog-grid">
+    <div class="grid-item">
 
-<div class="video-container">
-  <video #videoPlayer id="myVideo" width="100%" (ended)="onVideoEnded()" controls>
-    <source [src]="pathVideo" type="video/mp4">
-    El navegador no soporta el archivo multimedia.
-  </video>
-</div>
-<br>
-<div class="auth__header">
-  <h2 class="auth__title">
-    Pausas activas en el Trabajo
-  </h2>
-</div>
+      <h2 class="auth__title">
+        Pausas activas en el Trabajo
+      </h2>
+      <img src="assets/images/pausa_activa/panel_pausa_activa.jpg" width="10%" class="image" alt="Pausas Activas"
+        style="cursor:pointer" (click)="downloadPDF()"/>
+        
+      <!-- <button class="cta-button" mat-raised-button color="primary" style="border-radius: 1.75rem;"
+        (click)="downloadPDF()">
+        <mat-icon>cloud_download</mat-icon>
+        <span>&nbsp;&nbsp;Descargar Material</span>
+      </button> -->
 
-<div class="button-container" style="text-align: center;">
-  <button mat-raised-button color="primary" style="border-radius: 1.75rem;" [disabled]="!isVideoEnded"
-    (click)="downloadPDF()">
-    <mat-icon>cloud_download</mat-icon>
-    <span>&nbsp;&nbsp;Descargar Material</span>
-  </button>
-</div>
+    </div>
+    <div class="grid-item">
+
+      <h2 class="auth__title">
+        Manipulación manual de carga
+      </h2>
+      <div class="video-container">
+        <video #videoPlayer width="100%" (ended)="onVideoEnded()" controls>
+          <source [src]="pathVideo" type="video/mp4">
+          El navegador no soporta el archivo multimedia.
+        </video>
+      </div>
+
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="cta-button">Cerrar</button>
+</mat-dialog-actions>
