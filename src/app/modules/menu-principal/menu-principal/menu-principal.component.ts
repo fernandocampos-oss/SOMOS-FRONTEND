@@ -443,7 +443,6 @@ export class MenuPrincipalComponent implements OnInit {
         // model: element
       }
     });
-
   }
 
 }

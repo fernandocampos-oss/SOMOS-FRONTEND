@@ -17,9 +17,6 @@ export class ShowPausaActivaComponent implements OnInit {
     
   }
 
-  onVideoEnded() {
-  }
-
   downloadPDF() {
     const link = document.createElement('a');
     link.href = this.pathFile;

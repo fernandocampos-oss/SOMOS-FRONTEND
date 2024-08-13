@@ -6,8 +6,8 @@
         Pausas activas en el Trabajo
       </h2>
       <img src="assets/images/pausa_activa/panel_pausa_activa.jpg" width="10%" class="image" alt="Pausas Activas"
-        style="cursor:pointer" (click)="downloadPDF()"/>
-        
+        style="cursor:pointer" (click)="downloadPDF()" />
+
       <!-- <button class="cta-button" mat-raised-button color="primary" style="border-radius: 1.75rem;"
         (click)="downloadPDF()">
         <mat-icon>cloud_download</mat-icon>
@@ -21,7 +21,7 @@
         Manipulación manual de carga
       </h2>
       <div class="video-container">
-        <video #videoPlayer width="100%" (ended)="onVideoEnded()" controls>
+        <video #videoPlayer width="100%" controls>
           <source [src]="pathVideo" type="video/mp4">
           El navegador no soporta el archivo multimedia.
         </video>
