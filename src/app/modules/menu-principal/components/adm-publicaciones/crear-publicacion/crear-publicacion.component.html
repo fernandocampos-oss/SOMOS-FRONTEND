@@ -129,6 +129,19 @@
                 </mat-form-field>
             </div>
 
+            <div *ngIf="ctrlCaracteristicas.value.includes(4)">
+                <mat-form-field appearance="outline">
+                    <textarea matInput placeholder="Ingrese pregunta" rows="3" type="text" [(ngModel)]="pregunta" maxlength="250">
+                    </textarea>
+                </mat-form-field>
+                <div style="text-align: center">
+                    <button mat-raised-button class="btnColor" (click)="addToListEncuesta()">
+                        <mat-icon>add</mat-icon>
+                        Añadir esta pregunta a mi encuesta
+                    </button>
+                </div>
+            </div>
+
             <div>
                 <mat-form-field appearance="outline" class="example-full-width">
                   <mat-label>Responsable(s) de la Campaña</mat-label>
@@ -172,12 +185,12 @@
         <button mat-button mat-dialog-close type="button">Cancelar</button>
         <!-- rol 3 -->
         <button mat-raised-button class="btnColor" *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == null" (click)="registrarPublicacion_rol_3()">
-            <mat-icon>add</mat-icon>
+            <mat-icon>save</mat-icon>
             Guardar
         </button>
         <!-- rol 3 y 4  -->
         <button mat-raised-button class="btnColor" *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == 4" (click)="registrarPublicacion_rol_4_3()">
-            <mat-icon>add</mat-icon>
+            <mat-icon>save</mat-icon>
             Guardar
         </button>
     </mat-dialog-actions>

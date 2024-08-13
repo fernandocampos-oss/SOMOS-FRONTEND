@@ -1,3 +1,5 @@
+import { EncuestaRequest } from "../encuesta/encuestaResquest";
+
 export class InscripcionResponse {
   idInscripcion: number;
   descripcion: string;
@@ -40,4 +42,7 @@ export class CreateInscripcionRequest {
   grupoLongitud: string ;
   esVotacion: boolean ;
   usuarios: number[] ;
+
+  encuestaActivo: boolean;
+  encuestaFormularioRequestDto: EncuestaRequest;
 }

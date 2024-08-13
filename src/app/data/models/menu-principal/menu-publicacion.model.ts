@@ -6,10 +6,10 @@ export class MenuPublicacion {
     nom_corto: string;
     fechaPub: string;
     imgRuta: string;
-    redireccion?: string;  
+    redireccion?: string;
 }
 
-export class PublicacionRequest{
+export class PublicacionRequest {
     titulo: string;
     descripcion: string;
     imagenBase64: string;
@@ -20,7 +20,7 @@ export class PublicacionRequest{
     redes: string[];
 }
 
-export class PublicacionResponse{
+export class PublicacionResponse {
     idPublicacion: number;
     titulo: string;
     descripcion: string;
@@ -28,4 +28,6 @@ export class PublicacionResponse{
     urlRedireccion: string;
     fechaCreacion: Date;
     votoActivo: boolean;
+
+    encuestaActivo: boolean;
 }

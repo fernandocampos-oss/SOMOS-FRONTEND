@@ -1,0 +1,11 @@
+<mat-card *ngFor="let pregunta of listPreguntasPorEncuesta" class="pregunta-card">
+    <mat-card-header>
+      <mat-card-title>Pregunta {{ pregunta.idEncuestaFormularioDetalle }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>{{pregunta.denominacion}}</strong></p>
+      
+    </mat-card-content>
+  </mat-card>
+
+ 

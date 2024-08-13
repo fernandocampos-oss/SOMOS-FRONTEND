@@ -27,6 +27,7 @@ import { RegisterInscripcionComponent } from './components/inscripciones/registe
 import { RegisterVoteInscripcionComponent } from './components/inscripciones/register-vote-inscripcion/register-vote-inscripcion.component';
 import { AdmCronogramaPagosComponent } from './components/adm-cronograma-pagos/adm-cronograma-pagos.component';
 import { ShowPausaActivaComponent } from './components/show-pausa-activa/show-pausa-activa.component';
+import { EncuestaFormularioComponent } from './components/encuesta-formulario/encuesta-formulario.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { ShowPausaActivaComponent } from './components/show-pausa-activa/show-pa
     RegisterVoteInscripcionComponent,
     AdmCronogramaPagosComponent,
     ShowPausaActivaComponent,
+    EncuestaFormularioComponent,
 
   ],
   imports: [
