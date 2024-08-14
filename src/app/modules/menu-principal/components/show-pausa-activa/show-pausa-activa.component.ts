@@ -6,7 +6,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./show-pausa-activa.component.scss']
 })
 export class ShowPausaActivaComponent implements OnInit {
-  pathVideo?: string = 'https://portal.essalud.gob.pe/wp-content/uploads/2024/08/SEGURIDAD_Y_SALUD_EN_EL_TRABAJO_08082024.mp4';
+  pathVideo?: string = 'https://portal.essalud.gob.pe/wp-content/uploads/2024/08/SEGURIDAD_Y_SALUD_EN_EL_TRABAJO_14082024.mp4';
   pathFile?: string = 'https://portal.essalud.gob.pe/wp-content/uploads/2024/08/pausas_activas_en_el_trabajo_08082024.pdf';
 
   @ViewChild('videoPlayer') videoPlayer: ElementRef<HTMLVideoElement>;
