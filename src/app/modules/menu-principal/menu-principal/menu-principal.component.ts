@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { ajax } from 'rxjs/ajax';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -21,6 +22,7 @@ import {
   AdmCronogramaPagosComponent
 } from '@modules/menu-principal/components/adm-cronograma-pagos/adm-cronograma-pagos.component';
 import { ShowPausaActivaComponent } from '../components/show-pausa-activa/show-pausa-activa.component';
+import { EncuestaFormularioComponent } from '../components/encuesta-formulario/encuesta-formulario.component';
 
 interface fechas_Imp { // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -442,6 +444,23 @@ export class MenuPrincipalComponent implements OnInit {
       data: {
         // model: element
       }
+    });
+  }
+
+  openEncuesta(element: any) {
+    // delete element.imagenBase64;
+    const dialogRef: MatDialogRef<EncuestaFormularioComponent> = this.dialog.open(EncuestaFormularioComponent, {
+      disableClose: false,
+      minWidth: '22em',
+      width: '1000px',
+      maxWidth: '40em',
+      autoFocus: false,
+      data: {
+        publicacion: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 

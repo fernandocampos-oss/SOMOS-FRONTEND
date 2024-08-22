@@ -59,14 +59,16 @@
             <span style="float: right;">{{pub.fechaCreacion | date:"dd/MM/yy - h:mm a"}}</span>
           </div>
           <div class="containerImg">
-            <img class="imgInfo" *ngIf="!pub.anuncio && pub.idPublicacion != idPublicacionCambiar"
+            <img class="imgInfo" *ngIf="!pub.anuncio && pub.idPublicacion != idPublicacionCambiar && pub.encuestaActivo==false"
               src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showPublicacion(pub)">
-            <img class="imgInfo" *ngIf="pub.anuncio && pub.idPublicacion != idPublicacionCambiar"
+            <img class="imgInfo" *ngIf="pub.anuncio && pub.idPublicacion != idPublicacionCambiar && pub.encuestaActivo==false"
               src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showinscripcionView(pub)">
-            <img class="imgInfo" *ngIf="pub.idPublicacion == idPublicacionCambiar"
+            <img class="imgInfo" *ngIf="pub.idPublicacion == idPublicacionCambiar && pub.encuestaActivo==false"
               src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="showEncuestaSimple(pub)">
             <!-- <a *ngIf="pub.redireccion != undefined" href='{{pub.redireccion}}' target="_blank"><img class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'></a>
                   <img *ngIf="pub.redireccion == undefined"class="imgInfo" src='{{pub.imgRuta}}' alt='{{pub.nombre}}'> -->
+            <img class="imgInfo" *ngIf="pub.encuestaActivo==true"
+              src='data:image/jpeg;base64,{{pub.imagenBase64}}' alt='{{pub.titulo}}' (click)="openEncuesta(pub)">
           </div>
         </div>
       </div>

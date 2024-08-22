@@ -1,0 +1,38 @@
+<div style="text-align: center;">
+  <h3 style="color: blue;">¡Elige una opción y envianos tu respuesta!</h3>
+</div>
+<br>
+
+<div class="survey-container" *ngIf="questions[currentQuestionIndex]">
+  <p>(Pregunta {{ currentQuestionIndex + 1 }} de {{ questions.length }})</p><br>
+  <h3>{{questions[currentQuestionIndex]?.pregunta}}</h3>
+
+  <div [hidden]="true">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Tu respuesta" [(ngModel)]="questions[currentQuestionIndex].respuesta">
+    </mat-form-field>
+  </div>
+
+  <div class="separacion">
+    <ng-container *ngFor="let a of listAlternativa, index as i">
+      <div class="elementos" (click)="selectRespuesta(i,a, questions[currentQuestionIndex].idPregunta)"
+        [ngClass]="{ 'selected': selectedImageIndex === i }">
+        <div class="candHeader">
+          <span>{{a.denominacion}}</span>
+        </div>
+        <div class="candBody">
+          <img src='{{a.imagen}}' alt="'{{a.alt}}'">
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="buttons">
+    <button mat-raised-button color="primary" (click)="previousQuestion()" class="btn-next"
+      [disabled]="currentQuestionIndex === 0">Regresar</button>
+    <button mat-raised-button color="primary" (click)="nextQuestion()" class="btn-next"
+      [disabled]="currentQuestionIndex === questions.length - 1">Siguiente</button>
+    <button mat-raised-button color="accent" *ngIf="currentQuestionIndex === questions.length - 1"
+      (click)="enviarRespuestas()" class="btn-next">Finalizar</button>
+  </div>
+</div>

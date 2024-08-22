@@ -167,3 +167,27 @@ textarea {
         padding: 0 0 0 24px;
     }
 }
+
+//
+.scroll-container {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+mat-list-item {
+    min-height: 20px;
+    padding: 10px;
+}
+
+.scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}  

@@ -9,6 +9,7 @@ import { NotificationService } from '@core/services';
 import { UserSession } from '@data/models';
 import { inscritosResponse } from '@data/models/inscripcion/inscripcion.model';
 import { AuthService } from '@data/services';
+import { EncuestaFormularioService } from '@data/services/encuesta-formulario.service';
 import { ExportExcelService } from '@data/services/excel-export-services/export-excel-inscripciones.service';
 import { InscripcionService } from '@data/services/inscripcion.service';
 import { ConfirmDialogComponent } from '@shared/confirm-dialog/confirm-dialog.component';
@@ -42,64 +43,71 @@ export class AdministrarInscripcionComponent implements OnInit {
   // resultadosVotacion: any;
 
   displayedColumns: string[] = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
-  
+
+  listEncuestaFormulario: any[] = [];
+  displayedColumnsEncuesta: string[] = ['pregunta', 'satisfecho', 'mejorar', 'insatisfecho'];
+
   constructor(
     private _router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private _authService   : AuthService,
-    private _notification   : NotificationService,
+    private _authService: AuthService,
+    private _notification: NotificationService,
     public _servicerExcel: ExportExcelService,
-    private inscripcionService: InscripcionService) { }
+    private inscripcionService: InscripcionService,
+    private _encuestaFormularioService: EncuestaFormularioService,
+  ) { }
 
   ngOnInit(): void {
-    this.ctrlInscripcion.valueChanges.subscribe((data)=>{
+    this.ctrlInscripcion.valueChanges.subscribe((data) => {
       this.grupos = [];
       this.getData();
     })
-    this.inscripcionService.getInscripcionesAsignadas().subscribe((data)=>{
+    this.inscripcionService.getInscripcionesAsignadas().subscribe((data) => {
       this.inscripcionesAsignadas = data;
       this.ctrlInscripcion.setValue(data[0].idInscripcion);
     })
+
+    this.listEncuestaByUsuarioCreacion();
   }
-  
-  getData(){
+
+  getData() {
     let headersTabla = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
-    this.inscripcionService.getUsuariosInscritos(this.ctrlInscripcion.value).subscribe((data)=>{
+    this.inscripcionService.getUsuariosInscritos(this.ctrlInscripcion.value).subscribe((data) => {
       this.dataInscripcion = data;
-      this.inscripcionService.getDatosInscripcionPorId(this.ctrlInscripcion.value).subscribe((datosInscripcion)=>{
+      this.inscripcionService.getDatosInscripcionPorId(this.ctrlInscripcion.value).subscribe((datosInscripcion) => {
         // console.log((({ inscritos, ...o }) => o)(this.dataInscripcion));
         let idGrupo = 0;
 
         this.estructuraExtraInscripcion = datosInscripcion;
-        if(this.estructuraExtraInscripcion.grupoActivo){
+        if (this.estructuraExtraInscripcion.grupoActivo) {
           // this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
           this.dataInscripcion.inscritos.sort(function (a, b) {
-                return b.fechaInscripcion.localeCompare(a.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
+            return b.fechaInscripcion.localeCompare(a.fechaInscripcion) || a.idLider.toLocaleString().localeCompare(b.idLider.toLocaleString());
           });
-          this.dataInscripcion.inscritos.forEach((x)=>{
-            if(idGrupo != x.idLider && x.idLider == x.idUsuario){
+          this.dataInscripcion.inscritos.forEach((x) => {
+            if (idGrupo != x.idLider && x.idLider == x.idUsuario) {
               let cantVotacion = 0;
               idGrupo = x.idLider;
-              if(data.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == x.idLider})){
-                cantVotacion = data.votacionesResultado.find((votacionRes)=>{return votacionRes.idLider == x.idLider}).votos;
+              if (data.votacionesResultado.find((votacionRes) => { return votacionRes.idLider == x.idLider })) {
+                cantVotacion = data.votacionesResultado.find((votacionRes) => { return votacionRes.idLider == x.idLider }).votos;
               }
-              this.grupos.push({grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, cantVotos: cantVotacion, integrantes:this.dataInscripcion.inscritos.filter((z)=>{return x.idLider == z.idLider})});
+              this.grupos.push({ grupo: x.idLider, descripcion: x.descripcion, imagen: x.rutaImagen, cantVotos: cantVotacion, integrantes: this.dataInscripcion.inscritos.filter((z) => { return x.idLider == z.idLider }) });
             }
           })
         }
-        else{
-          if(this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) {headersTabla.push('accion')} // = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion', 'accion'];
+        else {
+          if (this.estructuraExtraInscripcion.imagenActiva || this.estructuraExtraInscripcion.textoActivo) { headersTabla.push('accion') } // = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion', 'accion'];
           // else this.displayedColumns = ['dni', 'nombres', 'regimen', 'celular', 'correo', 'fechaInscripcion'];
           if (this.dataInscripcion.inscritos.length > 0) {
             this.dataInscripcion.inscritos.sort(function (a, b) {
-                  return b.fechaInscripcion.localeCompare(a.fechaInscripcion);
+              return b.fechaInscripcion.localeCompare(a.fechaInscripcion);
             });
             this.dataSource = new MatTableDataSource(this.dataInscripcion.inscritos);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           } else {
-            this.dataSource=null;
+            this.dataSource = null;
           }
         }
       })
@@ -107,19 +115,19 @@ export class AdministrarInscripcionComponent implements OnInit {
     })
   }
 
-  comprobarSiUrl(stringEvaluar: string): boolean{
+  comprobarSiUrl(stringEvaluar: string): boolean {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     // var regexp = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
     return regexp.test(stringEvaluar);
   }
 
-  showImg(infoImagen: string, infoDescripcion: string){
+  showImg(infoImagen: string, infoDescripcion: string) {
     const dialogRef: MatDialogRef<ImageOptionsComponent> = this.dialog.open(ImageOptionsComponent, {
       disableClose: false,
       maxWidth: '728px',
       minHeight: '20%',
       maxHeight: '780px',
-      data:{
+      data: {
         encabezado: this.estructuraExtraInscripcion.grupoActivo ? 'Grupo inscrito en: ' + this.dataInscripcion.descripcion : 'Inscripcion en: ' + this.dataInscripcion.descripcion,
         idInscripcion: this.ctrlInscripcion.value,
         imagenBase64: infoImagen,
@@ -133,53 +141,63 @@ export class AdministrarInscripcionComponent implements OnInit {
     this._router.navigate([''], { relativeTo: this.route });
   }
 
-  exportar(){
+  exportar() {
     if (this.dataInscripcion.inscritos.length > 0) {
-      let headers = ['DNI','Apellidos y Nombres','Fec. Nacimiento','Red','Unidad Orgánica','Reg. Laboral','Celular','Correo'];
-      
-      if(this.estructuraExtraInscripcion.grupoActivo){
-        headers.splice(0,0,(this.estructuraExtraInscripcion.textoActivo ? `Grupo (${this.estructuraExtraInscripcion.textoDescripcion})`: 'Líder de grupo'));
-        if(this.dataInscripcion.votacionesResultado){
-          headers.splice(1,0,'Votos');
+      let headers = ['DNI', 'Apellidos y Nombres', 'Fec. Nacimiento', 'Red', 'Unidad Orgánica', 'Reg. Laboral', 'Celular', 'Correo'];
+
+      if (this.estructuraExtraInscripcion.grupoActivo) {
+        headers.splice(0, 0, (this.estructuraExtraInscripcion.textoActivo ? `Grupo (${this.estructuraExtraInscripcion.textoDescripcion})` : 'Líder de grupo'));
+        if (this.dataInscripcion.votacionesResultado) {
+          headers.splice(1, 0, 'Votos');
         }
       }
-      else{
-        if(this.estructuraExtraInscripcion.textoActivo){
+      else {
+        if (this.estructuraExtraInscripcion.textoActivo) {
           headers.push(this.estructuraExtraInscripcion.textoDescripcion)
         }
-        if(this.dataInscripcion.votacionesResultado){
-          headers.splice(0,0,'Votos');
+        if (this.dataInscripcion.votacionesResultado) {
+          headers.splice(0, 0, 'Votos');
         }
       }
-          
+
       this._servicerExcel.exportExcel(headers, this.dataInscripcion, this.estructuraExtraInscripcion)
     }
-    else{
+    else {
       this._notification.warning('Aún no hay registro de inscritos');
     }
   }
 
-  activarVotacion(){
+  activarVotacion() {
     const dialogRef: MatDialogRef<ConfirmDialogComponent> = this.dialog.open(ConfirmDialogComponent, {
       disableClose: true,
       autoFocus: false,
-      data:{
-        type:0,
-        title:'¿Está seguro de ' + (this.dataInscripcion.votoActivo ? 'desactivar': 'activar') + ' esta votación?',
-        message: 'Campaña: '+ this.dataInscripcion.descripcion,
+      data: {
+        type: 0,
+        title: '¿Está seguro de ' + (this.dataInscripcion.votoActivo ? 'desactivar' : 'activar') + ' esta votación?',
+        message: 'Campaña: ' + this.dataInscripcion.descripcion,
       }
     });
 
-    dialogRef.afterClosed().subscribe((data)=>{
-      if(data == true){
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data == true) {
         this.dataInscripcion.votoActivo = !this.dataInscripcion.votoActivo;
-        this.inscripcionService.activarInscripcionPorId(this.dataInscripcion.idInscripcion,this.dataInscripcion.votoActivo).subscribe((data)=>{
+        this.inscripcionService.activarInscripcionPorId(this.dataInscripcion.idInscripcion, this.dataInscripcion.votoActivo).subscribe((data) => {
           // console.log(data);
-        this.grupos = [];
-        this.getData();
-        // this.inscripcionService.getUsuariosInscritos(this.idInscripcionSelected).subscribe((data)=>{console.log(data)})
+          this.grupos = [];
+          this.getData();
+          // this.inscripcionService.getUsuariosInscritos(this.idInscripcionSelected).subscribe((data)=>{console.log(data)})
         })
       }
     })
   }
+
+  async listEncuestaByUsuarioCreacion() {
+    await this._encuestaFormularioService.listEncuestaByUsuarioCreacion().then(data => {
+      if (data.length > 0) {
+        this.listEncuestaFormulario = data;
+        console.log(data)
+      }
+    });
+  }
+
 }
