@@ -9,7 +9,8 @@ import { AsignacionRolSectorizacionService } from '@data/services/asignacion-rol
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { CreateInscripcionRequest } from '@data/models/inscripcion/inscripcion.model';
-import { EncuestaRequest, PreguntaRequest } from '@data/models/encuesta/encuestaResquest';
+import { FormPreguntaResponse } from '@data/models/form-encuesta/registrarRespuestaRequestDto';
+import { EncuestaRequest } from '@data/models/form-encuesta/formEncuestaReponse';
 
 @Component({
   selector: 'app-crear-publicacion',
@@ -45,7 +46,7 @@ export class CrearPublicacionComponent implements OnInit {
     { nombre: '¿Requiere un texto?' },
     { nombre: '¿Habrá inscripción grupal?' },
     { nombre: '¿Se realizarán votaciones?' },
-    { nombre: '¿Crear encuesta?, si elige esta opción no seleccine más de uno.' },
+    { nombre: '¿Crear encuesta? para crear formulario solo elija esta opción.' },
   ]
 
   showHelpImagen = false;
@@ -107,7 +108,7 @@ export class CrearPublicacionComponent implements OnInit {
 
   pregunta: any;
   encuestaModel = new EncuestaRequest;
-  listPregunta: PreguntaRequest[] = [];
+  listPregunta: FormPreguntaResponse[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<CrearPublicacionComponent>,
@@ -438,15 +439,14 @@ export class CrearPublicacionComponent implements OnInit {
       if (this.ctrlCaracteristicas.value.includes(4)) {
         inscripcionRequest.encuestaActivo = true;
 
-        this.encuestaModel.finalizado = false;
         this.encuestaModel.listPregunta = this.listPregunta;
         
-        inscripcionRequest.encuestaFormularioRequestDto = this.encuestaModel;
+        inscripcionRequest.formEncuestaRequestDto = this.encuestaModel;
         console.log(this.encuestaModel)
       }
       else {
         inscripcionRequest.encuestaActivo = false;
-        inscripcionRequest.encuestaFormularioRequestDto = null;
+        inscripcionRequest.formEncuestaRequestDto = null;
       }
 
       return inscripcionRequest;
@@ -479,11 +479,11 @@ export class CrearPublicacionComponent implements OnInit {
   }
 
   addToListEncuesta() {
-    let pregunta = new PreguntaRequest();
+    let pregunta = new FormPreguntaResponse();
     pregunta.denominacion = this.pregunta;
-    pregunta.satisfecho = false;
-    pregunta.porMejorar = false;
-    pregunta.insatisfecho = false;
+    pregunta.satisfecho = null;
+    pregunta.porMejorar = null;
+    pregunta.insatisfecho = null;
     this.listPregunta.push(pregunta);
 
     this.pregunta = '';

@@ -1,4 +1,4 @@
-import { EncuestaRequest } from "../encuesta/encuestaResquest";
+import { EncuestaRequest } from "../form-encuesta/formEncuestaReponse";
 
 export class InscripcionResponse {
   idInscripcion: number;
@@ -44,5 +44,5 @@ export class CreateInscripcionRequest {
   usuarios: number[] ;
 
   encuestaActivo: boolean;
-  encuestaFormularioRequestDto: EncuestaRequest;
+  formEncuestaRequestDto: EncuestaRequest;
 }

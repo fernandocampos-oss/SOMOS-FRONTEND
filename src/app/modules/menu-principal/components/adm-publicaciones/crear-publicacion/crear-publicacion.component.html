@@ -134,12 +134,21 @@
                     <textarea matInput placeholder="Ingrese pregunta" rows="3" type="text" [(ngModel)]="pregunta" maxlength="250">
                     </textarea>
                 </mat-form-field>
-                <div style="text-align: center">
+                <div style="text-align: right; margin-top: 6px;">
                     <button mat-raised-button class="btnColor" (click)="addToListEncuesta()">
                         <mat-icon>add</mat-icon>
-                        Añadir esta pregunta a mi encuesta
+                        Agregar al cuestionario
                     </button>
-                </div>
+                </div><br>
+
+                <div class="scroll-container">
+                <mat-list>
+                    <mat-list-item *ngFor="let item of this.listPregunta">
+                        <p matLine>{{item.denominacion}}</p>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+                  
             </div>
 
             <div>
