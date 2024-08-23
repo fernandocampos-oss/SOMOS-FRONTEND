@@ -535,7 +535,7 @@ mat-grid-list {
 
   height: 6.1vw;
   width: 100%;
-  background-image: url(~src/assets/images/btn_capacitacion.png);
+  background-image: url(~src/assets/images/pausa_activa/btn_capacitacion.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -550,8 +550,29 @@ mat-grid-list {
 
   height: 6.1vw;
   width: 100%;
-  background-image: url(~src/assets/images/btn_pausa_activa.png);
+  background-image: url(~src/assets/images/pausa_activa/btn_pausa_activa.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+
+.btn-pausa-activa-mobil{
+  cursor: pointer;
+  width: 12.5vw;
+  height: 13vw;
+  background: #FFFFFF;
+  border: #226bb2;
+  border-style:solid;
+  border-radius: 11px;
+  border-width: 2.5px;
+  margin: 10px auto 10px auto;
+  mat-icon.material-icons{
+    font-size: 12vw;
+    color: #226bb2;
+  }
+  img{
+    border-radius: 9px;
+    padding: 1px;
+    height: 100%;
+  }
 }
