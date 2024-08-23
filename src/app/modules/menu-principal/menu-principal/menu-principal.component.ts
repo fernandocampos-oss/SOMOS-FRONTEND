@@ -148,6 +148,10 @@ export class MenuPrincipalComponent implements OnInit {
     // else{ this.encuestaNombre = data.descripcion}});
   }
 
+  redirectCapacitacion(){
+    window.open('https://capacitacion.essalud.gob.pe/', '_blank');
+  }
+
   open(cuadro: number) {
     switch (cuadro) {
       case 1:
