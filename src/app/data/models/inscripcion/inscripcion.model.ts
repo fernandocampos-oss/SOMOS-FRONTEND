@@ -43,6 +43,6 @@ export class CreateInscripcionRequest {
   esVotacion: boolean ;
   usuarios: number[] ;
 
-  encuestaActivo: boolean;
-  formEncuestaRequestDto: EncuestaRequest;
+  // encuestaActivo: boolean;
+  // formEncuestaRequestDto: EncuestaRequest;
 }

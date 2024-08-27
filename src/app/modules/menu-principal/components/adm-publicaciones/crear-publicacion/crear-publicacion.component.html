@@ -14,8 +14,8 @@
                             (click)="file.click()" color="primary" *ngIf="!retrievedImage">
                             <mat-icon>add_photo_alternate</mat-icon> Cargar Imagen
                         </button>
-                        <button type="button" class="preview__button" mat-raised-button MatPrefix (click)="removeImage()"
-                            color="warn" *ngIf="retrievedImage">
+                        <button type="button" class="preview__button" mat-raised-button MatPrefix
+                            (click)="removeImage()" color="warn" *ngIf="retrievedImage">
                             <mat-icon>clear</mat-icon> Remover Imagen
                         </button>
                         <input hidden #file type="file" accept="Image/*" (change)="onChangeImage(file.files)" />
@@ -42,8 +42,10 @@
                 </mat-grid-tile>
                 <!-- rol 3 y 4 -->
                 <div *ngIf="rolRed == rolTemporal_3 && rolCentral == rolTemporal_4">
-                    <mat-grid-tile class="boxEspaciado" [colspan]="selected == 'opcion_1' ? 4 : 3" [rowspan]="4" [ngClass]="selected == 'opcion_1' ? 'optAdministrador' : null">
-                        <mat-form-field appearance="outline" [ngStyle]="{'margin-right': (selected !== 'opcion_1' ? '0.5rem' : null)}">
+                    <mat-grid-tile class="boxEspaciado" [colspan]="selected == 'opcion_1' ? 4 : 3" [rowspan]="4"
+                        [ngClass]="selected == 'opcion_1' ? 'optAdministrador' : null">
+                        <mat-form-field appearance="outline"
+                            [ngStyle]="{'margin-right': (selected !== 'opcion_1' ? '0.5rem' : null)}">
                             <mat-label>Seleccione alcance</mat-label>
                             <mat-select [(value)]="selected" (selectionChange)="capturaValorGlobal($event)">
                                 <mat-option value="opcion_1">Alcance global</mat-option>
@@ -51,7 +53,7 @@
                             </mat-select>
                         </mat-form-field>
                     </mat-grid-tile>
-        
+
                     <div *ngIf="selected ==='opcion_2'">
                         <mat-grid-tile class="boxEspaciado" [colspan]="3" [rowspan]="4">
                             <!-- <mat-form-field appearance="outline">
@@ -64,7 +66,8 @@
                             </mat-form-field> -->
                             <mat-form-field appearance="outline">
                                 <mat-label>Redes Asignadas</mat-label>
-                                <mat-select [(ngModel)]="redItemSeleccionadoRol_3_4" [ngModelOptions]="{standalone: true}" multiple>
+                                <mat-select [(ngModel)]="redItemSeleccionadoRol_3_4"
+                                    [ngModelOptions]="{standalone: true}" multiple>
                                     <mat-option *ngFor="let r of listRedesAsignadas" [value]="r.codRed">
                                         {{r.descripcion | titlecase}}
                                     </mat-option>
@@ -83,13 +86,14 @@
                         </mat-form-field>
                     </mat-grid-tile> -->
                 </div>
-        
+
                 <!-- rol 3 -->
                 <div *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == null">
                     <mat-grid-tile class="boxEspaciado optAdministrador" [colspan]="4" [rowspan]="4">
                         <mat-form-field appearance="outline">
                             <mat-label>Redes Asignadas</mat-label>
-                            <mat-select [(ngModel)]="redItemSeleccionadoRol_3" [ngModelOptions]="{standalone: true}" multiple>
+                            <mat-select [(ngModel)]="redItemSeleccionadoRol_3" [ngModelOptions]="{standalone: true}"
+                                multiple>
                                 <mat-option *ngFor="let r of listRedesAsignadas" [value]="r.codRed">
                                     {{ r.descripcion }}
                                 </mat-option>
@@ -97,7 +101,7 @@
                         </mat-form-field>
                     </mat-grid-tile>
                 </div>
-        
+
             </mat-grid-list>
         </div>
     </mat-step>
@@ -113,25 +117,28 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <span class="msgSinOpciones" *ngIf="ctrlCaracteristicas.value.length == 0">De no seleccionarse alguna opción, la inscripción será de forma directa</span>
+            <span class="msgSinOpciones" *ngIf="ctrlCaracteristicas.value.length == 0">De no seleccionarse alguna
+                opción, la inscripción será de forma directa</span>
             <div class="chooseOptions" *ngIf="ctrlCaracteristicas.value" [formGroup]="formDatosCampania">
                 <mat-form-field appearance="outline" *ngIf="ctrlCaracteristicas.value.includes(0)">
                     <mat-label>¿Qué imagen se solicita?</mat-label>
-                    <input name="titulo imagen" matInput formControlName="frmTxtImagen" required/>
+                    <input name="titulo imagen" matInput formControlName="frmTxtImagen" required />
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="ctrlCaracteristicas.value.includes(1)">
                     <mat-label>¿Que texto o descripción se solicita?</mat-label>
-                    <input matInput formControlName="frmTxtDescripcion" required (focus)="showHelpImagen = true" (focusout)="showHelpImagen = false"/>
-                </mat-form-field> 
+                    <input matInput formControlName="frmTxtDescripcion" required (focus)="showHelpImagen = true"
+                        (focusout)="showHelpImagen = false" />
+                </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="ctrlCaracteristicas.value.includes(2)">
                     <mat-label>Límite del grupo</mat-label>
-                    <input type="number" min="2" matInput formControlName="frmLimitGrupo" required/>
+                    <input type="number" min="2" matInput formControlName="frmLimitGrupo" required />
                 </mat-form-field>
             </div>
 
-            <div *ngIf="ctrlCaracteristicas.value.includes(4)">
+            <!-- <div *ngIf="ctrlCaracteristicas.value.includes(4)">
                 <mat-form-field appearance="outline">
-                    <textarea matInput placeholder="Ingrese pregunta" rows="3" type="text" [(ngModel)]="pregunta" maxlength="250">
+                    <textarea matInput placeholder="Ingrese pregunta" rows="3" type="text" [(ngModel)]="pregunta"
+                        maxlength="250">
                     </textarea>
                 </mat-form-field>
                 <div style="text-align: right; margin-top: 6px;">
@@ -142,26 +149,25 @@
                 </div><br>
 
                 <div class="scroll-container">
-                <mat-list>
-                    <mat-list-item *ngFor="let item of this.listPregunta">
-                        <p matLine>{{item.denominacion}}</p>
-                    </mat-list-item>
-                </mat-list>
-            </div>
-                  
-            </div>
+                    <mat-list>
+                        <mat-list-item *ngFor="let item of this.listPregunta">
+                            <p matLine>{{item.denominacion}}</p>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </div> -->
 
             <div>
                 <mat-form-field appearance="outline" class="example-full-width">
-                  <mat-label>Responsable(s) de la Campaña</mat-label>
-                  <input type="text" placeholder="Escriba un nombre del personal" matInput [formControl]="myControlPersonal" (keydown.enter)="showEnter()"
-                    [matAutocomplete]="autoPersona">
-                  <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFnPersonal"
-                    (optionSelected)="onSelectionChangePersonal($event)">
-                    <mat-option *ngFor="let persona of filteredOptionsPersonal | async" [value]="persona">
-                      {{persona.nombresCompletos | titlecase}}
-                    </mat-option>
-                  </mat-autocomplete>
+                    <mat-label>Responsable(s) de la Campaña</mat-label>
+                    <input type="text" placeholder="Escriba un nombre del personal" matInput
+                        [formControl]="myControlPersonal" (keydown.enter)="showEnter()" [matAutocomplete]="autoPersona">
+                    <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFnPersonal"
+                        (optionSelected)="onSelectionChangePersonal($event)">
+                        <mat-option *ngFor="let persona of filteredOptionsPersonal | async" [value]="persona">
+                            {{persona.nombresCompletos | titlecase}}
+                        </mat-option>
+                    </mat-autocomplete>
                 </mat-form-field>
             </div>
             <div class="pseudoTabla">
@@ -189,16 +195,18 @@
         </div>
     </mat-step>
 </mat-stepper>
-<div >
+<div>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button">Cancelar</button>
         <!-- rol 3 -->
-        <button mat-raised-button class="btnColor" *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == null" (click)="registrarPublicacion_rol_3()">
+        <button mat-raised-button class="btnColor" *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == null"
+            (click)="registrarPublicacion_rol_3()">
             <mat-icon>save</mat-icon>
             Guardar
         </button>
         <!-- rol 3 y 4  -->
-        <button mat-raised-button class="btnColor" *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == 4" (click)="registrarPublicacion_rol_4_3()">
+        <button mat-raised-button class="btnColor" *ngIf="rolTemporal_3 == 3 && rolTemporal_4 == 4"
+            (click)="registrarPublicacion_rol_4_3()">
             <mat-icon>save</mat-icon>
             Guardar
         </button>

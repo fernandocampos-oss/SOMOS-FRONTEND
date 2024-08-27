@@ -29,5 +29,5 @@ export class PublicacionResponse {
     fechaCreacion: Date;
     votoActivo: boolean;
 
-    encuestaActivo: boolean;
+    // encuestaActivo: boolean;
 }

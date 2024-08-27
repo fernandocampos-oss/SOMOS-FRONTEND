@@ -155,7 +155,7 @@
     </div>
 </div>
 
-<div *ngIf="listEncuestaFormulario.length !== 0">
+<!-- <div *ngIf="listEncuestaFormulario.length !== 0">
   <div class="matero-page-header">
     <h1 class="matero-page-title">
       <small class="mr-2" style="margin-left: 18px;">Mis Encuestas</small>
@@ -170,7 +170,7 @@
             <b>{{ y + 1 }}. Publicación/Encuesta:</b> <span>{{i.publicacionNombre}}</span>
           </mat-panel-title>
           <mat-panel-description>
-            <!-- <b>Encuesta</b> -->
+            
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div style="padding: 20px;">
@@ -178,8 +178,7 @@
 
           <div *ngFor="let item of i.listUsuarios; let j = index">
             <h4 matLine>{{ j + 1 }}. {{ item.nombreUsuarioContesta }}</h4>
-            <!-- <p matLine>Cant. de preguntas: {{ item.listPreguntas.length }}</p> -->
-
+            
             <table mat-table class="tabla" [dataSource]="item.listPreguntas">
               <ng-container matColumnDef="pregunta">
                 <th mat-header-cell *matHeaderCellDef>Pregunta</th>
@@ -207,4 +206,4 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
-</div>
+</div> -->

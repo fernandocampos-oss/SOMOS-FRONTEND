@@ -451,21 +451,20 @@ export class MenuPrincipalComponent implements OnInit {
     });
   }
 
-  openEncuesta(element: any) {
-    // delete element.imagenBase64;
-    const dialogRef: MatDialogRef<EncuestaFormularioComponent> = this.dialog.open(EncuestaFormularioComponent, {
-      disableClose: false,
-      minWidth: '22em',
-      width: '1000px',
-      maxWidth: '40em',
-      autoFocus: false,
-      data: {
-        publicacion: element
-      }
-    });
+  // openEncuesta(element: any) {
+  //   const dialogRef: MatDialogRef<EncuestaFormularioComponent> = this.dialog.open(EncuestaFormularioComponent, {
+  //     disableClose: false,
+  //     minWidth: '22em',
+  //     width: '1000px',
+  //     maxWidth: '40em',
+  //     autoFocus: false,
+  //     data: {
+  //       publicacion: element
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //   });
+  // }
 
 }

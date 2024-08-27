@@ -46,7 +46,7 @@ export class CrearPublicacionComponent implements OnInit {
     { nombre: '¿Requiere un texto?' },
     { nombre: '¿Habrá inscripción grupal?' },
     { nombre: '¿Se realizarán votaciones?' },
-    { nombre: '¿Crear encuesta? para crear formulario solo elija esta opción.' },
+    // { nombre: '¿Crear encuesta? para crear formulario solo elija esta opción.' },
   ]
 
   showHelpImagen = false;
@@ -106,9 +106,9 @@ export class CrearPublicacionComponent implements OnInit {
   redItemSeleccionadoRol_3: any;
   redItemSeleccionadoRol_3_4: any;
 
-  pregunta: any;
-  encuestaModel = new EncuestaRequest;
-  listPregunta: FormPreguntaResponse[] = [];
+  // pregunta: any;
+  // encuestaModel = new EncuestaRequest;
+  // listPregunta: FormPreguntaResponse[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<CrearPublicacionComponent>,
@@ -436,18 +436,18 @@ export class CrearPublicacionComponent implements OnInit {
         inscripcionRequest.usuarios.push(this.personasResponsablesInscr[i].idUsuario)
       }
 
-      if (this.ctrlCaracteristicas.value.includes(4)) {
-        inscripcionRequest.encuestaActivo = true;
+      // if (this.ctrlCaracteristicas.value.includes(4)) {
+      //   inscripcionRequest.encuestaActivo = true;
 
-        this.encuestaModel.listPregunta = this.listPregunta;
+      //   this.encuestaModel.listPregunta = this.listPregunta;
         
-        inscripcionRequest.formEncuestaRequestDto = this.encuestaModel;
-        console.log(this.encuestaModel)
-      }
-      else {
-        inscripcionRequest.encuestaActivo = false;
-        inscripcionRequest.formEncuestaRequestDto = null;
-      }
+      //   inscripcionRequest.formEncuestaRequestDto = this.encuestaModel;
+      //   console.log(this.encuestaModel)
+      // }
+      // else {
+      //   inscripcionRequest.encuestaActivo = false;
+      //   inscripcionRequest.formEncuestaRequestDto = null;
+      // }
 
       return inscripcionRequest;
     }
@@ -478,16 +478,16 @@ export class CrearPublicacionComponent implements OnInit {
     }
   }
 
-  addToListEncuesta() {
-    let pregunta = new FormPreguntaResponse();
-    pregunta.denominacion = this.pregunta;
-    pregunta.satisfecho = null;
-    pregunta.porMejorar = null;
-    pregunta.insatisfecho = null;
-    this.listPregunta.push(pregunta);
+  // addToListEncuesta() {
+  //   let pregunta = new FormPreguntaResponse();
+  //   pregunta.denominacion = this.pregunta;
+  //   pregunta.satisfecho = null;
+  //   pregunta.porMejorar = null;
+  //   pregunta.insatisfecho = null;
+  //   this.listPregunta.push(pregunta);
 
-    this.pregunta = '';
-    console.log(this.listPregunta)
-  }
+  //   this.pregunta = '';
+  //   console.log(this.listPregunta)
+  // }
 
 }
