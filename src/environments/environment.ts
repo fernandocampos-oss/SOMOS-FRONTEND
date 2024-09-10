@@ -12,5 +12,6 @@ export const environment = {
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
     showDialog: false
-  }
+  },
+  uriSctr: 'http://localhost:4200/#/',
 };

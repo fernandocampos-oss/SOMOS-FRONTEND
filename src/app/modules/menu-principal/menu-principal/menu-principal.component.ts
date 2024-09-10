@@ -23,12 +23,14 @@ import {
 } from '@modules/menu-principal/components/adm-cronograma-pagos/adm-cronograma-pagos.component';
 import { ShowPausaActivaComponent } from '../components/show-pausa-activa/show-pausa-activa.component';
 import { EncuestaFormularioComponent } from '../components/encuesta-formulario/encuesta-formulario.component';
+import { environment } from '@env';
 
 interface fechas_Imp { // Provisional: para tener las fechas importantes
   descripcion: string;
   dia: Date;
 }
 
+const URI_SCTR = `${environment.uriSctr}`;
 @Component({
   selector: 'app-menu-principal',
   templateUrl: './menu-principal.component.html',
@@ -148,7 +150,7 @@ export class MenuPrincipalComponent implements OnInit {
     // else{ this.encuestaNombre = data.descripcion}});
   }
 
-  redirectCapacitacion(){
+  redirectCapacitacion() {
     window.open('https://capacitacion.essalud.gob.pe/', '_blank');
   }
 
@@ -434,6 +436,11 @@ export class MenuPrincipalComponent implements OnInit {
 
   openCapacitacion() {
     window.open('https://capacitacion.essalud.gob.pe/', '_blank');
+  }
+
+  openSctr() {
+    const token = this._authService.getToken();
+    window.open(`${URI_SCTR}?tmp=${encodeURIComponent(token)}`, '_blank');
   }
 
   openPausaActiva() {

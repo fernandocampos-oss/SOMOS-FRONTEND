@@ -11,5 +11,6 @@ export const environment = {
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
     showDialog: false
-  }
+  },
+  uriSctr: 'http://10.0.0.200:8580/sctr-demo/index.html',
 };
