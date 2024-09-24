@@ -3,7 +3,8 @@
   <form [formGroup]="formFindSelect">
     <mat-form-field appearance="outline">
       <mat-label>Apellidos y Nombres del trabajador</mat-label>
-      <input matInput formControlName="frmNombre" minlength="1" maxlength="13" />
+      <!-- <input matInput formControlName="frmNombre" minlength="1" maxlength="13" /> -->
+      <input matInput formControlName="frmNombre" minlength="1" maxlength="100" />
     </mat-form-field>
 
     <button mat-raised-button color="primary" class="search" [disabled]="formFindSelect.value.frmNombre=== ''"
