@@ -440,6 +440,7 @@ export class MenuPrincipalComponent implements OnInit {
 
   openSctr() {
     const token = this._authService.getToken();
+    console.log(`${URI_SCTR}?tmp=${encodeURIComponent(token)}`);
     window.open(`${URI_SCTR}?tmp=${encodeURIComponent(token)}`, '_blank');
   }
 

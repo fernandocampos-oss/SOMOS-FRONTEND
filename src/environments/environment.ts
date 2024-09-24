@@ -13,5 +13,6 @@ export const environment = {
     replaysOnErrorSampleRate: 1.0,
     showDialog: false
   },
-  uriSctr: 'http://localhost:4200/#/',
+  // uriSctr: 'http://localhost:4200/#/',
+  uriSctr: 'http://10.0.0.200:8580/sctr-demo/index.html',
 };
