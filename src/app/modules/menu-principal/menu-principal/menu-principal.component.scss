@@ -555,3 +555,22 @@ mat-grid-list {
   background-size: cover;
   background-position: center;
 }
+
+.boxViva {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-image: url(~src/assets/images/vivaFondo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom;
+}
+
+.viva-boxTemporizador .boxTemporizador{
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 0.72vw;
+}

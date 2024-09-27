@@ -12,8 +12,10 @@ export class Usuario {
   idSede: number;
   cargo: string;
   red: string;
+  codRed: string;
   idZonaControl: number;
   idRol: Role;
   unidad: string;
+  codUnidad: string;
   regimen: string;
 }

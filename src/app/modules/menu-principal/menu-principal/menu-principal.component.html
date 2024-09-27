@@ -180,7 +180,39 @@
       </div>
     </div> -->
 
-  <div class="boxBorde boxTemporizador">
+  <div class="grupo viva-boxTemporizador" *ngIf='usuarioSedeCentral'>
+
+    <div class="column">
+        <div class="boxBorde boxViva" (click)='openLinkViva()'>
+          <img src="assets/images/vivaTexto.png" alt="Imagen de letras" >
+        </div>
+    </div>
+
+    <div class="column">
+      <div class="boxBorde boxTemporizador">
+
+        <span>Fechas festivas</span>
+        <div class="boxCounter">
+          <div class="boxTimer">
+            <span>{{daysLeft}}</span>
+            <h5>días</h5>
+          </div>
+          <div class="boxTimer">
+            <span>{{hoursLeft}}</span>
+            <h5>horas</h5>
+          </div>
+          <div class="boxTimer">
+            <span>{{minutesLeft}}</span>
+            <h5>minutos</h5>
+          </div>
+        </div>
+        <span>{{fechas[identificador].descripcion}}</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="boxBorde boxTemporizador" *ngIf='!usuarioSedeCentral'>
 
     <span>Fechas festivas</span>
     <div class="boxCounter">
@@ -199,7 +231,6 @@
     </div>
     <span>{{fechas[identificador].descripcion}}</span>
   </div>
-
   <!-- <div class="boxBorde boxSistemas" (click)="open(4)">
       <div class="contenido">
         <span>Links de Sistemas Corporativos</span>
@@ -237,4 +268,7 @@
   <!-- <div class="opcionesAcortadas" (click)="open(4)">
     <img src="assets/images/monedasAzul.png">
   </div> -->
+  <div class="opcionesAcortadas" (click)="openLinkViva()" style='background: #226bb2' *ngIf='usuarioSedeCentral'>
+    <img src='assets/images/vivaTexto.png'>
+  </div>
 </div>
