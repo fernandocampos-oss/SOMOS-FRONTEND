@@ -112,7 +112,7 @@ export class MenuPrincipalComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.get(this._authService.getUserSession().id).subscribe(data => {
-      this.usuarioSedeCentral = data.codRed === '0100';
+      this.usuarioSedeCentral = data.codRed === '0100' || data.codRed === '0200';
       if (this._menuService.returnPadron(data.numeroDocumento)) {
         this.mostrarEleccion = true;
       }
