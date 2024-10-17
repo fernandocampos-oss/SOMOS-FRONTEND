@@ -1,3 +1,4 @@
+import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service } from 'ng-recaptcha';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER, ErrorHandler } from '@angular/core';
@@ -60,9 +61,12 @@ import * as Sentry from '@sentry/angular-ivy';
     LayoutModule,
     SharedModule,
     CoreModule,
+    RecaptchaV3Module,
   ],
   bootstrap: [AppComponent],
   providers: [
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: AppConfig.RECAPTCHA_KEY },
+    ReCaptchaV3Service,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
