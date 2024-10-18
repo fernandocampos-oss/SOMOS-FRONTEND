@@ -102,6 +102,8 @@ export class MenuPrincipalComponent implements OnInit {
   rolTemporal_4: any;
   roles: any;
 
+  usuarioSedeCentral: boolean = false;
+
   constructor(private dialog: MatDialog,
     private _menuService: MenuPrincipalService,
     private responsive: BreakpointObserver,
@@ -110,10 +112,11 @@ export class MenuPrincipalComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.get(this._authService.getUserSession().id).subscribe(data => {
+      this.usuarioSedeCentral = data.codRed === '0100';
       if (this._menuService.returnPadron(data.numeroDocumento)) {
         this.mostrarEleccion = true;
       }
-    })
+    });
     this.rol = this._authService.getRol();
     this.identificador = this.nearestDay(this.today);
     this.responsive.observe([
@@ -474,5 +477,9 @@ export class MenuPrincipalComponent implements OnInit {
   //   dialogRef.afterClosed().subscribe(result => {
   //   });
   // }
+
+  openLinkViva() {
+    window.open('https://viva.essalud.gob.pe/viva/login', '_blank');
+  }
 
 }
