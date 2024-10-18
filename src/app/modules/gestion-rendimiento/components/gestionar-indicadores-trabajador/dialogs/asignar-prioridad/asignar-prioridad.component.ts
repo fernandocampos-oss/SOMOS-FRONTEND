@@ -21,7 +21,7 @@ import { UpdatePrioridadDto } from '@data/models/gestion-rendimiento/prioridad-e
 export class AsignarPrioridadComponent implements OnInit {
   expNumero:RegExp = /^[0-9]{1,3}$/;
   expTexto:RegExp = /^[a-zA-Z\u00C1\u00C9\u00CD\u00D3\u00F3\u00FA\u00d1\u00f1\u00e1\u00e9\u00ed\u00f3\u00fa0-9,.\- \'\"\(\)\[\]]{1,200}$/;
-  expTextoFrmDescripcionPrioridad:RegExp = /^[a-zA-Z\u00C1\u00C9\u00CD\u00D3\u00F3\u00FA\u00d1\u00f1\u00e1\u00e9\u00ed\u00f3\u00fa0-9,.\- \'\"\(\)\[\]]{1,255}$/;
+  expTextoFrmDescripcionPrioridad:RegExp = /^[a-zA-Z\u00C1\u00C9\u00CD\u00D3\u00F3\u00FA\u00d1\u00f1\u00e1\u00e9\u00ed\u00f3\u00fa0-9,.\- \'\"\(\)\[\]]{1,350}$/;
   //expTexto:RegExp = /^[a-zA-ZÀ-ÿ\u00f1\u00d1,.\- \'\"\(\)\[\]]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
   isLinear = false;
   minFechaEvidencia = AppConfig.MAX_FECHA_NACIMIENTO;
@@ -57,7 +57,7 @@ export class AsignarPrioridadComponent implements OnInit {
   });
 
   formEvidencia = this._formBuilder.group({
-    frmDescripcion: ['',[Validators.pattern(this.expTexto), Validators.maxLength(300)]],
+    frmDescripcion: ['',[Validators.pattern(this.expTextoFrmDescripcionPrioridad), Validators.maxLength(350)]],
     frmPlazo: [''],
   });
 
