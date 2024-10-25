@@ -1,6 +1,6 @@
 <div class="actions">
     <!-- <div *ngIf="(condicion_1 ==='01' || condicion_2 ==='04') || (condicion_1 ==='04' || condicion_2 ==='01')"> -->
-    <button mat-raised-button color="primary" (click)="modalMiEquipo()">
+    <button *ngIf="idSegmento == 1" mat-raised-button color="primary" (click)="modalMiEquipo()">
         <mat-icon>groups</mat-icon>
         &nbsp; Base de Participantes
     </button>
@@ -176,6 +176,12 @@
                                                 (click)="editarEvidencia(t, 3)">
                                                 <mat-icon>edit</mat-icon>
                                             </button> -->
+                                            <button mat-icon-button class="has-success"
+                                                matTooltip="Registrar Sustento"
+                                                [disabled]="t.sustentoExtensionFile !==null"
+                                                (click)="registrarSustento(t)">
+                                                <mat-icon>add_circle</mat-icon>
+                                            </button>
                                             <button mat-icon-button color="warn"
                                                 [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
                                                 (click)="verEvidenciaPdf(t)">
@@ -221,6 +227,7 @@
                                                     <p *ngIf="t.calificacion == 1">En proceso de logro</p> 
                                                     <p *ngIf="t.calificacion == 2">Entregado</p> 
                                                     <p *ngIf="t.calificacion == 3">Logrado</p> 
+                                                    <p *ngIf="t.calificacion == 4">No Logrado</p> 
                                                 </span>
                                             </div>
                                             

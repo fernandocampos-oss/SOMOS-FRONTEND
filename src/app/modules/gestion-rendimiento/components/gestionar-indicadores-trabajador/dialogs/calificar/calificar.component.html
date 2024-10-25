@@ -12,6 +12,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Calificación</mat-label>
                     <mat-select [(ngModel)]="evidenciaResponseDto.calificacion" required>
+                        <mat-option [value]="4">No Logrado</mat-option>
                         <mat-option [value]="1">En proceso de logro</mat-option>
                         <mat-option [value]="0">No entregado</mat-option>
                         <mat-option [value]="2">Entregado</mat-option>

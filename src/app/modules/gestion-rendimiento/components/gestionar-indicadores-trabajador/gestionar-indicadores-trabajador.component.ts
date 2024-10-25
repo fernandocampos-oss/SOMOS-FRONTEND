@@ -12,6 +12,7 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento/ge
 import { EditMasterComponent } from '../buscar-reporte/dialogs/edit-master/edit-master.component';
 import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
 import { CalificarComponent } from './dialogs/calificar/calificar.component';
+import { RegistrarSustentoComponent } from '@modules/indicadores-trabajador/components/registrar-sustento/registrar-sustento.component';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -27,6 +28,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   condicion_1: any;
   condicion_2: any;
   porcentajeTotal: number = 0;
+  idSegmento: number = 0;
 
   constructor(
     private _dialog: MatDialog,
@@ -34,6 +36,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     private _notification: NotificationService,
     private _snackbar: SnackbarService,
     private _serviceExcelEjecutor: ExcelTrabajadorService,
+    private _matDialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -214,6 +217,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   async getSegmentoModuloGR() {
     let load = await this._grService.getVotanteByIdUsuario().then((data: any) => {
       if (data) {
+        this.idSegmento = data.idSegmento;
         if (data.codCondicion != null) {
           let string = data.codCondicion;
           let parts = string.split(",");
@@ -290,6 +294,23 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       maxHeight: '80vh',
       autoFocus: false,
       data: info
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableJefe();
+    });
+  }
+
+  registrarSustento(element) {
+    const dialogRef: MatDialogRef<RegistrarSustentoComponent> = this._matDialog.open(RegistrarSustentoComponent, {
+      disableClose: false,
+      width: '780px',
+      //height: '780px',
+      autoFocus: true,
+      data: {
+        // idIndicador: this.data.model.idIndicador,
+        model: element
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

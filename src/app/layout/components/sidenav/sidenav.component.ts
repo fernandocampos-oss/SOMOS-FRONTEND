@@ -40,6 +40,7 @@ export class SidenavComponent implements OnInit {
   usuarioVotante: any;
   segmentoJefe: number;
   segmentoTrabajador: number;
+  evaluador: number;
 
   activarModuloGr: boolean = environment.moduloGr;
 
@@ -61,6 +62,7 @@ export class SidenavComponent implements OnInit {
     this.matIconRegistry.addSvgIcon("check-access",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/check-access.svg"));
     this.segmentoJefe = SegmentoVotante.DIRECTIVO;
     this.segmentoTrabajador = SegmentoVotante.EJECUTOR;
+    this.evaluador = SegmentoVotante.EVALUADOR;
   }
 
   ngOnInit(): void {
