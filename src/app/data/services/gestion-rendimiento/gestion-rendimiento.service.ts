@@ -112,6 +112,11 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
+  async listarEvaluadorPorLider() {
+    const url = `${URL_BASE}/equipos/listar/evaluador`;
+    return await this.http.get<{ evaluador: string }>(url).toPromise();
+  }
+
   async listarVotantes() {
     const url = `${URL_BASE}/equipos/listar/votantes`;
     // console.log(url);
@@ -126,6 +131,12 @@ export class GestionRendimientoService {
 
   async registrarTrabajador(equipoRequest: EquipoRequest) {
     const url = `${URL_BASE}/equipos/registrar`;
+    // console.log(url, equipoRequest);
+    return await this.http.post(url, equipoRequest).toPromise();
+  }
+
+  async registrarEvaluador(equipoRequest: EquipoRequest) {
+    const url = `${URL_BASE}/equipos/registrar/evaluador`;
     // console.log(url, equipoRequest);
     return await this.http.post(url, equipoRequest).toPromise();
   }

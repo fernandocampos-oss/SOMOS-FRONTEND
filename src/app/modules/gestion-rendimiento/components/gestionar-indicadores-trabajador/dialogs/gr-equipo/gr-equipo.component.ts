@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
+import srLatn from 'date-fns/locale/sr-Latn';
 
 @Component({
   selector: 'app-gr-equipo',
@@ -26,10 +27,14 @@ export class GrEquipoComponent implements OnInit {
   listEquipo: any[] = [];
 
   integranteControl = new FormControl('');
+  evaluadorControl = new FormControl('');
   listTrabajador = [];
   filteredOptions: Observable<any[]>;
+  filteredEvaluadorOptions: Observable<any[]>;
   trabajadorSeleccionadoTmp: any;
   usuarioObtenido: any;
+  evaluadorSeleccionadoTmp: any;
+  evaluador: any;
 
   confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
 
@@ -42,10 +47,17 @@ export class GrEquipoComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTable();
+    this.loadEvaluador();
     this.listarVotantes();
 
     //filter
     this.filteredOptions = this.integranteControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
+        map(nombresCompletos => nombresCompletos ? this._filterTrabajador(nombresCompletos) : this.listTrabajador.slice())
+      );
+    this.filteredEvaluadorOptions = this.evaluadorControl.valueChanges
       .pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
@@ -72,6 +84,9 @@ export class GrEquipoComponent implements OnInit {
   onSelectionChangePersonal(event: any) {
     this.trabajadorSeleccionadoTmp = event.option.value;
   }
+  onSelectionEvaluador(event: any){
+    this.evaluadorSeleccionadoTmp = event.option.value;
+  }
 
   async loadTable() {
     let listtrabajadores = await this._grService.listarIntegrantesPorLider().then((data) => {
@@ -80,6 +95,16 @@ export class GrEquipoComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.listEquipo);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      }
+    });
+  }
+
+  async loadEvaluador() {
+    await this._grService.listarEvaluadorPorLider().then((data) => {
+      console.log(data);
+      if (data && data.evaluador) {
+        this.evaluador = data.evaluador;
+        console.log(this.evaluador);
       }
     });
   }
@@ -114,6 +139,39 @@ export class GrEquipoComponent implements OnInit {
       }
     } else {
       this._notification.warning('Debe seleccionar un trabajador');
+    }
+  }
+
+  async registrarEvaluador() {
+    if (this.evaluadorSeleccionadoTmp != undefined) {
+      if (this.listEquipo.find(x => x.integrante.idVotante == Number(this.evaluadorSeleccionadoTmp.idVotante)) != undefined) {
+        this._notification.warning("El evaluador ya es parte del equipo");
+        return;
+      } else {
+        let jefeModel = new Jefe();
+        jefeModel.idVotante = 0;
+
+        let integranteModel = new Integrante();
+        integranteModel.idVotante = this.evaluadorSeleccionadoTmp.idVotante;
+
+        let equipo = new EquipoRequest();
+        equipo.jefe = jefeModel;
+        equipo.integrante = integranteModel;
+
+        let add = await this._grService.registrarEvaluador(equipo).then((data: any) => {
+          if (data = 1) {
+            this._notification.success("Evaluador agregado correctamente");
+            this.integranteControl.reset('');
+            this.evaluadorSeleccionadoTmp = null;
+            this.loadEvaluador();
+          } else {
+            this._notification.warning("Agregar evaluador: Se produjo un error");
+          }
+        });
+        
+      }
+    } else {
+      this._notification.warning('Debe seleccionar un evaluador');
     }
   }
 
