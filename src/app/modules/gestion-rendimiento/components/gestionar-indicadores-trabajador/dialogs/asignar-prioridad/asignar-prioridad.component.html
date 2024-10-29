@@ -31,14 +31,28 @@
                         {{a.descripcion}}
                     </mat-option>
                 </mat-select> -->
-                <input matInput formControlName="frmDescripcionPrioridad" minlength="1" maxlength="250" (keypress)="validaTexto($event)" />
+                <input matInput formControlName="frmDescripcionPrioridad" minlength="1" maxlength="350" (keypress)="validaTexto($event)" />
+                <mat-error
+                    *ngIf="formPrioridad.get('frmDescripcionPrioridad').hasError('pattern') && formPrioridad.get('frmDescripcionPrioridad').touched">
+                    Caracteres no permitidos. Asegúrese de usar solo letras, números y los caracteres especiales permitidos.
+                </mat-error>
+                <mat-error *ngIf="formPrioridad.get('frmDescripcionPrioridad').hasError('required')">
+                    Este campo es obligatorio.
+                </mat-error>
             </mat-form-field>
             
             <!-- Cambio de indicador a texto - Fin -->
 
             <mat-form-field appearance="outline">
                 <mat-label>Indicador / Producto</mat-label>
-                <input matInput formControlName="frmDescripcionIndicador" minlength="1" maxlength="200" (keypress)="validaTexto($event)" />
+                <input matInput formControlName="frmDescripcionIndicador" minlength="1" maxlength="350" (keypress)="validaTexto($event)" />
+                <mat-error
+                    *ngIf="formPrioridad.get('frmDescripcionIndicador').hasError('pattern') && formPrioridad.get('frmDescripcionIndicador').touched">
+                    Caracteres no permitidos. Asegúrese de usar solo letras, números y los caracteres especiales permitidos.
+                </mat-error>
+                <mat-error *ngIf="formPrioridad.get('frmDescripcionIndicador').hasError('required')">
+                    Este campo es obligatorio.
+                </mat-error>
             </mat-form-field>
 
             <h4><strong>Valor Meta:</strong></h4>
@@ -104,7 +118,7 @@
                 <mat-grid-tile [colspan]="6">
                     <mat-form-field appearance="outline">
                         <mat-label>Evidencia a presentar</mat-label>
-                        <input matInput formControlName="frmDescripcion" (keypress)="validaTexto($event)" maxlength="300">
+                        <input matInput formControlName="frmDescripcion" (keypress)="validaTexto($event)" maxlength="350">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="(idIndicador==0?5:4)">

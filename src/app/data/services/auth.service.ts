@@ -21,6 +21,8 @@ import {
 } from '@data/models';
 import { Role } from '@data/enums';
 import { AppRoute } from '@data/constants';
+import { CaptchaRequestDto } from '@data/models/captcha/CaptchaRequestDto';
+import { CaptchaResponseDto } from '@data/models/captcha/captchaResponseDto';
 
 const URL_BASE = `${environment.apiUrl}/auth`;
 
@@ -109,5 +111,10 @@ export class AuthService {
       'Authorization',
       'Basic ' + btoa(`${username}:${password}`)
     ); // This class is immutable
+  }
+
+  validCaptcha(request: CaptchaRequestDto) {
+    const url = `${URL_BASE}/captcha`;
+    return this._httpClient.post<CaptchaResponseDto>(url, request);
   }
 }

@@ -12,6 +12,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AppRoute } from '@data/constants/app-route.constant';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { CaptchaRequestDto } from '@data/models/captcha/CaptchaRequestDto';
 
 @UntilDestroy()
 @Component({
@@ -40,7 +42,8 @@ export class LoginComponent implements OnInit {
     private _authService: AuthService,
     private _notificacion: NotificationService,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private _recaptchaV3Service: ReCaptchaV3Service,
   ) {
     this.matIconRegistry.addSvgIcon("password-cursor",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/password-cursor.svg"));
     this.matIconRegistry.addSvgIcon("newuser",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/newuser.svg"));
@@ -52,6 +55,21 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.form.valid) {
+      //captcha
+      this._recaptchaV3Service.execute('submit').subscribe((captchaToken) => {
+        if (captchaToken != null) {
+          console.log('captchaToken:', captchaToken);
+          let dto = new CaptchaRequestDto();
+          dto.llave = captchaToken;
+          this._authService.validCaptcha(dto).subscribe(data => {
+            if (data?.respuestaCaptcha === true) {
+            } else {
+              this._notificacion.warning('Captcha no se pudo validar');
+            }
+          });
+        }
+      });
+
       this._authService
         .login(this.form.value)
         .pipe(
