@@ -101,11 +101,12 @@ export class GrEquipoComponent implements OnInit {
 
   async loadEvaluador() {
     await this._grService.listarEvaluadorPorLider().then((data) => {
-      console.log(data);
       if (data && data.evaluador) {
         this.evaluador = data.evaluador;
-        console.log(this.evaluador);
+      }else{
+        this.evaluador = null;
       }
+      this.evaluadorControl.setValue('');
     });
   }
 
@@ -134,6 +135,7 @@ export class GrEquipoComponent implements OnInit {
           } else {
             this._notification.warning("Agregar trabajador: Se produjo un error");
           }
+          this.loadEvaluador();
         });
         
       }
@@ -192,6 +194,7 @@ export class GrEquipoComponent implements OnInit {
           } else {
             this._notification.warning("Eliminar trabajador: Se produjo un error");
           }
+          this.loadEvaluador();
         });
 
       }
