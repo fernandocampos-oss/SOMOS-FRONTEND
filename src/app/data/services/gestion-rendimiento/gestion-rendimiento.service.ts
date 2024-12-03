@@ -123,6 +123,18 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
+  async listarEvaluadoresDisponible() {
+    const url = `${URL_BASE}/equipos/listar/candidatos/evaluador`;
+    // console.log(url);
+    return await this.http.get<Object[]>(url).toPromise();
+  }
+
+  async verificaEvaluador() {
+    const url = `${URL_BASE}/equipos/verifica/evaluador`;
+    // console.log(url);
+    return await this.http.get<Object[]>(url).toPromise();
+  }
+
   async eliminarTrabajador(idEquipo: number) {
     const url = `${URL_BASE}/equipos/eliminar?idEquipo=${idEquipo}`;
     // console.log(url);
