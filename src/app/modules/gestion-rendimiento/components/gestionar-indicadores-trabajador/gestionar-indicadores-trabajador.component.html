@@ -230,11 +230,10 @@
                                                     <p *ngIf="t.calificacion == 4">No Logrado</p> 
                                                 </span>
                                             </div>
-                                            
                                             <button mat-icon-button color="warn"
                                                 matTooltip="Agregar Calificación"
                                                 (click)="abrirCalificar(t.idEvidencia)"  
-                                                *ngIf="idSegmento!=1">
+                                                *ngIf="flagEvaluador">
                                                 <mat-icon *ngIf="t.comentario!=null">edit</mat-icon>
                                                 <mat-icon *ngIf="t.comentario==null">add_circle</mat-icon>
                                             </button>

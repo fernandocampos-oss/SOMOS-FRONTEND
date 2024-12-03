@@ -29,6 +29,7 @@ export class GrEquipoComponent implements OnInit {
   integranteControl = new FormControl('');
   evaluadorControl = new FormControl('');
   listTrabajador = [];
+  listEvaluador = [];
   filteredOptions: Observable<any[]>;
   filteredEvaluadorOptions: Observable<any[]>;
   trabajadorSeleccionadoTmp: any;
@@ -49,6 +50,7 @@ export class GrEquipoComponent implements OnInit {
     this.loadTable();
     this.loadEvaluador();
     this.listarVotantes();
+    this.listarEvaluadoresDisponible();
 
     //filter
     this.filteredOptions = this.integranteControl.valueChanges
@@ -61,7 +63,7 @@ export class GrEquipoComponent implements OnInit {
       .pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : (value.nombres + ' ' + value.apellidos)),
-        map(nombresCompletos => nombresCompletos ? this._filterTrabajador(nombresCompletos) : this.listTrabajador.slice())
+        map(nombresCompletos => nombresCompletos ? this._filterEvaluador(nombresCompletos) : this.listEvaluador.slice())
       );
   }
 
@@ -74,9 +76,22 @@ export class GrEquipoComponent implements OnInit {
       }
     });
   }
+  
+  async listarEvaluadoresDisponible() {
+    let load = await this._grService.listarEvaluadoresDisponible().then((data: any) => {
+      if (data.length > 0) {
+        this.listEvaluador = data;
+      } else {
+        this._notification.warning("Lista de evaluadores disponibles vacia");
+      }
+    });
+  }
 
   private _filterTrabajador(value: string) {
     return this.listTrabajador.filter(persona => (persona.nombres + ' ' + persona.apellidos).toLowerCase().includes(value.toLowerCase()));
+  }
+  private _filterEvaluador(value: string) {
+    return this.listEvaluador.filter(persona => (persona.nombres + ' ' + persona.apellidos).toLowerCase().includes(value.toLowerCase()));
   }
   displayFnTrabajador(selectedtrabajador) {
     return selectedtrabajador ? (selectedtrabajador.nombres + ' ' + selectedtrabajador.apellidos) : undefined;

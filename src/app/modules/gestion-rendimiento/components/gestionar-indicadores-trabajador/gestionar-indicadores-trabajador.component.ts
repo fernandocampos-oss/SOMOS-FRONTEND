@@ -13,6 +13,7 @@ import { EditMasterComponent } from '../buscar-reporte/dialogs/edit-master/edit-
 import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
 import { CalificarComponent } from './dialogs/calificar/calificar.component';
 import { RegistrarSustentoComponent } from '@modules/indicadores-trabajador/components/registrar-sustento/registrar-sustento.component';
+import { da } from 'date-fns/locale';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -29,6 +30,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   condicion_2: any;
   porcentajeTotal: number = 0;
   idSegmento: number = 0;
+  flagEvaluador: boolean = true;
 
   constructor(
     private _dialog: MatDialog,
@@ -224,6 +226,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           this.condicion_1 = parts[0];
           this.condicion_2 = parts[1];
         }
+        if (data.idSegmento === 1){
+          this.verificaEvaluador();
+        }
       }
     });
   }
@@ -316,5 +321,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadTableJefe();
     });
+  }
+  async verificaEvaluador(){
+      let load = await this._grService.verificaEvaluador().then((data: any) => {
+        this.flagEvaluador = data
+      });
   }
 }
