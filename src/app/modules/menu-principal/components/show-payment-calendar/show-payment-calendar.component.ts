@@ -31,63 +31,115 @@ export class ShowPaymentCalendarComponent implements OnInit {
     {fecPago:'-'},
     {fecPago:'-'},
     {fecPago:'-'},
+    {fecPago:'-'},
+    {fecPago:'-'},
+    {fecPago:'-'},
+    {fecPago:'-'},
   ];
 
   tipoContrato: string ='Selecciona una opción';
 
-  periodosPago: string[] = ['Enero','Escolaridad - Febrero','Febrero','Marzo','Abril','Mayo','Junio','Gratificación - Julio','Julio','Agosto',
-    'Setiembre','Octubre','Noviembre','Gratificación - Diciembre','Diciembre'];
+  periodosPago: string[] = [
+    'Uniformes - Enero',
+    'Enero',
+    'Escolaridad - Febrero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'CTS - Mayo',
+    'Mayo',
+    'Junio',
+    'Gratificación - Julio',
+    'Julio',
+    'Agosto',
+    'Setiembre',
+    'Octubre',
+    'CTS - Noviembre',
+    'Noviembre',
+    'Gratificación - Diciembre',
+    'Diciembre'
+  ];
 
   pagosPensionistas: Calendario[] = [
-    {fecPago:'2024-01-19'},
     {fecPago:'-'},
-    {fecPago:'2024-02-19'},
-    {fecPago:'2024-03-18'},
-    {fecPago:'2024-04-19'},
-    {fecPago:'2024-05-20'},
-    {fecPago:'2024-06-19'},
+    {fecPago:'2025-01-20'},
     {fecPago:'-'},
-    {fecPago:'2024-07-19'},
-    {fecPago:'2024-08-19'},
-    {fecPago:'2024-09-20'},
-    {fecPago:'2024-10-18'},
-    {fecPago:'2024-11-20'},
+    {fecPago:'2025-02-20'},
+    {fecPago:'2025-03-20'},
+    {fecPago:'2025-04-22'},
     {fecPago:'-'},
-    {fecPago:'2024-12-20'},
+    {fecPago:'2025-05-21'},
+    {fecPago:'2025-06-20'},
+    {fecPago:'-'},
+    {fecPago:'2025-07-21'},
+    {fecPago:'2025-08-20'},
+    {fecPago:'2025-09-22'},
+    {fecPago:'2025-10-20'},
+    {fecPago:'-'},
+    {fecPago:'2025-11-20'},
+    {fecPago:'-'},
+    {fecPago:'2025-12-19'},
+  ];
+  pagos276: Calendario[] = [
+    {fecPago:'2025-01-17'},
+    {fecPago:'2025-01-23'},
+    {fecPago:'2025-02-17'},
+    {fecPago:'2025-02-24'},
+    {fecPago:'2025-03-24'},
+    {fecPago:'2025-04-23'},
+    {fecPago:'-'},
+    {fecPago:'2025-05-23'},
+    {fecPago:'2025-06-23'},
+    {fecPago:'2025-07-15'},
+    {fecPago:'2025-07-23'},
+    {fecPago:'2025-08-22'},
+    {fecPago:'2025-09-23'},
+    {fecPago:'2025-10-23'},
+    {fecPago:'-'},
+    {fecPago:'2025-11-24'},
+    {fecPago:'2025-12-15'},
+    {fecPago:'2025-12-23'},
+    {fecPago:'-'},
   ];
   pagos728: Calendario[] = [
-    {fecPago:'2024-01-23'},
-    {fecPago:'2024-02-15'},
-    {fecPago:'2024-02-23'},
-    {fecPago:'2024-03-22'},
-    {fecPago:'2024-04-23'},
-    {fecPago:'2024-05-23'},
-    {fecPago:'2024-06-21'},
-    {fecPago:'2024-07-15'},
-    {fecPago:'2024-07-22'},
-    {fecPago:'2024-08-23'},
-    {fecPago:'2024-09-23'},
-    {fecPago:'2024-10-23'},
-    {fecPago:'2024-11-22'},
-    {fecPago:'2024-12-13'},
-    {fecPago:'2024-12-23'},
+    {fecPago:'2025-01-17'},
+    {fecPago:'2025-01-23'},
+    {fecPago:'2025-02-17'},
+    {fecPago:'2025-02-24'},
+    {fecPago:'2025-03-24'},
+    {fecPago:'2025-04-23'},
+    {fecPago:'2025-05-15'},
+    {fecPago:'2025-05-23'},
+    {fecPago:'2025-06-23'},
+    {fecPago:'2025-07-15'},
+    {fecPago:'2025-07-23'},
+    {fecPago:'2025-08-22'},
+    {fecPago:'2025-09-23'},
+    {fecPago:'2025-10-23'},
+    {fecPago:'2025-11-14'},
+    {fecPago:'2025-11-24'},
+    {fecPago:'2025-12-15'},
+    {fecPago:'2025-12-23'},
   ];
   pagosCas: Calendario[] = [
-    {fecPago:'2024-01-23'},
+    {fecPago:'2025-01-17'},
+    {fecPago:'2025-01-23'},
     {fecPago:'-'},
-    {fecPago:'2024-02-23'},
-    {fecPago:'2024-03-22'},
-    {fecPago:'2024-04-23'},
-    {fecPago:'2024-05-23'},
-    {fecPago:'2024-06-21'},
+    {fecPago:'2025-02-24'},
+    {fecPago:'2025-03-24'},
+    {fecPago:'2025-04-23'},
     {fecPago:'-'},
-    {fecPago:'2024-07-22'},
-    {fecPago:'2024-08-23'},
-    {fecPago:'2024-09-23'},
-    {fecPago:'2024-10-23'},
-    {fecPago:'2024-11-22'},
+    {fecPago:'2025-05-23'},
+    {fecPago:'2025-06-23'},
     {fecPago:'-'},
-    {fecPago:'2024-12-23'},
+    {fecPago:'2025-07-23'},
+    {fecPago:'2025-08-22'},
+    {fecPago:'2025-09-23'},
+    {fecPago:'2025-10-23'},
+    {fecPago:'-'},
+    {fecPago:'2025-11-24'},
+    {fecPago:'-'},
+    {fecPago:'2025-12-23'},
   ];
 
   constructor() { }
@@ -101,10 +153,14 @@ export class ShowPaymentCalendarComponent implements OnInit {
       this.data = this.pagosPensionistas;
     }
     else if(value == 2){
+      this.tipoContrato = 'D.LEG 276';
+      this.data = this.pagos276;
+    }
+    else if(value == 3){
       this.tipoContrato = 'D.LEG 276 - D.LEG 278';
       this.data = this.pagos728;
     }
-    else if(value == 3){
+    else if(value == 4){
       this.tipoContrato = 'D.LEG 1057 - CAS Regular';
       this.data = this.pagosCas;
     }
