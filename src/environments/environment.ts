@@ -14,5 +14,5 @@ export const environment = {
     showDialog: false
   },
   // uriSctr: 'http://localhost:4200/#/',
-  uriSctr: 'http://10.0.0.200:8580/sctr-demo/index.html',
+  // uriSctr: 'http://10.0.0.200:8580/sctr-demo/index.html',
 };

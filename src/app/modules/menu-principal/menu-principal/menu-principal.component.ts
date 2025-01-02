@@ -30,7 +30,7 @@ interface fechas_Imp { // Provisional: para tener las fechas importantes
   dia: Date;
 }
 
-const URI_SCTR = `${environment.uriSctr}`;
+// const URI_SCTR = `${environment.uriSctr}`;
 @Component({
   selector: 'app-menu-principal',
   templateUrl: './menu-principal.component.html',
@@ -441,11 +441,11 @@ export class MenuPrincipalComponent implements OnInit {
     window.open('https://capacitacion.essalud.gob.pe/', '_blank');
   }
 
-  openSctr() {
-    const token = this._authService.getToken();
-    console.log(`${URI_SCTR}?tmp=${encodeURIComponent(token)}`);
-    window.open(`${URI_SCTR}?tmp=${encodeURIComponent(token)}`, '_blank');
-  }
+  // openSctr() {
+  //   const token = this._authService.getToken();
+  //   console.log(`${URI_SCTR}?tmp=${encodeURIComponent(token)}`);
+  //   window.open(`${URI_SCTR}?tmp=${encodeURIComponent(token)}`, '_blank');
+  // }
 
   openPausaActiva() {
     const dialogRef: MatDialogRef<ShowPausaActivaComponent> = this.dialog.open(ShowPausaActivaComponent, {
