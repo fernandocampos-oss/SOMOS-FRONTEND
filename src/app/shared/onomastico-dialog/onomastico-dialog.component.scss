@@ -1,0 +1,24 @@
+.custom-dialog-container {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+
+.close-dialog-button {
+    background-color: #00B6ED;
+    float: right;
+    top: -24px;
+    right: -24px;
+}
+
+::ng-deep .icon-outside .close-dialog-button {
+    float: right;
+    top: -36px;
+    right: -36px;
+}
+
+::ng-deep .icon-outside .mat-dialog-container {
+    overflow: unset;
+}

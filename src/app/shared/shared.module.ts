@@ -11,6 +11,7 @@ import { NotificationDialogComponent } from './notification-dialog/notification-
 import { ImageOptionsComponent } from './image-options/image-options.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ConfirmarPanelComponent } from './confirmar-panel/confirmar-panel.component';
+import { OnomasticoDialogComponent } from './onomastico-dialog/onomastico-dialog.component';
 
 const components = [
   ConfirmDialogComponent,
@@ -20,7 +21,8 @@ const components = [
   NotificationDialogComponent,
   TableComponent,
   ImageOptionsComponent,
-  ConfirmarPanelComponent
+  ConfirmarPanelComponent,
+  OnomasticoDialogComponent
 ];
 
 @NgModule({

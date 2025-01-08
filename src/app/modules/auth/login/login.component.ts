@@ -14,6 +14,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { CaptchaRequestDto } from '@data/models/captcha/CaptchaRequestDto';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { OnomasticoDialogComponent } from '@shared/onomastico-dialog/onomastico-dialog.component';
+import { UsuarioService } from '@data/services';
 
 @UntilDestroy()
 @Component({
@@ -44,9 +47,11 @@ export class LoginComponent implements OnInit {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private _recaptchaV3Service: ReCaptchaV3Service,
+    private _dialog: MatDialog,
+    private _userService: UsuarioService
   ) {
-    this.matIconRegistry.addSvgIcon("password-cursor",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/password-cursor.svg"));
-    this.matIconRegistry.addSvgIcon("newuser",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/newuser.svg"));
+    this.matIconRegistry.addSvgIcon("password-cursor", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/password-cursor.svg"));
+    this.matIconRegistry.addSvgIcon("newuser", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/newuser.svg"));
   }
 
   ngOnInit() {
@@ -87,16 +92,36 @@ export class LoginComponent implements OnInit {
         .subscribe((rta) => {
           this._router.navigate(['/']);
 
-          if(rta.user.authorities.length > 0){
-            let listRol= [];
+          if (rta.user.authorities.length > 0) {
+            let listRol = [];
             for (let a of rta.user.authorities) {
               listRol.push(a.authority);
             }
             sessionStorage.setItem('_roles', JSON.stringify(listRol));
           }
+          //onomastico
+          if (rta != null) {
+            this._userService.findByNumeroDocumento(rta.user.username).subscribe(data => {
+              if (data != null) {
+                console.log("##", data.fechaNacimiento)
+
+                const date = new Date(data.fechaNacimiento);
+                let dayData = date.getDate()+1;
+                let monthData = date.getMonth() + 1;
+                console.log(`Fecha naci (MM-DD): ${dayData}-${monthData}`);
+
+                const today = new Date();
+                const day = today.getDate().toString().padStart(2, '0');
+                const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                const formattedDate = `${month}-${day}`;
+                console.log(`Fecha actual (MM-DD): ${formattedDate}:`);
+
+                this.showPanelOnomastico();
+              }
+            });
+          }
 
         });
-
     } else {
       this.form.markAllAsTouched();
     }
@@ -108,4 +133,21 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
     });
   }
+
+  showPanelOnomastico() {
+    const dialogRef: MatDialogRef<OnomasticoDialogComponent> = this._dialog.open(OnomasticoDialogComponent, {
+      disableClose: true,
+      minWidth: '350px',
+      maxWidth: '50%',
+      autoFocus: false,
+      panelClass: 'icon-outside',
+      data: {
+        // prioridadSelected: element,        
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
 }
