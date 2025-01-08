@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
       //captcha
       this._recaptchaV3Service.execute('submit').subscribe((captchaToken) => {
         if (captchaToken != null) {
-          console.log('captchaToken:', captchaToken);
+          // console.log('captchaToken:', captchaToken);
           let dto = new CaptchaRequestDto();
           dto.llave = captchaToken;
           this._authService.validCaptcha(dto).subscribe(data => {
