@@ -14,6 +14,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { CaptchaRequestDto } from '@data/models/captcha/CaptchaRequestDto';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { OnomasticoDialogComponent } from '@shared/onomastico-dialog/onomastico-dialog.component';
+import { UsuarioService } from '@data/services';
+import * as moment from 'moment';
 
 @UntilDestroy()
 @Component({
@@ -44,9 +48,11 @@ export class LoginComponent implements OnInit {
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
     private _recaptchaV3Service: ReCaptchaV3Service,
+    private _dialog: MatDialog,
+    private _userService: UsuarioService
   ) {
-    this.matIconRegistry.addSvgIcon("password-cursor",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/password-cursor.svg"));
-    this.matIconRegistry.addSvgIcon("newuser",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/newuser.svg"));
+    this.matIconRegistry.addSvgIcon("password-cursor", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/password-cursor.svg"));
+    this.matIconRegistry.addSvgIcon("newuser", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/newuser.svg"));
   }
 
   ngOnInit() {
@@ -87,16 +93,40 @@ export class LoginComponent implements OnInit {
         .subscribe((rta) => {
           this._router.navigate(['/']);
 
-          if(rta.user.authorities.length > 0){
-            let listRol= [];
+          if (rta.user.authorities.length > 0) {
+            let listRol = [];
             for (let a of rta.user.authorities) {
               listRol.push(a.authority);
             }
             sessionStorage.setItem('_roles', JSON.stringify(listRol));
           }
+          //onomastico
+          if (rta != null) {
+            this._userService.findByNumeroDocumento(rta.user.username).subscribe(data => {
+              if (data != null) {
+                console.log("#", data)
+                console.log("##", data.fechaNacimiento)
+
+                let fechaNac = moment(data.fechaNacimiento, 'YYYY-MM-DD');
+                let stringFechaNac: string = fechaNac.format('YYYY-MM-DD');
+                console.log(`Fecha Nac string: ${stringFechaNac}`);
+                console.log("mes:", stringFechaNac.split('-')[1])
+                console.log("dia:", stringFechaNac.split('-')[2])
+
+                const today = new Date();
+                const day = today.getDate().toString().padStart(2, '0');
+                const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                console.log("Fecha hoy (MM-DD):", month,"-", day)
+
+                if((stringFechaNac.split('-')[1])===month && stringFechaNac.split('-')[2]===day){
+                  this.showPanelOnomastico(data);
+                }
+                                
+              }
+            });
+          }
 
         });
-
     } else {
       this.form.markAllAsTouched();
     }
@@ -108,4 +138,21 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
     });
   }
+
+  showPanelOnomastico(element: any) {
+    const dialogRef: MatDialogRef<OnomasticoDialogComponent> = this._dialog.open(OnomasticoDialogComponent, {
+      disableClose: true,
+      minWidth: '250px',
+      maxWidth: '50%',
+      autoFocus: false,
+      data: {
+        nombres: element.nombres,
+        apellidos: element.apellidos,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
 }

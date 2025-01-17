@@ -1,0 +1,23 @@
+<div class="popup-overlay">
+    <div class="popup-content">
+        <button mat-icon-button class="close-button" color="primary" (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+        <img *ngIf="!isMobile" src="assets/images/gifs/onomastico-animation-v1.gif" alt="Animación" class="popup-gif">
+        <img *ngIf="isMobile" src="assets/images/gifs/onomastico-mobil-1.jpg" alt="onomastico">
+        <div class="popup-text">
+            <div style="font-style: italic; font-weight: bold; color: #4a4a4a;">
+                <p>Estimado(a):</p>
+                {{titular}}
+                <p>Te deseamos que tengas un excelente día y que sean muchos años más de vida.</p>
+            </div>
+            <div style="font-style: italic; color: #0056b3;">
+                <p><strong>¡Gracias por formar parte de este gran equipo!</strong></p>
+            </div>
+            <div style="margin-top: 10px; font-style: italic;">
+                <p>Edilberto Martín Terry Ramos</p>
+                <p>Gerente Central de Gestión de las Personas</p>
+            </div>
+        </div>
+    </div>
+</div>
