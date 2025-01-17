@@ -17,6 +17,7 @@ import { CaptchaRequestDto } from '@data/models/captcha/CaptchaRequestDto';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OnomasticoDialogComponent } from '@shared/onomastico-dialog/onomastico-dialog.component';
 import { UsuarioService } from '@data/services';
+import * as moment from 'moment';
 
 @UntilDestroy()
 @Component({
@@ -63,7 +64,7 @@ export class LoginComponent implements OnInit {
       //captcha
       this._recaptchaV3Service.execute('submit').subscribe((captchaToken) => {
         if (captchaToken != null) {
-          console.log('captchaToken:', captchaToken);
+          // console.log('captchaToken:', captchaToken);
           let dto = new CaptchaRequestDto();
           dto.llave = captchaToken;
           this._authService.validCaptcha(dto).subscribe(data => {
@@ -103,20 +104,24 @@ export class LoginComponent implements OnInit {
           if (rta != null) {
             this._userService.findByNumeroDocumento(rta.user.username).subscribe(data => {
               if (data != null) {
+                console.log("#", data)
                 console.log("##", data.fechaNacimiento)
 
-                const date = new Date(data.fechaNacimiento);
-                let dayData = date.getDate()+1;
-                let monthData = date.getMonth() + 1;
-                console.log(`Fecha naci (MM-DD): ${dayData}-${monthData}`);
+                let fechaNac = moment(data.fechaNacimiento, 'YYYY-MM-DD');
+                let stringFechaNac: string = fechaNac.format('YYYY-MM-DD');
+                console.log(`Fecha Nac string: ${stringFechaNac}`);
+                console.log("mes:", stringFechaNac.split('-')[1])
+                console.log("dia:", stringFechaNac.split('-')[2])
 
                 const today = new Date();
                 const day = today.getDate().toString().padStart(2, '0');
                 const month = (today.getMonth() + 1).toString().padStart(2, '0');
-                const formattedDate = `${month}-${day}`;
-                console.log(`Fecha actual (MM-DD): ${formattedDate}:`);
+                console.log("Fecha hoy (MM-DD):", month,"-", day)
 
-                this.showPanelOnomastico();
+                if((stringFechaNac.split('-')[1])===month && stringFechaNac.split('-')[2]===day){
+                  this.showPanelOnomastico(data);
+                }
+                                
               }
             });
           }
@@ -134,15 +139,18 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  showPanelOnomastico() {
+  showPanelOnomastico(element: any) {
     const dialogRef: MatDialogRef<OnomasticoDialogComponent> = this._dialog.open(OnomasticoDialogComponent, {
       disableClose: true,
-      minWidth: '350px',
+      minWidth: '250px',
       maxWidth: '50%',
+      // maxWidth: '380px',
+      // maxHeight: '50%',
       autoFocus: false,
       panelClass: 'icon-outside',
       data: {
-        // prioridadSelected: element,        
+        nombres: element.nombres,
+        apellidos: element.apellidos,
       }
     });
 

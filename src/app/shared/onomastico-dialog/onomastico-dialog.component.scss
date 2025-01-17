@@ -1,24 +1,72 @@
-.custom-dialog-container {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.popup-gif {
+  width: 100%;
+  height: auto;
+}
+
+.popup-text {
+  position: absolute;
+  bottom: 90px;
+  left: 30px;
+  text-align: left;
+  // font-family: 'Georgia', serif;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  animation: fadeIn 10s ease-in-out;
+}
+
+.popup-text p {
+  margin: 0;
+}
+
+// Animación de desvanecimiento 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
 
-.close-dialog-button {
-    background-color: #00B6ED;
-    float: right;
-    top: -24px;
-    right: -24px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-::ng-deep .icon-outside .close-dialog-button {
-    float: right;
-    top: -36px;
-    right: -36px;
+/* Botón flotante de cerrar */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-::ng-deep .icon-outside .mat-dialog-container {
-    overflow: unset;
+.close-button mat-icon {
+  font-size: 20px;
 }

@@ -1,15 +1,21 @@
-<button mat-mini-fab class="close-dialog-button" [mat-dialog-close]="true">
-    <i class="material-icons">close</i>
-</button>
-
-<div align="center">
-    <p>Hola, el área de Bienestar y Recursos Humanos</p>
-    <p> de EsSalud te desea</p>
-    <h2>¡Felíz cumpleaños!</h2>
-    <div mat-dialog-content>
-        <img src="assets/images/gif/saludo-onomastico.gif" alt="GIF animado" style="width: 100%; max-width: 400px;" />
+<div class="popup-overlay">
+    <div class="popup-content">
+        <button mat-icon-button class="close-button" color="primary" (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+        <img src="assets/images/gif/onomastico-animation-v1.gif" alt="Animación" class="popup-gif">
+        <div class="popup-text">
+            <div style="font-style: italic; font-weight: bold; color: #4a4a4a;">
+                Estimado(a): {{titular}}
+                <p>Te deseamos que tengas un excelente día y que sean muchos años más de vida.</p>
+            </div>
+            <div style="font-style: italic; color: #0056b3;">
+                <p><strong>¡Gracias por formar parte de este gran equipo!</strong></p>
+            </div>
+            <div style="margin-top: 10px; font-style: italic;">
+                <p>Edilberto Martín Terry Ramos</p>
+                <p>Gerente Central de Gestión de las Personas</p>
+            </div>
+        </div>
     </div>
-</div>
-<div mat-dialog-actions align="center">
-    <button mat-button mat-dialog-close>Cerrar</button>
 </div>
