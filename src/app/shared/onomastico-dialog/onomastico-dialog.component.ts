@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
@@ -7,15 +8,20 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
   styleUrls: ['./onomastico-dialog.component.scss']
 })
 export class OnomasticoDialogComponent implements OnInit {
+  isMobile = false;
   titular: string = "";
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public _data: any,
-    public dialogRef: MatDialogRef<OnomasticoDialogComponent>
+    public dialogRef: MatDialogRef<OnomasticoDialogComponent>,
+    private breakpointObserver: BreakpointObserver
   ) { }
 
   ngOnInit(): void {
     this.titular = this._data.nombres + " " + this._data.apellidos;
+    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe((result) => {
+      this.isMobile = result.matches;
+    });
   }
 
   closeDialog(): void {

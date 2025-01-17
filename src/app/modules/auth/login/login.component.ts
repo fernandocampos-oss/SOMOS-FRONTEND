@@ -144,10 +144,7 @@ export class LoginComponent implements OnInit {
       disableClose: true,
       minWidth: '250px',
       maxWidth: '50%',
-      // maxWidth: '380px',
-      // maxHeight: '50%',
       autoFocus: false,
-      panelClass: 'icon-outside',
       data: {
         nombres: element.nombres,
         apellidos: element.apellidos,
