@@ -6,7 +6,6 @@ import { UsuarioNombres, Usuario, UsuarioRegisterUpdate } from '@data/models';
 import { UsuarioPassword } from '@data/models/usuario/usuario-password.model';
 import { RequestConfirmCorreo, RequestUsuarioUpdateData } from '@data/models/usuario/usuario-update.model';
 
-// const URL_BASE = `http://localhost/api/usuarios`;
 const URL_BASE = `${environment.apiUrl}/usuarios`;
 
 @Injectable({ providedIn: 'root' })

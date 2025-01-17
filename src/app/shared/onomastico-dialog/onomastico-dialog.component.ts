@@ -18,7 +18,7 @@ export class OnomasticoDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.titular = this._data.nombres + " " + this._data.apellidos;
+    this.titular = this._data.nombres;
     this.breakpointObserver.observe([Breakpoints.Handset]).subscribe((result) => {
       this.isMobile = result.matches;
     });
