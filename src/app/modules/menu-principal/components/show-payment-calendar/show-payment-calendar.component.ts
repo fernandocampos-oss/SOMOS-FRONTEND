@@ -83,7 +83,7 @@ export class ShowPaymentCalendarComponent implements OnInit {
   pagos276: Calendario[] = [
     {fecPago:'2025-01-17'},
     {fecPago:'2025-01-23'},
-    {fecPago:'2025-02-17'},
+    {fecPago:'2025-02-14'},
     {fecPago:'2025-02-24'},
     {fecPago:'2025-03-24'},
     {fecPago:'2025-04-23'},
@@ -104,7 +104,7 @@ export class ShowPaymentCalendarComponent implements OnInit {
   pagos728: Calendario[] = [
     {fecPago:'2025-01-17'},
     {fecPago:'2025-01-23'},
-    {fecPago:'2025-02-17'},
+    {fecPago:'2025-02-14'},
     {fecPago:'2025-02-24'},
     {fecPago:'2025-03-24'},
     {fecPago:'2025-04-23'},
