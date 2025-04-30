@@ -3,6 +3,7 @@ export const environment = {
   moduloGr: false,
   apiUrl: 'https://apps.essalud.gob.pe/somos-essalud-service/api',
   environmentName: '',
+  recaptchaSiteKey: '6LeCrusqAAAAADekhdRw7__HWF4id1pYDkhsSkhh',
   sentry: {
     dsn: 'https://2d94879736dbd8e71ef6b39f4bc6f532@o4506984073986048.ingest.us.sentry.io/4507013372510208',
     environment: 'production',
