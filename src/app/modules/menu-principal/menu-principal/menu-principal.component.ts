@@ -24,6 +24,9 @@ import {
 import { ShowPausaActivaComponent } from '../components/show-pausa-activa/show-pausa-activa.component';
 import { EncuestaFormularioComponent } from '../components/encuesta-formulario/encuesta-formulario.component';
 import { environment } from '@env';
+import { UserSession } from '@data/models';
+import { ReglamentoService } from '@data/services/reglamento.service';
+import { PanelInformativoComponent } from '../components/panel-informativo/panel-informativo.component';
 
 interface fechas_Imp { // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -103,12 +106,15 @@ export class MenuPrincipalComponent implements OnInit {
   roles: any;
 
   usuarioSedeCentral: boolean = false;
+  user: UserSession;
 
   constructor(private dialog: MatDialog,
     private _menuService: MenuPrincipalService,
     private responsive: BreakpointObserver,
     private userService: UsuarioService,
-    private _authService: AuthService) { }
+    private _authService: AuthService,
+    private _reglamentoService: ReglamentoService,
+  ) { }
 
   ngOnInit(): void {
     this.userService.get(this._authService.getUserSession().id).subscribe(data => {
@@ -151,6 +157,7 @@ export class MenuPrincipalComponent implements OnInit {
     //   console.log(data);
     //   if (data == null){ this.encuestaRespondida= true }
     // else{ this.encuestaNombre = data.descripcion}});
+    this.openPanelInformativo();
   }
 
   redirectCapacitacion() {
@@ -480,6 +487,60 @@ export class MenuPrincipalComponent implements OnInit {
 
   openLinkViva() {
     window.open('https://viva.essalud.gob.pe/viva/login', '_blank');
+  }
+
+  openPanelInformativo() {
+    const date = new Date();
+    let year = date.getFullYear();
+    let mes = date.getMonth() + 1;
+    
+    if (mes == 1 || mes == 2 || mes == 3 || mes == 4 || mes == 5 || mes == 6) {
+      this.user = this._authService.getUserSession();
+      this.userService.get(this.user.id).subscribe((data) => {
+        this.primerSemestre(data.numeroDocumento, 1, year);
+      });
+    }
+
+    if (mes == 7 || mes == 8 || mes == 9 || mes == 10 || mes == 11 || mes == 12) {
+      this.user = this._authService.getUserSession();
+      this.userService.get(this.user.id).subscribe((data) => {
+        this.segundoSemestre(data.numeroDocumento, 2, year);
+      });
+    }
+  }
+
+  primerSemestre(numDoc: string, semestre: number, anio: number) {
+    this._reglamentoService.getReglamentoBySemestre(numDoc, semestre, anio).subscribe((data: any) => {
+      if (!data) {
+        const dialogRef: MatDialogRef<PanelInformativoComponent> = this.dialog.open(PanelInformativoComponent, {
+          disableClose: true,
+          width: '928px',
+          minHeight: '20%',
+          maxHeight: '780px',
+          autoFocus: false,
+          data: {
+            semestre: 1
+          }
+        });
+      }
+    });
+  }
+
+  segundoSemestre(numDoc: string, semestre: number, anio: number) {
+    this._reglamentoService.getReglamentoBySemestre(numDoc, semestre, anio).subscribe((data: any) => {
+      if (!data) {
+        const dialogRef: MatDialogRef<PanelInformativoComponent> = this.dialog.open(PanelInformativoComponent, {
+          disableClose: true,
+          width: '928px',
+          minHeight: '20%',
+          maxHeight: '780px',
+          autoFocus: false,
+          data: {
+            semestre: 2
+          }
+        });
+      }
+    });
   }
 
 }
