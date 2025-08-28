@@ -2,14 +2,13 @@
   "name": "marcacion",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng && npm run sentry:sourcemaps",
+    "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ngcc",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org essalud-h7 --project somos-essalud-web dist && sentry-cli sourcemaps upload --org essalud-h7 --project somos-essalud-web dist --release $SENTRY_RELEASE"
+    "postinstall": "ngcc"
   },
   "private": true,
   "dependencies": {
