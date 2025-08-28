@@ -214,7 +214,6 @@ export class MenuPrincipalComponent implements OnInit {
 
   actualizarPublicaciones() {
     this._menuService.getPublicaciones().subscribe((data) => {
-      console.log(data)
       this.publicaciones = data;
 
       this.publicaciones.sort(({ votoActivo: stateA = false }, { votoActivo: stateB = false }) =>

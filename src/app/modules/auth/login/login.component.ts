@@ -100,7 +100,7 @@ export class LoginComponent implements OnInit {
       .subscribe((rta) => {
         this._router.navigate(['/']);
         if (rta) {
-          if (rta.user.authorities.length > 0) {
+          if (rta.user && Array.isArray(rta.user.authorities) && rta.user.authorities.length > 0) {
             const listRol = [];
             for (const a of rta.user.authorities) {
               listRol.push(a.authority);
