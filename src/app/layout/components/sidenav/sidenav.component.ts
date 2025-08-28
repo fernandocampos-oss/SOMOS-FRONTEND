@@ -70,7 +70,6 @@ export class SidenavComponent implements OnInit {
     this.user = this._authService.getUserSession();
     // console.log(JSON.parse(localStorage.getItem('RDTHRHRYHNYTN')!))
     this._userService.get(this.user.id).subscribe( data =>{
-      // console.log(data)
       this.dataPersona = data;
       // this.email = data.correo;
       // this._zonaService.get(data.idZonaControl).subscribe(info=>{

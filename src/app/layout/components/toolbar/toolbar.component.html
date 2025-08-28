@@ -7,7 +7,7 @@
     <img class="toolbar__image" src="assets/images/svg/logoMenu.svg">
     <!-- <img src="assets/images/Logo-MiEsSalud-ColorHorizontal-white.png" class="toolbar__image" alt="Logotipo"/> -->
   </a>
-   
+
   <span class="toolbar__spacer"></span>
   <p class="fecha" *ngIf="!hideDate">{{ fechaActual }}</p>
   <button mat-button [matMenuTriggerFor]="menu">
@@ -18,9 +18,16 @@
     <div style="padding: 0 3% 0 3%; display: flex;">
       <app-user-avatar [username]="user.nombres"></app-user-avatar>
       <div style="display: block; padding-left:3%;">
-    <span class="info" style="font-size: 14px;">{{nombre}}</span><br>
-    <span class="info" style="font-size: 12px;">{{correo}}</span>
-    </div></div>
+        <span class="info" style="font-size: 14px;">{{nombre}}</span><br>
+        <span class="info" style="font-size: 12px;">{{correo}}</span>
+      </div>
+    </div>
+    <div *ngIf="activaReporte">
+      <button mat-menu-item (click)="exportExcel()" *ngIf="activaReporte">
+        <mat-icon>cloud_download</mat-icon>
+        <span>Reporte panel inf.</span>
+      </button>
+    </div>
     <button mat-menu-item (click)="logout()">
       <mat-icon>reply</mat-icon>
       <span>Cerrar Sesión</span>

@@ -28,6 +28,7 @@ import { RegisterVoteInscripcionComponent } from './components/inscripciones/reg
 import { AdmCronogramaPagosComponent } from './components/adm-cronograma-pagos/adm-cronograma-pagos.component';
 import { ShowPausaActivaComponent } from './components/show-pausa-activa/show-pausa-activa.component';
 import { EncuestaFormularioComponent } from './components/encuesta-formulario/encuesta-formulario.component';
+import { PanelInformativoComponent } from './components/panel-informativo/panel-informativo.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { EncuestaFormularioComponent } from './components/encuesta-formulario/en
     AdmCronogramaPagosComponent,
     ShowPausaActivaComponent,
     EncuestaFormularioComponent,
+    PanelInformativoComponent,
 
   ],
   imports: [

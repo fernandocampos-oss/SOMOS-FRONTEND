@@ -65,7 +65,6 @@ export class LoginComponent implements OnInit {
       //captcha
       this._recaptchaV3Service.execute('submit').subscribe((captchaToken) => {
         if (captchaToken != null) {
-          // console.log('captchaToken:', captchaToken);
           let dto = new CaptchaRequestDto();
           dto.llave = captchaToken;
           this._authService.validCaptcha(dto).subscribe(data => {
@@ -94,7 +93,7 @@ export class LoginComponent implements OnInit {
         .subscribe((rta) => {
           this._router.navigate(['/']);
 
-          if (rta.user.authorities.length > 0) {
+          if (rta.user && Array.isArray(rta.user.authorities) && rta.user.authorities.length > 0) {
             let listRol = [];
             for (let a of rta.user.authorities) {
               listRol.push(a.authority);
@@ -105,25 +104,17 @@ export class LoginComponent implements OnInit {
           if (rta != null) {
             this._onomasticoService.findUsuarioByNumDocAndEstado(rta.user.username).subscribe(data => {
               if (data != null) {
-                // console.log(data)
                 let fechaNac = moment(data.fechaNacimiento, 'YYYY-MM-DD');
                 let stringFechaNac: string = fechaNac.format('YYYY-MM-DD');
-                // console.log(`Fecha Nac string: ${stringFechaNac}`);
-                // console.log("mes:", stringFechaNac.split('-')[1])
-                // console.log("dia:", stringFechaNac.split('-')[2])
-
                 const today = new Date();
                 const day = today.getDate().toString().padStart(2, '0');
                 const month = (today.getMonth() + 1).toString().padStart(2, '0');
-                // console.log("Fecha hoy (MM-DD):", month,"-", day)
-
                 if ((stringFechaNac.split('-')[1]) === month && stringFechaNac.split('-')[2] === day) {
                   this.showPanelOnomastico(data);
                 }
               }
             });
           }
-
         });
     } else {
       this.form.markAllAsTouched();
