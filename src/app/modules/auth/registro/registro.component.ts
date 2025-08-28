@@ -5,7 +5,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MatDialog } from '@angular/material/dialog';
 
 import { AppRoute } from '@data/constants';
-import { Sede, UsuarioRegisterResponse } from '@data/models';
+import { Sede, UsuarioRegisterRequest, UsuarioRegisterResponse } from '@data/models';
 import {
   ConfirmTokenDialog,
   ConfirmTokenModel,
@@ -17,6 +17,8 @@ import { AppConfig } from '@core/configs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { CaptchaAction } from '@data/constants/captcha-action.constant';
 
 @UntilDestroy()
 @Component({
@@ -67,7 +69,8 @@ export class RegistroComponent implements OnInit {
     private _paramService: ParamService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    private responsive  : BreakpointObserver
+    private responsive: BreakpointObserver,
+    private _recaptchaV3Service: ReCaptchaV3Service
   ) {
     this.matIconRegistry.addSvgIcon("dni",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/dni.svg"));
 
@@ -99,21 +102,28 @@ export class RegistroComponent implements OnInit {
   //     .pipe(untilDestroyed(this))
   //     .subscribe((params) => (this.sedes = params[KeyParam.SEDES]));
   // }
+
   onSave() {
     if (this.form.valid && this._validatePasswordMatch()) {
-      this._authService
-        .register(this.form.value)
-        .pipe(untilDestroyed(this))
-        .subscribe((data) => this._openConfirmTokenDialog(data));
-    }
-    else if(this.form.value.codigoPlanilla.length != 8){
+      const usuarioRegisterRequest: UsuarioRegisterRequest = this.form.value;
+      this._recaptchaV3Service.execute(CaptchaAction.REGISTER).subscribe((captchaToken) => {
+        if (captchaToken) {
+          this._authService
+            .register(usuarioRegisterRequest, captchaToken)
+            .pipe(untilDestroyed(this))
+            .subscribe((data) => this._openConfirmTokenDialog(data));
+        } else {
+          this._notification.warning('No se pudo verificar el captcha');
+        }
+      });
+    } else if (this.form.value.codigoPlanilla.length !== 8){
       this._notification.warning('Codigo de planilla incorrecto, de tener 7 dígitos, agregarle un "1" al inicio');
-    }
-    else {
+    } else {
       this._notification.warning('Revisar los campos ingresados');
       this.form.markAllAsTouched();
     }
   }
+
   private _validatePasswordMatch() {
     if (this.claveField.value !== this.confirmarClaveField.value) {
       this._notification.warning('Las contraseñas no coinciden');

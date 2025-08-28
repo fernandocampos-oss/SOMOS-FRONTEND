@@ -19,6 +19,8 @@ import { OnomasticoDialogComponent } from '@shared/onomastico-dialog/onomastico-
 import { UsuarioService } from '@data/services';
 import * as moment from 'moment';
 import { OnomasticoService } from '@data/services/onomastico.service';
+import { CaptchaAction } from '@data/constants/captcha-action.constant';
+import { LoginRequest } from '@data/models';
 
 @UntilDestroy()
 @Component({
@@ -62,72 +64,65 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.form.valid) {
-      //captcha
-      this._recaptchaV3Service.execute('submit').subscribe((captchaToken) => {
-        if (captchaToken != null) {
-          // console.log('captchaToken:', captchaToken);
-          let dto = new CaptchaRequestDto();
-          dto.llave = captchaToken;
-          this._authService.validCaptcha(dto).subscribe(data => {
-            if (data?.respuestaCaptcha === true) {
-            } else {
-              this._notificacion.warning('Captcha no se pudo validar');
-            }
-          });
+      this._recaptchaV3Service.execute(CaptchaAction.LOGIN).subscribe((captchaToken) => {
+        if (captchaToken) {
+          this.authenticateUser(captchaToken);
+        } else {
+          this._notificacion.warning('No se pudo verificar el captcha');
         }
       });
+    } else {
+      this.form.markAllAsTouched();
+    }
+  }
 
-      this._authService
-        .login(this.form.value)
-        .pipe(
-          untilDestroyed(this),
-          catchError((error) => {
-            if (
-              error instanceof HttpErrorResponse &&
-              error.status === HttpStatusCode.Unauthorized
-            ) {
-              this._notificacion.warning('Usuario o contraseña incorrecto');
-            }
-            return of(error);
-          })
-        )
-        .subscribe((rta) => {
-          this._router.navigate(['/']);
-
+  authenticateUser(captchaToken: string) {
+    const loginRequest: LoginRequest = this.form.value;
+    this._authService
+      .login(loginRequest, captchaToken)
+      .pipe(
+        untilDestroyed(this),
+        catchError((error) => {
+          if (
+            error instanceof HttpErrorResponse &&
+            error.status === HttpStatusCode.Unauthorized
+          ) {
+            this._notificacion.warning('Usuario o contraseña incorrecto');
+          } else if (
+            error instanceof HttpErrorResponse &&
+            error.status === HttpStatusCode.Forbidden
+          ) {
+            this._notificacion.warning('Captcha inválido');
+          }
+          return of(error);
+        })
+      )
+      .subscribe((rta) => {
+        this._router.navigate(['/']);
+        if (rta) {
           if (rta.user.authorities.length > 0) {
-            let listRol = [];
-            for (let a of rta.user.authorities) {
+            const listRol = [];
+            for (const a of rta.user.authorities) {
               listRol.push(a.authority);
             }
             sessionStorage.setItem('_roles', JSON.stringify(listRol));
           }
-          //onomastico
-          if (rta != null) {
-            this._onomasticoService.findUsuarioByNumDocAndEstado(rta.user.username).subscribe(data => {
-              if (data != null) {
-                // console.log(data)
-                let fechaNac = moment(data.fechaNacimiento, 'YYYY-MM-DD');
-                let stringFechaNac: string = fechaNac.format('YYYY-MM-DD');
-                // console.log(`Fecha Nac string: ${stringFechaNac}`);
-                // console.log("mes:", stringFechaNac.split('-')[1])
-                // console.log("dia:", stringFechaNac.split('-')[2])
 
-                const today = new Date();
-                const day = today.getDate().toString().padStart(2, '0');
-                const month = (today.getMonth() + 1).toString().padStart(2, '0');
-                // console.log("Fecha hoy (MM-DD):", month,"-", day)
+          this._onomasticoService.findUsuarioByNumDocAndEstado(rta.user.username).subscribe(data => {
+            if (data != null) {
+              const fechaNac = moment(data.fechaNacimiento, 'YYYY-MM-DD');
+              const stringFechaNac: string = fechaNac.format('YYYY-MM-DD');
 
-                if ((stringFechaNac.split('-')[1]) === month && stringFechaNac.split('-')[2] === day) {
-                  this.showPanelOnomastico(data);
-                }
+              const today = new Date();
+              const day = today.getDate().toString().padStart(2, '0');
+              const month = (today.getMonth() + 1).toString().padStart(2, '0');
+              if ((stringFechaNac.split('-')[1]) === month && stringFechaNac.split('-')[2] === day) {
+                this.showPanelOnomastico(data);
               }
-            });
-          }
-
-        });
-    } else {
-      this.form.markAllAsTouched();
-    }
+            }
+          });
+        }
+      });
   }
 
   private _createForm() {

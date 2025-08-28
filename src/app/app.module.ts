@@ -65,7 +65,7 @@ import * as Sentry from '@sentry/angular-ivy';
   ],
   bootstrap: [AppComponent],
   providers: [
-    { provide: RECAPTCHA_V3_SITE_KEY, useValue: AppConfig.RECAPTCHA_KEY },
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.recaptchaSiteKey },
     ReCaptchaV3Service,
     {
       provide: HTTP_INTERCEPTORS,

@@ -23,6 +23,7 @@ import { Role } from '@data/enums';
 import { AppRoute } from '@data/constants';
 import { CaptchaRequestDto } from '@data/models/captcha/CaptchaRequestDto';
 import { CaptchaResponseDto } from '@data/models/captcha/captchaResponseDto';
+import { CaptchaAction } from '@data/constants/captcha-action.constant';
 
 const URL_BASE = `${environment.apiUrl}/auth`;
 
@@ -34,14 +35,15 @@ export class AuthService {
     private _router: Router
   ) { }
 
-  login(model: LoginRequest): Observable<any> {
+  login(model: LoginRequest, captchaToken: string): Observable<any> {
     const url = `${URL_BASE}/login`;
     const headers: HttpHeaders = this._authBasic(
-      model.username,
-      model.password
-    );
-
-    this._ls.setItem(LocalStorageKey.USER_SESSION, model.username)
+        model.username,
+        model.password
+      )
+      .set('X-Captcha-Token', captchaToken)
+      .set('X-Captcha-Action', CaptchaAction.LOGIN);
+    this._ls.setItem(LocalStorageKey.USER_SESSION, model.username);
     return this._httpClient
       .post<LoginResponse>(url, null, { headers })
       .pipe(tap((data) => this._setToken(data.token)));
@@ -81,8 +83,11 @@ export class AuthService {
     return roles.includes(user.idRol);
   }
 
-  register(model: UsuarioRegisterRequest) {
-    return this._httpClient.post<UsuarioRegisterResponse>(URL_BASE, model);
+  register(model: UsuarioRegisterRequest, captchaToken: string) {
+    const headers: HttpHeaders = new HttpHeaders()
+      .set('X-Captcha-Token', captchaToken)
+      .set('X-Captcha-Action', CaptchaAction.REGISTER);
+    return this._httpClient.post<UsuarioRegisterResponse>(URL_BASE, model, { headers });
   }
 
   activarToken(model: TokenActivacion) {
