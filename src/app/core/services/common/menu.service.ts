@@ -82,6 +82,12 @@ const data: MenuItem[] = [
       label: 'Mis Boletas de Pago',
       type: 2,
   },
+  {
+    path: AppRoute.PLAZAS,
+    icon: 'assignment',
+    label: 'Plazas',
+    roles: [Role.ADMIN_CENTRAL],
+  },
   // {
   //   path: '',
   //   icon: 'contact_mail',
