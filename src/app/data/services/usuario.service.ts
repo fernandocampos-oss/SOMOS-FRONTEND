@@ -68,4 +68,10 @@ export class UsuarioService {
     const url = `${URL_BASE}/${id}/cambiar-correo`;
     return this._httpClient.put<any>(url, model);
   }
+
+  usuarioTienePermisoModulo(modulo: string) {
+    const url = `${URL_BASE}/permiso/modulo/${modulo}`;
+    return this._httpClient.get<boolean>(url, { });
+  }
+
 }
