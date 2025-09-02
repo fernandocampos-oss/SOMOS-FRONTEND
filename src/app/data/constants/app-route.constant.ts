@@ -12,6 +12,7 @@ export class AppRoute {
 
   static readonly MIS_MARCACIONES = 'mis-marcaciones';
   static readonly MIS_BOLETAS = 'mis-boletas';
+  static readonly PLAZAS = 'plazas';
   static readonly MARCACION_TRABAJADOR = 'marcacion-trabajador';
   static readonly SETTINGS = 'configuraciones';
   static readonly GESTION_RENDIMIENTO = 'gestion-rendimiento';

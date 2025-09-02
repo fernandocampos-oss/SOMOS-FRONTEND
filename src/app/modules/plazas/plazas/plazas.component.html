@@ -1,0 +1,72 @@
+<div class="page">
+  <div class="matero-page-header header-search" style="display: flex;">
+    <h1 class="matero-page-title">
+      <div>
+        <mat-icon>assignment</mat-icon> Plazas<br>
+        <div class="optionsBar">
+          <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+        </div>
+      </div>
+    </h1>
+    <div class="busqueda-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Plaza</mat-label>
+        <input matInput [(ngModel)]="plaza">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellidos y Nombres</mat-label>
+        <input matInput [(ngModel)]="nombre">
+      </mat-form-field>
+
+      <button mat-raised-button class="btn-busqueda" color="primary" (click)="buscarPlaza()">
+        Buscar
+      </button>
+    </div>
+  </div>
+  <div class="page__body">
+    <div class="card shadow mat-elevation-z8">
+      <!-- Tabla de resultados -->
+      <div *ngIf="resultado" class="resultado-container">
+        <table>
+          <tr>
+            <td class="header">Unidad organizativa</td>
+            <td>{{resultado.unidad}}</td>
+          </tr>
+          <tr>
+            <td class="header">Descripción larga</td>
+            <td>{{resultado.descripcion}}</td>
+          </tr>
+          <tr>
+            <td class="header">Posición</td>
+            <td>{{resultado.posicion}}</td>
+          </tr>
+          <tr>
+            <td class="header">Plaza</td>
+            <td>{{resultado.plaza}}</td>
+          </tr>
+          <tr>
+            <td class="header">Cargo</td>
+            <td>{{resultado.cargo}}</td>
+          </tr>
+          <tr>
+            <td class="header">Nivel</td>
+            <td>{{resultado.nivel}}</td>
+          </tr>
+          <tr>
+            <td class="header">Apellidos y nombres</td>
+            <td>{{resultado.nombre}}</td>
+          </tr>
+          <tr>
+            <td class="header">Situación</td>
+            <td>{{resultado.situacion}}</td>
+          </tr>
+          <tr>
+            <td class="header">Estado</td>
+            <td>{{resultado.estado}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

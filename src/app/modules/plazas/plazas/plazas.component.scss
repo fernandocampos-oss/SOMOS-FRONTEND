@@ -1,0 +1,28 @@
+.busqueda-container {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  align-items: center;
+}
+
+.btn-busqueda {
+  height: 59px;
+  margin: -0.5em 0 1em 0;
+}
+
+.resultado-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.resultado-container td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.resultado-container .header {
+  background: #1871b9;
+  color: white;
+  font-weight: bold;
+  width: 200px;
+}
