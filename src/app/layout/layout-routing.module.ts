@@ -88,13 +88,6 @@ export const ROUTES: Routes = [
             (m) => m.MisBoletasModule
           ),
       },
-      {
-        path: AppRoute.PLAZAS,
-        loadChildren: () =>
-          import('../modules/plazas/plazas.module').then(
-            (m) => m.PlazasModule
-          ),
-      },
       // {
       //   path: AppRoute.DDJJ_CONFLICTO,
       //   loadChildren: () =>
