@@ -27,24 +27,8 @@
   <div class="page__body">
     <div class="card shadow mat-elevation-z8">
       <!-- Tabla de resultados -->
-      <div id="print-section" *ngIf="resultado" class="resultado-container">
+      <div *ngIf="resultado" class="resultado-container">
         <table>
-          <tr>
-            <td class="header">Plaza</td>
-            <td>{{resultado.plaza}}</td>
-          </tr>
-          <tr>
-            <td class="header">Situación</td>
-            <td>{{resultado.situacion}}</td>
-          </tr>
-          <tr>
-            <td class="header">Cargo</td>
-            <td>{{resultado.cargo}}</td>
-          </tr>
-          <tr>
-            <td class="header">Nivel</td>
-            <td>{{resultado.nivel}}</td>
-          </tr>
           <tr>
             <td class="header">Unidad organizativa</td>
             <td>{{resultado.unidad}}</td>
@@ -58,27 +42,30 @@
             <td>{{resultado.posicion}}</td>
           </tr>
           <tr>
+            <td class="header">Plaza</td>
+            <td>{{resultado.plaza}}</td>
+          </tr>
+          <tr>
+            <td class="header">Cargo</td>
+            <td>{{resultado.cargo}}</td>
+          </tr>
+          <tr>
+            <td class="header">Nivel</td>
+            <td>{{resultado.nivel}}</td>
+          </tr>
+          <tr>
+            <td class="header">Apellidos y nombres</td>
+            <td>{{resultado.nombre}}</td>
+          </tr>
+          <tr>
+            <td class="header">Situación</td>
+            <td>{{resultado.situacion}}</td>
+          </tr>
+          <tr>
             <td class="header">Estado</td>
             <td>{{resultado.estado}}</td>
           </tr>
-          <tr>
-            <td class="header">Apellidos y Nombres</td>
-            <td>{{resultado.nombre}}</td>
-          </tr>
         </table>
-        <div class="fuente-info">
-          <span>FUENTE: SAP HCM OM</span>
-          <span>USUARIO: {{ usuarioConsulta | uppercase }}</span>
-          <span>{{ fechaConsulta | date: "EEEE, d 'de' MMMM y HH:mm:ss" : '': 'es-PE' | uppercase }}</span>
-        </div>
-      </div>
-      <div class="fuente-info">
-        <button *ngIf="resultado" mat-raised-button color="primary" (click)="imprimir()">
-          Imprimir
-        </button>
-        <button *ngIf="resultado" mat-raised-button color="primary" (click)="limpiar()">
-          Limpiar
-        </button>
       </div>
     </div>
   </div>
