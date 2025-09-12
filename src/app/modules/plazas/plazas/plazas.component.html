@@ -28,6 +28,9 @@
     <div class="card shadow mat-elevation-z8">
       <!-- Tabla de resultados -->
       <div id="print-section" *ngIf="resultado" class="resultado-container">
+        <div class="titulo">
+          <h2>CONSULTA DE PLAZAS</h2>
+        </div>
         <table>
           <tr>
             <td class="header">Plaza</td>
@@ -70,6 +73,9 @@
           <span>FUENTE: SAP HCM OM</span>
           <span>USUARIO: {{ usuarioConsulta | uppercase }}</span>
           <span>{{ fechaConsulta | date: "EEEE, d 'de' MMMM y HH:mm:ss" : '': 'es-PE' | uppercase }}</span>
+        </div>
+        <div class="pie">
+          SUB GERENCIA DE PROGRAMACIÓN DE RECURSOS HUMANOS
         </div>
       </div>
       <div class="fuente-info">
