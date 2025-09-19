@@ -43,6 +43,7 @@ export class SidenavComponent implements OnInit {
   evaluador: number;
 
   activarModuloGr: boolean = environment.moduloGr;
+  tienePermisoModuloPlaza: boolean;
 
   constructor(private dialog: MatDialog,
               private _menuService   : MenuService,
@@ -80,6 +81,7 @@ export class SidenavComponent implements OnInit {
     })
 
     this.getSegmentoModuloGR();
+    this.validarTienePermisoModuloPlaza('PLAZAS');
   }
 
   private _initialize() {
@@ -175,6 +177,12 @@ export class SidenavComponent implements OnInit {
           this.votanteSegmento = this.usuarioVotante.idSegmento;
         }
       }
+    });
+  }
+
+  validarTienePermisoModuloPlaza(modulo: string) {
+    this._userService.usuarioTienePermisoModulo(modulo).subscribe((data)=> {
+      this.tienePermisoModuloPlaza = data;
     });
   }
 
