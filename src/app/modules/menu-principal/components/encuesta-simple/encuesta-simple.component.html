@@ -1,7 +1,7 @@
 <div *ngIf="esHora">
     <div *ngIf="mostrar">
         <div class="dialogEncuesta">
-            <div class="tituloEstiloheader">
+            <!-- <div class="tituloEstiloheader">
                 <h3 style="font-size: 22px;
                 font-weight: 900;
                 color: #0866ae;
@@ -29,7 +29,7 @@
                         <span>Asistencial: 16 horas</span>
                     </div>
                 </div>
-                <!-- <div class="contenedorTextos">
+                <div class="contenedorTextos">
                     <span class="encabezadoEstilo">Fecha</span>
                     <span class="dataEstilo">20 - 28 Noviembre</span>
                     <span class="encabezadoEstilo">Modalidad</span>
@@ -43,10 +43,10 @@
                         <span>Administrativos: 12 horas</span>
                         <span>Asistencial: 16 horas</span>
                     </div>
-                </div> -->
-            </div>
+                </div>
+            </div> -->
             <b style="text-align: center;" *ngIf="datosEncuesta.preguntas">{{datosEncuesta.preguntas[0].descripcion}}</b>
-            <!-- <p style="text-align: center;">Seleccione un candidato</p>
+            <p style="text-align: center;">Seleccione un candidato</p>
             <div class="separacion">
                 <ng-container *ngFor="let candidato of candMap, index as i">
                     <div class="elementos" *ngIf="i != candMap.length-1" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
@@ -54,10 +54,14 @@
                             <span>{{candidato.nombre | titlecase}}</span>
                         </div>
                         <div class="candBody">
-                            <img *ngIf="candidato.numeroDocumento === '08443100'" src="assets/images/candidatoFortunato.jpg">
-                            <img *ngIf="candidato.numeroDocumento === '21882665'" src="assets/images/candidatoPedro.jpg">
-                            <img *ngIf="candidato.numeroDocumento === '41594662'" src="assets/images/candidatoFernando.jpg">
-                            <img *ngIf="candidato.numeroDocumento === '25465670'" src="assets/images/candidatoJavier.jpg">
+                            <img *ngIf="candidato.numeroDocumento === '25465670'" src="assets/images/candidato/candidato_1.jpg">
+                            <img *ngIf="candidato.numeroDocumento === '07481399'" src="assets/images/candidato/candidato_2.jpg">
+                            <img *ngIf="candidato.numeroDocumento === '09072429'" src="assets/images/candidato/candidato_3.jpg">
+                        </div>
+                        <div class="candFooter">
+                            <p><strong style="color: black;">Órgano Central: </strong>{{candidato.organoStatic}}</p>
+                            &nbsp;
+                            <p><strong style="color: black;">Unidad Órganica: </strong>{{candidato.unidadStatic}}</p>
                         </div>
                     </div>
                     <div class="elementos" *ngIf="i == candMap.length-1 && candMap.length == 6" (click)="selectCand(i, candidato)" [ngClass]="{'selected' : candidato.selected, 'noSelected': !candidato.selected}">
@@ -76,7 +80,7 @@
                         <span>{{candMap[candMap.length-1].nombre | titlecase}}</span>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <mat-radio-group aria-label="Select an option" *ngIf="datosEncuesta.preguntas">
                 <div class="containerOpciones">
                     <div *ngFor="let option of datosEncuesta.preguntas[0].alternativas" class="opcionesEncuestaSimple" [ngStyle]="{'border-color': option.valor == seleccion ? 'rgb(72, 210, 72)' : null, 'filter': option.valor == seleccion ? 'brightness(1.25)': null}">
@@ -110,11 +114,19 @@
         </div>
             <mat-dialog-actions>
                     <button mat-button mat-dialog-close>Cerrar</button>
-                    <button mat-raised-button color="primary" (click)="sendConfirmation()" [disabled]="visualizarOpciones">Enviar</button>
+                    <!-- <button mat-raised-button color="primary" (click)="sendConfirmation()" [disabled]="visualizarOpciones">Enviar</button> -->
+                    <button mat-raised-button color="primary" (click)="confirmarCandidato(selectedCandidato)">Enviar</button>
             </mat-dialog-actions>
     </div>
-    
     <div class="dialogEncuesta encuestaHecha" *ngIf="!mostrar" style="align-items: center;">
+        <img src="assets/images/surveyCheck.png">
+        <h3>¡Usted ya emitió su voto!</h3>
+        <mat-dialog-actions align="center">
+                <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
+        </mat-dialog-actions>
+    </div>
+    
+    <!-- <div class="dialogEncuesta encuestaHecha" *ngIf="!mostrar" style="align-items: center;">
         <img src="assets/images/surveyCheck.png">
         <h3>¡Se registró su inscripción al curso!</h3>
         <a #targetLink href="http://www.essalud.gob.pe/downloads/COMPROMISO_DEL_TRABAJADOR_PDP_HABILIDADES_BLANDAS.pdf" target="_blank"><button mat-raised-button color="primary" (click)="visualizarOpciones = false; targetLink.href"><mat-icon>open_in_new</mat-icon> Descargar la carta de compromiso</button></a>
@@ -122,6 +134,6 @@
         <mat-dialog-actions align="center">
                 <button mat-raised-button mat-dialog-close color="primary">Cerrar</button>
         </mat-dialog-actions>
-    </div>
+    </div> -->
 </div>
-<img *ngIf="!esHora" class="imgInfo boxBorde" src='assets/images/p_Votaciones.png'>
+<!-- <img *ngIf="!esHora" class="imgInfo boxBorde" src='assets/images/p_Votaciones.png'> -->

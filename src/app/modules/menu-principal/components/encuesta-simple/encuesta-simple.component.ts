@@ -25,7 +25,7 @@ export class EncuestaSimpleComponent implements OnInit {
   candMap = [Object()];
 
   selectedCandidato: any;
-  // datosEncuesta: EleccionActivaResponse = Object();
+  datosEleccion: EleccionActivaResponse = Object();
 
   candidatosBD: CandidatosResponse[];
   
@@ -43,43 +43,49 @@ export class EncuestaSimpleComponent implements OnInit {
               private dialog          : MatDialog,) { }
 
   ngOnInit(): void {
-    // this.eleccionesService.getEleccionActiva().subscribe((data)=>{
-    //   console.log(data);
-    //   if(data){
-    //     this.datosEncuesta = data;
-    //     if(data.candidatos.length % 2 == 0 && data.candidatos.length != 6){
-    //       document.documentElement.style.setProperty('--tamanio-array','2');
-    //     }
-    //     else{
-    //       document.documentElement.style.setProperty('--tamanio-array','3');
-    //     }
-    //     this.candidatosBD = data.candidatos;
-    //     this.candMap = data.candidatos.map((x)=> {return {idCandidato: x.idCandidato, idUsuario: x.idUsuario, unidad: '', numeroDocumento: x.numeroDocumento, nombre: x.nombres + ' ' + x.apellidos, selected: false, }})
-    //     for (let i = 0; i < this.candMap.length; i++) {
-    //       this.userService.get(this.candMap[i].idUsuario).subscribe((data)=>{
-    //         if(data){
-    //           this.candMap[i].unidad = data.red;
-    //         }
-    //       })
-    //     }
-    //     this.candMap.push({idCandidato: 0, numeroDocumento:'0', nombre: 'Ningún Candidato', selected: false, })
-    //     console.log(this.candMap)
-    //   }
-    //   else{
-    //     this.mostrar = false;
-    //   }
-    // });
-    this._serviceMenu.getEncuestaActiva().subscribe((data)=>{
-      if(data == null){
+    this.eleccionesService.getEleccionActiva().subscribe((data)=>{
+      if(data){
+        this.datosEleccion = data;
+        if(data.candidatos.length % 2 == 0 && data.candidatos.length != 6){
+          document.documentElement.style.setProperty('--tamanio-array','2');
+        }
+        else{
+          document.documentElement.style.setProperty('--tamanio-array','3');
+        }
+        this.candidatosBD = data.candidatos;
+        this.candMap = data.candidatos.map((x)=> {return {idCandidato: x.idCandidato, idUsuario: x.idUsuario, unidad: '', numeroDocumento: x.numeroDocumento, nombre: x.nombres + ' ' + x.apellidos, selected: false, }})
+        for (let i = 0; i < this.candMap.length; i++) {
+          this.candMap[0].organoStatic = "Gerencia Central de Tecnologías de Información y Comunicaciones";
+          this.candMap[0].unidadStatic = "Subgerencia de Operaciones de Tecnologías de Información";
+          this.candMap[1].organoStatic = "Gerencia Central de Asesoría Jurídica";
+          this.candMap[1].unidadStatic = "Subgerencia de Asesoramiento Administrativo";
+          this.candMap[2].organoStatic = "Gerencia Central de Gestión Financiera";
+          this.candMap[2].unidadStatic = "Subgerencia de Control Contable y de Impuestos";
+          if (this.candMap[i].idUsuario != 0) {
+            this.userService.get(this.candMap[i].idUsuario).subscribe((data) => {
+              if (data) {
+                this.candMap[i].unidad = data.red;
+              }
+            })
+          }
+        }
+        this.candMap.push({idCandidato: 0, numeroDocumento:'0', nombre: 'Ningún Candidato', selected: false, });
+        console.log(this.candMap)
+      } else {
         this.mostrar = false;
       }
-      else{
-        console.log(data);
-        // const dataObj = Object(data);
-        this.datosEncuesta = data;
-        // this.alternativas = dataObj.preguntas[0].alternativas;
-      }
-    })
+    });
+    // this._serviceMenu.getEncuestaActiva().subscribe((data)=>{
+    //   if(data == null){
+    //     this.mostrar = false;
+    //   }
+    //   else{
+    //     console.log(data);
+    //     // const dataObj = Object(data);
+    //     this.datosEncuesta = data;
+    //     // this.alternativas = dataObj.preguntas[0].alternativas;
+    //   }
+    // })
     
   }
 
@@ -123,7 +129,7 @@ export class EncuestaSimpleComponent implements OnInit {
     //     disableClose: false,
     //     autoFocus: false,
     //     data: {
-    //       opcion: option,
+    //       // opcion: option,
     //       // idEleccion: this.datosEncuesta.idEleccion,
     //       // idSegmento: this.datosEncuesta.idSegmento
     //       // idEncuesta: this.identificadorEncuesta,
@@ -131,6 +137,25 @@ export class EncuestaSimpleComponent implements OnInit {
     //     }
     //   });
     // }
+  }
+
+  confirmarCandidato(option) {
+    if (!this.selectedCandidato) {
+      this._notification.warning("Debe elegir una opción");
+    }
+    else {
+      const dialogRef: MatDialogRef<ConfirmEncuestaSimpleComponent> = this.dialog.open(ConfirmEncuestaSimpleComponent, {
+        disableClose: false,
+        autoFocus: false,
+        data: {
+          opcion: option,
+          idEleccion: this.datosEleccion.idEleccion,
+          idSegmento: this.datosEleccion.idSegmento
+          // idEncuesta: this.identificadorEncuesta,
+          // encuesta: this._getModel()
+        }
+      });
+    }
   }
 
   getTooltip(nroDoc: string): string{
