@@ -41,6 +41,7 @@ interface fechas_Imp { // Provisional: para tener las fechas importantes
 })
 export class MenuPrincipalComponent implements OnInit {
   mostrarEleccion = false;
+  mostrarImgVoto = false;
   numDocUsuario = '';
 
   idPublicacionCambiar = 100;
@@ -121,6 +122,17 @@ export class MenuPrincipalComponent implements OnInit {
       this.usuarioSedeCentral = data.codRed === '0100' || data.codRed === '0200';
       if (this._menuService.returnPadron(data.numeroDocumento)) {
         this.mostrarEleccion = true;
+
+        const diaVoto = new Date();
+        // const fechaObjetivo = new Date('2025-10-15T00:00:00');
+        const fechaObjetivo = new Date('2025-10-09T00:00:00');
+        const esMismoDia = diaVoto.getFullYear() === fechaObjetivo.getFullYear() &&
+          diaVoto.getMonth() === fechaObjetivo.getMonth() &&
+          diaVoto.getDate() === fechaObjetivo.getDate();
+        const hora = diaVoto.getHours();
+        // const dentroHorario = hora >= 8 && hora < 17;
+        const dentroHorario = hora >= 12 && hora < 14;
+        this.mostrarImgVoto = esMismoDia && dentroHorario;
       }
     });
     this.rol = this._authService.getRol();
@@ -492,7 +504,7 @@ export class MenuPrincipalComponent implements OnInit {
     const date = new Date();
     let year = date.getFullYear();
     let mes = date.getMonth() + 1;
-    
+
     if (mes == 1 || mes == 2 || mes == 3 || mes == 4 || mes == 5 || mes == 6) {
       this.user = this._authService.getUserSession();
       this.userService.get(this.user.id).subscribe((data) => {
