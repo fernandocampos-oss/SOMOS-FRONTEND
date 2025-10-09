@@ -19,4 +19,9 @@ export class EleccionService {
     const url = `${URL_BASE}/registrar-voto`;
     return this._httpClient.post(url, model);
   }
+
+  getDiaVotacion(){
+    const url = `${URL_BASE}/horario-voto`;
+    return this._httpClient.get<any>(url);
+  }
 }

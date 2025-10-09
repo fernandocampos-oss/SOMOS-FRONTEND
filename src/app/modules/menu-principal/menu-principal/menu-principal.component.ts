@@ -27,6 +27,7 @@ import { environment } from '@env';
 import { UserSession } from '@data/models';
 import { ReglamentoService } from '@data/services/reglamento.service';
 import { PanelInformativoComponent } from '../components/panel-informativo/panel-informativo.component';
+import { EleccionService } from '@data/services/eleccion.service';
 
 interface fechas_Imp { // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -115,6 +116,7 @@ export class MenuPrincipalComponent implements OnInit {
     private userService: UsuarioService,
     private _authService: AuthService,
     private _reglamentoService: ReglamentoService,
+    private _eleccionService: EleccionService,
   ) { }
 
   ngOnInit(): void {
@@ -123,16 +125,12 @@ export class MenuPrincipalComponent implements OnInit {
       if (this._menuService.returnPadron(data.numeroDocumento)) {
         this.mostrarEleccion = true;
 
-        const diaVoto = new Date();
-        // const fechaObjetivo = new Date('2025-10-15T00:00:00');
-        const fechaObjetivo = new Date('2025-10-09T00:00:00');
-        const esMismoDia = diaVoto.getFullYear() === fechaObjetivo.getFullYear() &&
-          diaVoto.getMonth() === fechaObjetivo.getMonth() &&
-          diaVoto.getDate() === fechaObjetivo.getDate();
-        const hora = diaVoto.getHours();
-        // const dentroHorario = hora >= 8 && hora < 17;
-        const dentroHorario = hora >= 14 && hora < 16;
-        this.mostrarImgVoto = esMismoDia && dentroHorario;
+        this._eleccionService.getDiaVotacion().subscribe((data) => {
+          console.log("666", data)
+          if (data) {
+            this.mostrarImgVoto = true;
+          }
+        });
       }
     });
     this.rol = this._authService.getRol();
