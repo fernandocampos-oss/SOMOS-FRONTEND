@@ -70,7 +70,7 @@ export class EncuestaSimpleComponent implements OnInit {
           }
         }
         this.candMap.push({idCandidato: 0, numeroDocumento:'0', nombre: 'Ningún Candidato', selected: false, });
-        console.log(this.candMap)
+        // console.log(this.candMap)
       } else {
         this.mostrar = false;
       }
@@ -115,7 +115,7 @@ export class EncuestaSimpleComponent implements OnInit {
       dialogRef.afterClosed().subscribe((data)=>{
         if(data == true){
           this._serviceMenu.sendEncuesta(1, this.getModelo()).subscribe((dataItem) => {
-            console.log(dataItem)
+            // console.log(dataItem)
             this.dialogRef.close("enviado");
           });
         }

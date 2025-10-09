@@ -26,8 +26,6 @@ export class ConfirmEncuestaSimpleComponent implements OnInit {
               }
 
   ngOnInit(): void {
-    console.log(this.data)
-    console.log(this.getModeloEleccion())
     // if(this.data.opcion == 1){
     //   this.votacion = 'Tarjetas para canje de alimentos y juguetes';
     // }
@@ -36,8 +34,7 @@ export class ConfirmEncuestaSimpleComponent implements OnInit {
     // }
   }
   closeAll(){
-    this.eleccionesService.saveVotacion(this.getModeloEleccion()).subscribe((data)=> {console.log(data)
-    
+    this.eleccionesService.saveVotacion(this.getModeloEleccion()).subscribe((data)=> {
       this.dialogRef.closeAll();
       const dialogRef2: MatDialogRef<DialogTempComponent> = this.dialog.open(DialogTempComponent, {
         disableClose: true,
