@@ -131,7 +131,7 @@ export class MenuPrincipalComponent implements OnInit {
           diaVoto.getDate() === fechaObjetivo.getDate();
         const hora = diaVoto.getHours();
         // const dentroHorario = hora >= 8 && hora < 17;
-        const dentroHorario = hora >= 12 && hora < 14;
+        const dentroHorario = hora >= 14 && hora < 16;
         this.mostrarImgVoto = esMismoDia && dentroHorario;
       }
     });
