@@ -27,6 +27,7 @@ import { environment } from '@env';
 import { UserSession } from '@data/models';
 import { ReglamentoService } from '@data/services/reglamento.service';
 import { PanelInformativoComponent } from '../components/panel-informativo/panel-informativo.component';
+import { EleccionService } from '@data/services/eleccion.service';
 
 interface fechas_Imp { // Provisional: para tener las fechas importantes
   descripcion: string;
@@ -41,6 +42,7 @@ interface fechas_Imp { // Provisional: para tener las fechas importantes
 })
 export class MenuPrincipalComponent implements OnInit {
   mostrarEleccion = false;
+  mostrarImgVoto = false;
   numDocUsuario = '';
 
   idPublicacionCambiar = 100;
@@ -114,6 +116,7 @@ export class MenuPrincipalComponent implements OnInit {
     private userService: UsuarioService,
     private _authService: AuthService,
     private _reglamentoService: ReglamentoService,
+    private _eleccionService: EleccionService,
   ) { }
 
   ngOnInit(): void {
@@ -121,6 +124,13 @@ export class MenuPrincipalComponent implements OnInit {
       this.usuarioSedeCentral = data.codRed === '0100' || data.codRed === '0200';
       if (this._menuService.returnPadron(data.numeroDocumento)) {
         this.mostrarEleccion = true;
+
+        this._eleccionService.getDiaVotacion().subscribe((data) => {
+          console.log("666", data)
+          if (data) {
+            this.mostrarImgVoto = true;
+          }
+        });
       }
     });
     this.rol = this._authService.getRol();
@@ -492,7 +502,7 @@ export class MenuPrincipalComponent implements OnInit {
     const date = new Date();
     let year = date.getFullYear();
     let mes = date.getMonth() + 1;
-    
+
     if (mes == 1 || mes == 2 || mes == 3 || mes == 4 || mes == 5 || mes == 6) {
       this.user = this._authService.getUserSession();
       this.userService.get(this.user.id).subscribe((data) => {
