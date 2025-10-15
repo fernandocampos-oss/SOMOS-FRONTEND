@@ -124,9 +124,7 @@ export class MenuPrincipalComponent implements OnInit {
       this.usuarioSedeCentral = data.codRed === '0100' || data.codRed === '0200';
       if (this._menuService.returnPadron(data.numeroDocumento)) {
         this.mostrarEleccion = true;
-
         this._eleccionService.getDiaVotacion().subscribe((data) => {
-          console.log("666", data)
           if (data) {
             this.mostrarImgVoto = true;
           }
