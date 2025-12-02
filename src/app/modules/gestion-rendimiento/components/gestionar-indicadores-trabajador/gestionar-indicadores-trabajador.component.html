@@ -274,7 +274,7 @@
 
                         <!-- Pregunta 1: Asistió a reunión -->
                         <ng-container matColumnDef="pregunta1">
-                            <th mat-header-cell *matHeaderCellDef class="pregunta-cell">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="4" class="pregunta-cell">
                                 ¿El servidor asistió a la reunión de fijación de metas?
                                 <mat-form-field appearance="outline" style="width: 120px; font-size: 11px; margin-top: 5px;">
                                     <mat-select placeholder="[Seleccione]">
@@ -287,7 +287,7 @@
 
                         <!-- Pregunta 2: Fecha de fijación -->
                         <ng-container matColumnDef="pregunta2">
-                            <th mat-header-cell *matHeaderCellDef class="pregunta-cell">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="4" class="pregunta-cell">
                                 Fecha de la fijación de metas
                                 <mat-form-field appearance="outline" style="width: 130px; font-size: 11px; margin-top: 5px;">
                                     <input matInput value="02/12/2025" readonly>
@@ -297,7 +297,7 @@
 
                         <!-- Pregunta 3: Presentó evidencias -->
                         <ng-container matColumnDef="pregunta3">
-                            <th mat-header-cell *matHeaderCellDef class="pregunta-cell">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="1" class="pregunta-cell">
                                 ¿Al cierre de esta etapa, el servidor presentó evidencias que permitan su evaluación (al menos de una meta)?
                                 <mat-form-field appearance="outline" style="width: 120px; font-size: 11px; margin-top: 5px;">
                                     <mat-select placeholder="[Seleccione]">
@@ -305,6 +305,13 @@
                                         <mat-option value="NO">No</mat-option>
                                     </mat-select>
                                 </mat-form-field>
+                            </th>
+                        </ng-container>
+
+                        <!-- Pregunta 4: Espacio para EVALUACIÓN -->
+                        <ng-container matColumnDef="pregunta4">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" class="pregunta-cell">
+                                <!-- Espacio vacío para alinear con ETAPA DE EVALUACIÓN -->
                             </th>
                         </ng-container>
 
@@ -324,7 +331,7 @@
 
                         <!-- Definición de las filas de encabezado -->
                         <tr mat-header-row *matHeaderRowDef="['header-planificacion', 'header-seguimiento', 'header-evaluacion']" class="row-etapas"></tr>
-                        <tr mat-header-row *matHeaderRowDef="['pregunta1', 'pregunta2', 'pregunta3']" class="row-preguntas"></tr>
+                        <tr mat-header-row *matHeaderRowDef="['pregunta1', 'pregunta2', 'pregunta3', 'pregunta4']" class="row-preguntas"></tr>
                         <tr mat-header-row *matHeaderRowDef="['item', 'prioridad', 'header-meta', 'header-seguimiento-retro', 'valor_alcanzado', 'puntuacion_meta']" class="row-meta"></tr>
                         <tr mat-header-row *matHeaderRowDef="columnsRow4" class="row-columnas"></tr>
 
