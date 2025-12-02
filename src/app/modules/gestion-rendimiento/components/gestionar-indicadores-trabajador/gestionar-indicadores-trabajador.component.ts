@@ -21,7 +21,8 @@ import { da } from 'date-fns/locale';
   styleUrls: ['./gestionar-indicadores-trabajador.component.scss']
 })
 export class GestionarIndicadoresTrabajadorComponent implements OnInit {
-  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'evidencia', 'tipo_formula', 'comentario', 'logro_final', 'puntuacion_meta'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'sentido_indicador', 'valor_esperado', 'peso', 'evidencia', 'plazos', 'comentario', 'valor_alcanzado', 'puntuacion_meta'];
+  columnsRow4: string[] = ['indicador_producto', 'sentido_indicador', 'valor_esperado', 'peso', 'evidencia', 'plazos', 'comentario'];
   // groupedColumns: string[] = ['grouped'];
   // menuToggle = new EventEmitter<void>();
 

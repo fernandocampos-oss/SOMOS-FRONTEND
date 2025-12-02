@@ -17,6 +17,136 @@ table {
     width: 100%;
 }
 
+/* Estilos para la tabla GDR 2025 */
+.gdr-table-2025 {
+    width: 100%;
+    border-collapse: collapse;
+    
+    /* Header principal: CICLO */
+    .header-ciclo {
+        background-color: #5B9BD5 !important;
+        color: white !important;
+        font-weight: bold;
+        text-align: center;
+        padding: 12px 8px;
+        font-size: 14px;
+        border: 1px solid #333 !important;
+    }
+
+    /* Headers de ETAPAS */
+    .header-etapa {
+        font-weight: bold;
+        text-align: center;
+        padding: 10px 8px;
+        font-size: 13px;
+        border: 1px solid #333 !important;
+        color: #333 !important;
+    }
+
+    .header-planificacion {
+        background-color: #B4C7E7 !important;
+    }
+
+    .header-seguimiento {
+        background-color: #C5E0B4 !important;
+    }
+
+    .header-evaluacion {
+        background-color: #FFD966 !important;
+    }
+
+    /* Header META */
+    .header-meta {
+        background-color: #D9E1F2 !important;
+        color: #333 !important;
+        font-weight: bold;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    /* Filas de encabezado */
+    .row-ciclo th {
+        height: 40px;
+    }
+
+    .row-etapas th {
+        height: 35px;
+    }
+
+    .row-preguntas th {
+        background-color: #FFFFFF !important;
+        color: #333 !important;
+        font-weight: normal;
+        text-align: center;
+        padding: 10px 8px;
+        font-size: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    .row-meta th {
+        height: 30px;
+        background-color: #D9E1F2 !important;
+        color: #333 !important;
+        font-weight: bold;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    .row-columnas th {
+        background-color: #E7E6E6 !important;
+        color: #333 !important;
+        font-weight: bold;
+        text-align: center !important;
+        vertical-align: middle !important;
+        border: 1px solid #333 !important;
+        padding: 8px 4px !important;
+        font-size: 11px;
+        line-height: 1.2;
+        height: auto;
+        min-height: 50px;
+    }
+
+    /* Columnas específicas */
+    .col-item {
+        width: 40px;
+    }
+
+    .col-prioridad {
+        min-width: 150px;
+    }
+
+    .col-comentarios {
+        min-width: 200px;
+    }
+
+    /* Preguntas en headers */
+    .pregunta-cell {
+        padding: 12px 8px !important;
+        vertical-align: top !important;
+    }
+
+    /* Celdas de datos */
+    td.mat-cell {
+        text-align: center !important;
+        vertical-align: middle !important;
+        border: 1px solid #CCC !important;
+        padding: 8px 4px !important;
+        font-size: 12px;
+    }
+
+    /* Celda de comentarios */
+    .comentarios-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+}
+
 .red-background {
     color: #fff;
     background-color: var(--color-warn);

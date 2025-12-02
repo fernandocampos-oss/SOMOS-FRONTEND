@@ -58,14 +58,17 @@
                     <p class="color-mensaje">Sin registros por mostrar</p>
                 </div>
                 <div *ngIf="i.listPrioridad.length !== 0">
-                    <table mat-table [dataSource]="i.listPrioridad" class="workersTable anotherTable">
+                    <table mat-table [dataSource]="i.listPrioridad" class="workersTable anotherTable gdr-table-2025">
+                        
+                        <!-- Columna N° -->
                         <ng-container matColumnDef="item">
-                            <th mat-header-cell *matHeaderCellDef>N°</th>
-                            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2" class="col-item">N°</th>
+                            <td mat-cell *matCellDef="let element, index as idx">{{idx+1}}</td>
                         </ng-container>
+
+                        <!-- Columna PRIORIDADES ANUALES -->
                         <ng-container matColumnDef="prioridad">
-                            <th mat-header-cell *matHeaderCellDef>Prioridades anuales de gestión del órgano o unidad
-                                orgánica</th>
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2" class="col-prioridad">PRIORIDADES ANUALES DE GESTIÓN DEL ÓRGANO O UNIDAD ORGÁNICA</th>
                             <td mat-cell *matCellDef="let element">
                                 <div class="eviItem">
                                     <span class="demo-2">{{element.prioridadNombre ? element.prioridadNombre :'-'}}</span>
@@ -81,8 +84,10 @@
                                 </button>
                             </td>
                         </ng-container>
+
+                        <!-- Columna INDICADOR/PRODUCTO -->
                         <ng-container matColumnDef="indicador_producto">
-                            <th mat-header-cell *matHeaderCellDef>Indicador / Producto</th>
+                            <th mat-header-cell *matHeaderCellDef>INDICADOR / PRODUCTO</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube" style="font-size:14px">
@@ -96,86 +101,72 @@
                                                     (click)="agregarEvidencia(x)">
                                                     <mat-icon matListIcon>add_circle</mat-icon>
                                                 </button>
-                                                <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
+                                                <button mat-icon-button color="primary" matTooltip="Editar Indicador"
                                                     (click)="abrirEditor(i.idVotante, element, x.idIndicador, element.prioridadNombre)">
                                                     <mat-icon>edit</mat-icon>
                                                 </button>
                                             </div>
-                                            <div class="metapeso">
-                                                <span *ngIf="((x.codTipoValorMeta =='03') || (x.codTipoValorMeta == '04') || (x.codTipoValorMeta == '06'))">
-                                                    Meta:<b> {{x.valorMeta}}</b>% 
-                                                </span>
-                                                <span *ngIf="((x.codTipoValorMeta =='01') || (x.codTipoValorMeta == '02') || (x.codTipoValorMeta == '05'))">
-                                                    Meta:<b> {{x.valorMeta}}</b> 
-                                                </span>
-                                                <span>
-                                                    Peso:<b> {{x.peso}}</b>%
-                                                </span>
-                                            </div>
                                         </div>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
                         </ng-container>
-                        <!-- 
-                        <ng-container matColumnDef="valor_meta">
-                            <th mat-header-cell *matHeaderCellDef>Valor meta</th>
+
+                        <!-- Columna SENTIDO DEL INDICADOR -->
+                        <ng-container matColumnDef="sentido_indicador">
+                            <th mat-header-cell *matHeaderCellDef>SENTIDO DEL INDICADOR</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
-                                    <mat-list-item *ngFor="let y of element.listIndicador" style="font-size:14px">
-                                        <div *ngIf="((y.codTipoValorMeta =='03') || (y.codTipoValorMeta == '04'))">
-                                            {{y.valorMeta}}%
-                                        </div>
-                                        <div *ngIf="((y.codTipoValorMeta =='01') || (y.codTipoValorMeta == '02'))">
-                                            {{y.valorMeta}}
-                                        </div>
+                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube">
+                                        <span>[Seleccione]</span>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
                         </ng-container>
+
+                        <!-- Columna VALOR ESPERADO (META) -->
+                        <ng-container matColumnDef="valor_esperado">
+                            <th mat-header-cell *matHeaderCellDef>VALOR ESPERADO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube">
+                                        <span *ngIf="((x.codTipoValorMeta =='03') || (x.codTipoValorMeta == '04') || (x.codTipoValorMeta == '06'))">
+                                            {{x.valorMeta}}%
+                                        </span>
+                                        <span *ngIf="((x.codTipoValorMeta =='01') || (x.codTipoValorMeta == '02') || (x.codTipoValorMeta == '05'))">
+                                            {{x.valorMeta}}
+                                        </span>
+                                        <mat-divider></mat-divider>
+                                    </mat-list-item>
+                                </mat-list>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna PESO -->
                         <ng-container matColumnDef="peso">
-                            <th mat-header-cell *matHeaderCellDef>Peso</th>
+                            <th mat-header-cell *matHeaderCellDef>PESO</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
-                                    <mat-list-item *ngFor="let indicador of element.listIndicador"
-                                        style="font-size:14px">
-                                        {{indicador.peso}}%
+                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube">
+                                        <span>{{x.peso}}%</span>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
                         </ng-container>
-                        -->
+
+                        <!-- Columna EVIDENCIA -->
                         <ng-container matColumnDef="evidencia">
-                            <th mat-header-cell *matHeaderCellDef>Evidencia</th>
+                            <th mat-header-cell *matHeaderCellDef>EVIDENCIA</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
                                         <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
-                                            <!-- -->
                                             <div class="eviItem">
-                                                <span>
-                                                    - {{t.descripcion}}
-                                                </span>
-                                                <span class="date">
-                                                    ({{t.plazo | date: 'dd-MM-yyyy'}})
-                                                </span>
+                                                <span>- {{t.descripcion}}</span>
                                             </div>
-                                            <!--<div class="eviItem">
-                                                <button mat-icon-button color="warn"
-                                                    [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
-                                                    (click)="verEvidenciaPdf(t)">
-                                                    <mat-icon>picture_as_pdf</mat-icon>
-                                                </button>
-                                            </div>
-                                            
-                                            <span>- {{t.descripcion}}</span>
-                                            <button mat-icon-button color="primary" matTooltip="Editar Evidencia"
-                                                (click)="editarEvidencia(t, 3)">
-                                                <mat-icon>edit</mat-icon>
-                                            </button> -->
                                             <button mat-icon-button class="has-success"
                                                 matTooltip="Registrar Sustento"
                                                 [disabled]="t.sustentoExtensionFile !==null"
@@ -193,42 +184,40 @@
                                 </mat-list>
                             </td>
                         </ng-container>
-                        <!-- 
-                        <ng-container matColumnDef="plazo">
-                            <th mat-header-cell *matHeaderCellDef>Plazo</th>
+
+                        <!-- Columna PLAZOS -->
+                        <ng-container matColumnDef="plazos">
+                            <th mat-header-cell *matHeaderCellDef>PLAZOS</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
-                                    <mat-list-item *ngFor="let z of element.listIndicador" style="font-size:14px">
-                                        <p matLine *ngFor="let t of z.listEvidencia">
-                                            <span class="demo-2">{{t.plazo | date: 'MMMM y' | titlecase}}</span>
-                                            <span class="demo-2">{{t.plazo | date: 'dd-MM-yyyy'}}</span>
-                                        </p>
+                                    <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
+                                        <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
+                                            <span class="date">{{t.plazo | date: 'dd-MM-yyyy'}}</span>
+                                        </div>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
                         </ng-container>
-                        -->
-                        <ng-container matColumnDef="tipo_formula">
-                            <th mat-header-cell *matHeaderCellDef>Tipo fórmula</th>
-                            <td mat-cell *matCellDef="let element"></td>
-                        </ng-container>
+
+                        <!-- Columna COMENTARIOS (ETAPA DE SEGUIMIENTO) -->
                         <ng-container matColumnDef="comentario">
-                            <th mat-header-cell *matHeaderCellDef>Comentario</th>
+                            <th mat-header-cell *matHeaderCellDef class="col-comentarios">COMENTARIOS</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
                                         <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
-                                            <!-- -->
-                                            <div class="eviItem">
-                                                <span>
-                                                    {{t.comentario}}
-                                                    <p *ngIf="t.calificacion == 0">No entregado</p> 
-                                                    <p *ngIf="t.calificacion == 1">En proceso de logro</p> 
-                                                    <p *ngIf="t.calificacion == 2">Entregado</p> 
-                                                    <p *ngIf="t.calificacion == 3">Logrado</p> 
-                                                    <p *ngIf="t.calificacion == 4">No Logrado</p> 
-                                                </span>
+                                            <div class="eviItem comentarios-cell">
+                                                <mat-form-field appearance="outline" style="width: 150px; font-size: 12px;">
+                                                    <mat-select placeholder="[Seleccione]">
+                                                        <mat-option [value]="0">No entregado</mat-option>
+                                                        <mat-option [value]="1">En proceso de logro</mat-option>
+                                                        <mat-option [value]="2">Entregado</mat-option>
+                                                        <mat-option [value]="3">Logrado</mat-option>
+                                                        <mat-option [value]="4">No Logrado</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <span style="font-size: 11px;">{{t.comentario}}</span>
                                             </div>
                                             <button mat-icon-button color="warn"
                                                 matTooltip="Agregar Calificación"
@@ -237,50 +226,109 @@
                                                 <mat-icon *ngIf="t.comentario!=null">edit</mat-icon>
                                                 <mat-icon *ngIf="t.comentario==null">add_circle</mat-icon>
                                             </button>
-                                            <br>
                                         </div>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
                         </ng-container>
-                        <ng-container matColumnDef="logro_final">
-                            <th mat-header-cell *matHeaderCellDef>Logro final por meta</th>
-                            <td mat-cell *matCellDef="let element"></td>
+
+                        <!-- Columna VALOR ALCANZADO -->
+                        <ng-container matColumnDef="valor_alcanzado">
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">VALOR ALCANZADO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span style="color: #999;">No</span>
+                            </td>
                         </ng-container>
+
+                        <!-- Columna PUNTAJE POR META -->
                         <ng-container matColumnDef="puntuacion_meta">
-                            <th mat-header-cell *matHeaderCellDef>Puntuacion por meta</th>
-                            <td mat-cell *matCellDef="let element"></td>
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">PUNTAJE POR META</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span style="color: #999;">No corresponde</span>
+                            </td>
                         </ng-container>
 
-                        <!-- Header row first group -->
-                        <ng-container matColumnDef="header-row-first-group">
-                            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="5">
-                                ETAPA DE PLANIFICACIÓN  
+                        <!-- HEADERS DE ETAPAS -->
+
+                        <!-- Header: ETAPA DE PLANIFICACIÓN -->
+                        <ng-container matColumnDef="header-planificacion">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="8" class="header-etapa header-planificacion">
+                                ETAPA DE PLANIFICACIÓN
                             </th>
                         </ng-container>
 
-                        <!-- Header row second group -->
-                        <ng-container matColumnDef="header-row-second-group">
-                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="1">ETAPA DE SEGUIMIENTO</th>
-                        </ng-container>
-
-                        <!-- Header row third group -->
-                        <ng-container matColumnDef="header-row-third-group">
-                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2">ETAPA DE EVALUACIÓN</th>
-                        </ng-container>
-
-                        <tr mat-header-row
-                            *matHeaderRowDef="['header-row-first-group', 'header-row-second-group', 'header-row-third-group']">
-                        </tr>
-
-                        <!-- <ng-container matColumnDef="grouped">
-                            <th mat-header-cell *matHeaderCellDef colspan="11" class="centered">ETAPA DE PLANIFICACIÓN
+                        <!-- Header: ETAPA DE SEGUIMIENTO -->
+                        <ng-container matColumnDef="header-seguimiento">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="1" class="header-etapa header-seguimiento">
+                                ETAPA DE SEGUIMIENTO
                             </th>
                         </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="groupedColumns; sticky: false"></tr> -->
 
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <!-- Header: ETAPA DE EVALUACIÓN -->
+                        <ng-container matColumnDef="header-evaluacion">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" class="header-etapa header-evaluacion">
+                                ETAPA DE EVALUACIÓN
+                            </th>
+                        </ng-container>
+
+                        <!-- Pregunta 1: Asistió a reunión -->
+                        <ng-container matColumnDef="pregunta1">
+                            <th mat-header-cell *matHeaderCellDef class="pregunta-cell">
+                                ¿El servidor asistió a la reunión de fijación de metas?
+                                <mat-form-field appearance="outline" style="width: 120px; font-size: 11px; margin-top: 5px;">
+                                    <mat-select placeholder="[Seleccione]">
+                                        <mat-option value="SI">Sí</mat-option>
+                                        <mat-option value="NO">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </th>
+                        </ng-container>
+
+                        <!-- Pregunta 2: Fecha de fijación -->
+                        <ng-container matColumnDef="pregunta2">
+                            <th mat-header-cell *matHeaderCellDef class="pregunta-cell">
+                                Fecha de la fijación de metas
+                                <mat-form-field appearance="outline" style="width: 130px; font-size: 11px; margin-top: 5px;">
+                                    <input matInput value="02/12/2025" readonly>
+                                </mat-form-field>
+                            </th>
+                        </ng-container>
+
+                        <!-- Pregunta 3: Presentó evidencias -->
+                        <ng-container matColumnDef="pregunta3">
+                            <th mat-header-cell *matHeaderCellDef class="pregunta-cell">
+                                ¿Al cierre de esta etapa, el servidor presentó evidencias que permitan su evaluación (al menos de una meta)?
+                                <mat-form-field appearance="outline" style="width: 120px; font-size: 11px; margin-top: 5px;">
+                                    <mat-select placeholder="[Seleccione]">
+                                        <mat-option value="SI">Sí</mat-option>
+                                        <mat-option value="NO">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </th>
+                        </ng-container>
+
+                        <!-- Sub-header: META -->
+                        <ng-container matColumnDef="header-meta">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="6" class="header-meta">
+                                M E T A
+                            </th>
+                        </ng-container>
+
+                        <!-- Header: SEGUIMIENTO Y RETROALIMENTACIÓN -->
+                        <ng-container matColumnDef="header-seguimiento-retro">
+                            <th mat-header-cell *matHeaderCellDef class="header-meta">
+                                SEGUIMIENTO Y RETROALIMENTACIÓN
+                            </th>
+                        </ng-container>
+
+                        <!-- Definición de las filas de encabezado -->
+                        <tr mat-header-row *matHeaderRowDef="['header-planificacion', 'header-seguimiento', 'header-evaluacion']" class="row-etapas"></tr>
+                        <tr mat-header-row *matHeaderRowDef="['pregunta1', 'pregunta2', 'pregunta3']" class="row-preguntas"></tr>
+                        <tr mat-header-row *matHeaderRowDef="['item', 'prioridad', 'header-meta', 'header-seguimiento-retro', 'valor_alcanzado', 'puntuacion_meta']" class="row-meta"></tr>
+                        <tr mat-header-row *matHeaderRowDef="columnsRow4" class="row-columnas"></tr>
+
+                        <!-- Fila de datos -->
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
                     <!-- 
