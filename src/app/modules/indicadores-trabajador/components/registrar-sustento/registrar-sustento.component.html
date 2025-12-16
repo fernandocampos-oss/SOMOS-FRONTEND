@@ -2,6 +2,11 @@
   <h2 mat-dialog-title>Registrar Evidencia</h2>
   <mat-dialog-content>
     <mat-form-field appearance="outline">
+      <mat-label>Evidencia a presentar</mat-label>
+      <input matInput [value]="data?.descripcion || 'Sin descripción'" readonly>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline">
       <mat-label>Descripción de la evidencia</mat-label>
       <textarea matInput (keyup)="onKey($event)" formControlName="frmDescripcion" rows="5" type="text" minlength="15"
         maxlength="300" required>

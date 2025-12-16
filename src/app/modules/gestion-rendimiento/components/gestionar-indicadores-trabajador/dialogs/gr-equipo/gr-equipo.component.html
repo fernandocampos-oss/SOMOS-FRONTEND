@@ -5,21 +5,9 @@
 <hr>
 <br>
 <h4>Evaluador</h4>
-<div style="text-align: center">
-  <mat-form-field appearance="outline">
-    <mat-label>Ingrese apellidos y nombres</mat-label>
-    <input type="text" matInput [formControl]="evaluadorControl" [matAutocomplete]="autoEvaluador" [readonly]="listEquipo.length <= 0">
-    <mat-autocomplete #autoEvaluador="matAutocomplete" [displayWith]="displayFnTrabajador"
-      (optionSelected)="onSelectionEvaluador($event)">
-      <mat-option *ngFor="let t of filteredEvaluadorOptions | async" [value]="t">
-        {{t.nombres}} {{t.apellidos}}
-      </mat-option>
-    </mat-autocomplete>
-    <mat-icon matSuffix>search</mat-icon>
-  </mat-form-field>
-  <button mat-raised-button color="primary" class="search" (click)="registrarEvaluador()" [disabled]="listEquipo.length <= 0">Agregar</button>
+<div>
+  <p>{{evaluador}}</p>
 </div>
-<p>{{evaluador}}</p>
 <br>
 <hr>
 <br>

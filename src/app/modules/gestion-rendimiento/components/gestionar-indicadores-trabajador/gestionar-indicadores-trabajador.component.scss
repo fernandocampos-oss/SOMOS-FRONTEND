@@ -17,6 +17,108 @@ table {
     width: 100%;
 }
 
+.gdr-table-2025 .matrixCube {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* CSS MUY ESPECÍFICO PARA FORZAR CAMBIOS */
+
+/* 1. Forzar que las celdas empiecen desde arriba */
+.gdr-table-2025 td.mat-cell {
+    vertical-align: top !important;
+    padding: 0 !important;
+}
+
+/* 2. Eliminar TODOS los espacios de mat-list */
+.gdr-table-2025 mat-list {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.gdr-table-2025 mat-list-item {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.gdr-table-2025 mat-list-item .mat-list-item-content {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 4. Forzar padding de contenedores principales */
+.gdr-table-2025 div[style*="padding"][style*="0"] {
+    padding: 0 !important;
+}
+
+/* FORZAR ALTURA UNIFORME EN CONTENEDORES DE EVIDENCIAS */
+.gdr-table-2025 div[style*="*ngFor"] {
+    height: 24px !important;
+    max-height: 24px !important;
+    overflow: visible !important;
+}
+
+/* Controles externos no deben afectar altura */
+.gdr-table-2025 .evidencia-external-controls {
+    position: relative !important;
+    height: 24px !important;
+    max-height: 24px !important;
+    overflow: visible !important;
+}
+
+/* ===== SECCIÓN CONSOLIDADA: ESPACIADO DE EVIDENCIAS ===== */
+
+/* REGLA CON CLASE ESPECÍFICA: Contenedores individuales de evidencias */
+.gdr-table-2025 .evidencia-individual-container {
+    margin-bottom: 12px !important;
+    padding-bottom: 8px !important;
+    height: 44px !important;
+}
+
+/* REGLA CON CLASE ESPECÍFICA: Evidencia final */
+.gdr-table-2025 .evidencia-final-container {
+    margin-bottom: 12px !important;
+    padding-top: 0px !important;
+    height: 44px !important;
+}
+
+/* SINCRONIZACIÓN DE ALTURAS: Evidencias y plazos */
+.gdr-table-2025 div[style*="min-height: 44px"] {
+    min-height: 44px !important;
+    height: 44px !important;
+}
+
+.gdr-table-2025 div[style*="height: 44px"] {
+    height: 44px !important;
+}
+
+/* OVERRIDE DIRECTO: Forzar en todos los divs con margin-bottom */
+.gdr-table-2025 div[style*="margin-bottom: 20px"] {
+    margin-bottom: 20px !important;
+}
+
+/* OVERRIDE DIRECTO: Forzar en todos los divs con margin-top */
+.gdr-table-2025 div[style*="margin-top: 20px"] {
+    margin-top: 20px !important;
+}
+
+/* Alineación de botones en columna de evidencia */
+.evidencia-buttons-container {
+    transform: translateY(-17px) !important;
+    margin-top: 8px !important;
+}
+
+.evidencia-external-controls {
+    transform: translateY(-21px) !important;
+    margin-top: 8px !important;
+    position: relative !important;
+    height: 24px !important;
+    max-height: 24px !important;
+    overflow: visible !important;
+}
+
 /* Estilos para la tabla GDR 2025 */
 .gdr-table-2025 {
     width: 100%;
@@ -127,6 +229,19 @@ table {
     .pregunta-cell {
         padding: 12px 8px !important;
         vertical-align: top !important;
+        
+        .mat-form-field .mat-select {
+            text-align: center !important;
+            margin-top: -5px !important;
+        }
+        
+        .mat-form-field .mat-select .mat-select-value {
+            text-align: center !important;
+        }
+        
+        .mat-form-field .mat-select .mat-select-placeholder {
+            text-align: center !important;
+        }
     }
 
     /* Celdas de datos */
@@ -134,8 +249,26 @@ table {
         text-align: center !important;
         vertical-align: middle !important;
         border: 1px solid #CCC !important;
-        padding: 8px 4px !important;
+        padding: 2px 4px !important; /* Reducido de 8px a 2px */
         font-size: 12px;
+    }
+
+    /* CONSOLIDADO: Overrides específicos para mat-list en evidencias */
+    .mat-list {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .mat-list-item {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    .mat-list-item .mat-list-item-content {
+        padding: 0 !important;
+        margin: 0 !important;
     }
 
     /* Celda de comentarios */

@@ -57,7 +57,7 @@
                     <br>
                     <p class="color-mensaje">Sin registros por mostrar</p>
                 </div>
-                <div *ngIf="i.listPrioridad.length !== 0">
+                <div *ngIf="i.listPrioridad.length !== 0" style="overflow-x: auto; width: 100%;">
                     <table mat-table [dataSource]="i.listPrioridad" class="workersTable anotherTable gdr-table-2025">
                         
                         <!-- Columna N° -->
@@ -161,27 +161,91 @@
                         <ng-container matColumnDef="evidencia">
                             <th mat-header-cell *matHeaderCellDef>EVIDENCIA</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
-                                        <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
-                                            <div class="eviItem">
-                                                <span>- {{t.descripcion}}</span>
+                                <div style="padding: 2px 0;">
+                                    <div *ngFor="let z of element.listIndicador" style="padding: 2px 0;">
+                                        <!-- EVIDENCIAS INICIALES -->
+                                        
+                                        <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
+                                        <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0">
+                                            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                                                <div style="flex: 1; max-width: calc(100% - 56px);">
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px;">
+                                                        <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap;">EVIDENCIA 1:</span>
+                                                        <div class="evidencia-buttons-container" style="display: flex; align-items: center; gap: 4px;">
+                                                            <span style="color: #999; font-style: italic; font-size: 9px; margin-right: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[Sin evidencia aún]</span>
+                                                            <button mat-icon-button class="has-success" style="width: 20px; height: 20px;"
+                                                                matTooltip="Agregar evidencia inicial" (click)="agregarEvidencia(z)">
+                                                                <mat-icon style="font-size: 14px;">add_circle</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="width: 48px;"></div>
                                             </div>
-                                            <button mat-icon-button class="has-success"
-                                                matTooltip="Registrar Sustento"
-                                                [disabled]="t.sustentoExtensionFile !==null"
-                                                (click)="registrarSustento(t)">
-                                                <mat-icon>add_circle</mat-icon>
-                                            </button>
-                                            <button mat-icon-button color="warn"
-                                                [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
-                                                (click)="verEvidenciaPdf(t)">
-                                                <mat-icon>picture_as_pdf</mat-icon>
-                                            </button>
                                         </div>
-                                        <mat-divider></mat-divider>
-                                    </mat-list-item>
-                                </mat-list>
+                                        
+                                        <!-- Caso 2: Con evidencias - mostrar lista con controles -->
+                                        <div *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
+                                            <div *ngFor="let t of z.listEvidencia; let i = index" 
+                                                 class="evidencia-individual-container"
+                                                 style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px; overflow: visible;">
+                                                <!-- Evidencia individual -->
+                                                <div style="flex: 1; max-width: calc(100% - 56px);">
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px;">
+                                                        <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap; line-height: 16px;">EVIDENCIA {{i+1}}:</span>
+                                                        <div class="evidencia-buttons-container" style="display: flex; align-items: center; gap: 4px;">
+                                                            <button mat-icon-button class="has-success" style="width: 20px; height: 20px;"
+                                                                matTooltip="Registrar Sustento"
+                                                                [disabled]="t.sustentoExtensionFile !==null"
+                                                                (click)="registrarSustento(t)">
+                                                                <mat-icon style="font-size: 14px;">add_circle</mat-icon>
+                                                            </button>
+                                                            <button mat-icon-button color="warn" style="width: 20px; height: 20px;"
+                                                                [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
+                                                                (click)="verEvidenciaPdf(t)">
+                                                                <mat-icon style="font-size: 14px;">picture_as_pdf</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Controles individuales para cada evidencia -->
+                                                <div class="evidencia-external-controls" style="position: relative; display: flex; flex-direction: column; gap: 4px; width: 48px; height: 24px; overflow: visible;">
+                                                    <button *ngIf="i === z.listEvidencia.length - 1" mat-icon-button class="has-success" style="width: 20px; height: 20px;"
+                                                        matTooltip="Agregar evidencia inicial"
+                                                        (click)="agregarEvidencia(z)">
+                                                        <mat-icon style="font-size: 14px;">add_circle</mat-icon>
+                                                    </button>
+                                                    <button *ngIf="i === z.listEvidencia.length - 1" mat-icon-button color="warn" style="width: 20px; height: 20px;"
+                                                        matTooltip="Eliminar evidencia inicial"
+                                                        [disabled]="z.listEvidencia.length <= 1"
+                                                        (click)="eliminarEvidencia(z)">
+                                                        <mat-icon style="font-size: 14px;">remove_circle</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- EVIDENCIA FINAL (siempre aparece, con o sin iniciales) -->
+                                        <div class="evidencia-final-container" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px; overflow: visible;">
+                                            <div style="flex: 1; max-width: calc(100% - 56px);">
+                                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-height: 44px;">
+                                                    <span style="font-size: 10px; color: #d84315; font-weight: bold; white-space: nowrap; line-height: 16px;">EVIDENCIA FINAL:</span>
+                                                    <div class="evidencia-buttons-container" style="display: flex; align-items: center; gap: 4px;">
+                                                        <button mat-icon-button class="has-success" style="width: 20px; height: 20px;"
+                                                            matTooltip="Registrar Sustento">
+                                                            <mat-icon style="font-size: 14px;">add_circle</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button color="warn" style="width: 20px; height: 20px;"
+                                                            matTooltip="Ver PDF">
+                                                            <mat-icon style="font-size: 14px;">picture_as_pdf</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="width: 48px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
 
@@ -191,10 +255,37 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
-                                        <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
-                                            <span class="date">{{t.plazo | date: 'dd-MM-yyyy'}}</span>
+                                        <div mat-line style="width: 100%; padding: 2px 0;">
+                                            <!-- PLAZOS INICIALES -->
+                                            
+                                            <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
+                                            <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0" style="padding: 2px 0;">
+                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 24px;">
+                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">PLAZO</div>
+                                                    <div style="font-size: 10px; color: #999; text-align: center; line-height: 17px;">-</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Caso 2: Con evidencias - mostrar plazos individuales -->
+                                            <ng-container *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
+                                                <ng-container *ngFor="let t of z.listEvidencia; let i = index">
+                                                    <div style="margin-bottom: 12px;">
+                                                        <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                            <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">PLAZO</div>
+                                                            <div style="font-size: 10px; color: #333; font-weight: 500; text-align: center; line-height: 17px;">{{t.plazo ? (t.plazo | date: 'dd/MM/yyyy') : '-'}}</div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                            
+                                            <!-- PLAZO FINAL (siempre aparece, con o sin evidencias iniciales) -->
+                                            <div style="margin-bottom: 12px;">
+                                                <div style="padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                    <div style="font-size: 10px; color: #d84315; font-weight: bold; text-align: center; line-height: 18px;">PLAZO</div>
+                                                    <div style="font-size: 10px; color: #999; text-align: center; line-height: 17px;">-</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
@@ -206,28 +297,102 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
                                     <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
-                                        <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
-                                            <div class="eviItem comentarios-cell">
-                                                <mat-form-field appearance="outline" style="width: 150px; font-size: 12px;">
-                                                    <mat-select placeholder="[Seleccione]">
-                                                        <mat-option [value]="0">No entregado</mat-option>
-                                                        <mat-option [value]="1">En proceso de logro</mat-option>
-                                                        <mat-option [value]="2">Entregado</mat-option>
-                                                        <mat-option [value]="3">Logrado</mat-option>
-                                                        <mat-option [value]="4">No Logrado</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <span style="font-size: 11px;">{{t.comentario}}</span>
+                                        <div mat-line style="width: 100%; padding: 2px 0;">
+                                            <!-- COMENTARIOS INICIALES -->
+                                            
+                                            <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
+                                            <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0" class="contentEvi" style="margin-bottom: 2px; padding: 8px; background-color: #f9f9f9; border-left: 3px solid #666;">
+                                                <strong style="font-size: 11px; color: #666; display: block; margin-bottom: 5px;">COMENTARIO</strong>
+                                                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: start;">
+                                                    <!-- Columna 1: Dropdown -->
+                                                    <div>
+                                                        <mat-form-field appearance="outline" style="width: 100%; font-size: 11px;">
+                                                            <mat-select placeholder="[Seleccione]">
+                                                                <mat-option value="logrado">Logrado</mat-option>
+                                                                <mat-option value="proceso">En proceso de Logro</mat-option>
+                                                                <mat-option value="no_presento">No presentó evidencia</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <!-- Columna 2: Área de texto del comentario -->
+                                                    <div>
+                                                        <mat-form-field appearance="outline" style="width: 100%; font-size: 11px;">
+                                                            <textarea matInput placeholder="Escriba el comentario..." 
+                                                                rows="2" 
+                                                                style="font-size: 11px; resize: vertical;"></textarea>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <button mat-icon-button color="warn"
-                                                matTooltip="Agregar Calificación"
-                                                (click)="abrirCalificar(t.idEvidencia)"  
-                                                *ngIf="flagEvaluador">
-                                                <mat-icon *ngIf="t.comentario!=null">edit</mat-icon>
-                                                <mat-icon *ngIf="t.comentario==null">add_circle</mat-icon>
-                                            </button>
+                                            
+                                            <!-- Caso 2: Con evidencias - mostrar comentarios individuales -->
+                                            <ng-container *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
+                                                <ng-container *ngFor="let t of z.listEvidencia; let i = index">
+                                                    <div class="contentEvi" style="margin-bottom: 20px; padding: 8px; background-color: #f9f9f9; border-left: 3px solid #666;">
+                                                        <strong style="font-size: 11px; color: #666; display: block; margin-bottom: 5px;">COMENTARIO</strong>
+                                                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: start;">
+                                                            <!-- Columna 1: Dropdown -->
+                                                            <div>
+                                                                <mat-form-field appearance="outline" style="width: 100%; font-size: 11px;">
+                                                                    <mat-select placeholder="[Seleccione]">
+                                                                        <mat-option value="logrado">Logrado</mat-option>
+                                                                        <mat-option value="proceso">En proceso de Logro</mat-option>
+                                                                        <mat-option value="no_presento">No presentó evidencia</mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <!-- Columna 2: Área de texto del comentario -->
+                                                            <div>
+                                                                <mat-form-field appearance="outline" style="width: 100%; font-size: 11px;">
+                                                                    <textarea matInput placeholder="Escriba el comentario..." 
+                                                                        rows="2" 
+                                                                        [value]="t.comentario"
+                                                                        style="font-size: 11px; resize: vertical;"></textarea>
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                        <button mat-icon-button color="warn"
+                                                            matTooltip="Agregar Calificación"
+                                                            (click)="abrirCalificar(t.idEvidencia)"  
+                                                            *ngIf="flagEvaluador"
+                                                            style="margin-top: 5px;">
+                                                            <mat-icon *ngIf="t.comentario!=null">edit</mat-icon>
+                                                            <mat-icon *ngIf="t.comentario==null">add_circle</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                            
+                                            <!-- COMENTARIO FINAL (siempre aparece, con o sin evidencias iniciales) -->
+                                            <div class="contentEvi" style="background-color: #fff8dc; padding: 8px; border-radius: 4px; margin-top: 20px; border-left: 3px solid #d84315;">
+                                                <strong style="font-size: 11px; color: #d84315; display: block; margin-bottom: 5px;">COMENTARIO</strong>
+                                                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: start;">
+                                                    <!-- Columna 1: Dropdown -->
+                                                    <div>
+                                                        <mat-form-field appearance="outline" style="width: 100%; font-size: 11px;">
+                                                            <mat-select placeholder="[Seleccione]">
+                                                                <mat-option value="si_presenta">SÍ presenta evidencia final</mat-option>
+                                                                <mat-option value="no_presenta">NO presenta evidencia de logro final</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <!-- Columna 2: Área de texto del comentario -->
+                                                    <div>
+                                                        <mat-form-field appearance="outline" style="width: 100%; font-size: 11px;">
+                                                            <textarea matInput placeholder="Escriba el comentario final..." 
+                                                                rows="2" 
+                                                                style="font-size: 11px; resize: vertical;"></textarea>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <button mat-icon-button color="warn"
+                                                    matTooltip="Agregar Calificación"
+                                                    *ngIf="flagEvaluador"
+                                                    style="margin-top: 5px;">
+                                                    <mat-icon>add_circle</mat-icon>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
                             </td>
@@ -276,7 +441,7 @@
                         <ng-container matColumnDef="pregunta1">
                             <th mat-header-cell *matHeaderCellDef [attr.colspan]="4" class="pregunta-cell">
                                 ¿El servidor asistió a la reunión de fijación de metas?
-                                <mat-form-field appearance="outline" style="width: 120px; font-size: 11px; margin-top: 5px;">
+                                <mat-form-field appearance="outline" style="width: 120px; font-size: 11px; margin-top: 5px; text-align: center;">
                                     <mat-select placeholder="[Seleccione]">
                                         <mat-option value="SI">Sí</mat-option>
                                         <mat-option value="NO">No</mat-option>
@@ -299,7 +464,7 @@
                         <ng-container matColumnDef="pregunta3">
                             <th mat-header-cell *matHeaderCellDef [attr.colspan]="1" class="pregunta-cell">
                                 ¿Al cierre de esta etapa, el servidor presentó evidencias que permitan su evaluación (al menos de una meta)?
-                                <mat-form-field appearance="outline" style="width: 120px; font-size: 11px; margin-top: 5px;">
+                                <mat-form-field appearance="outline" style="width: 120px; font-size: 11px; margin-top: 5px; text-align: center;">
                                     <mat-select placeholder="[Seleccione]">
                                         <mat-option value="SI">Sí</mat-option>
                                         <mat-option value="NO">No</mat-option>
