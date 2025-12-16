@@ -15,6 +15,7 @@
 
 table {
     width: 100%;
+    table-layout: auto !important;
 }
 
 .gdr-table-2025 .matrixCube {
@@ -357,14 +358,8 @@ mat-expansion-panel {
 .mat-column-evidencia {
     word-wrap: break-word !important;
     white-space: unset !important;
-    flex: 0 0 180px !important;
-    width: 180px !important;
-    max-width: 180px !important;
+    max-width: 130px !important;
     overflow-wrap: break-word;
-    word-wrap: break-word;
-
-    word-break: break-word;
-
     -ms-hyphens: auto;
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
@@ -377,10 +372,6 @@ mat-expansion-panel {
     flex: 0 0 8% !important;
     width: 11% !important;
     overflow-wrap: break-word;
-    word-wrap: break-word;
-
-    word-break: break-word;
-
     -ms-hyphens: auto;
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
@@ -437,14 +428,6 @@ mat-panel-description {
 
 .mat-table {
     border: 1px solid #cad2dc;
-}
-
-/* Forzar ancho específico para columna evidencia */
-.gdr-table-2025 .mat-column-evidencia,
-.mat-table .mat-column-evidencia {
-    flex: 0 0 180px !important;
-    width: 180px !important;
-    max-width: 180px !important;
 }
 
 th.mat-header-cell, td.mat-cell {
