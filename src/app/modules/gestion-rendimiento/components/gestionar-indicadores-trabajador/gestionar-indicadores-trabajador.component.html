@@ -168,7 +168,7 @@
                                         <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
                                         <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0">
                                             <div style="display: flex; align-items: flex-start; gap: 8px;">
-                                                <div style="flex: 1; max-width: calc(100% - 56px);">
+                                                <div style="flex: 1; max-width: 180px;">
                                                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px;">
                                                         <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap;">EVIDENCIA 1:</span>
                                                         <div class="evidencia-buttons-container" style="display: flex; align-items: center; gap: 4px;">
@@ -190,7 +190,7 @@
                                                  class="evidencia-individual-container"
                                                  style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px; overflow: visible;">
                                                 <!-- Evidencia individual -->
-                                                <div style="flex: 1; max-width: calc(100% - 56px);">
+                                                <div style="flex: 1; max-width: 180px;">
                                                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px;">
                                                         <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap; line-height: 16px;">EVIDENCIA {{i+1}}:</span>
                                                         <div class="evidencia-buttons-container" style="display: flex; align-items: center; gap: 4px;">
@@ -227,7 +227,7 @@
                                         
                                         <!-- EVIDENCIA FINAL (siempre aparece, con o sin iniciales) -->
                                         <div class="evidencia-final-container" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px; overflow: visible;">
-                                            <div style="flex: 1; max-width: calc(100% - 56px);">
+                                            <div style="flex: 1; max-width: 180px;">
                                                 <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-height: 44px;">
                                                     <span style="font-size: 10px; color: #d84315; font-weight: bold; white-space: nowrap; line-height: 16px;">EVIDENCIA FINAL:</span>
                                                     <div class="evidencia-buttons-container" style="display: flex; align-items: center; gap: 4px;">
