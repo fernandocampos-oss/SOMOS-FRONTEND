@@ -15,7 +15,7 @@
 
 table {
     width: 100%;
-    table-layout: auto !important;
+    table-layout: auto !important; /* Volver a auto para mejor adaptabilidad */
 }
 
 .gdr-table-2025 .matrixCube {
@@ -459,11 +459,15 @@ mat-expansion-panel {
 
 // Estilos específicos para mat-select en comentarios (versión corregida)
 .mat-column-comentarios {
-    max-width: 100px !important; /* Ajustar ancho de la columna para contenido ajustado */
-    width: 100px !important;
+    max-width: 85px !important; /* Aumentar un poco para evitar superposición */
+    width: 85px !important;
+    min-width: 85px !important;
+    flex: 0 0 85px !important; /* Forzar flex específico para comentarios */
+    word-wrap: break-word !important;
+    white-space: unset !important;
     
     mat-form-field {
-        width: 70px !important; /* Mantener ancho del form field para que quepa el texto */
+        width: 70px !important; /* Ajustar al ancho del HTML */
         font-size: 8px !important;
         
         .mat-form-field-wrapper {
@@ -474,7 +478,7 @@ mat-expansion-panel {
         .mat-form-field-infix {
             padding: 2px 0 4px 0 !important;
             border-top: none !important;
-            width: 70px !important; /* Aumentar ancho del infix */
+            width: 65px !important; /* Ajustar para que coincida mejor */
         }
         
         .mat-select {

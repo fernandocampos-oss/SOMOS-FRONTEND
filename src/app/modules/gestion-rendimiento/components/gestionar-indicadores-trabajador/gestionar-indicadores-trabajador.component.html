@@ -260,7 +260,7 @@
                                             
                                             <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
                                             <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0" style="padding: 2px 0;">
-                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 24px;">
+                                                <div style="padding: 2px 4px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 24px;">
                                                     <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">PLAZO</div>
                                                     <div style="font-size: 10px; color: #999; text-align: center; line-height: 17px;">-</div>
                                                 </div>
@@ -270,7 +270,7 @@
                                             <ng-container *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
                                                 <ng-container *ngFor="let t of z.listEvidencia; let i = index">
                                                     <div style="margin-bottom: 12px;">
-                                                        <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                        <div style="padding: 2px 4px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
                                                             <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">PLAZO</div>
                                                             <div style="font-size: 10px; color: #333; font-weight: 500; text-align: center; line-height: 17px;">{{t.plazo ? (t.plazo | date: 'dd/MM/yyyy') : '-'}}</div>
                                                         </div>
@@ -280,7 +280,7 @@
                                             
                                             <!-- PLAZO FINAL (siempre aparece, con o sin evidencias iniciales) -->
                                             <div style="margin-bottom: 12px;">
-                                                <div style="padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                <div style="padding: 2px 4px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
                                                     <div style="font-size: 10px; color: #d84315; font-weight: bold; text-align: center; line-height: 18px;">PLAZO</div>
                                                     <div style="font-size: 10px; color: #999; text-align: center; line-height: 17px;">-</div>
                                                 </div>
@@ -302,7 +302,7 @@
                                             
                                             <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
                                             <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0" style="margin-bottom: 12px;">
-                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                <div style="padding: 2px 4px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
                                                     <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIO</div>
                                                     <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 2px;">
                                                         <mat-form-field appearance="outline" style="width: 70px; font-size: 8px; margin: 0; padding: 0;">
@@ -329,7 +329,7 @@
                                             <ng-container *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
                                                 <ng-container *ngFor="let t of z.listEvidencia; let i = index">
                                                     <div style="margin-bottom: 12px;">
-                                                        <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                        <div style="padding: 2px 4px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
                                                             <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIO</div>
                                                             <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 2px;">
                                                                 <mat-form-field appearance="outline" style="width: 70px; font-size: 8px; margin: 0; padding: 0;">
@@ -356,7 +356,7 @@
                                             
                                             <!-- COMENTARIO FINAL (siempre aparece, con o sin evidencias iniciales) -->
                                             <div style="margin-bottom: 12px;">
-                                                <div style="padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                <div style="padding: 2px 4px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
                                                     <div style="font-size: 10px; color: #d84315; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIO</div>
                                                     <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 2px;">
                                                         <mat-form-field appearance="outline" style="width: 70px; font-size: 8px; margin: 0; padding: 0;">
@@ -409,7 +409,7 @@
                         <!-- Header: SEGUIMIENTO Y RETROALIMENTACIÓN -->
                         <ng-container matColumnDef="header-seguimiento-retro">
                             <th mat-header-cell *matHeaderCellDef class="header-meta">
-                                SEGUIMIENTO Y RETROALIMENTACIÓN
+                                SEGUIMIENTO
                             </th>
                         </ng-container>
 
