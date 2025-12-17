@@ -23,6 +23,7 @@ import { EditMasterComponent } from './components/buscar-reporte/dialogs/edit-ma
 import { AdministrarVotanteComponent } from './components/administrar-votante/administrar-votante.component';
 import { PanelObservadoComponent } from './components/administrar-votante/dialogs/panel-observado/panel-observado.component';
 import { CalificarComponent } from './components/gestionar-indicadores-trabajador/dialogs/calificar/calificar.component';
+import { CustomSelectComponent } from './components/gestionar-indicadores-trabajador/custom-select/custom-select.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { CalificarComponent } from './components/gestionar-indicadores-trabajado
     VerDatosGdrComponent,
     EditMasterComponent,
     AdministrarVotanteComponent,
-    PanelObservadoComponent
+    PanelObservadoComponent,
+    CustomSelectComponent
   ],
   imports: [
     CommonModule,

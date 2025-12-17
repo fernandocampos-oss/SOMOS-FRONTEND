@@ -1,0 +1,24 @@
+<div class="custom-select" [class.open]="isOpen" [class.disabled]="isDisabled">
+  <div class="select-trigger" #trigger (click)="toggleDropdown()">
+    <span class="select-value">{{ displayValue }}</span>
+    <span class="select-arrow" [class.rotated]="isOpen">▼</span>
+  </div>
+  
+  <!-- Dropdown siempre presente cuando isOpen es true -->
+  <div class="select-dropdown" 
+       #dropdown 
+       [class.open]="isOpen" 
+       [style.display]="isOpen ? 'block' : 'none'">
+    <div class="select-option" 
+         *ngFor="let option of options; trackBy: trackByValue" 
+         (click)="selectOption(option)"
+         [class.selected]="option.value === value">
+      {{ option.label }}
+    </div>
+  </div>
+</div>
+
+<!-- Overlay para cerrar dropdown cuando se hace clic afuera -->
+<div class="select-overlay" 
+     *ngIf="isOpen" 
+     (click)="closeDropdown()"></div>

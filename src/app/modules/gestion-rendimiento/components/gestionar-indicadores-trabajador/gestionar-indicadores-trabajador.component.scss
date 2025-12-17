@@ -384,6 +384,256 @@ mat-expansion-panel {
 //     padding: 0px 0px 0px 0px;
 // }
 
+// Corregir efectos visuales del botón Ver comentario
+.btn-ver-comentario {
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    // Asegurar que el botón tenga las dimensiones correctas
+    &.mat-icon-button {
+        width: 18px !important;
+        height: 18px !important;
+        line-height: 18px !important;
+        min-width: 18px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    // Corregir posicionamiento del wrapper del botón
+    .mat-button-wrapper {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    // Centrar el icono
+    mat-icon {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    // Corregir efectos visuales para que coincidan exactamente con el botón
+    .mat-button-ripple,
+    .mat-button-focus-overlay {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 50% !important;
+        pointer-events: none !important;
+        transform: none !important;
+    }
+    
+    // Corregir ripple específicamente
+    .mat-button-ripple.mat-button-ripple-round {
+        border-radius: 50% !important;
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    // Asegurar que el focus overlay esté centrado
+    .mat-button-focus-overlay {
+        opacity: 0 !important;
+        transition: opacity 200ms !important;
+    }
+    
+    &:focus .mat-button-focus-overlay {
+        opacity: 0.12 !important;
+    }
+}
+
+// Estilos específicos para mat-select en comentarios (versión corregida)
+.mat-column-comentarios {
+    max-width: 100px !important; /* Ajustar ancho de la columna para contenido ajustado */
+    width: 100px !important;
+    
+    mat-form-field {
+        width: 70px !important; /* Mantener ancho del form field para que quepa el texto */
+        font-size: 8px !important;
+        
+        .mat-form-field-wrapper {
+            padding-bottom: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .mat-form-field-infix {
+            padding: 2px 0 4px 0 !important;
+            border-top: none !important;
+            width: 70px !important; /* Aumentar ancho del infix */
+        }
+        
+        .mat-select {
+            font-size: 8px !important;
+            
+            .mat-select-trigger {
+                height: 18px !important;
+                min-height: 18px !important;
+                transform: translateY(-6px) !important; /* Subir todo el trigger 6px */
+            }
+            
+            .mat-select-value {
+                font-size: 8px !important;
+                line-height: 12px !important; /* Reducir line-height */
+                transform: translateY(-6px) !important; /* Subir el valor 6px */
+                margin-top: -6px !important; /* Margen negativo adicional */
+            }
+            
+            .mat-select-value-text {
+                transform: translateY(-6px) !important; /* Subir el texto 6px */
+                margin-top: -6px !important; /* Margen negativo adicional */
+            }
+            
+            .mat-select-arrow-wrapper {
+                transform: translateY(-8px) !important; /* Ajustar flecha también */
+            }
+        }
+        
+        .mat-form-field-outline {
+            .mat-form-field-outline-start,
+            .mat-form-field-outline-gap,
+            .mat-form-field-outline-end {
+                border-width: 1px !important;
+            }
+        }
+    }
+}
+
+/* Selector más específico para mover texto hacia arriba en comentarios */
+.mat-column-comentarios mat-form-field .mat-select .mat-select-trigger .mat-select-value,
+.mat-column-comentarios mat-form-field .mat-select .mat-select-trigger .mat-select-placeholder,
+.mat-column-comentarios .mat-select-value,
+.mat-column-comentarios .mat-select-placeholder {
+    transform: translateY(-6px) !important;
+    margin-top: -6px !important;
+    padding-top: 0px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+}
+
+/* Ajustar también la flecha */
+.mat-column-comentarios mat-form-field .mat-select .mat-select-arrow-wrapper {
+    transform: translateY(-6px) !important;
+    margin-top: -6px !important;
+}
+
+// Ajustar el selector de comentarios - Solución agresiva
+.col-comentarios {
+    mat-form-field {
+        height: 22px !important;
+        
+        .mat-form-field-wrapper {
+            height: 22px !important;
+            padding-bottom: 0 !important;
+        }
+        
+        .mat-form-field-flex {
+            height: 22px !important;
+            align-items: center !important;
+        }
+        
+        .mat-form-field-infix {
+            padding: 0px 8px !important;
+            text-align: center !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 22px !important;
+            border-top: none !important;
+        }
+        
+        .mat-select {
+            text-align: center !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1 !important;
+            height: 22px !important;
+            
+            .mat-select-value {
+                text-align: center !important;
+                width: 100% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1 !important;
+                height: 22px !important;
+                
+                .mat-select-value-text {
+                    text-align: center !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    line-height: 1 !important;
+                }
+            }
+            
+            .mat-select-placeholder {
+                text-align: center !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1 !important;
+                height: 22px !important;
+            }
+            
+            .mat-select-arrow-wrapper {
+                margin: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+        }
+        
+        .mat-form-field-outline {
+            padding: 0 4px !important;
+        }
+        
+        // Centrar verticalmente el trigger
+        .mat-select-trigger {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 22px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            line-height: 1 !important;
+        }
+        
+        // Ajustar la línea de outline
+        .mat-form-field-outline-start,
+        .mat-form-field-outline-end {
+            height: 22px !important;
+        }
+        
+        .mat-form-field-outline-gap {
+            height: 22px !important;
+        }
+        
+        // Eliminar subscript que empuja hacia abajo
+        .mat-form-field-subscript-wrapper {
+            display: none !important;
+        }
+    }
+}
+
 td,
 th {
     text-align: center !important;

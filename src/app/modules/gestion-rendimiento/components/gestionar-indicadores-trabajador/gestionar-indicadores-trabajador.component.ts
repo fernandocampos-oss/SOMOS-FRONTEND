@@ -33,6 +33,53 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   idSegmento: number = 0;
   flagEvaluador: boolean = true;
 
+  // Opciones para el selector personalizado
+  comentarioOptions = [
+    { value: '', label: '[Seleccione]' },
+    { value: 'logrado', label: 'Logrado' },
+    { value: 'proceso', label: 'En proceso' },
+    { value: 'no_presento', label: 'No presentó' }
+  ];
+
+  comentarioFinalOptions = [
+    { value: '', label: '[Seleccione]' },
+    { value: 'si_presenta', label: 'SÍ presenta' },
+    { value: 'no_presenta', label: 'NO presenta' }
+  ];
+
+  // Valores seleccionados para cada tipo de comentario
+  comentarioSinEvidencias: string = '';
+  comentarioIndividuales: string = '';
+  comentarioFinal: string = '';
+
+  // Métodos para manejar cambios de selección específicos por evidencia
+  onComentarioChange(tipo: string, valor: string, indicador?: any, evidencia?: any, index?: number): void {
+    console.log(`Comentario ${tipo} changed to:`, valor || '[Seleccione]');
+    console.log('Indicador:', indicador);
+    console.log('Evidencia:', evidencia);
+    console.log('Index:', index);
+    
+    switch(tipo) {
+      case 'sinEvidencias':
+        if (indicador) {
+          indicador.comentarioSinEvidencias = valor || '';
+        }
+        break;
+      case 'individuales':
+        if (evidencia) {
+          evidencia.comentario = valor || '';
+        }
+        break;
+      case 'final':
+        if (indicador) {
+          indicador.comentarioFinal = valor || '';
+        }
+        break;
+    }
+    
+    console.log('Valor actualizado para:', tipo, valor || '[Sin selección]');
+  }
+
   constructor(
     private _dialog: MatDialog,
     private _grService: GestionRendimientoService,
@@ -58,6 +105,30 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       if (data.length > 0) {
         console.log("info:",data);
         this.listDataTable = data;
+        
+        // Inicializar propiedades de comentario para cada elemento
+        this.listDataTable.forEach(element => {
+          if (element.listIndicador) {
+            element.listIndicador.forEach(indicador => {
+              // Inicializar comentarios del indicador
+              if (!indicador.hasOwnProperty('comentarioSinEvidencias')) {
+                indicador.comentarioSinEvidencias = '';
+              }
+              if (!indicador.hasOwnProperty('comentarioFinal')) {
+                indicador.comentarioFinal = '';
+              }
+              
+              // Inicializar comentarios de cada evidencia
+              if (indicador.listEvidencia) {
+                indicador.listEvidencia.forEach(evidencia => {
+                  if (!evidencia.hasOwnProperty('comentario')) {
+                    evidencia.comentario = '';
+                  }
+                });
+              }
+            });
+          }
+        });
       }
     });
   }

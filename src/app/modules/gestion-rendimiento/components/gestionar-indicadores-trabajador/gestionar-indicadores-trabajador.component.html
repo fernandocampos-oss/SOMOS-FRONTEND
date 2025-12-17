@@ -303,16 +303,24 @@
                                             <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
                                             <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0" style="margin-bottom: 12px;">
                                                 <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
-                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIOS</div>
-                                                    <div style="text-align: center; margin-top: 4px;">
-                                                        <mat-form-field appearance="outline" style="width: 120px; font-size: 9px;">
-                                                            <mat-select [value]="''" placeholder="[Seleccione]" style="font-size: 9px;">
+                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIO</div>
+                                                    <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 2px;">
+                                                        <mat-form-field appearance="outline" style="width: 70px; font-size: 8px; margin: 0; padding: 0;">
+                                                            <mat-select placeholder="[Seleccione]" [(value)]="z.comentarioSinEvidencias" 
+                                                                       (selectionChange)="onComentarioChange('sinEvidencias', $event.value, z)"
+                                                                       style="font-size: 8px; text-align: center; transform: translateY(-6px); margin-top: 6px;">
                                                                 <mat-option value="">[Seleccione]</mat-option>
                                                                 <mat-option value="logrado">Logrado</mat-option>
                                                                 <mat-option value="proceso">En proceso</mat-option>
                                                                 <mat-option value="no_presento">No presentó</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
+                                                        <button mat-icon-button class="btn-ver-comentario"
+                                                                style="width: 18px; height: 18px;" 
+                                                                matTooltip="Ver comentario" 
+                                                                matTooltipPosition="below">
+                                                            <mat-icon style="font-size: 12px;">visibility</mat-icon>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -322,16 +330,24 @@
                                                 <ng-container *ngFor="let t of z.listEvidencia; let i = index">
                                                     <div style="margin-bottom: 12px;">
                                                         <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
-                                                            <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIOS</div>
-                                                            <div style="text-align: center; margin-top: 4px;">
-                                                                <mat-form-field appearance="outline" style="width: 120px; font-size: 9px;">
-                                                                    <mat-select [value]="''" placeholder="[Seleccione]" style="font-size: 9px;">
+                                                            <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIO</div>
+                                                            <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 2px;">
+                                                                <mat-form-field appearance="outline" style="width: 70px; font-size: 8px; margin: 0; padding: 0;">
+                                                                    <mat-select placeholder="[Seleccione]" [(value)]="t.comentario" 
+                                                                               (selectionChange)="onComentarioChange('individuales', $event.value, z, t, i)"
+                                                                               style="font-size: 8px; text-align: center; transform: translateY(-6px); margin-top: 6px;">
                                                                         <mat-option value="">[Seleccione]</mat-option>
                                                                         <mat-option value="logrado">Logrado</mat-option>
                                                                         <mat-option value="proceso">En proceso</mat-option>
                                                                         <mat-option value="no_presento">No presentó</mat-option>
                                                                     </mat-select>
                                                                 </mat-form-field>
+                                                                <button mat-icon-button class="btn-ver-comentario"
+                                                                        style="width: 18px; height: 18px;" 
+                                                                        matTooltip="Ver comentario" 
+                                                                        matTooltipPosition="below">
+                                                                    <mat-icon style="font-size: 12px;">visibility</mat-icon>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -341,15 +357,23 @@
                                             <!-- COMENTARIO FINAL (siempre aparece, con o sin evidencias iniciales) -->
                                             <div style="margin-bottom: 12px;">
                                                 <div style="padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 80px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
-                                                    <div style="font-size: 10px; color: #d84315; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIOS</div>
-                                                    <div style="text-align: center; margin-top: 4px;">
-                                                        <mat-form-field appearance="outline" style="width: 120px; font-size: 9px;">
-                                                            <mat-select [value]="''" placeholder="[Seleccione]" style="font-size: 9px;">
+                                                    <div style="font-size: 10px; color: #d84315; font-weight: bold; text-align: center; line-height: 18px;">COMENTARIO</div>
+                                                    <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 2px;">
+                                                        <mat-form-field appearance="outline" style="width: 70px; font-size: 8px; margin: 0; padding: 0;">
+                                                            <mat-select placeholder="[Seleccione]" [(value)]="z.comentarioFinal" 
+                                                                       (selectionChange)="onComentarioChange('final', $event.value, z)"
+                                                                       style="font-size: 8px; text-align: center; transform: translateY(-6px); margin-top: 6px;">
                                                                 <mat-option value="">[Seleccione]</mat-option>
                                                                 <mat-option value="si_presenta">SÍ presenta</mat-option>
                                                                 <mat-option value="no_presenta">NO presenta</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
+                                                        <button mat-icon-button class="btn-ver-comentario"
+                                                                style="width: 18px; height: 18px;" 
+                                                                matTooltip="Ver comentario" 
+                                                                matTooltipPosition="below">
+                                                            <mat-icon style="font-size: 12px;">visibility</mat-icon>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
