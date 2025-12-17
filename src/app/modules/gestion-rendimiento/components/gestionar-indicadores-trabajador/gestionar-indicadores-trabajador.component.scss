@@ -459,15 +459,15 @@ mat-expansion-panel {
 
 // Estilos específicos para mat-select en comentarios (versión corregida)
 .mat-column-comentarios {
-    max-width: 85px !important; /* Aumentar un poco para evitar superposición */
-    width: 85px !important;
-    min-width: 85px !important;
-    flex: 0 0 85px !important; /* Forzar flex específico para comentarios */
+    max-width: 60px !important; /* Reducir ancho total de la columna */
+    width: 60px !important;
+    min-width: 60px !important;
+    flex: 0 0 60px !important; /* Forzar flex específico para comentarios */
     word-wrap: break-word !important;
     white-space: unset !important;
     
     mat-form-field {
-        width: 70px !important; /* Ajustar al ancho del HTML */
+        width: 70px !important; /* Mantener ancho del selector como estaba */
         font-size: 8px !important;
         
         .mat-form-field-wrapper {
@@ -478,7 +478,7 @@ mat-expansion-panel {
         .mat-form-field-infix {
             padding: 2px 0 4px 0 !important;
             border-top: none !important;
-            width: 65px !important; /* Ajustar para que coincida mejor */
+            width: 65px !important; /* Volver al ancho anterior del infix */
         }
         
         .mat-select {
