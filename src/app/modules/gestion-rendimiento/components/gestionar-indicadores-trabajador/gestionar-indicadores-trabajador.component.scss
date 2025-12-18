@@ -49,6 +49,41 @@ table {
     margin: 0 !important;
 }
 
+/* Estilos específicos para la columna de VALOR ALCANZADO */
+.mat-column-valor_alcanzado {
+    width: 120px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+    
+    mat-form-field {
+        width: 80px !important;
+        font-size: 12px !important;
+        
+        .mat-form-field-wrapper {
+            padding-bottom: 0 !important;
+        }
+        
+        .mat-form-field-infix {
+            padding: 0.5em 0 !important;
+            border-top: 0.5em solid transparent !important;
+        }
+        
+        input {
+            text-align: center !important;
+            font-size: 12px !important;
+        }
+    }
+    
+    /* Dar más altura a la celda para que el botón sea visible */
+    .mat-list-item {
+        min-height: 60px !important;
+    }
+    
+    .matrixCube {
+        min-height: 60px !important;
+    }
+}
+
 /* 4. Forzar padding de contenedores principales */
 .gdr-table-2025 div[style*="padding"][style*="0"] {
     padding: 0 !important;

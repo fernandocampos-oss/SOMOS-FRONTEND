@@ -118,6 +118,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                 indicador.comentarioFinal = '';
               }
               
+              // Inicializar valor alcanzado
+              if (!indicador.hasOwnProperty('valorAlcanzado')) {
+                indicador.valorAlcanzado = 0;
+              }
+              if (!indicador.hasOwnProperty('editingValorAlcanzado')) {
+                indicador.editingValorAlcanzado = false;
+              }
+              
               // Inicializar comentarios de cada evidencia
               if (indicador.listEvidencia) {
                 indicador.listEvidencia.forEach(evidencia => {
@@ -398,5 +406,49 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       let load = await this._grService.verificaEvaluador().then((data: any) => {
         this.flagEvaluador = data
       });
+  }
+
+  // Métodos para edición del valor alcanzado
+  editValorAlcanzado(indicador: any): void {
+    // Guardar el valor original en caso de cancelar
+    indicador.originalValorAlcanzado = indicador.valorAlcanzado;
+    indicador.editingValorAlcanzado = true;
+  }
+
+  onValorAlcanzadoInput(event: any, indicador: any): void {
+    const inputValue = event.target.value;
+    
+    // Validar que solo sea un número positivo
+    if (inputValue !== '' && (isNaN(inputValue) || parseFloat(inputValue) <= 0)) {
+      // Si no es válido, restaurar el valor anterior
+      event.target.value = indicador.valorAlcanzado || 0;
+      return;
+    }
+    
+    // Si es válido, actualizar temporalmente
+    indicador.valorAlcanzado = inputValue === '' ? 0 : parseFloat(inputValue);
+  }
+
+  saveValorAlcanzado(indicador: any): void {
+    // Validar una vez más antes de guardar
+    if (indicador.valorAlcanzado === undefined || indicador.valorAlcanzado === null || 
+        isNaN(indicador.valorAlcanzado) || indicador.valorAlcanzado <= 0) {
+      // Si no es válido, usar 0 como valor por defecto
+      indicador.valorAlcanzado = 0;
+    }
+    
+    // Salir del modo edición
+    indicador.editingValorAlcanzado = false;
+    delete indicador.originalValorAlcanzado;
+    
+    // Aquí puedes agregar lógica para guardar en el backend
+    console.log('Valor alcanzado actualizado:', indicador.valorAlcanzado);
+  }
+
+  cancelEditValorAlcanzado(indicador: any): void {
+    // Restaurar el valor original
+    indicador.valorAlcanzado = indicador.originalValorAlcanzado;
+    indicador.editingValorAlcanzado = false;
+    delete indicador.originalValorAlcanzado;
   }
 }
