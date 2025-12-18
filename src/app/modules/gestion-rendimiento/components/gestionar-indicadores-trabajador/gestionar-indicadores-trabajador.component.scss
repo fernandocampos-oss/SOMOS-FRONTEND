@@ -258,7 +258,9 @@ table {
     }
 
     .col-comentarios {
-        min-width: 200px;
+        min-width: 120px !important;
+        max-width: 120px !important;
+        width: 120px !important;
     }
 
     /* Preguntas en headers */
@@ -595,6 +597,10 @@ mat-expansion-panel {
 
 // Ajustar el selector de comentarios - Solución agresiva
 .col-comentarios {
+    min-width: 120px !important;
+    max-width: 120px !important;
+    width: 120px !important;
+    
     mat-form-field {
         height: 22px !important;
         
@@ -739,6 +745,43 @@ mat-panel-description {
 
 .mat-table {
     border: 1px solid #cad2dc;
+}
+
+/* Forzar ancho total de columna comentarios */
+th.mat-header-cell.col-comentarios,
+td.mat-cell.mat-column-comentarios {
+    width: 120px !important;
+    max-width: 120px !important;
+    min-width: 120px !important;
+    flex: 0 0 120px !important;
+}
+
+/* Centrar contenido de la columna VALOR ESPERADO */
+.mat-column-valor_esperado {
+    text-align: center !important;
+    
+    .mat-list-item {
+        justify-content: center !important;
+        
+        .mat-list-item-content {
+            justify-content: center !important;
+            text-align: center !important;
+        }
+    }
+}
+
+/* Centrar contenido de la columna PESO */
+.mat-column-peso {
+    text-align: center !important;
+    
+    .mat-list-item {
+        justify-content: center !important;
+        
+        .mat-list-item-content {
+            justify-content: center !important;
+            text-align: center !important;
+        }
+    }
 }
 
 th.mat-header-cell, td.mat-cell {

@@ -95,12 +95,7 @@
                                             <div>
                                                 <span class="demo-2">{{x.nombreIndicador}}</span>
                                             </div>
-                                            <div>
-                                                <button mat-icon-button class="has-success"
-                                                    matTooltip="Añadir nueva evidencia para este Indicador/Producto"
-                                                    (click)="agregarEvidencia(x)">
-                                                    <mat-icon matListIcon>add_circle</mat-icon>
-                                                </button>
+                                            <div style="display: flex; justify-content: center; margin-top: 8px;">
                                                 <button mat-icon-button color="primary" matTooltip="Editar Indicador"
                                                     (click)="abrirEditor(i.idVotante, element, x.idIndicador, element.prioridadNombre)">
                                                     <mat-icon>edit</mat-icon>
@@ -128,16 +123,18 @@
 
                         <!-- Columna VALOR ESPERADO (META) -->
                         <ng-container matColumnDef="valor_esperado">
-                            <th mat-header-cell *matHeaderCellDef>VALOR ESPERADO</th>
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">VALOR ESPERADO</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
-                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube">
-                                        <span *ngIf="((x.codTipoValorMeta =='03') || (x.codTipoValorMeta == '04') || (x.codTipoValorMeta == '06'))">
-                                            {{x.valorMeta}}%
-                                        </span>
-                                        <span *ngIf="((x.codTipoValorMeta =='01') || (x.codTipoValorMeta == '02') || (x.codTipoValorMeta == '05'))">
-                                            {{x.valorMeta}}
-                                        </span>
+                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube" style="display: flex; justify-content: center; align-items: center;">
+                                        <div style="text-align: center; width: 100%;">
+                                            <span *ngIf="((x.codTipoValorMeta =='03') || (x.codTipoValorMeta == '04') || (x.codTipoValorMeta == '06'))" style="display: block; text-align: center;">
+                                                {{x.valorMeta}}%
+                                            </span>
+                                            <span *ngIf="((x.codTipoValorMeta =='01') || (x.codTipoValorMeta == '02') || (x.codTipoValorMeta == '05'))" style="display: block; text-align: center;">
+                                                {{x.valorMeta}}
+                                            </span>
+                                        </div>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
@@ -145,12 +142,15 @@
                         </ng-container>
 
                         <!-- Columna PESO -->
+                        <!-- Columna PESO -->
                         <ng-container matColumnDef="peso">
-                            <th mat-header-cell *matHeaderCellDef>PESO</th>
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">PESO</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
-                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube">
-                                        <span>{{x.peso}}%</span>
+                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube" style="display: flex; justify-content: center; align-items: center;">
+                                        <div style="text-align: center; width: 100%;">
+                                            <span style="display: block; text-align: center;">{{x.peso}}%</span>
+                                        </div>
                                         <mat-divider></mat-divider>
                                     </mat-list-item>
                                 </mat-list>
