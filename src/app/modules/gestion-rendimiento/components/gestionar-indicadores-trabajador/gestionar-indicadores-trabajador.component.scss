@@ -494,10 +494,10 @@ mat-expansion-panel {
 
 // Estilos específicos para mat-select en comentarios (versión corregida)
 .mat-column-comentarios {
-    max-width: 60px !important; /* Reducir ancho total de la columna */
-    width: 60px !important;
-    min-width: 60px !important;
-    flex: 0 0 60px !important; /* Forzar flex específico para comentarios */
+    max-width: 120px !important; /* Aumentar ancho total de la columna */
+    width: 120px !important;
+    min-width: 120px !important;
+    flex: 0 0 120px !important; /* Forzar flex específico para comentarios */
     word-wrap: break-word !important;
     white-space: unset !important;
     
@@ -569,6 +569,28 @@ mat-expansion-panel {
 .mat-column-comentarios mat-form-field .mat-select .mat-select-arrow-wrapper {
     transform: translateY(-6px) !important;
     margin-top: -6px !important;
+}
+
+/* Forzar ancho en todos los elementos de la columna comentarios */
+.mat-column-comentarios .mat-list-item,
+.mat-column-comentarios .matrixCube {
+    width: 120px !important;
+    max-width: 120px !important;
+    min-width: 120px !important;
+}
+
+/* Forzar ancho en los contenedores internos de comentarios */
+.mat-column-comentarios div[style*="background-color: #f9f9f9"],
+.mat-column-comentarios div[style*="background-color: #fff8dc"] {
+    width: 110px !important;
+    max-width: 110px !important;
+    min-width: 110px !important;
+}
+
+/* Forzar ancho en el mat-line */
+.mat-column-comentarios .mat-line {
+    width: 120px !important;
+    max-width: 120px !important;
 }
 
 // Ajustar el selector de comentarios - Solución agresiva
