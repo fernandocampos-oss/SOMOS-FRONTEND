@@ -50,6 +50,22 @@
                     </div>
                 </div>
             </mat-form-field>
+
+            <h4><strong>Sentido del Indicador:</strong></h4>
+            <mat-form-field appearance="outline">
+                <mat-label>Sentido</mat-label>
+                <mat-select formControlName="frmSentidoIndicador">
+                    <mat-option value="ascendente">
+                        <mat-icon style="vertical-align: middle; color: #4caf50;">trending_up</mat-icon>
+                        Ascendente (a mayor valor, mejor)
+                    </mat-option>
+                    <mat-option value="descendente">
+                        <mat-icon style="vertical-align: middle; color: #f44336;">trending_down</mat-icon>
+                        Descendente (a menor valor, mejor)
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Define si un valor mayor es mejor (↑) o un valor menor es mejor (↓)</mat-hint>
+            </mat-form-field>
             <br>
             <br><br>
             <mat-divider></mat-divider>

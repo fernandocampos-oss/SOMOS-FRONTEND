@@ -35,6 +35,7 @@ export class AsignarIndicadorComponent implements OnInit {
     frmTipoValorMeta: ['', Validators.required],
     frmValorMeta: [''],
     frmPeso: ['', Validators.required],
+    frmSentidoIndicador: ['ascendente', Validators.required], // Nuevo campo
   });
   
   formEvidencia = this._formBuilder.group({
@@ -124,6 +125,7 @@ export class AsignarIndicadorComponent implements OnInit {
     indicador.tipoValorMeta = tipoValorMeta;
     indicador.flDesPrioridad = '1';
     indicador.desPrioridad = this.data.prioridadSelected.prioridadNombre;
+    indicador.sentidoIndicador = this.formPrioridad.value.frmSentidoIndicador; // Nuevo campo
     if (this.formPrioridad.value.frmTipoValorMeta == 3) {
       indicador.valorMeta = 100;
     } else {
@@ -145,6 +147,7 @@ export class AsignarIndicadorComponent implements OnInit {
     prioridadExistDto.votante = votante;
     prioridadExistDto.indicador = indicador;
     prioridadExistDto.listEvidencia = evidencias;
+    prioridadExistDto.sentidoIndicador = this.formPrioridad.value.frmSentidoIndicador; // Agregar sentido
 
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false

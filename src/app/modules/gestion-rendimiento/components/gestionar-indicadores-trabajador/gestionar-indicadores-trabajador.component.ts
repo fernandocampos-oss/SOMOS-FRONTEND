@@ -101,7 +101,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async loadTableJefe() {
-    let listPrioridades = await this._grService.listarPrioridadesPrincipal().then((data) => {
+    let listPrioridades = await this._grService.listarPrioridadesPrincipal().then(async (data) => {
       if (data.length > 0) {
         console.log("info:",data);
         this.listDataTable = data;
@@ -137,8 +137,95 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
             });
           }
         });
+
+        // Cargar sentidos de indicadores desde BD local DESPUÉS de tener los datos
+        await this.cargarSentidosIndicadores();
       }
     });
+  }
+
+  async cargarSentidosIndicadores() {
+    console.log('=== INICIO cargarSentidosIndicadores ===');
+    console.log('listDataTable completo:', this.listDataTable);
+    try {
+      // Recolectar todos los IDs de indicadores (recorriendo la estructura anidada correctamente)
+      const idsIndicadores: number[] = [];
+      this.listDataTable.forEach(trabajador => {
+        console.log('Trabajador:', trabajador);
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          console.log('  -> listPrioridad:', trabajador.listPrioridad);
+          trabajador.listPrioridad.forEach(prioridad => {
+            console.log('    -> Prioridad:', prioridad);
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              console.log('      -> listIndicador:', prioridad.listIndicador);
+              prioridad.listIndicador.forEach(indicador => {
+                console.log('        -> Indicador completo:', indicador);
+                console.log('        -> indicador.idIndicador:', indicador.idIndicador);
+                if (indicador.idIndicador) {
+                  idsIndicadores.push(indicador.idIndicador);
+                }
+              });
+            }
+          });
+        }
+      });
+
+      console.log('IDs de indicadores encontrados:', idsIndicadores);
+
+      if (idsIndicadores.length === 0) {
+        console.log('No hay indicadores para cargar sentidos');
+        return;
+      }
+
+      // Obtener sentidos en batch desde la BD local
+      console.log('Llamando a obtenerSentidosMultiples...');
+      const sentidosMap = await this._grService.obtenerSentidosMultiples(idsIndicadores);
+      console.log('Respuesta recibida:', sentidosMap);
+      console.log('Tipo de respuesta:', typeof sentidosMap, Array.isArray(sentidosMap));
+      
+      // Asignar sentidos a cada indicador (recorriendo la estructura anidada correctamente)
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+                console.log(`Procesando indicador ID: ${indicador.idIndicador}`);
+                if (indicador.idIndicador && sentidosMap[indicador.idIndicador]) {
+                  indicador.sentido = sentidosMap[indicador.idIndicador];
+                  console.log(`  -> Sentido asignado desde BD local: ${indicador.sentido}`);
+                } else {
+                  // No asignar valor si no existe en BD local (quedará undefined)
+                  indicador.sentido = null;
+                  console.log(`  -> Sin sentido en BD local (quedará como "Sin definir")`);
+                }
+              });
+            }
+          });
+        }
+      });
+
+      console.log('Sentidos cargados exitosamente');
+      console.log('Estado final de listDataTable:', this.listDataTable);
+    } catch (error) {
+      console.error('❌ Error cargando sentidos:', error);
+      // Asignar valor por defecto en caso de error (recorriendo la estructura anidada correctamente)
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+                // No asignar valor por defecto en caso de error
+                // Dejar que quede null para que se muestre "Sin definir"
+                if (!indicador.sentido) {
+                  indicador.sentido = null;
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+    console.log('=== FIN cargarSentidosIndicadores ===');
   }
 
   async registrarPrioridad() {

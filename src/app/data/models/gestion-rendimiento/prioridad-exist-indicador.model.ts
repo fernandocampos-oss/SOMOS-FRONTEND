@@ -6,6 +6,7 @@ export class PrioridadExistRequestDto {
     votante?: VotanteExistDto;
     indicador?: IndicadorExistDto;
     listEvidencia?: EvidenciaExistDto[];
+    sentidoIndicador?: string; // 'ascendente' o 'descendente'
 }
 
 export class PrioridadExistDto {
@@ -26,6 +27,7 @@ export class IndicadorExistDto {
     flDesPrioridad?: string;
     desPrioridad?: string;
     /* Modificación Prioridad - Fin */
+    sentidoIndicador?: string; // Nuevo campo: 'ascendente' o 'descendente'
 }
 
 export class EvidenciaExistDto {

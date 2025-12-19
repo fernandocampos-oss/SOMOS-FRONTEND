@@ -219,4 +219,18 @@ export class GestionRendimientoService {
     return await this.http.put(url, {'idEvidencia':id,'comentario':comentario, 'calificacion':calificacion}).toPromise();
   }
 
+  // Métodos para sentido de indicadores
+  async obtenerSentidoIndicador(idIndicador: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/sentido-indicador/${idIndicador}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerSentidosMultiples(idIndicadores: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/sentido-indicador/batch`;
+    const response = await this.http.post(url, idIndicadores).toPromise();
+    console.log('Respuesta del backend (sentidos):', response);
+    console.log('IDs solicitados:', idIndicadores);
+    return response;
+  }
+
 }
