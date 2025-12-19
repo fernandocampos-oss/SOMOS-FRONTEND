@@ -55,6 +55,7 @@ export class AsignarPrioridadComponent implements OnInit {
     frmTipoValorMeta: ['', Validators.required],
     frmValorMeta: ['',[Validators.pattern(this.expNumero)]],
     frmPeso: ['', [Validators.required]],
+    frmSentidoIndicador: ['ascendente', Validators.required], // Sentido del indicador
   });
 
   formEvidencia = this._formBuilder.group({
@@ -338,6 +339,7 @@ export class AsignarPrioridadComponent implements OnInit {
       prioridadDto.votante = votante;
       prioridadDto.indicador = indicador;
       prioridadDto.listEvidencia = evidencias;
+      prioridadDto.sentidoIndicador = this.formPrioridad.value.frmSentidoIndicador; // Agregar sentido
       if(indicador.flDesPrioridad == '1'){
         prioridadDto.prioridadNombre = indicador.desPrioridad;
       }
