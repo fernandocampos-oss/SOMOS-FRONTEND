@@ -24,6 +24,8 @@ import { AdministrarVotanteComponent } from './components/administrar-votante/ad
 import { PanelObservadoComponent } from './components/administrar-votante/dialogs/panel-observado/panel-observado.component';
 import { CalificarComponent } from './components/gestionar-indicadores-trabajador/dialogs/calificar/calificar.component';
 import { CustomSelectComponent } from './components/gestionar-indicadores-trabajador/custom-select/custom-select.component';
+import { ComentarioDialogComponent } from './components/gestionar-indicadores-trabajador/dialogs/comentario-dialog/comentario-dialog.component';
+import { FechaPlazoDialogComponent } from './components/gestionar-indicadores-trabajador/dialogs/fecha-plazo-dialog/fecha-plazo-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { CustomSelectComponent } from './components/gestionar-indicadores-trabaj
     EditMasterComponent,
     AdministrarVotanteComponent,
     PanelObservadoComponent,
-    CustomSelectComponent
+    CustomSelectComponent,
+    ComentarioDialogComponent,
+    FechaPlazoDialogComponent
   ],
   imports: [
     CommonModule,

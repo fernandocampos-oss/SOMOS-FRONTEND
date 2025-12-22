@@ -196,6 +196,11 @@ export class GestionRendimientoService {
     return await this.http.put(url, model).toPromise();
   }
 
+  async deleteEvidenciaById(id: number) {
+    const url = `${URL_BASE}/evidencias/eliminar/${id}`;
+    return await this.http.delete(url).toPromise();
+  }
+
   async procesarExcelVotante(personas: CargaMasivaVotante[]) {
     const url = `${URL_BASE}/equipos/carga/excel/votante`;
     console.log(url, personas);
@@ -231,6 +236,63 @@ export class GestionRendimientoService {
     console.log('Respuesta del backend (sentidos):', response);
     console.log('IDs solicitados:', idIndicadores);
     return response;
+  }
+
+  // Métodos para tipo de evidencia
+  async guardarEvidenciaTipo(idEvidencia: number, idIndicador: number, tipo: string, orden: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/guardar`;
+    return await this.http.post(url, { idEvidencia, idIndicador, tipo, orden }).toPromise();
+  }
+
+  async obtenerEvidenciaTipo(idEvidencia: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/obtener/${idEvidencia}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerEvidenciasPorIndicador(idIndicador: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/indicador/${idIndicador}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerEvidenciasTipoMultiples(idsEvidencia: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/batch`;
+    return await this.http.post(url, idsEvidencia).toPromise();
+  }
+
+  async eliminarEvidenciaTipo(idEvidencia: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/eliminar/${idEvidencia}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  async reordenarEvidencias(idIndicador: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/reordenar/${idIndicador}`;
+    return await this.http.post(url, {}).toPromise();
+  }
+
+  async actualizarFechaPlazo(idEvidencia: number, fechaPlazo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/actualizar-fecha-plazo`;
+    return await this.http.post(url, { idEvidencia, fechaPlazo }).toPromise();
+  }
+
+  // Métodos para comentario estado
+  async guardarComentarioEstado(idEvidencia: number, estadoDropdown: string, comentarioAdicional: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/guardar`;
+    return await this.http.post(url, { idEvidencia, estadoDropdown, comentarioAdicional }).toPromise();
+  }
+
+  async obtenerComentarioEstado(idEvidencia: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/obtener/${idEvidencia}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerComentariosEstadoMultiples(idsEvidencia: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/batch`;
+    return await this.http.post(url, idsEvidencia).toPromise();
+  }
+
+  async eliminarComentarioEstado(idEvidencia: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/eliminar/${idEvidencia}`;
+    return await this.http.delete(url).toPromise();
   }
 
 }

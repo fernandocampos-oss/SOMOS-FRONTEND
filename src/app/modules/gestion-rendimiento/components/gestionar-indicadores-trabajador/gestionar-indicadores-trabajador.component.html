@@ -117,10 +117,10 @@
                                     <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube" style="display: flex; align-items: center; justify-content: center;">
                                         <div style="text-align: center; width: 100%;">
                                             <span *ngIf="x.sentido === 'ascendente'" style="color: #4caf50; font-weight: 600;">
-                                                ▲ Ascendente
+                                                Ascendente
                                             </span>
                                             <span *ngIf="x.sentido === 'descendente'" style="color: #f44336; font-weight: 600;">
-                                                ▼ Descendente
+                                                Descendente
                                             </span>
                                             <span *ngIf="!x.sentido" style="color: #999; font-style: italic;">
                                                 Sin definir
@@ -291,9 +291,22 @@
                                             
                                             <!-- PLAZO FINAL (siempre aparece, con o sin evidencias iniciales) -->
                                             <div style="margin-bottom: 12px;">
-                                                <div style="padding: 2px 4px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
-                                                    <div style="font-size: 10px; color: #d84315; font-weight: bold; text-align: center; line-height: 18px;">PLAZO</div>
-                                                    <div style="font-size: 10px; color: #999; text-align: center; line-height: 17px;">-</div>
+                                                <div style="padding: 4px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                    <!-- Fila superior: PLAZO con botón editar -->
+                                                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px; margin-bottom: 2px;">
+                                                        <div style="font-size: 10px; color: #d84315; font-weight: bold; line-height: 14px;">PLAZO</div>
+                                                        <button mat-icon-button 
+                                                                style="width: 14px; height: 14px; line-height: 14px; padding: 0; min-width: 14px;" 
+                                                                matTooltip="Editar fecha de plazo" 
+                                                                matTooltipPosition="below"
+                                                                (click)="abrirFechaPlazoDialog(z.listEvidencia && z.listEvidencia.length > 0 ? z.listEvidencia[z.listEvidencia.length - 1] : null)">
+                                                            <mat-icon style="font-size: 10px; color: #d84315; line-height: 14px;">edit</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                    <!-- Fila inferior: Fecha -->
+                                                    <div style="font-size: 10px; text-align: center; line-height: 14px; color: #333;">
+                                                        {{z.listEvidencia && z.listEvidencia.length > 0 && z.listEvidencia[z.listEvidencia.length - 1].fechaPlazoFinal ? (z.listEvidencia[z.listEvidencia.length - 1].fechaPlazoFinal | date: 'dd/MM/yyyy') : '-'}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -356,7 +369,8 @@
                                                                 <button mat-icon-button class="btn-ver-comentario"
                                                                         style="width: 18px; height: 18px;" 
                                                                         matTooltip="Ver comentario" 
-                                                                        matTooltipPosition="below">
+                                                                        matTooltipPosition="below"
+                                                                        (click)="abrirComentarioDialog(t)">
                                                                     <mat-icon style="font-size: 12px;">visibility</mat-icon>
                                                                 </button>
                                                             </div>
@@ -382,7 +396,8 @@
                                                         <button mat-icon-button class="btn-ver-comentario"
                                                                 style="width: 18px; height: 18px;" 
                                                                 matTooltip="Ver comentario" 
-                                                                matTooltipPosition="below">
+                                                                matTooltipPosition="below"
+                                                                (click)="abrirComentarioDialog(z.listEvidencia && z.listEvidencia.length > 0 ? z.listEvidencia[z.listEvidencia.length - 1] : null, true)">
                                                             <mat-icon style="font-size: 12px;">visibility</mat-icon>
                                                         </button>
                                                     </div>

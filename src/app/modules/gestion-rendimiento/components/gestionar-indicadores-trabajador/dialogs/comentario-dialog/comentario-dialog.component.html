@@ -1,0 +1,64 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>{{ esFinal ? 'Comentario Final' : 'Comentario de Evidencia' }}</h2>
+  
+  <mat-dialog-content>
+    <div *ngIf="cargando" style="text-align: center; padding: 20px;">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <form [formGroup]="formComentario" *ngIf="!cargando">
+      <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estadoDropdown">
+          <mat-option value="">[Seleccione]</mat-option>
+          
+          <!-- Opciones para comentario final -->
+          <ng-container *ngIf="esFinal">
+            <mat-option value="si_presenta">SÍ presenta</mat-option>
+            <mat-option value="no_presenta">NO presenta</mat-option>
+          </ng-container>
+          
+          <!-- Opciones para comentario individual -->
+          <ng-container *ngIf="!esFinal">
+            <mat-option value="logrado">Logrado</mat-option>
+            <mat-option value="proceso">En proceso de logro</mat-option>
+            <mat-option value="no_presento">No presentó evidencia</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Comentario adicional</mat-label>
+        <textarea matInput 
+                  formControlName="comentarioAdicional" 
+                  rows="6"
+                  placeholder="Escriba aquí sus observaciones..."></textarea>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="cerrar()">Cerrar</button>
+    
+    <button mat-raised-button 
+            color="primary" 
+            *ngIf="!modoEdicion && !cargando"
+            (click)="activarEdicion()">
+      Editar
+    </button>
+
+    <button mat-button 
+            *ngIf="modoEdicion"
+            (click)="cancelarEdicion()">
+      Cancelar
+    </button>
+
+    <button mat-raised-button 
+            color="primary" 
+            *ngIf="modoEdicion"
+            [disabled]="cargando"
+            (click)="guardarComentario()">
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</div>
