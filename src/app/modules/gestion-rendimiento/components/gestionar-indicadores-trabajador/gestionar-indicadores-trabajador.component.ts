@@ -182,6 +182,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         
         // Cargar fechas de plazo desde BD local
         await this.cargarFechasPlazo();
+        
+        // Cargar valores alcanzados desde BD local
+        await this.cargarValoresAlcanzados();
       }
     });
   }
@@ -404,6 +407,58 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       console.error('❌ Error cargando fechas de plazo:', error);
     }
     console.log('=== FIN cargarFechasPlazo ===');
+  }
+
+  async cargarValoresAlcanzados() {
+    console.log('=== INICIO cargarValoresAlcanzados ===');
+    try {
+      // Recolectar todos los IDs de prioridades
+      const idsPrioridades: number[] = [];
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.idPrioridad) {
+              idsPrioridades.push(prioridad.idPrioridad);
+            }
+          });
+        }
+      });
+
+      if (idsPrioridades.length === 0) {
+        console.log('No hay prioridades para cargar valores alcanzados');
+        return;
+      }
+
+      console.log('IDs de prioridades a consultar:', idsPrioridades);
+
+      // Llamar al servicio para obtener múltiples valores alcanzados
+      const valoresMap = await this._grService.obtenerValoresAlcanzadosMultiples(idsPrioridades);
+      console.log('Valores alcanzados recibidos:', valoresMap);
+
+      // Asignar valores alcanzados a cada prioridad
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.idPrioridad && valoresMap[prioridad.idPrioridad] !== undefined) {
+              const valorAlcanzado = valoresMap[prioridad.idPrioridad];
+              
+              // Asignar el valor a todos los indicadores de esta prioridad
+              if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+                prioridad.listIndicador.forEach(indicador => {
+                  indicador.valorAlcanzado = valorAlcanzado;
+                  console.log(`Valor alcanzado asignado a indicador ${indicador.idIndicador} de prioridad ${prioridad.idPrioridad}:`, valorAlcanzado);
+                });
+              }
+            }
+          });
+        }
+      });
+
+      console.log('Valores alcanzados cargados exitosamente');
+    } catch (error) {
+      console.error('❌ Error cargando valores alcanzados:', error);
+    }
+    console.log('=== FIN cargarValoresAlcanzados ===');
   }
 
   async registrarPrioridad() {
@@ -784,7 +839,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     indicador.valorAlcanzado = inputValue === '' ? 0 : parseFloat(inputValue);
   }
 
-  saveValorAlcanzado(indicador: any): void {
+  async saveValorAlcanzado(indicador: any) {
     // Validar una vez más antes de guardar
     if (indicador.valorAlcanzado === undefined || indicador.valorAlcanzado === null || 
         isNaN(indicador.valorAlcanzado) || indicador.valorAlcanzado <= 0) {
@@ -796,8 +851,33 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     indicador.editingValorAlcanzado = false;
     delete indicador.originalValorAlcanzado;
     
-    // Aquí puedes agregar lógica para guardar en el backend
-    console.log('Valor alcanzado actualizado:', indicador.valorAlcanzado);
+    // Guardar en BD local
+    try {
+      // Buscar el idPrioridad del indicador (necesitamos encontrar la prioridad padre)
+      let idPrioridad = null;
+      for (const trabajador of this.listDataTable) {
+        if (trabajador.listPrioridad) {
+          for (const prioridad of trabajador.listPrioridad) {
+            if (prioridad.listIndicador && prioridad.listIndicador.includes(indicador)) {
+              idPrioridad = prioridad.idPrioridad;
+              break;
+            }
+          }
+        }
+        if (idPrioridad) break;
+      }
+      
+      if (idPrioridad) {
+        console.log('Guardando valor alcanzado en BD local:', indicador.valorAlcanzado, 'para prioridad:', idPrioridad);
+        await this._grService.guardarValorAlcanzado(idPrioridad, indicador.valorAlcanzado);
+        this._notification.success('Valor alcanzado guardado correctamente');
+      } else {
+        console.error('No se encontró idPrioridad para el indicador');
+      }
+    } catch (error) {
+      console.error('Error al guardar valor alcanzado:', error);
+      this._notification.error('Error al guardar el valor alcanzado');
+    }
   }
 
   cancelEditValorAlcanzado(indicador: any): void {

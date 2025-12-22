@@ -295,4 +295,25 @@ export class GestionRendimientoService {
     return await this.http.delete(url).toPromise();
   }
 
+  // Métodos para valor alcanzado prioridad
+  async guardarValorAlcanzado(idPrioridad: number, valorAlcanzado: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/valor-alcanzado/guardar`;
+    return await this.http.post(url, { idPrioridad, valorAlcanzado }).toPromise();
+  }
+
+  async obtenerValorAlcanzado(idPrioridad: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/valor-alcanzado/obtener/${idPrioridad}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerValoresAlcanzadosMultiples(idsPrioridad: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/valor-alcanzado/batch`;
+    return await this.http.post(url, idsPrioridad).toPromise();
+  }
+
+  async eliminarValorAlcanzado(idPrioridad: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/valor-alcanzado/eliminar/${idPrioridad}`;
+    return await this.http.delete(url).toPromise();
+  }
+
 }
