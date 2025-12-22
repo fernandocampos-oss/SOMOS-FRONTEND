@@ -109,10 +109,11 @@ export class FechaPlazoDialogComponent implements OnInit {
         return;
       }
       
-      console.log('Guardando fecha de plazo:', fechaStr, 'para evidencia:', this.data.idEvidencia);
+      console.log('Guardando fecha de plazo:', fechaStr, 'para evidencia:', this.data.idEvidencia, 'indicador:', this.data.idIndicador);
       
       await this.grService.actualizarFechaPlazo(
         this.data.idEvidencia,
+        this.data.idIndicador,
         fechaStr
       );
       

@@ -38,8 +38,10 @@ export class NotifierInterceptor implements HttpInterceptor {
             this._notification.error('Error al procesar información.');
             break;
           case HttpStatusCode.NotFound:
-            // TODO: Redireccionar a página 404
-            this._notification.error('Recurso no encontrado.');
+            // No mostrar error 404 para obtener evidencia-tipo (registro puede no existir aún)
+            if (!request.url.includes('/gdr/evidencia-tipo/obtener/')) {
+              this._notification.error('Recurso no encontrado.');
+            }
             break;
         }
         return throwError(response);

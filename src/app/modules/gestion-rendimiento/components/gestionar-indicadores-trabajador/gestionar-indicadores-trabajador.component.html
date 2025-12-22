@@ -299,7 +299,7 @@
                                                                 style="width: 14px; height: 14px; line-height: 14px; padding: 0; min-width: 14px;" 
                                                                 matTooltip="Editar fecha de plazo" 
                                                                 matTooltipPosition="below"
-                                                                (click)="abrirFechaPlazoDialog(z.listEvidencia && z.listEvidencia.length > 0 ? z.listEvidencia[z.listEvidencia.length - 1] : null)">
+                                                                (click)="abrirFechaPlazoDialog(z.listEvidencia && z.listEvidencia.length > 0 ? z.listEvidencia[z.listEvidencia.length - 1] : null, z)">
                                                             <mat-icon style="font-size: 10px; color: #d84315; line-height: 14px;">edit</mat-icon>
                                                         </button>
                                                     </div>
@@ -474,7 +474,18 @@
                         <ng-container matColumnDef="puntuacion_meta">
                             <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">PUNTAJE POR META</th>
                             <td mat-cell *matCellDef="let element">
-                                <span style="color: #999;">No corresponde</span>
+                                <mat-list>
+                                    <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube">
+                                        <div mat-line style="text-align: center; padding: 8px 4px; min-height: 60px; display: flex; align-items: center; justify-content: center;">
+                                            <span [style.color]="calcularPuntajePorMeta(z) === 'Error' ? '#f44336' : (calcularPuntajePorMeta(z) === '-' ? '#999' : '#333')" 
+                                                  [style.font-weight]="calcularPuntajePorMeta(z) !== '-' && calcularPuntajePorMeta(z) !== 'Error' ? 'bold' : 'normal'"
+                                                  [style.font-size]="'16px'">
+                                                {{ calcularPuntajePorMeta(z) }}
+                                            </span>
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                    </mat-list-item>
+                                </mat-list>
                             </td>
                         </ng-container>
 

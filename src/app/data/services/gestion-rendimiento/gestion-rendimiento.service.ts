@@ -246,7 +246,16 @@ export class GestionRendimientoService {
 
   async obtenerEvidenciaTipo(idEvidencia: number): Promise<any> {
     const url = `${URL_BASE}/gdr/evidencia-tipo/obtener/${idEvidencia}`;
-    return await this.http.get(url).toPromise();
+    try {
+      return await this.http.get(url).toPromise();
+    } catch (error: any) {
+      // Si es 404, retornar null sin mostrar error (registro aún no existe)
+      if (error?.status === 404) {
+        return null;
+      }
+      // Para otros errores, re-lanzar
+      throw error;
+    }
   }
 
   async obtenerEvidenciasPorIndicador(idIndicador: number): Promise<any> {
@@ -269,9 +278,9 @@ export class GestionRendimientoService {
     return await this.http.post(url, {}).toPromise();
   }
 
-  async actualizarFechaPlazo(idEvidencia: number, fechaPlazo: string): Promise<any> {
+  async actualizarFechaPlazo(idEvidencia: number, idIndicador: number, fechaPlazo: string): Promise<any> {
     const url = `${URL_BASE}/gdr/evidencia-tipo/actualizar-fecha-plazo`;
-    return await this.http.post(url, { idEvidencia, fechaPlazo }).toPromise();
+    return await this.http.post(url, { idEvidencia, idIndicador, fechaPlazo }).toPromise();
   }
 
   // Métodos para comentario estado

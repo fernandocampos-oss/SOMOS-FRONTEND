@@ -683,9 +683,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  abrirFechaPlazoDialog(evidencia: any) {
+  abrirFechaPlazoDialog(evidencia: any, indicador: any) {
     if (!evidencia || !evidencia.idEvidencia) {
       this._notification.warning('No hay evidencia asociada');
+      return;
+    }
+
+    if (!indicador || !indicador.idIndicador) {
+      this._notification.warning('No se encontró el indicador asociado');
       return;
     }
     
@@ -694,7 +699,8 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       width: '400px',
       autoFocus: false,
       data: {
-        idEvidencia: evidencia.idEvidencia
+        idEvidencia: evidencia.idEvidencia,
+        idIndicador: indicador.idIndicador
       }
     });
 
@@ -885,5 +891,71 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     indicador.valorAlcanzado = indicador.originalValorAlcanzado;
     indicador.editingValorAlcanzado = false;
     delete indicador.originalValorAlcanzado;
+  }
+
+  /**
+   * Calcula el puntaje por meta según la fórmula:
+   * =SI.ERROR(SI($L$18="No";"No corresponde";SI(O(M21="";E21="[Seleccione]");"-";SI(SI(E21="Ascendente";(M21/F21)*100*G21;(((1-(M21/F21))+1)*100*G21))>(G21*100);(G21*100);SI(E21="Ascendente";(M21/F21)*100*G21;SI(Y(E21="Descendente";(M21>F21*2));0;((1-(M21/F21))+1)*100*G21)))));"-")
+   * 
+   * Donde:
+   * - E21 = sentido del indicador (Ascendente/Descendente)
+   * - F21 = valor esperado (meta)
+   * - G21 = peso (como porcentaje, ej: 50)
+   * - M21 = valor alcanzado
+   */
+  calcularPuntajePorMeta(indicador: any): string {
+    try {
+      // Validar que tengamos todos los datos necesarios
+      const sentido = indicador.sentido;
+      const valorEsperado = parseFloat(indicador.valorMeta);
+      const peso = parseFloat(indicador.peso);
+      const valorAlcanzado = parseFloat(indicador.valorAlcanzado);
+
+      // SI(O(M21="";E21="[Seleccione]");"-"; ...)
+      if (!sentido || sentido === '' || isNaN(valorAlcanzado) || valorAlcanzado === null || valorAlcanzado === undefined) {
+        return '-';
+      }
+
+      if (isNaN(valorEsperado) || isNaN(peso)) {
+        return '-';
+      }
+
+      // Convertir peso de porcentaje a decimal (50 -> 0.5)
+      const pesoDecimal = peso / 100;
+
+      let puntaje: number;
+
+      // Calcular según el sentido
+      if (sentido.toLowerCase() === 'ascendente') {
+        // Para ascendente: (M21/F21)*100*G21
+        puntaje = (valorAlcanzado / valorEsperado) * 100 * pesoDecimal;
+      } else if (sentido.toLowerCase() === 'descendente') {
+        // Para descendente: primero verificar si M21 > F21*2
+        if (valorAlcanzado > valorEsperado * 2) {
+          return '0';
+        }
+        // Si no: ((1-(M21/F21))+1)*100*G21
+        puntaje = ((1 - (valorAlcanzado / valorEsperado)) + 1) * 100 * pesoDecimal;
+      } else {
+        return '-';
+      }
+
+      // Verificar que no exceda el peso máximo (G21*100)
+      const pesoMaximo = peso;
+      if (puntaje > pesoMaximo) {
+        puntaje = pesoMaximo;
+      }
+
+      // Asegurar que no sea negativo
+      if (puntaje < 0) {
+        puntaje = 0;
+      }
+
+      // Retornar con 2 decimales
+      return puntaje.toFixed(2);
+    } catch (error) {
+      console.error('Error al calcular puntaje por meta:', error);
+      return 'Error';
+    }
   }
 }
