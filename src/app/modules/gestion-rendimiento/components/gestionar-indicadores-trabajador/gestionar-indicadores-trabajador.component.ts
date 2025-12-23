@@ -113,7 +113,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         break;
     }
     
-    console.log('Valor actualizado para:', tipo, valor || '[Sin selección]');
+    //console.log('Valor actualizado para:', tipo, valor || '[Sin selección]');
   }
 
   constructor(
@@ -956,6 +956,63 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     } catch (error) {
       console.error('Error al calcular puntaje por meta:', error);
       return 'Error';
+    }
+  }
+
+  calcularPuntuacionFinal(trabajador: any): string {
+    try {
+      let sumaTotal = 0;
+      
+      // Recorrer todas las prioridades del trabajador
+      if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+        trabajador.listPrioridad.forEach((prioridad: any) => {
+          // Recorrer todos los indicadores de la prioridad
+          if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+            prioridad.listIndicador.forEach((indicador: any) => {
+              const puntaje = this.calcularPuntajePorMeta(indicador);
+              // Solo sumar si es un número válido (no es '-' ni 'Error')
+              if (puntaje !== '-' && puntaje !== 'Error') {
+                const valor = parseFloat(puntaje);
+                if (!isNaN(valor)) {
+                  sumaTotal += valor;
+                }
+              }
+            });
+          }
+        });
+      }
+      
+      return sumaTotal.toFixed(2);
+    } catch (error) {
+      console.error('Error al calcular puntuación final:', error);
+      return '0.00';
+    }
+  }
+
+  calcularCalificacion(trabajador: any): string {
+    try {
+      const puntuacionFinal = this.calcularPuntuacionFinal(trabajador);
+      
+      if (puntuacionFinal === '-' || puntuacionFinal === 'Error') {
+        return '-';
+      }
+
+      const puntaje = parseFloat(puntuacionFinal);
+
+      if (isNaN(puntaje)) {
+        return '-';
+      }
+
+      if (puntaje >= 100) {
+        return 'Rendimiento Distinguido';
+      } else if (puntaje >= 60) {
+        return 'Buen rendimiento';
+      } else {
+        return 'Rendimiento sujeto a observación';
+      }
+    } catch (error) {
+      console.error('Error al calcular calificación:', error);
+      return '-';
     }
   }
 }

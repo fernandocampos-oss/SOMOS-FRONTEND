@@ -510,6 +510,101 @@
                         <!-- Fila de datos -->
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
+                    
+                    <!-- Nueva tabla de Resultados Finales -->
+                    <br>
+                    <table border="1" style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                        <tbody>
+                            <!-- Fila de título RESULTADOS FINALES -->
+                            <tr>
+                                <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 14px;">
+                                    🔊 RESULTADOS FINALES
+                                </td>
+                            </tr>
+                            
+                            <!-- Fila de encabezados -->
+                            <tr style="background-color: #1e3a5f; color: white; font-weight: bold; text-align: center;">
+                                <td style="padding: 8px; width: 15%; background-color: #c85a28;">CRITERIOS PARA LA CALIFICACIÓN<br><span style="font-size: 9px; font-style: italic;">Esta sección debe ser consultada con la ORH</span></td>
+                                <td style="padding: 8px; width: 15%;">PUNTUACIÓN FINAL</td>
+                                <td style="padding: 8px; width: 15%;">CALIFICACIÓN</td>
+                                <td style="padding: 8px; width: 35%;">REUNIÓN DE RETROALIMENTACIÓN FINAL Y ACCIONES DE MEJORA</td>
+                                <td style="padding: 8px; width: 20%;">FECHA DE REUNIÓN DE RETROALIMENTACIÓN FINAL</td>
+                            </tr>
+                            
+                            <!-- Fila de datos -->
+                            <tr>
+                                <!-- Columna CRITERIOS -->
+                                <td style="padding: 5px; background-color: #f4d5c0;">
+                                    <div style="background-color: #c85a28; color: white; padding: 5px; margin-bottom: 5px; font-weight: bold; font-size: 9px;">
+                                        PERMANENCIA EN EL PUESTO ANTES DE EMPEZAR LA ETAPA DE EVALUACIÓN
+                                    </div>
+                                    <div style="padding: 5px; font-size: 9px;">
+                                        Tiene 6 meses o más desempeñando el puesto que es objeto de evaluación
+                                    </div>
+                                    <div style="background-color: #c85a28; color: white; padding: 5px; margin-top: 5px; margin-bottom: 5px; font-weight: bold; font-size: 9px;">
+                                        LA JUNTA DE DIRECTIVOS OTORGÓ RENDIMIENTO DISTINGUIDO AL SERVIDOR
+                                    </div>
+                                    <div style="padding: 5px;">
+                                        <select style="width: 100%; padding: 3px;">
+                                            <option value="">[Seleccione]</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                
+                                <!-- Columna PUNTUACIÓN FINAL -->
+                                <td style="text-align: center; vertical-align: middle; background-color: #e8e8e8; font-size: 18px; font-weight: bold;">
+                                    {{calcularPuntuacionFinal(i)}}
+                                </td>
+                                
+                                <!-- Columna CALIFICACIÓN -->
+                                <td style="text-align: center; vertical-align: middle; background-color: #e8e8e8; font-size: 14px; font-weight: bold;">
+                                    {{calcularCalificacion(i)}}
+                                </td>
+                                
+                                <!-- Columna REUNIÓN DE RETROALIMENTACIÓN -->
+                                <td style="padding: 0; background-color: #e8e8e8;">
+                                    <table style="width: 100%; border: none; border-collapse: collapse;">
+                                        <tr>
+                                            <td style="border: 1px solid #999; padding: 5px; background-color: white;">
+                                                <div style="font-weight: bold; font-size: 9px; margin-bottom: 5px;">ACCIONES DE CAPACITACIÓN:</div>
+                                                <textarea style="width: 100%; height: 50px; border: 1px solid #ccc; padding: 3px; font-size: 10px;"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #999; padding: 5px; background-color: white;">
+                                                <div style="font-weight: bold; font-size: 9px; margin-bottom: 5px;">OTRAS ACCIONES PARA LA MEJORA DEL DESEMPEÑO DEL SERVIDOR EVALUADO:</div>
+                                                <textarea style="width: 100%; height: 50px; border: 1px solid #ccc; padding: 3px; font-size: 10px;"></textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                
+                                <!-- Columna FECHA -->
+                                <td style="text-align: center; vertical-align: middle; background-color: #e8e8e8;">
+                                    [dd/mmm/aaaa]
+                                </td>
+                            </tr>
+                            
+                            <!-- Fila de FIRMAS -->
+                            <tr>
+                                <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 8px; font-weight: bold;">
+                                    FIRMAS DE LA REUNIÓN DE RETROALIMENTACIÓN FINAL<br>
+                                    <span style="font-style: italic; font-size: 10px;">(En etapa de Evaluación)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center; padding: 40px; background-color: #e8e8e8; border-right: 1px solid #999;">
+                                    <div style="font-weight: bold;">FIRMA EVALUADO/A</div>
+                                </td>
+                                <td colspan="3" style="text-align: center; padding: 40px; background-color: #e8e8e8;">
+                                    <div style="font-weight: bold;">FIRMA EVALUADOR/A</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
                     <!-- 
                     <br />
                     <span><strong>Peso Total:</strong> {{i.pesoTotal}}%</span>
