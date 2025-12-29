@@ -40,7 +40,7 @@ export class NotifierInterceptor implements HttpInterceptor {
           case HttpStatusCode.NotFound:
             // No mostrar error 404 para obtener evidencia-tipo (registro puede no existir aún)
             if (!request.url.includes('/gdr/evidencia-tipo/obtener/')) {
-              this._notification.error('Recurso no encontrado.');
+             // this._notification.error('Recurso no encontrado.');
             }
             break;
         }

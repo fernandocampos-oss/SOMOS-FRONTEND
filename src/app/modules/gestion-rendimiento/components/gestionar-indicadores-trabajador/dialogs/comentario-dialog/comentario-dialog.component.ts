@@ -53,7 +53,7 @@ export class ComentarioDialogComponent implements OnInit {
       }
     } catch (error) {
       console.log('No hay comentario guardado para esta evidencia o el backend no está disponible');
-      this.notification.warning('No se pudo cargar el comentario. Verifica que el backend esté corriendo.');
+      //this.notification.warning('No se pudo cargar el comentario. Verifica que el backend esté corriendo.');
     } finally {
       this.cargando = false;
     }
