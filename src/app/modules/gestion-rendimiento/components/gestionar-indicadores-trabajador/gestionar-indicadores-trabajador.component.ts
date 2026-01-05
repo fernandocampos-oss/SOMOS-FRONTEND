@@ -1087,7 +1087,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   onRendimientoDistinguidoChange(trabajador: any, value: string) {
     if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
     trabajador.resultadosFinales.rendimientoDistinguido = value;
-    this.guardarResultadoFinal(trabajador);
+    
+    // Solo guardar si el valor es diferente de '[Seleccione]'
+    if (value !== '[Seleccione]') {
+      this.guardarResultadoFinal(trabajador);
+    }
   }
 
   onAccionesCapacitacionChange(trabajador: any, value: string) {
@@ -1102,6 +1106,54 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
   async guardarTextoResultadoFinal(trabajador: any) {
     await this.guardarResultadoFinal(trabajador);
+  }
+
+  // Métodos para editar/guardar acciones de capacitación
+  editarAccionesCapacitacion(trabajador: any) {
+    if (!trabajador.resultadosFinales) {
+      trabajador.resultadosFinales = {
+        rendimientoDistinguido: '[Seleccione]',
+        accionesCapacitacion: '',
+        otrasAcciones: '',
+        fechaReunion: null
+      };
+    }
+    trabajador.tempAccionesCapacitacion = trabajador.resultadosFinales.accionesCapacitacion;
+    trabajador.editingAccionesCapacitacion = true;
+  }
+
+  async guardarAccionesCapacitacion(trabajador: any) {
+    trabajador.editingAccionesCapacitacion = false;
+    await this.guardarResultadoFinal(trabajador);
+  }
+
+  cancelarAccionesCapacitacion(trabajador: any) {
+    trabajador.resultadosFinales.accionesCapacitacion = trabajador.tempAccionesCapacitacion;
+    trabajador.editingAccionesCapacitacion = false;
+  }
+
+  // Métodos para editar/guardar otras acciones
+  editarOtrasAcciones(trabajador: any) {
+    if (!trabajador.resultadosFinales) {
+      trabajador.resultadosFinales = {
+        rendimientoDistinguido: '[Seleccione]',
+        accionesCapacitacion: '',
+        otrasAcciones: '',
+        fechaReunion: null
+      };
+    }
+    trabajador.tempOtrasAcciones = trabajador.resultadosFinales.otrasAcciones;
+    trabajador.editingOtrasAcciones = true;
+  }
+
+  async guardarOtrasAcciones(trabajador: any) {
+    trabajador.editingOtrasAcciones = false;
+    await this.guardarResultadoFinal(trabajador);
+  }
+
+  cancelarOtrasAcciones(trabajador: any) {
+    trabajador.resultadosFinales.otrasAcciones = trabajador.tempOtrasAcciones;
+    trabajador.editingOtrasAcciones = false;
   }
 
   async onFechaReunionChange(trabajador: any, fecha: any) {
