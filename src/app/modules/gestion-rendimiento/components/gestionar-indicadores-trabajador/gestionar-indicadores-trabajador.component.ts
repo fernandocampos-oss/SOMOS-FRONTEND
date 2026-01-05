@@ -185,6 +185,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         
         // Cargar valores alcanzados desde BD local
         await this.cargarValoresAlcanzados();
+
+        // Cargar resultados finales desde BD local
+        await this.cargarResultadosFinales();
       }
     });
   }
@@ -1015,4 +1018,106 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       return '-';
     }
   }
+  // ========== Resultados Finales ==========
+  async cargarResultadosFinales() {
+    try {
+      const anioActual = new Date().getFullYear();
+      const idsVotantes: number[] = [];
+
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.idVotante) {
+          idsVotantes.push(trabajador.idVotante);
+        }
+      });
+
+      if (idsVotantes.length === 0) return;
+
+      const resultados = await this._grService.obtenerResultadosFinalesMultiples(idsVotantes, anioActual);
+
+      this.listDataTable.forEach(trabajador => {
+        const resultado = resultados[trabajador.idVotante];
+        if (resultado) {
+          trabajador.resultadosFinales = resultado;
+        } else {
+          // Inicializar con valores por defecto
+          trabajador.resultadosFinales = {
+            rendimientoDistinguido: '[Seleccione]',
+            accionesCapacitacion: '',
+            otrasAcciones: '',
+            fechaReunion: null
+          };
+        }
+      });
+      console.log('Resultados finales cargados exitosamente');
+    } catch (error) {
+      console.warn('No se pudieron cargar resultados finales (endpoint puede no estar disponible):', error);
+      // Inicializar todos con valores por defecto
+      this.listDataTable.forEach(trabajador => {
+        trabajador.resultadosFinales = {
+          rendimientoDistinguido: '[Seleccione]',
+          accionesCapacitacion: '',
+          otrasAcciones: '',
+          fechaReunion: null
+        };
+      });
+    }
+  }
+
+  async guardarResultadoFinal(trabajador: any) {
+    try {
+      const anioActual = new Date().getFullYear();
+      const resultados = trabajador.resultadosFinales || {};
+
+      await this._grService.guardarResultadosFinales(
+        trabajador.idVotante,
+        anioActual,
+        resultados.rendimientoDistinguido || '[Seleccione]',
+        resultados.accionesCapacitacion || '',
+        resultados.otrasAcciones || '',
+        resultados.fechaReunion || null
+      );
+
+      this._notification.success('Resultados finales guardados');
+    } catch (error) {
+      console.error('Error al guardar:', error);
+      this._notification.error('Error al guardar');
+    }
+  }
+
+  onRendimientoDistinguidoChange(trabajador: any, value: string) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    trabajador.resultadosFinales.rendimientoDistinguido = value;
+    this.guardarResultadoFinal(trabajador);
+  }
+
+  onAccionesCapacitacionChange(trabajador: any, value: string) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    trabajador.resultadosFinales.accionesCapacitacion = value;
+  }
+
+  onOtrasAccionesChange(trabajador: any, value: string) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    trabajador.resultadosFinales.otrasAcciones = value;
+  }
+
+  async guardarTextoResultadoFinal(trabajador: any) {
+    await this.guardarResultadoFinal(trabajador);
+  }
+
+  async onFechaReunionChange(trabajador: any, fecha: any) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    let fechaStr = null;
+    if (fecha instanceof Date && !isNaN(fecha.getTime())) {
+      const year = fecha.getFullYear();
+      const month = String(fecha.getMonth() + 1).padStart(2, '0');
+      const day = String(fecha.getDate()).padStart(2, '0');
+      fechaStr = `${year}-${month}-${day}`;
+    }
+    trabajador.resultadosFinales.fechaReunion = fechaStr;
+    await this.guardarResultadoFinal(trabajador);
+  }
 }
+
+
+
+

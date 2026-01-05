@@ -545,8 +545,10 @@
                                         LA JUNTA DE DIRECTIVOS OTORGÓ RENDIMIENTO DISTINGUIDO AL SERVIDOR
                                     </div>
                                     <div style="padding: 5px;">
-                                        <select style="width: 100%; padding: 3px;">
-                                            <option value="">[Seleccione]</option>
+                                        <select style="width: 100%; padding: 3px;"
+                                                [value]="i.resultadosFinales?.rendimientoDistinguido || '[Seleccione]'"
+                                                (change)="onRendimientoDistinguidoChange(i, $event.target.value)">
+                                            <option value="[Seleccione]">[Seleccione]</option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>
@@ -569,21 +571,30 @@
                                         <tr>
                                             <td style="border: 1px solid #999; padding: 5px; background-color: white;">
                                                 <div style="font-weight: bold; font-size: 9px; margin-bottom: 5px;">ACCIONES DE CAPACITACIÓN:</div>
-                                                <textarea style="width: 100%; height: 50px; border: 1px solid #ccc; padding: 3px; font-size: 10px;"></textarea>
+                                                <textarea style="width: 100%; height: 50px; border: 1px solid #ccc; padding: 3px; font-size: 10px;"
+                                                          [value]="i.resultadosFinales?.accionesCapacitacion || ''"
+                                                          (input)="onAccionesCapacitacionChange(i, $event.target.value)"
+                                                          (blur)="guardarTextoResultadoFinal(i)"></textarea>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style="border: 1px solid #999; padding: 5px; background-color: white;">
                                                 <div style="font-weight: bold; font-size: 9px; margin-bottom: 5px;">OTRAS ACCIONES PARA LA MEJORA DEL DESEMPEÑO DEL SERVIDOR EVALUADO:</div>
-                                                <textarea style="width: 100%; height: 50px; border: 1px solid #ccc; padding: 3px; font-size: 10px;"></textarea>
+                                                <textarea style="width: 100%; height: 50px; border: 1px solid #ccc; padding: 3px; font-size: 10px;"
+                                                          [value]="i.resultadosFinales?.otrasAcciones || ''"
+                                                          (input)="onOtrasAccionesChange(i, $event.target.value)"
+                                                          (blur)="guardarTextoResultadoFinal(i)"></textarea>
                                             </td>
                                         </tr>
                                     </table>
                                 </td>
                                 
                                 <!-- Columna FECHA -->
-                                <td style="text-align: center; vertical-align: middle; background-color: #e8e8e8;">
-                                    [dd/mmm/aaaa]
+                                <td style="text-align: center; vertical-align: middle; background-color: #e8e8e8; padding: 8px;">
+                                    <input type="date" 
+                                           style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;"
+                                           [value]="i.resultadosFinales?.fechaReunion || ''"
+                                           (change)="onFechaReunionChange(i, $event.target.valueAsDate)">
                                 </td>
                             </tr>
                             

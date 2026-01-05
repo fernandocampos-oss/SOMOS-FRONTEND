@@ -325,4 +325,47 @@ export class GestionRendimientoService {
     return await this.http.delete(url).toPromise();
   }
 
+  // ========== Resultados Finales ==========
+  async guardarResultadosFinales(idVotante: number, anio: number, rendimientoDistinguido: string, 
+                                   accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/resultados-finales/guardar`;
+    const body = {
+      idVotante,
+      anio,
+      rendimientoDistinguido,
+      accionesCapacitacion,
+      otrasAcciones,
+      fechaReunion
+    };
+    return await this.http.post(url, body).toPromise();
+  }
+
+  async obtenerResultadosFinales(idVotante: number, anio: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/resultados-finales/obtener/${idVotante}/${anio}`;
+    try {
+      return await this.http.get(url).toPromise();
+    } catch (error: any) {
+      if (error?.status === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  async obtenerResultadosFinalesMultiples(idsVotantes: number[], anio: number): Promise<any> {
+    try {
+      const url = `${URL_BASE}/gdr/resultados-finales/batch`;
+      const body = { idsVotantes, anio };
+      return await this.http.post(url, body).toPromise();
+    } catch (error) {
+      console.error('Error al obtener resultados finales múltiples:', error);
+      return {}; // Retornar objeto vacío en caso de error
+    }
+  }
+
+  async eliminarResultadosFinales(idVotante: number, anio: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/resultados-finales/eliminar/${idVotante}/${anio}`;
+    return await this.http.delete(url).toPromise();
+  }
 }
+
