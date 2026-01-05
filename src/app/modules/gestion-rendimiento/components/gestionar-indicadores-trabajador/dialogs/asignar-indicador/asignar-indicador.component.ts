@@ -167,4 +167,68 @@ export class AsignarIndicadorComponent implements OnInit {
 
   }
 
+  onlyNumbersAndDecimal(event: KeyboardEvent): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    const inputElement = event.target as HTMLInputElement;
+    const currentValue = inputElement.value;
+    const selectionStart = inputElement.selectionStart;
+    const selectionEnd = inputElement.selectionEnd;
+    
+    // Obtener el carácter que se está ingresando
+    const char = String.fromCharCode(charCode);
+    const newValue = currentValue.substring(0, selectionStart) + char + currentValue.substring(selectionEnd);
+    
+    // Permitir punto decimal
+    if (charCode === 46) {
+      // Verificar que no haya ya un punto decimal
+      if (currentValue.indexOf('.') !== -1) {
+        return false;
+      }
+      return true;
+    }
+    
+    // Solo permitir números 0-9
+    if (charCode >= 48 && charCode <= 57) {
+      // Si el valor actual es "0" y se escribe un dígito diferente de 0, reemplazar el 0
+      if (currentValue === '0' && char !== '0') {
+        inputElement.value = '';
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: parseFloat(char) });
+        }, 0);
+        return false;
+      }
+      
+      // No permitir más ceros si el campo ya es "0"
+      if (char === '0' && currentValue === '0') {
+        return false;
+      }
+      
+      // Validar que el nuevo valor no supere 100
+      const numericValue = parseFloat(newValue);
+      if (!isNaN(numericValue) && numericValue > 100) {
+        // Si supera 100, establecer automáticamente en 100
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: 100 });
+        }, 0);
+        return false;
+      }
+      
+      // Verificar que no se escriba un tercer dígito entero
+      // Si ya tengo 2 dígitos antes del punto decimal (o sin punto), no permitir más
+      const parteEntera = newValue.split('.')[0];
+      if (parteEntera.length > 3 || (parteEntera.length === 3 && parteEntera !== '100')) {
+        // Si intenta escribir más de 3 dígitos o 3 dígitos que no sean "100", establecer en 100
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: 100 });
+        }, 0);
+        return false;
+      }
+      
+      return true;
+    }
+    
+    // Bloquear todo lo demás (incluyendo el signo menos)
+    return false;
+  }
+
 }

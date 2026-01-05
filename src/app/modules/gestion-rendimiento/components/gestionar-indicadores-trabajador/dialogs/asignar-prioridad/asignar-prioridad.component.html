@@ -92,7 +92,8 @@
             <mat-form-field appearance="outline" class="size-field">
                 <mat-label>Peso del Indicador/Producto</mat-label>
                 <input matInput formControlName="frmPeso" class="example-right-align" type="number" minlength="1"
-                    maxlength="3" (focus)="showHelpCPlanilla = true" (focusout)="showHelpCPlanilla = false">
+                    maxlength="3" min="0" max="100" step="0.01" (focus)="showHelpCPlanilla = true" (focusout)="showHelpCPlanilla = false"
+                    (keypress)="onlyNumbersAndDecimal($event)">
                 <span matSuffix class="percent-align">%</span>
                 <div *ngIf="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador)>100" class="descriptor">
                     <div *ngIf="showHelpCPlanilla">
