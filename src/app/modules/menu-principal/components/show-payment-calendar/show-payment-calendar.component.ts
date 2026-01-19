@@ -81,9 +81,9 @@ export class ShowPaymentCalendarComponent implements OnInit {
     {fecPago:'2026-12-18'},
   ];
   pagos276: Calendario[] = [
-    {fecPago:'2026-01-17'},
+    {fecPago:'2026-01-15'},
     {fecPago:'2026-01-23'},
-    {fecPago:'2026-02-14'},
+    {fecPago:'2026-02-13'},
     {fecPago:'2026-02-23'},
     {fecPago:'2026-03-23'},
     {fecPago:'2026-04-23'},
@@ -99,12 +99,11 @@ export class ShowPaymentCalendarComponent implements OnInit {
     {fecPago:'2026-11-23'},
     {fecPago:'2026-12-15'},
     {fecPago:'2026-12-23'},
-    {fecPago:'-'},
   ];
   pagos728: Calendario[] = [
-    {fecPago:'2026-01-17'},
+    {fecPago:'2026-01-15'},
     {fecPago:'2026-01-23'},
-    {fecPago:'2026-02-14'},
+    {fecPago:'2026-02-13'},
     {fecPago:'2026-02-23'},
     {fecPago:'2026-03-23'},
     {fecPago:'2026-04-23'},
@@ -116,13 +115,13 @@ export class ShowPaymentCalendarComponent implements OnInit {
     {fecPago:'2026-08-21'},
     {fecPago:'2026-09-23'},
     {fecPago:'2026-10-22'},
-    {fecPago:'2026-11-14'},
+    {fecPago:'2026-11-13'},
     {fecPago:'2026-11-23'},
     {fecPago:'2026-12-15'},
     {fecPago:'2026-12-23'},
   ];
   pagosCas: Calendario[] = [
-    {fecPago:'2026-01-17'},
+    {fecPago:'2026-01-15'},
     {fecPago:'2026-01-23'},
     {fecPago:'-'},
     {fecPago:'2026-02-23'},
