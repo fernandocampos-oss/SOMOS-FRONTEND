@@ -56,13 +56,22 @@
             <mat-form-field appearance="outline">
                 <mat-label>Sentido</mat-label>
                 <mat-select formControlName="frmSentidoIndicador">
+                    <mat-select-trigger>
+                        <mat-icon *ngIf="formPrioridad.value.frmSentidoIndicador === 'ascendente'" 
+                                  style="vertical-align: middle; color: #4caf50;">trending_up</mat-icon>
+                        <mat-icon *ngIf="formPrioridad.value.frmSentidoIndicador === 'descendente'" 
+                                  style="vertical-align: middle; color: #f44336;">trending_down</mat-icon>
+                        <span style="margin-left: 8px;">
+                            {{formPrioridad.value.frmSentidoIndicador === 'ascendente' ? 'Ascendente' : 'Descendente'}}
+                        </span>
+                    </mat-select-trigger>
                     <mat-option value="ascendente">
                         <mat-icon style="vertical-align: middle; color: #4caf50;">trending_up</mat-icon>
-                        Ascendente (a mayor valor, mejor)
+                        Ascendente
                     </mat-option>
                     <mat-option value="descendente">
                         <mat-icon style="vertical-align: middle; color: #f44336;">trending_down</mat-icon>
-                        Descendente (a menor valor, mejor)
+                        Descendente
                     </mat-option>
                 </mat-select>
                 <mat-hint>Define si un valor mayor es mejor (↑) o un valor menor es mejor (↓)</mat-hint>

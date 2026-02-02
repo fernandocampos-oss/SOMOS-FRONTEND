@@ -201,6 +201,16 @@ export class GestionRendimientoService {
     return await this.http.delete(url).toPromise();
   }
 
+  async eliminarArchivoEvidencia(id: number) {
+    const url = `${URL_BASE}/evidencias/eliminar/sustento/${id}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  async deleteIndicadorById(id: number) {
+    const url = `${URL_BASE}/indicadores/eliminar/${id}`;
+    return await this.http.delete(url).toPromise();
+  }
+
   async procesarExcelVotante(personas: CargaMasivaVotante[]) {
     const url = `${URL_BASE}/equipos/carga/excel/votante`;
     console.log(url, personas);

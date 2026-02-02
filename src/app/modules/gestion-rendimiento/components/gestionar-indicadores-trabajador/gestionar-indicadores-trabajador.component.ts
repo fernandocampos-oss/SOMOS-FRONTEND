@@ -558,6 +558,46 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
+  async eliminarArchivoEvidencia(evidencia: any) {
+    if (!evidencia || !evidencia.idEvidencia) {
+      this._notification.warning('No se puede eliminar el archivo de esta evidencia');
+      return;
+    }
+
+    // Verificar que tenga un archivo cargado
+    if (!evidencia.sustentoExtensionFile) {
+      this._notification.warning('Esta evidencia no tiene archivo adjunto');
+      return;
+    }
+
+    // Usar dialog de confirmación
+    const confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
+    });
+    confirmDialogRef.componentInstance.confirmMessage = '¿Está seguro que desea eliminar el archivo de esta evidencia? La evidencia se mantendrá pero sin archivo adjunto.';
+    
+    confirmDialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        try {
+          // Llamar al servicio para eliminar solo el archivo (limpiar campos de sustento)
+          await this._grService.eliminarArchivoEvidencia(evidencia.idEvidencia);
+          this._notification.success('Archivo eliminado correctamente');
+          
+          // Limpiar campos localmente
+          evidencia.sustentoExtensionFile = null;
+          evidencia.sustentoDescripcion = null;
+          evidencia.sustentoFechaRegistro = null;
+          
+          // Recargar los datos completos
+          await this.loadTableJefe();
+        } catch (error) {
+          console.error('Error al eliminar archivo:', error);
+          this._notification.error('Error al eliminar el archivo de la evidencia');
+        }
+      }
+    });
+  }
+
   modalMiEquipo() {
     const dialogRef: MatDialogRef<GrEquipoComponent> = this._dialog.open(GrEquipoComponent, {
       disableClose: false,
@@ -788,6 +828,40 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
+  confirmarEliminarIndicador(idIndicador: number, prioridad: any): void {
+    // Verificar que haya al menos un indicador
+    if (prioridad.listIndicador.length <= 1) {
+      this._notification.warning('No se puede eliminar el único indicador de esta prioridad');
+      return;
+    }
+
+    // Abrir dialog de confirmación
+    const confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
+    });
+    confirmDialogRef.componentInstance.confirmMessage = '¿Está seguro que desea eliminar este indicador?';
+    
+    confirmDialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        try {
+          await this._grService.deleteIndicadorById(idIndicador);
+          this._notification.success('Indicador eliminado correctamente');
+          
+          // Eliminar del array local inmediatamente
+          prioridad.listIndicador = prioridad.listIndicador.filter(
+            (ind: any) => ind.idIndicador !== idIndicador
+          );
+          
+          // Recargar los datos completos
+          await this.loadTableJefe();
+        } catch (error) {
+          console.error('Error al eliminar indicador:', error);
+          this._notification.error('Error al eliminar el indicador');
+        }
+      }
+    });
+  }
+
   abrirCalificar(idEvidencia:number){
     let info:any = {
       "idEvidencia":idEvidencia,
@@ -814,6 +888,32 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       data: {
         // idIndicador: this.data.model.idIndicador,
         model: element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTableJefe();
+    });
+  }
+
+  registrarSustentoFinal(indicador: any) {
+    // Si no existe evidenciaFinal, usar la última evidencia del array o crear referencia
+    const evidenciaFinal = indicador.evidenciaFinal || (indicador.listEvidencia && indicador.listEvidencia.length > 0 
+      ? indicador.listEvidencia[indicador.listEvidencia.length - 1] 
+      : null);
+
+    if (!evidenciaFinal) {
+      this._notification.warning('No se puede registrar sustento final sin evidencias iniciales');
+      return;
+    }
+
+    const dialogRef: MatDialogRef<RegistrarSustentoComponent> = this._matDialog.open(RegistrarSustentoComponent, {
+      disableClose: false,
+      width: '780px',
+      autoFocus: true,
+      data: {
+        model: evidenciaFinal,
+        esFinal: true // Marcar que es evidencia final
       }
     });
 

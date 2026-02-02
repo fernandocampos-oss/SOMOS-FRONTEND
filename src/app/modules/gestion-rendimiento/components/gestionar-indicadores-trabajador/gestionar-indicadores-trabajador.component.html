@@ -69,13 +69,13 @@
                         <!-- Columna PRIORIDADES ANUALES -->
                         <ng-container matColumnDef="prioridad">
                             <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2" class="col-prioridad">PRIORIDADES ANUALES DE GESTIÓN DEL ÓRGANO O UNIDAD ORGÁNICA</th>
-                            <td mat-cell *matCellDef="let element">
+                            <td mat-cell *matCellDef="let element; let isLast = last">
                                 <div class="eviItem">
                                     <span class="demo-2">{{element.prioridadNombre ? element.prioridadNombre :'-'}}</span>
                                 </div>
-                                <button mat-icon-button class="add-prioridad"
-                                    matTooltip="Añadir nuevo Indicador/Producto"
-                                    (click)="agregarIndicador(element, i.idVotante, i)">
+                                <button *ngIf="isLast" mat-icon-button class="add-prioridad"
+                                    matTooltip="Añadir nueva Prioridad"
+                                    (click)="registrarPrioridad()">
                                     <mat-icon>add_circle</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
@@ -90,16 +90,25 @@
                             <th mat-header-cell *matHeaderCellDef>INDICADOR / PRODUCTO</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-list>
-                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube" style="font-size:14px">
+                                    <mat-list-item *ngFor="let x of element.listIndicador; let isLast = last" class="matrixCube" style="font-size:14px">
                                         <div matLine>
                                             <div>
                                                 <span class="demo-2">{{x.nombreIndicador}}</span>
                                                 <span style="display: inline-block; margin-left: 8px; padding: 2px 6px; background-color: #e3f2fd; color: #1976d2; border-radius: 3px; font-size: 11px; font-weight: 600;">ID: {{x.idIndicador}}</span>
                                             </div>
-                                            <div style="display: flex; justify-content: center; margin-top: 8px;">
+                                            <div style="display: flex; justify-content: center; margin-top: 8px; gap: 8px;">
+                                                <button *ngIf="isLast" mat-icon-button class="add-prioridad" matTooltip="Añadir nuevo Indicador/Producto"
+                                                    (click)="agregarIndicador(element, i.idVotante, i)">
+                                                    <mat-icon>add_circle</mat-icon>
+                                                </button>
                                                 <button mat-icon-button color="primary" matTooltip="Editar Indicador"
                                                     (click)="abrirEditor(i.idVotante, element, x.idIndicador, element.prioridadNombre)">
                                                     <mat-icon>edit</mat-icon>
+                                                </button>
+                                                <button mat-icon-button color="warn" matTooltip="Eliminar Indicador"
+                                                    [disabled]="element.listIndicador.length === 1"
+                                                    (click)="confirmarEliminarIndicador(x.idIndicador, element)">
+                                                    <mat-icon>delete</mat-icon>
                                                 </button>
                                             </div>
                                         </div>
@@ -205,16 +214,22 @@
                                                     <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px; display: flex; flex-direction: column; justify-content: center;">
                                                         <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap; line-height: 16px; text-align: center;">EVIDENCIA {{i+1}}:</span>
                                                         <div class="evidencia-buttons-container" style="display: flex; justify-content: center; gap: 4px; margin-top: 2px;">
-                                                            <button mat-icon-button class="has-success" style="width: 16px; height: 16px;"
+                                                            <!-- Mostrar botón de agregar solo si NO tiene archivo -->
+                                                            <button *ngIf="!t.sustentoExtensionFile" mat-icon-button class="has-success" style="width: 16px; height: 16px;"
                                                                 matTooltip="Registrar Sustento"
-                                                                [disabled]="t.sustentoExtensionFile !==null"
                                                                 (click)="registrarSustento(t)">
                                                                 <mat-icon style="font-size: 11px;">add_circle</mat-icon>
                                                             </button>
-                                                            <button mat-icon-button color="warn" style="width: 16px; height: 16px;"
-                                                                [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
+                                                            <!-- Mostrar botones de ver/eliminar cuando SÍ tiene archivo -->
+                                                            <button *ngIf="t.sustentoExtensionFile === 'pdf'" mat-icon-button color="primary" style="width: 16px; height: 16px;"
+                                                                matTooltip="Ver PDF"
                                                                 (click)="verEvidenciaPdf(t)">
                                                                 <mat-icon style="font-size: 11px;">picture_as_pdf</mat-icon>
+                                                            </button>
+                                                            <button *ngIf="t.sustentoExtensionFile" mat-icon-button color="warn" style="width: 16px; height: 16px;"
+                                                                matTooltip="Eliminar archivo"
+                                                                (click)="eliminarArchivoEvidencia(t)">
+                                                                <mat-icon style="font-size: 11px;">delete</mat-icon>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -242,13 +257,22 @@
                                                 <div style="padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-height: 44px; display: flex; flex-direction: column; justify-content: center;">
                                                     <span style="font-size: 10px; color: #d84315; font-weight: bold; white-space: nowrap; line-height: 16px; text-align: center;">EVIDENCIA FINAL:</span>
                                                     <div class="evidencia-buttons-container" style="display: flex; justify-content: center; gap: 4px; margin-top: 2px;">
-                                                        <button mat-icon-button class="has-success" style="width: 16px; height: 16px;"
-                                                            matTooltip="Registrar Sustento">
+                                                        <!-- Mostrar botón de agregar solo si NO tiene archivo o no existe evidenciaFinal -->
+                                                        <button *ngIf="!z.evidenciaFinal || !z.evidenciaFinal.sustentoExtensionFile" mat-icon-button class="has-success" style="width: 16px; height: 16px;"
+                                                            matTooltip="Registrar Sustento Final"
+                                                            (click)="registrarSustentoFinal(z)">
                                                             <mat-icon style="font-size: 11px;">add_circle</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button color="warn" style="width: 16px; height: 16px;"
-                                                            matTooltip="Ver PDF">
+                                                        <!-- Mostrar botones cuando SÍ tiene archivo -->
+                                                        <button *ngIf="z.evidenciaFinal?.sustentoExtensionFile === 'pdf'" mat-icon-button color="primary" style="width: 16px; height: 16px;"
+                                                            matTooltip="Ver PDF Final"
+                                                            (click)="verEvidenciaPdf(z.evidenciaFinal)">
                                                             <mat-icon style="font-size: 11px;">picture_as_pdf</mat-icon>
+                                                        </button>
+                                                        <button *ngIf="z.evidenciaFinal?.sustentoExtensionFile" mat-icon-button color="warn" style="width: 16px; height: 16px;"
+                                                            matTooltip="Eliminar archivo final"
+                                                            (click)="eliminarArchivoEvidencia(z.evidenciaFinal)">
+                                                            <mat-icon style="font-size: 11px;">delete</mat-icon>
                                                         </button>
                                                     </div>
                                                 </div>
