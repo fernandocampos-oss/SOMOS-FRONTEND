@@ -654,12 +654,12 @@
                                         </div>
                                         
                                         <div *ngIf="!i.editingAccionesCapacitacion" 
-                                             style="width: 100%; box-sizing: border-box; height: 80px; padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #2196f3; border-radius: 4px; font-size: 12px; white-space: pre-wrap; line-height: 1.5; color: #333; display: flex; align-items: center;">
+                                             style="width: 95%; margin: 0 auto; box-sizing: border-box; height: 80px; padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #2196f3; border-radius: 4px; font-size: 12px; white-space: pre-wrap; line-height: 1.5; color: #333; display: flex; align-items: center;">
                                             {{i.resultadosFinales?.accionesCapacitacion || 'Sin registros'}}
                                         </div>
                                         
                                         <textarea *ngIf="i.editingAccionesCapacitacion"
-                                                  style="width: 100%; box-sizing: border-box; height: 80px; border: 2px solid #2196f3; padding: 12px; font-size: 12px; border-radius: 4px; resize: vertical; font-family: inherit;"
+                                                  style="width: 95%; margin: 0 auto; box-sizing: border-box; height: 80px; border: 2px solid #2196f3; padding: 12px; font-size: 12px; border-radius: 4px; resize: vertical; font-family: inherit;"
                                                   placeholder="Ingrese las acciones de capacitación recomendadas..."
                                                   [(ngModel)]="i.resultadosFinales.accionesCapacitacion"></textarea>
                                     </div>
@@ -699,12 +699,12 @@
                                         </div>
                                         
                                         <div *ngIf="!i.editingOtrasAcciones" 
-                                             style="width: 100%; box-sizing: border-box; height: 80px; padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #4caf50; border-radius: 4px; font-size: 12px; white-space: pre-wrap; line-height: 1.5; color: #333; display: flex; align-items: center;">
+                                             style="width: 95%; margin: 0 auto; box-sizing: border-box; height: 80px; padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #4caf50; border-radius: 4px; font-size: 12px; white-space: pre-wrap; line-height: 1.5; color: #333; display: flex; align-items: center;">
                                             {{i.resultadosFinales?.otrasAcciones || 'Sin registros'}}
                                         </div>
                                         
                                         <textarea *ngIf="i.editingOtrasAcciones"
-                                                  style="width: 100%; box-sizing: border-box; height: 80px; border: 2px solid #4caf50; padding: 12px; font-size: 12px; border-radius: 4px; resize: vertical; font-family: inherit;"
+                                                  style="width: 95%; margin: 0 auto; box-sizing: border-box; height: 80px; border: 2px solid #4caf50; padding: 12px; font-size: 12px; border-radius: 4px; resize: vertical; font-family: inherit;"
                                                   placeholder="Ingrese otras acciones recomendadas para mejorar el desempeño..."
                                                   [(ngModel)]="i.resultadosFinales.otrasAcciones"></textarea>
                                     </div>
