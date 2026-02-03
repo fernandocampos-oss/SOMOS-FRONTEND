@@ -547,199 +547,209 @@
                     
                     <!-- Nueva tabla de Resultados Finales -->
                     <br>
-                    <table class="workersTable anotherTable gdr-table-2025" style="width: 100%; border-collapse: collapse;">
+                    <table class="workersTable anotherTable gdr-table-2025" style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <tbody>
                             <!-- Fila de título RESULTADOS FINALES -->
                             <tr>
-                                <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 12px;">
+                                <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 14px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase;">
                                     RESULTADOS FINALES
                                 </td>
                             </tr>
                             
                             <!-- Fila de encabezados -->
                             <tr>
-                                <th style="background-color: #c85a28; color: white; padding: 8px; width: 15%; font-size: 10px; text-align: center; vertical-align: middle;">
-                                    CRITERIOS PARA LA CALIFICACIÓN<br><span style="font-size: 8px; font-style: italic;">(Esta sección debe ser consultada con la ORH)</span>
+                                <th style="background-color: #c85a28; color: white; padding: 12px; width: 15%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.3);">
+                                    CRITERIOS PARA LA CALIFICACIÓN<br><span style="font-size: 9px; font-style: italic; opacity: 0.9;">(Esta sección debe ser consultada con la ORH)</span>
                                 </th>
-                                <th style="background-color: #1e3a5f; color: white; padding: 8px; width: 15%; font-size: 10px; text-align: center; vertical-align: middle;">
-                                    PUNTUACIÓN FINAL
+                                <th style="background-color: #1e3a5f; color: white; padding: 12px; width: 12%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.3);">
+                                    PUNTUACIÓN<br>FINAL
                                 </th>
-                                <th style="background-color: #1e3a5f; color: white; padding: 8px; width: 15%; font-size: 10px; text-align: center; vertical-align: middle;">
+                                <th style="background-color: #1e3a5f; color: white; padding: 12px; width: 15%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.3);">
                                     CALIFICACIÓN
                                 </th>
-                                <th style="background-color: #1e3a5f; color: white; padding: 8px; width: 35%; font-size: 10px; text-align: center; vertical-align: middle;">
-                                    REUNIÓN DE RETROALIMENTACIÓN FINAL Y ACCIONES DE MEJORA
+                                <th style="background-color: #1e3a5f; color: white; padding: 12px; width: 38%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.3);">
+                                    REUNIÓN DE RETROALIMENTACIÓN<br>Y ACCIONES DE MEJORA
                                 </th>
-                                <th style="background-color: #1e3a5f; color: white; padding: 8px; width: 20%; font-size: 10px; text-align: center; vertical-align: middle;">
-                                    FECHA DE REUNIÓN DE RETROALIMENTACIÓN FINAL
+                                <th style="background-color: #1e3a5f; color: white; padding: 12px; width: 20%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600;">
+                                    FECHA DE REUNIÓN
                                 </th>
                             </tr>
                             
                             <!-- Fila de datos -->
                             <tr>
                                 <!-- Columna CRITERIOS -->
-                                <td style="padding: 8px; background-color: #f4d5c0; vertical-align: top;">
-                                    <div style="background-color: #c85a28; color: white; padding: 6px; margin-bottom: 6px; font-weight: bold; font-size: 9px; text-align: center; border-radius: 2px;">
+                                <td style="padding: 14px; background-color: #fef4ed; vertical-align: top; border-right: 2px solid #e0e0e0;">
+                                    <div style="background-color: #c85a28; color: white; padding: 10px; margin-bottom: 12px; font-weight: 600; font-size: 10px; text-align: center; border-radius: 4px;">
                                         PERMANENCIA EN EL PUESTO ANTES DE EMPEZAR LA ETAPA DE EVALUACIÓN
                                     </div>
-                                    <div style="padding: 6px; font-size: 9px; line-height: 1.4;">
+                                    <div style="padding: 10px; font-size: 10px; line-height: 1.6; background-color: white; border-radius: 4px; margin-bottom: 14px; border-left: 4px solid #c85a28;">
                                         Tiene 6 meses o más desempeñando el puesto que es objeto de evaluación
                                     </div>
-                                    <div style="background-color: #c85a28; color: white; padding: 6px; margin-top: 8px; margin-bottom: 6px; font-weight: bold; font-size: 9px; text-align: center; border-radius: 2px;">
+                                    <div style="background-color: #c85a28; color: white; padding: 10px; margin-bottom: 10px; font-weight: 600; font-size: 10px; text-align: center; border-radius: 4px;">
                                         LA JUNTA DE DIRECTIVOS OTORGÓ RENDIMIENTO DISTINGUIDO AL SERVIDOR
                                     </div>
-                                    <div style="padding: 6px;">
-                                        <select style="width: 100%; padding: 5px; font-size: 10px; border: 1px solid #999; border-radius: 3px;"
+                                    <div style="padding: 0 4px;">
+                                        <select style="width: 100%; padding: 10px; font-size: 11px; border: 2px solid #c85a28; border-radius: 4px; background-color: white;"
                                                 [value]="i.resultadosFinales?.rendimientoDistinguido || '[Seleccione]'"
                                                 (change)="onRendimientoDistinguidoChange(i, $event.target.value)">
                                             <option value="[Seleccione]">[Seleccione]</option>
-                                            <option value="Si">Si</option>
+                                            <option value="Si">Sí</option>
                                             <option value="No">No</option>
                                         </select>
                                     </div>
                                 </td>
                                 
                                 <!-- Columna PUNTUACIÓN FINAL -->
-                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; font-size: 20px; font-weight: bold; color: #1e3a5f;">
-                                    {{calcularPuntuacionFinal(i)}}
+                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; border-right: 2px solid #e0e0e0; padding: 20px;">
+                                    <div style="font-size: 42px; font-weight: 700; color: #1e3a5f; line-height: 1; margin-bottom: 8px;">
+                                        {{calcularPuntuacionFinal(i)}}
+                                    </div>
+                                    <div style="font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        Puntos
+                                    </div>
                                 </td>
                                 
                                 <!-- Columna CALIFICACIÓN -->
-                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; font-size: 11px; font-weight: bold; padding: 8px; line-height: 1.3;">
-                                    <span [style.color]="calcularCalificacion(i) === 'Rendimiento Distinguido' ? '#4caf50' : (calcularCalificacion(i) === 'Buen rendimiento' ? '#2196f3' : '#f44336')">
+                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; padding: 14px; border-right: 2px solid #e0e0e0;">
+                                    <div style="font-weight: 700; font-size: 18px; line-height: 1.4; text-align: center;"
+                                         [style.color]="calcularCalificacion(i) === 'Rendimiento Distinguido' ? '#4caf50' : (calcularCalificacion(i) === 'Buen rendimiento' ? '#2196f3' : '#f44336')">
                                         {{calcularCalificacion(i)}}
-                                    </span>
+                                    </div>
                                 </td>
                                 
                                 <!-- Columna REUNIÓN DE RETROALIMENTACIÓN -->
-                                <td style="padding: 0; background-color: #f5f5f5; vertical-align: top;">
-                                    <table style="width: 100%; border: none; border-collapse: collapse;">
-                                        <!-- ACCIONES DE CAPACITACIÓN -->
-                                        <tr>
-                                            <td style="border-bottom: 1px solid #ddd; padding: 8px; background-color: white;">
-                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                                    <div style="font-weight: bold; font-size: 9px; color: #1e3a5f;">ACCIONES DE CAPACITACIÓN:</div>
-                                                    <div style="display: flex; gap: 4px;">
-                                                        <!-- Botón editar -->
-                                                        <button *ngIf="!i.editingAccionesCapacitacion"
-                                                                mat-icon-button 
-                                                                color="primary" 
-                                                                matTooltip="Editar acciones de capacitación"
-                                                                style="width: 24px; height: 24px;"
-                                                                (click)="editarAccionesCapacitacion(i)">
-                                                            <mat-icon style="font-size: 16px;">edit</mat-icon>
-                                                        </button>
-                                                        
-                                                        <!-- Botones guardar/cancelar -->
-                                                        <ng-container *ngIf="i.editingAccionesCapacitacion">
-                                                            <button mat-icon-button 
-                                                                    color="primary"
-                                                                    matTooltip="Guardar"
-                                                                    style="width: 24px; height: 24px;"
-                                                                    (click)="guardarAccionesCapacitacion(i)">
-                                                                <mat-icon style="font-size: 16px;">check</mat-icon>
-                                                            </button>
-                                                            <button mat-icon-button 
-                                                                    color="warn"
-                                                                    matTooltip="Cancelar"
-                                                                    style="width: 24px; height: 24px;"
-                                                                    (click)="cancelarAccionesCapacitacion(i)">
-                                                                <mat-icon style="font-size: 16px;">close</mat-icon>
-                                                            </button>
-                                                        </ng-container>
-                                                    </div>
-                                                </div>
+                                <td style="padding: 0; background-color: #fafafa; vertical-align: top; border-right: 2px solid #e0e0e0;">
+                                    <div style="width: 100%; box-sizing: border-box; border-bottom: 2px solid #e0e0e0; padding: 12px; background-color: white;">
+                                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 8px; position: relative;">
+                                            <div style="font-weight: 600; font-size: 10px; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px;">
+                                                ACCIONES DE CAPACITACIÓN
+                                            </div>
+                                            <div style="display: flex; gap: 4px; margin-left: 8px;">
+                                                <button *ngIf="!i.editingAccionesCapacitacion"
+                                                        mat-icon-button 
+                                                        color="primary" 
+                                                        matTooltip="Editar acciones de capacitación"
+                                                        style="width: 28px; height: 28px;"
+                                                        (click)="editarAccionesCapacitacion(i)">
+                                                    <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">edit</mat-icon>
+                                                </button>
                                                 
-                                                <!-- Mostrar texto cuando no está editando -->
-                                                <div *ngIf="!i.editingAccionesCapacitacion" 
-                                                     style="min-height: 55px; padding: 8px; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 3px; font-size: 10px; white-space: pre-wrap; line-height: 1.4;">
-                                                    {{i.resultadosFinales?.accionesCapacitacion || 'Sin registros'}}
-                                                </div>
-                                                
-                                                <!-- Campo de edición -->
-                                                <textarea *ngIf="i.editingAccionesCapacitacion"
-                                                          style="width: 100%; height: 55px; border: 1px solid #2196f3; padding: 5px; font-size: 10px; border-radius: 3px; resize: vertical;"
-                                                          placeholder="Ingrese las acciones de capacitación recomendadas..."
-                                                          [(ngModel)]="i.resultadosFinales.accionesCapacitacion"></textarea>
-                                            </td>
-                                        </tr>
+                                                <ng-container *ngIf="i.editingAccionesCapacitacion">
+                                                    <button mat-icon-button 
+                                                            color="primary"
+                                                            matTooltip="Guardar"
+                                                            style="width: 28px; height: 28px;"
+                                                            (click)="guardarAccionesCapacitacion(i)">
+                                                        <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">check</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button 
+                                                            color="warn"
+                                                            matTooltip="Cancelar"
+                                                            style="width: 28px; height: 28px;"
+                                                            (click)="cancelarAccionesCapacitacion(i)">
+                                                        <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">close</mat-icon>
+                                                    </button>
+                                                </ng-container>
+                                            </div>
+                                        </div>
                                         
-                                        <!-- OTRAS ACCIONES -->
-                                        <tr>
-                                            <td style="padding: 8px; background-color: white;">
-                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                                    <div style="font-weight: bold; font-size: 9px; color: #1e3a5f;">OTRAS ACCIONES PARA LA MEJORA DEL DESEMPEÑO DEL SERVIDOR EVALUADO:</div>
-                                                    <div style="display: flex; gap: 4px;">
-                                                        <!-- Botón editar -->
-                                                        <button *ngIf="!i.editingOtrasAcciones"
-                                                                mat-icon-button 
-                                                                color="primary" 
-                                                                matTooltip="Editar otras acciones"
-                                                                style="width: 24px; height: 24px;"
-                                                                (click)="editarOtrasAcciones(i)">
-                                                            <mat-icon style="font-size: 16px;">edit</mat-icon>
-                                                        </button>
-                                                        
-                                                        <!-- Botones guardar/cancelar -->
-                                                        <ng-container *ngIf="i.editingOtrasAcciones">
-                                                            <button mat-icon-button 
-                                                                    color="primary"
-                                                                    matTooltip="Guardar"
-                                                                    style="width: 24px; height: 24px;"
-                                                                    (click)="guardarOtrasAcciones(i)">
-                                                                <mat-icon style="font-size: 16px;">check</mat-icon>
-                                                            </button>
-                                                            <button mat-icon-button 
-                                                                    color="warn"
-                                                                    matTooltip="Cancelar"
-                                                                    style="width: 24px; height: 24px;"
-                                                                    (click)="cancelarOtrasAcciones(i)">
-                                                                <mat-icon style="font-size: 16px;">close</mat-icon>
-                                                            </button>
-                                                        </ng-container>
-                                                    </div>
-                                                </div>
+                                        <div *ngIf="!i.editingAccionesCapacitacion" 
+                                             style="width: 100%; box-sizing: border-box; height: 80px; padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #2196f3; border-radius: 4px; font-size: 12px; white-space: pre-wrap; line-height: 1.5; color: #333; display: flex; align-items: center;">
+                                            {{i.resultadosFinales?.accionesCapacitacion || 'Sin registros'}}
+                                        </div>
+                                        
+                                        <textarea *ngIf="i.editingAccionesCapacitacion"
+                                                  style="width: 100%; box-sizing: border-box; height: 80px; border: 2px solid #2196f3; padding: 12px; font-size: 12px; border-radius: 4px; resize: vertical; font-family: inherit;"
+                                                  placeholder="Ingrese las acciones de capacitación recomendadas..."
+                                                  [(ngModel)]="i.resultadosFinales.accionesCapacitacion"></textarea>
+                                    </div>
+                                    
+                                    <div style="width: 100%; box-sizing: border-box; padding: 12px; background-color: white;">
+                                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 8px; position: relative;">
+                                            <div style="font-weight: 600; font-size: 10px; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px;">
+                                                OTRAS ACCIONES PARA LA MEJORA
+                                            </div>
+                                            <div style="display: flex; gap: 4px; margin-left: 8px;">
+                                                <button *ngIf="!i.editingOtrasAcciones"
+                                                        mat-icon-button 
+                                                        color="primary" 
+                                                        matTooltip="Editar otras acciones"
+                                                        style="width: 28px; height: 28px;"
+                                                        (click)="editarOtrasAcciones(i)">
+                                                    <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">edit</mat-icon>
+                                                </button>
                                                 
-                                                <!-- Mostrar texto cuando no está editando -->
-                                                <div *ngIf="!i.editingOtrasAcciones" 
-                                                     style="min-height: 55px; padding: 8px; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 3px; font-size: 10px; white-space: pre-wrap; line-height: 1.4;">
-                                                    {{i.resultadosFinales?.otrasAcciones || 'Sin registros'}}
-                                                </div>
-                                                
-                                                <!-- Campo de edición -->
-                                                <textarea *ngIf="i.editingOtrasAcciones"
-                                                          style="width: 100%; height: 55px; border: 1px solid #2196f3; padding: 5px; font-size: 10px; border-radius: 3px; resize: vertical;"
-                                                          placeholder="Ingrese otras acciones recomendadas..."
-                                                          [(ngModel)]="i.resultadosFinales.otrasAcciones"></textarea>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                                <ng-container *ngIf="i.editingOtrasAcciones">
+                                                    <button mat-icon-button 
+                                                            color="primary"
+                                                            matTooltip="Guardar"
+                                                            style="width: 28px; height: 28px;"
+                                                            (click)="guardarOtrasAcciones(i)">
+                                                        <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">check</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button 
+                                                            color="warn"
+                                                            matTooltip="Cancelar"
+                                                            style="width: 28px; height: 28px;"
+                                                            (click)="cancelarOtrasAcciones(i)">
+                                                        <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">close</mat-icon>
+                                                    </button>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        
+                                        <div *ngIf="!i.editingOtrasAcciones" 
+                                             style="width: 100%; box-sizing: border-box; height: 80px; padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #4caf50; border-radius: 4px; font-size: 12px; white-space: pre-wrap; line-height: 1.5; color: #333; display: flex; align-items: center;">
+                                            {{i.resultadosFinales?.otrasAcciones || 'Sin registros'}}
+                                        </div>
+                                        
+                                        <textarea *ngIf="i.editingOtrasAcciones"
+                                                  style="width: 100%; box-sizing: border-box; height: 80px; border: 2px solid #4caf50; padding: 12px; font-size: 12px; border-radius: 4px; resize: vertical; font-family: inherit;"
+                                                  placeholder="Ingrese otras acciones recomendadas para mejorar el desempeño..."
+                                                  [(ngModel)]="i.resultadosFinales.otrasAcciones"></textarea>
+                                    </div>
                                 </td>
                                 
                                 <!-- Columna FECHA -->
-                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; padding: 12px;">
-                                    <input type="date" 
-                                           style="width: 100%; padding: 8px; border: 1px solid #999; border-radius: 3px; font-size: 11px;"
-                                           [value]="i.resultadosFinales?.fechaReunion || ''"
-                                           (change)="onFechaReunionChange(i, $event.target.valueAsDate)">
+                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; padding: 16px;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <mat-icon style="font-size: 20px; color: #1e3a5f;">event</mat-icon>
+                                            <span style="font-size: 11px; font-weight: 600; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px;">
+                                                Fecha de Reunión
+                                            </span>
+                                        </div>
+                                        <input type="date" 
+                                               style="width: 100%; max-width: 180px; padding: 12px; border: 2px solid #1e3a5f; border-radius: 6px; font-size: 12px; text-align: center; background-color: white; color: #333; font-weight: 500;"
+                                               [value]="i.resultadosFinales?.fechaReunion || ''"
+                                               (change)="onFechaReunionChange(i, $event.target.valueAsDate)">
+                                    </div>
                                 </td>
                             </tr>
                             
                             <!-- Fila de FIRMAS -->
                             <tr>
-                                <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 11px;">
+                                <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 12px; font-weight: 700; font-size: 12px; letter-spacing: 0.5px;">
                                     FIRMAS DE LA REUNIÓN DE RETROALIMENTACIÓN FINAL<br>
-                                    <span style="font-style: italic; font-size: 9px; font-weight: normal;">(En etapa de Evaluación)</span>
+                                    <span style="font-style: italic; font-size: 10px; font-weight: 400; opacity: 0.9;">(En etapa de Evaluación)</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: center; padding: 50px 20px; background-color: #f9f9f9; border-right: 2px solid #1e3a5f;">
-                                    <div style="font-weight: bold; font-size: 11px; color: #1e3a5f; margin-bottom: 30px;">FIRMA EVALUADO/A</div>
-                                    <div style="border-top: 2px solid #333; width: 60%; margin: 0 auto; padding-top: 5px; font-size: 9px; color: #666;">Nombre y Firma</div>
+                                <td colspan="2" style="text-align: center; padding: 40px 20px; background-color: #f9f9f9; border-right: 3px solid #1e3a5f;">
+                                    <div style="font-weight: 700; font-size: 12px; color: #1e3a5f; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        FIRMA EVALUADO/A
+                                    </div>
+                                    <div style="border-top: 2px solid #1e3a5f; width: 70%; margin: 0 auto; padding-top: 8px; font-size: 10px; color: #666;">
+                                        Nombre y Firma
+                                    </div>
                                 </td>
-                                <td colspan="3" style="text-align: center; padding: 50px 20px; background-color: #f9f9f9;">
-                                    <div style="font-weight: bold; font-size: 11px; color: #1e3a5f; margin-bottom: 30px;">FIRMA EVALUADOR/A</div>
-                                    <div style="border-top: 2px solid #333; width: 60%; margin: 0 auto; padding-top: 5px; font-size: 9px; color: #666;">Nombre y Firma</div>
+                                <td colspan="3" style="text-align: center; padding: 40px 20px; background-color: #f9f9f9;">
+                                    <div style="font-weight: 700; font-size: 12px; color: #1e3a5f; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        FIRMA EVALUADOR/A
+                                    </div>
+                                    <div style="border-top: 2px solid #1e3a5f; width: 70%; margin: 0 auto; padding-top: 8px; font-size: 10px; color: #666;">
+                                        Nombre y Firma
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
