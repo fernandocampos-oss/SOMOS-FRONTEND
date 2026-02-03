@@ -282,6 +282,11 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/gdr/evidencia-tipo/batch`;
     return await this.http.post(url, idsEvidencia).toPromise();
   }
+  
+  async obtenerFechasPlazoFinalPorIndicadores(idsIndicador: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/fechas-plazo-final`;
+    return await this.http.post(url, idsIndicador).toPromise();
+  }
 
   async eliminarEvidenciaTipo(idEvidencia: number): Promise<any> {
     const url = `${URL_BASE}/gdr/evidencia-tipo/eliminar/${idEvidencia}`;

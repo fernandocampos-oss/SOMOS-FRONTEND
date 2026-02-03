@@ -255,7 +255,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       console.log('Sentidos cargados exitosamente');
       console.log('Estado final de listDataTable:', this.listDataTable);
     } catch (error) {
-      console.error('❌ Error cargando sentidos:', error);
+      console.error('Error cargando sentidos:', error);
       // Asignar valor por defecto en caso de error (recorriendo la estructura anidada correctamente)
       this.listDataTable.forEach(trabajador => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
@@ -346,27 +346,22 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
       console.log('Comentarios cargados exitosamente');
     } catch (error) {
-      console.error('❌ Error cargando comentarios:', error);
+      console.error('Error cargando comentarios:', error);
     }
     console.log('=== FIN cargarComentariosEvidencias ===');
   }
 
   async cargarFechasPlazo() {
-    console.log('=== INICIO cargarFechasPlazo ===');
     try {
-      // Recolectar todos los IDs de evidencias finales
-      const idsEvidencias: number[] = [];
+      const idsIndicadores: number[] = [];
+      
       this.listDataTable.forEach(trabajador => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
           trabajador.listPrioridad.forEach(prioridad => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
               prioridad.listIndicador.forEach(indicador => {
-                if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-                  // Solo agregar la última evidencia (evidencia final)
-                  const ultimaEvidencia = indicador.listEvidencia[indicador.listEvidencia.length - 1];
-                  if (ultimaEvidencia.idEvidencia) {
-                    idsEvidencias.push(ultimaEvidencia.idEvidencia);
-                  }
+                if (indicador.idIndicador) {
+                  idsIndicadores.push(indicador.idIndicador);
                 }
               });
             }
@@ -374,29 +369,31 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-      if (idsEvidencias.length === 0) {
-        console.log('No hay evidencias finales para cargar fechas de plazo');
+      if (idsIndicadores.length === 0) {
         return;
       }
 
-      console.log('IDs de evidencias finales a consultar:', idsEvidencias);
+      const fechasMap = await this._grService.obtenerFechasPlazoFinalPorIndicadores(idsIndicadores);
 
-      // Llamar al servicio para obtener múltiples tipos de evidencia (incluye fechaPlazo)
-      const tiposMap = await this._grService.obtenerEvidenciasTipoMultiples(idsEvidencias);
-      console.log('Tipos de evidencia recibidos:', tiposMap);
-
-      // Asignar fechas de plazo a cada evidencia final
       this.listDataTable.forEach(trabajador => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
           trabajador.listPrioridad.forEach(prioridad => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
               prioridad.listIndicador.forEach(indicador => {
-                if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-                  const ultimaEvidencia = indicador.listEvidencia[indicador.listEvidencia.length - 1];
-                  if (ultimaEvidencia.idEvidencia && tiposMap[ultimaEvidencia.idEvidencia]) {
-                    const tipoData = tiposMap[ultimaEvidencia.idEvidencia];
-                    ultimaEvidencia.fechaPlazoFinal = tipoData.fechaPlazo;
-                    console.log(`Fecha de plazo asignada a evidencia ${ultimaEvidencia.idEvidencia}:`, tipoData.fechaPlazo);
+                if (indicador.idIndicador && fechasMap[indicador.idIndicador]) {
+                  const fechaPlazo = fechasMap[indicador.idIndicador];
+                  
+                  if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+                    const ultimaEvidencia = indicador.listEvidencia[indicador.listEvidencia.length - 1];
+                    ultimaEvidencia.fechaPlazoFinal = fechaPlazo;
+                  } else {
+                    if (!indicador.listEvidencia) {
+                      indicador.listEvidencia = [];
+                    }
+                    indicador.listEvidencia.push({
+                      esFinal: true,
+                      fechaPlazoFinal: fechaPlazo
+                    });
                   }
                 }
               });
@@ -404,12 +401,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           });
         }
       });
-
-      console.log('Fechas de plazo cargadas exitosamente');
     } catch (error) {
-      console.error('❌ Error cargando fechas de plazo:', error);
+      console.error('Error cargando fechas de plazo:', error);
     }
-    console.log('=== FIN cargarFechasPlazo ===');
   }
 
   async cargarValoresAlcanzados() {
@@ -459,7 +453,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
       console.log('Valores alcanzados cargados exitosamente');
     } catch (error) {
-      console.error('❌ Error cargando valores alcanzados:', error);
+      console.error('Error cargando valores alcanzados:', error);
     }
     console.log('=== FIN cargarValoresAlcanzados ===');
   }

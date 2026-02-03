@@ -183,7 +183,18 @@
                     </tr>
                 </table>
             </div>
-            <br><br><br>
+            <br><br>
+            <!-- Campo para Plazo Final -->
+            <h4><strong>Plazo Final de Evidencia:</strong></h4>
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha Plazo Final</mat-label>
+                <input matInput formControlName="frmPlazoFinal" [min]="minFechaEvidencia"
+                    [matDatepicker]="fechaPlazoFinalPicker" (focus)="fechaPlazoFinalPicker.open()" />
+                <mat-datepicker-toggle matSuffix [for]="fechaPlazoFinalPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fechaPlazoFinalPicker></mat-datepicker>
+                <mat-hint>Fecha límite para la evidencia final del indicador</mat-hint>
+            </mat-form-field>
+            <br><br>
             <mat-divider></mat-divider>
             <br />
             <div align="end">
@@ -192,7 +203,7 @@
                     <mat-icon>chevron_left</mat-icon>
                     Atrás
                 </button>
-                <button mat-raised-button color="primary" [disabled]="dataSource.length ==0" style="margin-left: 1rem;"
+                <button mat-raised-button color="primary" [disabled]="dataSource.length ==0 || formEvidencia.invalid" style="margin-left: 1rem;"
                     (click)="registrar()">
                     <mat-icon>{{(this.data.idPersona == undefined?'check':'update')}}</mat-icon>&nbsp;
                     <span>{{(this.data.idPersona == undefined?'Asignar':'Actualizar')}}</span>

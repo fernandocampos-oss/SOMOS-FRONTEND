@@ -61,6 +61,7 @@ export class AsignarPrioridadComponent implements OnInit {
   formEvidencia = this._formBuilder.group({
     frmDescripcion: ['',[Validators.pattern(this.expTextoFrmDescripcionPrioridad), Validators.maxLength(350)]],
     frmPlazo: [''],
+    frmPlazoFinal: ['', Validators.required], // Fecha plazo final
   });
 
   listTipoValorMeta: any[] = [];
@@ -355,6 +356,10 @@ export class AsignarPrioridadComponent implements OnInit {
       prioridadDto.indicador = indicador;
       prioridadDto.listEvidencia = evidencias;
       prioridadDto.sentidoIndicador = formValues.frmSentidoIndicador; // Agregar sentido
+      // Agregar fecha de plazo final
+      if(this.formEvidencia.value.frmPlazoFinal){
+        prioridadDto.fechaPlazoFinal = moment(this.formEvidencia.value.frmPlazoFinal._d).format('YYYY-MM-DDTHH:mm:ss');
+      }
       if(indicador.flDesPrioridad == '1'){
         prioridadDto.prioridadNombre = indicador.desPrioridad;
       }
