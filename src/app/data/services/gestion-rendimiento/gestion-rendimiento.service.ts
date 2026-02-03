@@ -211,6 +211,11 @@ export class GestionRendimientoService {
     return await this.http.delete(url).toPromise();
   }
 
+  async deletePrioridadById(id: number) {
+    const url = `${URL_BASE}/prioridades/eliminar/${id}`;
+    return await this.http.delete(url).toPromise();
+  }
+
   async procesarExcelVotante(personas: CargaMasivaVotante[]) {
     const url = `${URL_BASE}/equipos/carga/excel/votante`;
     console.log(url, personas);

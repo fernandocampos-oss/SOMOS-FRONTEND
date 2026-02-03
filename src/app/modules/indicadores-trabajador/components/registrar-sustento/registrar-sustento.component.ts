@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '@core/services';
 import { EvidenciaSustentoRequestDto } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
@@ -27,6 +27,7 @@ export class RegistrarSustentoComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<RegistrarSustentoComponent>,
     private _notification: NotificationService,
     private _dialogRef: MatDialog,
     private _fb: FormBuilder,
@@ -91,7 +92,7 @@ export class RegistrarSustentoComponent implements OnInit {
       let register = await this._requerimientoService.crearSustentoEvidencia(model).then((data) => {
       this._notification.success("Evidencia registrada correctamente")
       });
-      this._dialogRef.closeAll();
+      this.dialogRef.close(true);
     }
   }
 

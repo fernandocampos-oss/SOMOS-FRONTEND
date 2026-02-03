@@ -54,6 +54,7 @@ export class AsignarIndicadorComponent implements OnInit {
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<AsignarIndicadorComponent>,
     private _dialog: MatDialog,
     private _notification: NotificationService,
     private _formBuilder: FormBuilder,
@@ -158,9 +159,9 @@ export class AsignarIndicadorComponent implements OnInit {
 
         this._grService.registrarIndicadorExistPrioridad(prioridadExistDto).then(data => {
           this._notification.success("Se registró correctamente");
-          this._dialog.closeAll();
+          this.dialogRef.close(true);
         });
-        // this._dialog.closeAll();
+        // this.dialogRef.close(true);
       }
       this.confirmDialogRef = null;
     });

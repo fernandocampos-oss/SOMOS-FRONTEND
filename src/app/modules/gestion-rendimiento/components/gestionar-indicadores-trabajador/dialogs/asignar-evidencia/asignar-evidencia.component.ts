@@ -34,6 +34,7 @@ export class AsignarEvidenciaComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<AsignarEvidenciaComponent>,
     private _dialog: MatDialog,
     private _notification: NotificationService,
     private _formBuilder: FormBuilder,
@@ -74,11 +75,10 @@ export class AsignarEvidenciaComponent implements OnInit {
         this._grService.registrarEvidenciaExistIndicador(model).then((data: any) => {
           if (data = 1) {
             this._notification.success("Se registró correctament");
-            // this.dialogRef.close();
-            this._dialog.closeAll();
+            this.dialogRef.close(true);
           } else {
             this._notification.warning("Registrar Evidencia: Se produjo un error");
-            this._dialog.closeAll();
+            this.dialogRef.close(true);
           }
         });
 

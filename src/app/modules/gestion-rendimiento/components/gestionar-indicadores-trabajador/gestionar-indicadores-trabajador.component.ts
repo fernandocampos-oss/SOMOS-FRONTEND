@@ -464,19 +464,22 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     console.log('=== FIN cargarValoresAlcanzados ===');
   }
 
-  async registrarPrioridad() {
+  async registrarPrioridad(trabajador?: any) {
     const dialogRef: MatDialogRef<AsignarPrioridadComponent> = this._dialog.open(AsignarPrioridadComponent, {
       disableClose: true,
       width: '60%',
       maxHeight: '80vh',
       autoFocus: false,
       data: {
-        // modal: element
+        trabajador: trabajador, // Pasar el trabajador pre-seleccionado
+        bloqueado: trabajador ? true : false // Si viene trabajador, bloquearlo
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
     // this.loadTable();
   }
@@ -496,7 +499,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -512,7 +517,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
 
   }
@@ -630,7 +637,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -648,7 +657,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -824,7 +835,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -862,6 +875,25 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
+  confirmarEliminarPrioridad(idPrioridad: number, trabajador: any): void {
+    const dialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = '¿Está seguro de eliminar esta prioridad? Se eliminarán todos los indicadores y evidencias asociadas. Esta acción no se puede deshacer.';
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._grService.deletePrioridadById(idPrioridad).then(() => {
+          this._notification.success('Prioridad eliminada correctamente');
+          // Recargar datos
+          this.loadTableJefe();
+        }).catch(error => {
+          this._notification.error('Error al eliminar la prioridad');
+        });
+      }
+    });
+  }
+
   abrirCalificar(idEvidencia:number){
     let info:any = {
       "idEvidencia":idEvidencia,
@@ -892,7 +924,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -918,7 +952,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
   async verificaEvaluador(){
