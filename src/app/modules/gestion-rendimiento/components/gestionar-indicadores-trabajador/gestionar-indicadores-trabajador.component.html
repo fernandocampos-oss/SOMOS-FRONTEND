@@ -93,9 +93,9 @@
                         <ng-container matColumnDef="indicador_producto">
                             <th mat-header-cell *matHeaderCellDef>INDICADOR / PRODUCTO</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let x of element.listIndicador; let isLast = last" class="matrixCube" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="font-size:14px; width: 100%; margin: 0; padding: 0;">
-                                        <div matLine style="width: 100%;">
+                                <div style="padding: 2px 0;">
+                                    <div *ngFor="let x of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="padding: 2px 0;">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; flex-direction: column; justify-content: center; padding: 4px 8px;">
                                             <div>
                                                 <span class="demo-2">{{x.nombreIndicador}}</span>
                                                 <span style="display: inline-block; margin-left: 8px; padding: 2px 6px; background-color: #e3f2fd; color: #1976d2; border-radius: 3px; font-size: 11px; font-weight: 600;">ID: {{x.idIndicador}}</span>
@@ -116,8 +116,8 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    </mat-list-item>
-                                </mat-list>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
 
@@ -125,9 +125,9 @@
                         <ng-container matColumnDef="sentido_indicador">
                             <th mat-header-cell *matHeaderCellDef>SENTIDO DEL INDICADOR</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let x of element.listIndicador; let isLast = last" class="matrixCube" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="width: 100%; margin: 0; padding: 0;">
-                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center; width: 100%;">
+                                <div style="padding: 2px 0;">
+                                    <div *ngFor="let x of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="padding: 2px 0;">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center;">
                                             <div style="text-align: center;">
                                                 <span *ngIf="x.sentido === 'ascendente'" style="color: #4caf50; font-weight: 600;">
                                                     Ascendente
@@ -140,8 +140,8 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </mat-list-item>
-                                </mat-list>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
 
@@ -149,9 +149,9 @@
                         <ng-container matColumnDef="valor_esperado">
                             <th mat-header-cell *matHeaderCellDef style="text-align: center;">VALOR ESPERADO</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let x of element.listIndicador; let isLast = last" class="matrixCube" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="width: 100%; margin: 0; padding: 0;">
-                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center; width: 100%;">
+                                <div style="padding: 2px 0;">
+                                    <div *ngFor="let x of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="padding: 2px 0;">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center;">
                                             <div style="text-align: center;">
                                                 <span *ngIf="((x.codTipoValorMeta =='03') || (x.codTipoValorMeta == '04') || (x.codTipoValorMeta == '06'))" style="display: block; text-align: center;">
                                                     {{x.valorMeta}}%
@@ -161,25 +161,24 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </mat-list-item>
-                                </mat-list>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
 
                         <!-- Columna PESO -->
-                        <!-- Columna PESO -->
                         <ng-container matColumnDef="peso">
                             <th mat-header-cell *matHeaderCellDef style="text-align: center;">PESO</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let x of element.listIndicador; let isLast = last" class="matrixCube" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="width: 100%; margin: 0; padding: 0;">
-                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center; width: 100%;">
+                                <div style="padding: 2px 0;">
+                                    <div *ngFor="let x of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="padding: 2px 0;">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center;">
                                             <div style="text-align: center;">
                                                 <span style="display: block; text-align: center;">{{x.peso}}%</span>
                                             </div>
                                         </div>
-                                    </mat-list-item>
-                                </mat-list>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
 
@@ -433,9 +432,9 @@
                         <ng-container matColumnDef="valor_alcanzado">
                             <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">VALOR ALCANZADO</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let z of element.listIndicador; let isLast = last" class="matrixCube" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="width: 100%; margin: 0; padding: 0;">
-                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" mat-line style="width: 100%; padding: 8px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+                                <div style="padding: 2px 0;">
+                                    <div *ngFor="let z of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="padding: 2px 0;">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 4px; gap: 8px;">
                                             <!-- Mostrar valor alcanzado -->
                                             <div *ngIf="!z.editingValorAlcanzado" style="font-size: 16px; font-weight: bold; color: #333; min-height: 24px; display: flex; align-items: center;">
                                                 <span *ngIf="((z.codTipoValorMeta =='03') || (z.codTipoValorMeta == '04') || (z.codTipoValorMeta == '06'))">
@@ -490,8 +489,8 @@
                                                 </ng-container>
                                             </div>
                                         </div>
-                                    </mat-list-item>
-                                </mat-list>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
 
@@ -499,17 +498,17 @@
                         <ng-container matColumnDef="puntuacion_meta">
                             <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">PUNTAJE POR META</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let z of element.listIndicador; let isLast = last" class="matrixCube" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="width: 100%; margin: 0; padding: 0;">
-                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" mat-line style="text-align: center; padding: 8px 4px; display: flex; align-items: center; justify-content: center;">
+                                <div style="padding: 2px 0;">
+                                    <div *ngFor="let z of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'" style="padding: 2px 0;">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" style="display: flex; align-items: center; justify-content: center; padding: 8px 4px;">
                                             <span [style.color]="calcularPuntajePorMeta(z) === 'Error' ? '#f44336' : (calcularPuntajePorMeta(z) === '-' ? '#999' : '#333')" 
                                                   [style.font-weight]="calcularPuntajePorMeta(z) !== '-' && calcularPuntajePorMeta(z) !== 'Error' ? 'bold' : 'normal'"
                                                   [style.font-size]="'16px'">
                                                 {{ calcularPuntajePorMeta(z) }}
                                             </span>
                                         </div>
-                                    </mat-list-item>
-                                </mat-list>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
 
