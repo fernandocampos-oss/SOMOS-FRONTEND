@@ -1036,6 +1036,32 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
    * - G21 = peso (como porcentaje, ej: 50)
    * - M21 = valor alcanzado
    */
+  /**
+   * Calcula la altura total que debe ocupar un indicador
+   * según el número de evidencias (cada evidencia = 44px + 12px margin = 56px)
+   * Siempre hay al menos 1 evidencia inicial + 1 evidencia final = 112px mínimo
+   */
+  calcularAlturaIndicador(indicador: any): number {
+    const ALTURA_EVIDENCIA = 56; // 44px min-height + 12px margin-bottom
+    
+    // Contar evidencias iniciales
+    let numEvidenciasIniciales = 0;
+    if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+      numEvidenciasIniciales = indicador.listEvidencia.length;
+    } else {
+      // Si no hay evidencias, mostrar placeholder inicial
+      numEvidenciasIniciales = 1;
+    }
+    
+    // Siempre hay 1 evidencia final
+    const numEvidenciaFinal = 1;
+    
+    // Altura total
+    const alturaTotal = (numEvidenciasIniciales + numEvidenciaFinal) * ALTURA_EVIDENCIA;
+    
+    return alturaTotal;
+  }
+
   calcularPuntajePorMeta(indicador: any): string {
     try {
       // Validar que tengamos todos los datos necesarios
