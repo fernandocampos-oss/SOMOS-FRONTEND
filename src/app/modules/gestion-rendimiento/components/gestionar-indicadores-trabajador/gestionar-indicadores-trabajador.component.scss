@@ -89,69 +89,102 @@ table {
     padding: 0 !important;
 }
 
-/* FORZAR ALTURA UNIFORME EN CONTENEDORES DE EVIDENCIAS */
-.gdr-table-2025 div[style*="*ngFor"] {
-    height: 24px !important;
-    max-height: 24px !important;
-    overflow: visible !important;
-}
-
-/* Controles externos no deben afectar altura */
-.gdr-table-2025 .evidencia-external-controls {
-    position: relative !important;
-    height: 24px !important;
-    max-height: 24px !important;
-    overflow: visible !important;
-}
-
 /* ===== SECCIÓN CONSOLIDADA: ESPACIADO DE EVIDENCIAS ===== */
 
 /* REGLA CON CLASE ESPECÍFICA: Contenedores individuales de evidencias */
 .gdr-table-2025 .evidencia-individual-container {
-    margin-bottom: 12px !important;
-    padding-bottom: 8px !important;
     height: 44px !important;
 }
 
 /* REGLA CON CLASE ESPECÍFICA: Evidencia final */
 .gdr-table-2025 .evidencia-final-container {
-    margin-bottom: 12px !important;
-    padding-top: 0px !important;
     height: 44px !important;
 }
 
-/* SINCRONIZACIÓN DE ALTURAS: Evidencias y plazos */
-.gdr-table-2025 div[style*="min-height: 44px"] {
-    min-height: 44px !important;
-    height: 44px !important;
+/* ===== BOTONES PEQUEÑOS DE EVIDENCIA ===== */
+/* Corrige el efecto ripple/focus para que aparezca en el lugar correcto */
+.btn-evidencia-small {
+    width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+    padding: 0 !important;
+    min-width: 16px !important;
+    
+    .mat-button-wrapper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 16px !important;
+        height: 16px !important;
+        padding: 0 !important;
+        line-height: 16px !important;
+    }
+    
+    .mat-button-ripple,
+    .mat-button-focus-overlay,
+    .mat-ripple {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 50% !important;
+    }
+    
+    mat-icon {
+        font-size: 11px !important;
+        width: 11px !important;
+        height: 11px !important;
+        line-height: 11px !important;
+    }
 }
 
-.gdr-table-2025 div[style*="height: 44px"] {
-    height: 44px !important;
-}
-
-/* OVERRIDE DIRECTO: Forzar en todos los divs con margin-bottom */
-.gdr-table-2025 div[style*="margin-bottom: 20px"] {
-    margin-bottom: 20px !important;
-}
-
-/* OVERRIDE DIRECTO: Forzar en todos los divs con margin-top */
-.gdr-table-2025 div[style*="margin-top: 20px"] {
-    margin-top: 20px !important;
+/* Botones externos (agregar/eliminar evidencia) - tamaño 20px */
+.btn-evidencia-external {
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 20px !important;
+    padding: 0 !important;
+    min-width: 20px !important;
+    
+    .mat-button-wrapper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 20px !important;
+        height: 20px !important;
+        padding: 0 !important;
+        line-height: 20px !important;
+    }
+    
+    .mat-button-ripple,
+    .mat-button-focus-overlay,
+    .mat-ripple {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 20px !important;
+        height: 20px !important;
+        border-radius: 50% !important;
+    }
+    
+    mat-icon {
+        font-size: 14px !important;
+        width: 14px !important;
+        height: 14px !important;
+        line-height: 14px !important;
+    }
 }
 
 /* Alineación de botones en columna de evidencia */
 .evidencia-buttons-container {
-    transform: translateY(-17px) !important;
-    margin-top: 8px !important;
+    /* Sin transformación para mantener alineación */
 }
 
 .evidencia-external-controls {
-    transform: translateY(-21px) !important;
-    margin-top: 8px !important;
     position: relative !important;
-    height: 24px !important;
-    max-height: 24px !important;
     overflow: visible !important;
 }
 
