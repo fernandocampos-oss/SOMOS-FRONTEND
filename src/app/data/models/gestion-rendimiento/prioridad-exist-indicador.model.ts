@@ -6,7 +6,8 @@ export class PrioridadExistRequestDto {
     votante?: VotanteExistDto;
     indicador?: IndicadorExistDto;
     listEvidencia?: EvidenciaExistDto[];
-    sentidoIndicador?: string; // 'ascendente' o 'descendente'
+    sentidoIndicador?: string;
+    fechaPlazoFinal?: string;
 }
 
 export class PrioridadExistDto {

@@ -78,8 +78,8 @@ export class GestionRendimientoService {
 
   async listarTipoValorMeta() {
     const url = `${URL_BASE}/indicadores/listar/tipoValorMeta`;
-    // console.log(url);
-    return await this.http.get<Object[]>(url).toPromise();
+    const data = await this.http.get<any[]>(url).toPromise();
+    return data.filter(item => item.descripcion?.toLowerCase() !== 'promedio');
   }
 
   async registrarIndicador(indicadorRequest: any) {

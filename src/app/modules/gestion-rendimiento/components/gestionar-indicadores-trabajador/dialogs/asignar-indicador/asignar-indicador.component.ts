@@ -41,6 +41,7 @@ export class AsignarIndicadorComponent implements OnInit {
   formEvidencia = this._formBuilder.group({
     frmDescripcion: [''],
     frmPlazo: [''],
+    frmPlazoFinal: ['', Validators.required],
   });
 
   listTipoValorMeta: any[] = [];
@@ -76,7 +77,7 @@ export class AsignarIndicadorComponent implements OnInit {
   async listarTipoValorMeta() {
     let listarTipoValorMeta = await this._grService.listarTipoValorMeta().then((data) => {
       if (data.length > 0) {
-        this.listTipoValorMeta = data;
+        this.listTipoValorMeta = data.filter((item: any) => item.descripcion.toLowerCase() !== 'promedio');
       } else {
         this._notification.warning("Lista de tipo valor meta vacio");
       }
@@ -148,7 +149,11 @@ export class AsignarIndicadorComponent implements OnInit {
     prioridadExistDto.votante = votante;
     prioridadExistDto.indicador = indicador;
     prioridadExistDto.listEvidencia = evidencias;
-    prioridadExistDto.sentidoIndicador = this.formPrioridad.value.frmSentidoIndicador; // Agregar sentido
+    prioridadExistDto.sentidoIndicador = this.formPrioridad.value.frmSentidoIndicador;
+    
+    if(this.formEvidencia.value.frmPlazoFinal){
+      prioridadExistDto.fechaPlazoFinal = moment(this.formEvidencia.value.frmPlazoFinal._d).format('YYYY-MM-DDTHH:mm:ss');
+    }
 
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false

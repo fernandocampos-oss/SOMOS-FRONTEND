@@ -145,6 +145,17 @@
                     </tr>
                 </table>
             </div>
+            
+            <h4><strong>Plazo Final de Evidencia:</strong></h4>
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha Plazo Final</mat-label>
+                <input matInput formControlName="frmPlazoFinal" [min]="minFechaEvidencia"
+                    [matDatepicker]="fechaPlazoFinalPicker" (focus)="fechaPlazoFinalPicker.open()" />
+                <mat-datepicker-toggle matSuffix [for]="fechaPlazoFinalPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fechaPlazoFinalPicker></mat-datepicker>
+                <mat-hint>Fecha límite para la evidencia final del indicador</mat-hint>
+            </mat-form-field>
+            
             <br><br><br>
             <mat-divider></mat-divider>
             <br>
