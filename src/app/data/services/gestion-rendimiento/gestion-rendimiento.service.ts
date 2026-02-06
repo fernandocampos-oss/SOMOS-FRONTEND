@@ -218,13 +218,13 @@ export class GestionRendimientoService {
 
   async procesarExcelVotante(personas: CargaMasivaVotante[]) {
     const url = `${URL_BASE}/equipos/carga/excel/votante`;
-    console.log(url, personas);
+    // console.log(url, personas);
     return await this.http.post<CargaMasivaVotante[]>(url, personas).toPromise();
   }
 
   async listarVotantePerfil() {
     const url = `${URL_BASE}/equipos/listar/perfil/votantes`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
@@ -248,8 +248,8 @@ export class GestionRendimientoService {
   async obtenerSentidosMultiples(idIndicadores: number[]): Promise<any> {
     const url = `${URL_BASE}/gdr/sentido-indicador/batch`;
     const response = await this.http.post(url, idIndicadores).toPromise();
-    console.log('Respuesta del backend (sentidos):', response);
-    console.log('IDs solicitados:', idIndicadores);
+    // console.log('Respuesta del backend (sentidos):', response);
+    // console.log('IDs solicitados:', idIndicadores);
     return response;
   }
 
@@ -304,18 +304,18 @@ export class GestionRendimientoService {
   }
 
   // Métodos para comentario estado
-  async guardarComentarioEstado(idEvidencia: number, estadoDropdown: string, comentarioAdicional: string): Promise<any> {
+  async guardarComentarioEstado(idEvidencia: number, estadoDropdown: string, comentarioAdicional: string, tipoComentario: string = 'individual'): Promise<any> {
     const url = `${URL_BASE}/gdr/comentario-estado/guardar`;
-    return await this.http.post(url, { idEvidencia, estadoDropdown, comentarioAdicional }).toPromise();
+    return await this.http.post(url, { idEvidencia, tipoComentario, estadoDropdown, comentarioAdicional }).toPromise();
   }
 
-  async obtenerComentarioEstado(idEvidencia: number): Promise<any> {
-    const url = `${URL_BASE}/gdr/comentario-estado/obtener/${idEvidencia}`;
+  async obtenerComentarioEstado(idEvidencia: number, tipoComentario: string = 'individual'): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/obtener/${idEvidencia}/${tipoComentario}`;
     return await this.http.get(url).toPromise();
   }
 
   async obtenerComentariosEstadoMultiples(idsEvidencia: number[]): Promise<any> {
-    const url = `${URL_BASE}/gdr/comentario-estado/batch`;
+    const url = `${URL_BASE}/gdr/comentario-estado/batch-all`;
     return await this.http.post(url, idsEvidencia).toPromise();
   }
 
@@ -379,7 +379,7 @@ export class GestionRendimientoService {
       const body = { idsVotantes, anio };
       return await this.http.post(url, body).toPromise();
     } catch (error) {
-      console.error('Error al obtener resultados finales múltiples:', error);
+      // console.error('Error al obtener resultados finales múltiples:', error);
       return {}; // Retornar objeto vacío en caso de error
     }
   }

@@ -44,7 +44,7 @@ export class CalificarComponent implements OnInit {
       'comentario':'',
       'calificacion':0
     }
-    console.log(this.data);
+    // console.log(this.data);
     this.cargarDatosIniciales();
   }
 

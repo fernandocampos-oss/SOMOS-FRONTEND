@@ -87,7 +87,7 @@ export class CustomSelectComponent implements ControlValueAccessor {
   selectOption(option: SelectOption): void {
     if (this.isDisabled) return;
     
-    console.log('Selecting option:', option);
+    // console.log('Selecting option:', option);
     
     // Actualizar valor interno
     this.value = option.value;
@@ -103,8 +103,8 @@ export class CustomSelectComponent implements ControlValueAccessor {
     // Forzar actualización de la vista
     this.cdr.detectChanges();
     
-    console.log('Value after selection:', this.value);
-    console.log('Display value:', this.displayValue);
+    // console.log('Value after selection:', this.value);
+    // console.log('Display value:', this.displayValue);
   }
 
   closeDropdown(): void {

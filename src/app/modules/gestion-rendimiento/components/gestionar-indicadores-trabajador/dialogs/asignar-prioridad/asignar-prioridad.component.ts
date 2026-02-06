@@ -136,21 +136,21 @@ export class AsignarPrioridadComponent implements OnInit {
     
     if(this.data.idPersona != undefined){
       this.activaEdicion = true;
-      console.log("Data:",this.data);
+      // console.log("Data:",this.data);
       //this.idIndicador = this.data.prioridad.listIndicador[0].idIndicador;
       let infIndicador:any = this.data.prioridad.listIndicador.find((dtInd:any)=>dtInd.idIndicador == this.data.idIndicador);
-      console.log("Indicador:",infIndicador);
+      // console.log("Indicador:",infIndicador);
       this.idPrioridad = this.data.prioridad.idPrioridad;
       this.idIndicador = this.data.idIndicador;
       /* Modificación Prioridad - Inicio */
       this.desPrioridad = this.data.nomPrioridad;
       this.flPrioridad = infIndicador.flDesPrioridad;
-      console.log("FL 1:",this.flPrioridad);
+      // console.log("FL 1:",this.flPrioridad);
       if(this.flPrioridad === null){
         this.flPrioridad = '1';
         this.desPrioridad = this.data.descripcion;
       }
-      console.log("FL 3:",this.flPrioridad);
+      // console.log("FL 3:",this.flPrioridad);
       /* Modificación Prioridad - Fin */
       let unTraba:any = this.listEquipo.find((dtEquipo:any)=>dtEquipo.integrante.idVotante == this.data.idPersona);
       this.formPrioridad.controls["frmTrabajador"].setValue(unTraba);
@@ -206,7 +206,7 @@ export class AsignarPrioridadComponent implements OnInit {
         this.table.renderRows();
       }
     }
-    console.log("Fl 2:",this.flPrioridad);
+    // console.log("Fl 2:",this.flPrioridad);
     this.habEdiTarea();
   }
 
@@ -290,7 +290,7 @@ export class AsignarPrioridadComponent implements OnInit {
       }
       this.table.renderRows();
     }
-    console.log("Agregar:",this.listEvidencia);
+    // console.log("Agregar:",this.listEvidencia);
   }
 
   deleteTarea(index) {
@@ -358,10 +358,10 @@ export class AsignarPrioridadComponent implements OnInit {
       prioridadDto.sentidoIndicador = formValues.frmSentidoIndicador; // Agregar sentido
       
       // DEBUG: Verificar valores antes de enviar
-      console.log('=== DEBUG ASIGNAR PRIORIDAD ===');
-      console.log('formValues.frmSentidoIndicador:', formValues.frmSentidoIndicador);
-      console.log('formEvidencia.value.frmPlazoFinal:', this.formEvidencia.value.frmPlazoFinal);
-      console.log('Tipo de frmPlazoFinal:', typeof this.formEvidencia.value.frmPlazoFinal);
+      // console.log('=== DEBUG ASIGNAR PRIORIDAD ===');
+      // console.log('formValues.frmSentidoIndicador:', formValues.frmSentidoIndicador);
+      // console.log('formEvidencia.value.frmPlazoFinal:', this.formEvidencia.value.frmPlazoFinal);
+      // console.log('Tipo de frmPlazoFinal:', typeof this.formEvidencia.value.frmPlazoFinal);
       
       // Agregar fecha de plazo final - manejar tanto Moment como Date
       if(this.formEvidencia.value.frmPlazoFinal){
@@ -374,14 +374,14 @@ export class AsignarPrioridadComponent implements OnInit {
         } else {
           prioridadDto.fechaPlazoFinal = moment(fechaValue).format('YYYY-MM-DDTHH:mm:ss');
         }
-        console.log('fechaPlazoFinal formateada:', prioridadDto.fechaPlazoFinal);
+        // console.log('fechaPlazoFinal formateada:', prioridadDto.fechaPlazoFinal);
       }
       if(indicador.flDesPrioridad == '1'){
         prioridadDto.prioridadNombre = indicador.desPrioridad;
       }
       
-      console.log('=== DTO FINAL A ENVIAR ===');
-      console.log('prioridadDto:', JSON.stringify(prioridadDto, null, 2));
+      // console.log('=== DTO FINAL A ENVIAR ===');
+      // console.log('prioridadDto:', JSON.stringify(prioridadDto, null, 2));
     }else{
       /*prioridadDto = new UpdatePrioridadDto();
       prioridadDto.actividad = actividad;
@@ -389,7 +389,7 @@ export class AsignarPrioridadComponent implements OnInit {
       modelTipo.idTipoValorMeta = this.idTipoValorMetaSeleccionado;*/
 
     }
-    console.log("Para grabar: ",indicador.flDesPrioridad);
+    // console.log("Para grabar: ",indicador.flDesPrioridad);
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false
     });
@@ -501,7 +501,7 @@ export class AsignarPrioridadComponent implements OnInit {
   }
 
   valida(){
-    console.log("Valida Frm:",this.formPrioridad);
+    // console.log("Valida Frm:",this.formPrioridad);
   }
 
   onlyNumbersAndDecimal(event: KeyboardEvent): boolean {

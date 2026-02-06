@@ -163,7 +163,7 @@ export class ReporteAdministradorService {
 
     this.formatoHeadersMatriz(worksheet, columnas);
     this.formatoContenidoMatriz(worksheet, listData, columnas);
-    console.log(listData);
+    // console.log(listData);
     for (let i = 0; i < columnas.length; i++) {
       let maxLength = columnas[i].length;
       for (let j = 0; j < listData.length; j++) {

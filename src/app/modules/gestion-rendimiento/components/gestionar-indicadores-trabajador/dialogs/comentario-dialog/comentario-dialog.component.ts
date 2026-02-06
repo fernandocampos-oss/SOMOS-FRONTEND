@@ -37,22 +37,17 @@ export class ComentarioDialogComponent implements OnInit {
   async cargarComentario() {
     this.cargando = true;
     try {
-      const comentario = await this.grService.obtenerComentarioEstado(this.data.idEvidencia);
+      // Obtener comentario según el tipo (individual o final)
+      const tipoComentario = this.esFinal ? 'final' : 'individual';
+      const comentario = await this.grService.obtenerComentarioEstado(this.data.idEvidencia, tipoComentario);
       if (comentario) {
-        let estadoValue = comentario.estadoDropdown || '';
-        
-        // Si es comentario final y tiene prefijo 'final_', quitarlo para mostrarlo
-        if (this.esFinal && estadoValue.startsWith('final_')) {
-          estadoValue = estadoValue.substring(6);
-        }
-        
         this.formComentario.patchValue({
-          estadoDropdown: estadoValue,
+          estadoDropdown: comentario.estadoDropdown || '',
           comentarioAdicional: comentario.comentarioAdicional || ''
         });
       }
     } catch (error) {
-      console.log('No hay comentario guardado para esta evidencia o el backend no está disponible');
+      // console.log('No hay comentario guardado para esta evidencia o el backend no está disponible');
       //this.notification.warning('No se pudo cargar el comentario. Verifica que el backend esté corriendo.');
     } finally {
       this.cargando = false;
@@ -81,17 +76,13 @@ export class ComentarioDialogComponent implements OnInit {
     this.cargando = true;
     try {
       const valores = this.formComentario.value;
-      let estadoValue = valores.estadoDropdown;
-      
-      // Si es comentario final, agregar el prefijo 'final_' antes de guardar
-      if (this.esFinal && estadoValue) {
-        estadoValue = 'final_' + estadoValue;
-      }
+      const tipoComentario = this.esFinal ? 'final' : 'individual';
       
       await this.grService.guardarComentarioEstado(
         this.data.idEvidencia,
-        estadoValue,
-        valores.comentarioAdicional
+        valores.estadoDropdown,
+        valores.comentarioAdicional,
+        tipoComentario
       );
       
       this.notification.success('Comentario guardado exitosamente');
@@ -100,7 +91,7 @@ export class ComentarioDialogComponent implements OnInit {
       this.formComentario.get('comentarioAdicional').disable();
       this.dialogRef.close({ actualizado: true });
     } catch (error) {
-      console.error('Error al guardar comentario:', error);
+      // console.error('Error al guardar comentario:', error);
       this.notification.error('Error al guardar el comentario');
     } finally {
       this.cargando = false;

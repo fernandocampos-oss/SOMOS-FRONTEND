@@ -40,7 +40,7 @@ export class EditMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
+    // console.log(this.data);
     if (this.data.switch == 1) {
       this.listarActividades();
       this.getInitPrioridad();

@@ -40,7 +40,7 @@ export class FechaPlazoDialogComponent implements OnInit {
         });
       }
     } catch (error) {
-      console.log('No hay fecha de plazo guardada o el backend no está disponible');
+      // console.log('No hay fecha de plazo guardada o el backend no está disponible');
     } finally {
       this.cargando = false;
     }
@@ -56,10 +56,10 @@ export class FechaPlazoDialogComponent implements OnInit {
     try {
       const valores = this.formFechaPlazo.value;
       
-      console.log('Valores del formulario:', valores);
-      console.log('Tipo de fechaPlazo:', typeof valores.fechaPlazo);
-      console.log('fechaPlazo es Date?', valores.fechaPlazo instanceof Date);
-      console.log('Valor de fechaPlazo:', valores.fechaPlazo);
+      // console.log('Valores del formulario:', valores);
+      // console.log('Tipo de fechaPlazo:', typeof valores.fechaPlazo);
+      // console.log('fechaPlazo es Date?', valores.fechaPlazo instanceof Date);
+      // console.log('Valor de fechaPlazo:', valores.fechaPlazo);
       
       // Validar que hay una fecha seleccionada
       if (!valores.fechaPlazo) {
@@ -94,13 +94,13 @@ export class FechaPlazoDialogComponent implements OnInit {
         const day = String(d.getDate()).padStart(2, '0');
         fechaStr = `${year}-${month}-${day}`;
       } else {
-        console.error('Formato de fecha no reconocido:', fecha);
+        // console.error('Formato de fecha no reconocido:', fecha);
         this.notification.warning('Formato de fecha no válido');
         this.cargando = false;
         return;
       }
       
-      console.log('Fecha convertida a string:', fechaStr);
+      // console.log('Fecha convertida a string:', fechaStr);
       
       // Validar que el string no esté vacío
       if (!fechaStr || fechaStr.trim() === '') {
@@ -109,7 +109,7 @@ export class FechaPlazoDialogComponent implements OnInit {
         return;
       }
       
-      console.log('Guardando fecha de plazo:', fechaStr, 'para evidencia:', this.data.idEvidencia, 'indicador:', this.data.idIndicador);
+      // console.log('Guardando fecha de plazo:', fechaStr, 'para evidencia:', this.data.idEvidencia, 'indicador:', this.data.idIndicador);
       
       await this.grService.actualizarFechaPlazo(
         this.data.idEvidencia,
@@ -120,7 +120,7 @@ export class FechaPlazoDialogComponent implements OnInit {
       this.notification.success('Fecha de plazo guardada exitosamente');
       this.dialogRef.close({ actualizado: true });
     } catch (error) {
-      console.error('Error al guardar fecha de plazo:', error);
+      // console.error('Error al guardar fecha de plazo:', error);
       this.notification.error('Error al guardar la fecha de plazo');
     } finally {
       this.cargando = false;

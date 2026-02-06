@@ -57,10 +57,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
   // Métodos para manejar cambios de selección específicos por evidencia
   async onComentarioChange(tipo: string, valor: string, indicador?: any, evidencia?: any, index?: number): Promise<void> {
-    console.log(`Comentario ${tipo} changed to:`, valor || '[Seleccione]');
-    console.log('Indicador:', indicador);
-    console.log('Evidencia:', evidencia);
-    console.log('Index:', index);
+    // console.log removed for production
+    // console.log removed for production
+    // console.log removed for production
+    // console.log removed for production
     
     switch(tipo) {
       case 'sinEvidencias':
@@ -71,17 +71,18 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       case 'individuales':
         if (evidencia && evidencia.idEvidencia) {
           evidencia.comentario = valor || '';
-          // Guardar en BD local
+          // Guardar en BD local con tipo 'individual'
           try {
             await this._grService.guardarComentarioEstado(
               evidencia.idEvidencia,
               valor || '',
-              evidencia.comentarioAdicional || ''
+              evidencia.comentarioAdicional || '',
+              'individual'
             );
-            console.log('Comentario guardado en BD local para evidencia:', evidencia.idEvidencia);
+    // console.log removed for production
             this._notification.success('Comentario guardado correctamente');
           } catch (error) {
-            console.error('Error al guardar comentario:', error);
+            // console.error('Error al guardar comentario:', error);
             this._notification.error('Error: No se pudo conectar con el servidor. Verifica que el backend esté corriendo.');
           }
         }
@@ -90,21 +91,22 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         if (indicador) {
           indicador.comentarioFinal = valor || '';
           
-          // Guardar en BD local - usar la última evidencia como referencia
+          // Guardar en BD local con tipo 'final' - usar la última evidencia como referencia
           if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
             const evidenciaFinal = indicador.listEvidencia[indicador.listEvidencia.length - 1];
             if (evidenciaFinal && evidenciaFinal.idEvidencia) {
               try {
-                // Guardar usando un prefijo especial para distinguir que es comentario final
+                // Guardar usando tipo 'final' para distinguir del comentario individual
                 await this._grService.guardarComentarioEstado(
                   evidenciaFinal.idEvidencia,
-                  'final_' + (valor || ''), // Prefijo para identificar comentarios finales
-                  evidenciaFinal.comentarioAdicional || ''
+                  valor || '',
+                  evidenciaFinal.comentarioAdicional || '',
+                  'final'
                 );
-                console.log('Comentario final guardado para evidencia:', evidenciaFinal.idEvidencia);
+    // console.log removed for production
                 this._notification.success('Comentario final guardado correctamente');
               } catch (error) {
-                console.error('Error al guardar comentario final:', error);
+                // console.error('Error al guardar comentario final:', error);
                 this._notification.error('Error: No se pudo guardar el comentario final');
               }
             }
@@ -139,7 +141,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   async loadTableJefe() {
     let listPrioridades = await this._grService.listarPrioridadesPrincipal().then(async (data) => {
       if (data.length > 0) {
-        console.log("info:",data);
+    // console.log removed for production
         this.listDataTable = data;
         
         // Inicializar propiedades de comentario para cada elemento
@@ -193,7 +195,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async cargarSentidosIndicadores() {
-    console.log('=== INICIO cargarSentidosIndicadores ===');
+    // console.log removed for production
     try {
       // Recolectar todos los IDs de indicadores (recorriendo la estructura anidada correctamente)
       const idsIndicadores: number[] = [];
@@ -211,19 +213,19 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-      console.log('IDs de indicadores encontrados:', idsIndicadores);
+    // console.log removed for production
 
       if (idsIndicadores.length === 0) {
-        console.log('No hay indicadores para cargar sentidos');
+    // console.log removed for production
         return;
       }
 
       // Obtener sentidos en batch desde la BD local
-      console.log('Llamando a obtenerSentidosMultiples con IDs:', idsIndicadores);
+    // console.log removed for production
       const sentidosMap = await this._grService.obtenerSentidosMultiples(idsIndicadores);
-      console.log('Respuesta de sentidos recibida:', sentidosMap);
-      console.log('Tipo de respuesta:', typeof sentidosMap);
-      console.log('Keys en sentidosMap:', Object.keys(sentidosMap || {}));
+    // console.log removed for production
+    // console.log removed for production
+    // console.log removed for production
       
       // Asignar sentidos a cada indicador (recorriendo la estructura anidada correctamente)
       this.listDataTable.forEach(trabajador => {
@@ -231,15 +233,15 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           trabajador.listPrioridad.forEach(prioridad => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
               prioridad.listIndicador.forEach(indicador => {
-                console.log(`Procesando indicador ID: ${indicador.idIndicador}, buscando en map...`);
-                console.log(`  - sentidosMap[${indicador.idIndicador}] =`, sentidosMap[indicador.idIndicador]);
+    // console.log removed for production
+    // console.log removed for production
                 if (indicador.idIndicador && sentidosMap[indicador.idIndicador]) {
                   indicador.sentido = sentidosMap[indicador.idIndicador];
-                  console.log(`  -> Sentido asignado: ${indicador.sentido}`);
+    // console.log removed for production
                 } else {
                   // No asignar valor si no existe en BD local (quedará undefined)
                   indicador.sentido = null;
-                  console.log(`  -> Sin sentido en BD local (quedará como "Sin definir")`);
+    // console.log removed for production
                 }
               });
             }
@@ -247,10 +249,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-      console.log('Sentidos cargados exitosamente');
-      console.log('Estado final de listDataTable:', this.listDataTable);
+    // console.log removed for production
+    // console.log removed for production
     } catch (error) {
-      console.error('Error cargando sentidos:', error);
+      // console.error('Error cargando sentidos:', error);
       // Asignar valor por defecto en caso de error (recorriendo la estructura anidada correctamente)
       this.listDataTable.forEach(trabajador => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
@@ -268,11 +270,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
     }
-    console.log('=== FIN cargarSentidosIndicadores ===');
+    // console.log removed for production
   }
 
   async cargarComentariosEvidencias() {
-    console.log('=== INICIO cargarComentariosEvidencias ===');
+    // console.log removed for production
     try {
       // Recolectar todos los IDs de evidencias
       const idsEvidencias: number[] = [];
@@ -294,17 +296,17 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-      console.log('IDs de evidencias encontrados:', idsEvidencias);
+    // console.log removed for production
 
       if (idsEvidencias.length === 0) {
-        console.log('No hay evidencias para cargar comentarios');
+    // console.log removed for production
         return;
       }
 
-      // Obtener comentarios en batch desde la BD local
-      console.log('Llamando a obtenerComentariosEstadoMultiples...');
+      // Obtener comentarios en batch desde la BD local (ahora retorna objeto con clave compuesta idEvidencia_tipo)
+    // console.log removed for production
       const comentariosMap = await this._grService.obtenerComentariosEstadoMultiples(idsEvidencias);
-      console.log('Comentarios recibidos:', comentariosMap);
+    // console.log removed for production
 
       // Asignar comentarios a cada evidencia
       this.listDataTable.forEach(trabajador => {
@@ -314,21 +316,24 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
               prioridad.listIndicador.forEach(indicador => {
                 if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
                   indicador.listEvidencia.forEach((evidencia, index) => {
-                    if (evidencia.idEvidencia && comentariosMap[evidencia.idEvidencia]) {
-                      const comentarioData = comentariosMap[evidencia.idEvidencia];
-                      
-                      // Si es la última evidencia y el comentario empieza con 'final_', es el comentario final
-                      if (index === indicador.listEvidencia.length - 1 && 
-                          comentarioData.estadoDropdown && 
-                          comentarioData.estadoDropdown.startsWith('final_')) {
-                        // Extraer el valor sin el prefijo 'final_'
-                        indicador.comentarioFinal = comentarioData.estadoDropdown.substring(6);
-                        console.log(`Comentario final asignado a indicador ${indicador.idIndicador}:`, indicador.comentarioFinal);
-                      } else {
-                        // Comentario normal de evidencia
+                    if (evidencia.idEvidencia) {
+                      // Buscar comentario individual
+                      const claveIndividual = evidencia.idEvidencia + '_individual';
+                      if (comentariosMap[claveIndividual]) {
+                        const comentarioData = comentariosMap[claveIndividual];
                         evidencia.comentario = comentarioData.estadoDropdown || '';
                         evidencia.comentarioAdicional = comentarioData.comentarioAdicional || '';
-                        console.log(`Comentario asignado a evidencia ${evidencia.idEvidencia}:`, comentarioData);
+    // console.log removed for production
+                      }
+                      
+                      // Si es la última evidencia, buscar también comentario final
+                      if (index === indicador.listEvidencia.length - 1) {
+                        const claveFinal = evidencia.idEvidencia + '_final';
+                        if (comentariosMap[claveFinal]) {
+                          const comentarioFinalData = comentariosMap[claveFinal];
+                          indicador.comentarioFinal = comentarioFinalData.estadoDropdown || '';
+    // console.log removed for production
+                        }
                       }
                     }
                   });
@@ -339,15 +344,15 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-      console.log('Comentarios cargados exitosamente');
+    // console.log removed for production
     } catch (error) {
-      console.error('Error cargando comentarios:', error);
+      // console.error('Error cargando comentarios:', error);
     }
-    console.log('=== FIN cargarComentariosEvidencias ===');
+    // console.log removed for production
   }
 
   async cargarFechasPlazo() {
-    console.log('=== INICIO cargarFechasPlazo ===');
+    // console.log removed for production
     try {
       const idsIndicadores: number[] = [];
       
@@ -365,25 +370,25 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-      console.log('IDs de indicadores para fechas:', idsIndicadores);
+    // console.log removed for production
 
       if (idsIndicadores.length === 0) {
-        console.log('No hay indicadores para cargar fechas');
+    // console.log removed for production
         return;
       }
 
       const fechasMap = await this._grService.obtenerFechasPlazoFinalPorIndicadores(idsIndicadores);
-      console.log('Fechas recibidas del backend:', fechasMap);
+    // console.log removed for production
 
       this.listDataTable.forEach(trabajador => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
           trabajador.listPrioridad.forEach(prioridad => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
               prioridad.listIndicador.forEach(indicador => {
-                console.log(`Procesando indicador ${indicador.idIndicador}, fecha en map: ${fechasMap[indicador.idIndicador]}`);
+    // console.log removed for production
                 if (indicador.idIndicador && fechasMap[indicador.idIndicador]) {
                   const fechaPlazo = fechasMap[indicador.idIndicador];
-                  console.log(`  -> Fecha encontrada: ${fechaPlazo}`);
+    // console.log removed for production
                   
                   // Guardar la fecha directamente en el indicador
                   indicador.fechaPlazoFinal = fechaPlazo;
@@ -391,7 +396,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                   if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
                     const ultimaEvidencia = indicador.listEvidencia[indicador.listEvidencia.length - 1];
                     ultimaEvidencia.fechaPlazoFinal = fechaPlazo;
-                    console.log(`  -> Fecha asignada a última evidencia`);
+    // console.log removed for production
                   } else {
                     if (!indicador.listEvidencia) {
                       indicador.listEvidencia = [];
@@ -400,10 +405,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                       esFinal: true,
                       fechaPlazoFinal: fechaPlazo
                     });
-                    console.log(`  -> Creada evidencia final con fecha`);
+    // console.log removed for production
                   }
                 } else {
-                  console.log(`  -> No hay fecha para este indicador`);
+    // console.log removed for production
                 }
               });
             }
@@ -411,12 +416,12 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
     } catch (error) {
-      console.error('Error cargando fechas de plazo:', error);
+      // console.error('Error cargando fechas de plazo:', error);
     }
   }
 
   async cargarValoresAlcanzados() {
-    console.log('=== INICIO cargarValoresAlcanzados ===');
+    // console.log removed for production
     try {
       // Recolectar todos los IDs de prioridades
       const idsPrioridades: number[] = [];
@@ -431,15 +436,15 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       });
 
       if (idsPrioridades.length === 0) {
-        console.log('No hay prioridades para cargar valores alcanzados');
+    // console.log removed for production
         return;
       }
 
-      console.log('IDs de prioridades a consultar:', idsPrioridades);
+    // console.log removed for production
 
       // Llamar al servicio para obtener múltiples valores alcanzados
       const valoresMap = await this._grService.obtenerValoresAlcanzadosMultiples(idsPrioridades);
-      console.log('Valores alcanzados recibidos:', valoresMap);
+    // console.log removed for production
 
       // Asignar valores alcanzados a cada prioridad
       this.listDataTable.forEach(trabajador => {
@@ -452,7 +457,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
               if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
                 prioridad.listIndicador.forEach(indicador => {
                   indicador.valorAlcanzado = valorAlcanzado;
-                  console.log(`Valor alcanzado asignado a indicador ${indicador.idIndicador} de prioridad ${prioridad.idPrioridad}:`, valorAlcanzado);
+    // console.log removed for production
                 });
               }
             }
@@ -460,11 +465,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-      console.log('Valores alcanzados cargados exitosamente');
+    // console.log removed for production
     } catch (error) {
-      console.error('Error cargando valores alcanzados:', error);
+      // console.error('Error cargando valores alcanzados:', error);
     }
-    console.log('=== FIN cargarValoresAlcanzados ===');
+    // console.log removed for production
   }
 
   async registrarPrioridad(trabajador?: any) {
@@ -561,7 +566,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           // Recargar los datos completos
           await this.loadTableJefe();
         } catch (error) {
-          console.error('Error al eliminar evidencia:', error);
+          // console.error('Error al eliminar evidencia:', error);
           this._notification.error('Error al eliminar la evidencia');
         }
       }
@@ -601,7 +606,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           // Recargar los datos completos
           await this.loadTableJefe();
         } catch (error) {
-          console.error('Error al eliminar archivo:', error);
+          // console.error('Error al eliminar archivo:', error);
           this._notification.error('Error al eliminar el archivo de la evidencia');
         }
       }
@@ -821,7 +826,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let indicador:any = registro.listIndicador.find((dtInd:any)=>dtInd.idIndicador == idInd);
     let indicador = {...aux};
     registro.listIndicador = [];
-    console.log("Capturado:",indicador);
+    // console.log removed for production
     registro.listIndicador.push(indicador);*/
     let info:any = {
       "idPersona":idVotante,
@@ -871,7 +876,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           // Recargar los datos completos
           await this.loadTableJefe();
         } catch (error) {
-          console.error('Error al eliminar indicador:', error);
+          // console.error('Error al eliminar indicador:', error);
           this._notification.error('Error al eliminar el indicador');
         }
       }
@@ -1016,14 +1021,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
       
       if (idPrioridad) {
-        console.log('Guardando valor alcanzado en BD local:', indicador.valorAlcanzado, 'para prioridad:', idPrioridad);
+    // console.log removed for production
         await this._grService.guardarValorAlcanzado(idPrioridad, indicador.valorAlcanzado);
         this._notification.success('Valor alcanzado guardado correctamente');
       } else {
-        console.error('No se encontró idPrioridad para el indicador');
+        // console.error('No se encontró idPrioridad para el indicador');
       }
     } catch (error) {
-      console.error('Error al guardar valor alcanzado:', error);
+      // console.error('Error al guardar valor alcanzado:', error);
       this._notification.error('Error al guardar el valor alcanzado');
     }
   }
@@ -1122,7 +1127,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       // Retornar con 2 decimales
       return puntaje.toFixed(2);
     } catch (error) {
-      console.error('Error al calcular puntaje por meta:', error);
+      // console.error('Error al calcular puntaje por meta:', error);
       return 'Error';
     }
   }
@@ -1152,7 +1157,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       
       return sumaTotal.toFixed(2);
     } catch (error) {
-      console.error('Error al calcular puntuación final:', error);
+      // console.error('Error al calcular puntuación final:', error);
       return '0.00';
     }
   }
@@ -1179,7 +1184,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         return 'Rendimiento sujeto a observación';
       }
     } catch (error) {
-      console.error('Error al calcular calificación:', error);
+      // console.error('Error al calcular calificación:', error);
       return '-';
     }
   }
@@ -1213,7 +1218,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           };
         }
       });
-      console.log('Resultados finales cargados exitosamente');
+    // console.log removed for production
     } catch (error) {
       console.warn('No se pudieron cargar resultados finales (endpoint puede no estar disponible):', error);
       // Inicializar todos con valores por defecto
@@ -1244,7 +1249,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
       this._notification.success('Resultados finales guardados');
     } catch (error) {
-      console.error('Error al guardar:', error);
+      // console.error('Error al guardar:', error);
       this._notification.error('Error al guardar');
     }
   }
