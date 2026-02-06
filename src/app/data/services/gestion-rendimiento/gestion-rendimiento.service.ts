@@ -352,10 +352,11 @@ export class GestionRendimientoService {
     const body = {
       idVotante,
       anio,
-      rendimientoDistinguido,
-      accionesCapacitacion,
-      otrasAcciones,
-      fechaReunion
+      // Convertir '[Seleccione]' a null antes de enviar
+      rendimientoDistinguido: rendimientoDistinguido === '[Seleccione]' ? null : rendimientoDistinguido,
+      accionesCapacitacion: accionesCapacitacion || null,
+      otrasAcciones: otrasAcciones || null,
+      fechaReunion: fechaReunion || null
     };
     return await this.http.post(url, body).toPromise();
   }

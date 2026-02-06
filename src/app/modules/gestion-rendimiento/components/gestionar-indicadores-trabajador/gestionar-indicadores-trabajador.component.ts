@@ -194,21 +194,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
   async cargarSentidosIndicadores() {
     console.log('=== INICIO cargarSentidosIndicadores ===');
-    console.log('listDataTable completo:', this.listDataTable);
     try {
       // Recolectar todos los IDs de indicadores (recorriendo la estructura anidada correctamente)
       const idsIndicadores: number[] = [];
       this.listDataTable.forEach(trabajador => {
-        console.log('Trabajador:', trabajador);
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          console.log('  -> listPrioridad:', trabajador.listPrioridad);
           trabajador.listPrioridad.forEach(prioridad => {
-            console.log('    -> Prioridad:', prioridad);
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-              console.log('      -> listIndicador:', prioridad.listIndicador);
               prioridad.listIndicador.forEach(indicador => {
-                console.log('        -> Indicador completo:', indicador);
-                console.log('        -> indicador.idIndicador:', indicador.idIndicador);
                 if (indicador.idIndicador) {
                   idsIndicadores.push(indicador.idIndicador);
                 }
@@ -226,10 +219,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
 
       // Obtener sentidos en batch desde la BD local
-      console.log('Llamando a obtenerSentidosMultiples...');
+      console.log('Llamando a obtenerSentidosMultiples con IDs:', idsIndicadores);
       const sentidosMap = await this._grService.obtenerSentidosMultiples(idsIndicadores);
-      console.log('Respuesta recibida:', sentidosMap);
-      console.log('Tipo de respuesta:', typeof sentidosMap, Array.isArray(sentidosMap));
+      console.log('Respuesta de sentidos recibida:', sentidosMap);
+      console.log('Tipo de respuesta:', typeof sentidosMap);
+      console.log('Keys en sentidosMap:', Object.keys(sentidosMap || {}));
       
       // Asignar sentidos a cada indicador (recorriendo la estructura anidada correctamente)
       this.listDataTable.forEach(trabajador => {
@@ -237,10 +231,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           trabajador.listPrioridad.forEach(prioridad => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
               prioridad.listIndicador.forEach(indicador => {
-                console.log(`Procesando indicador ID: ${indicador.idIndicador}`);
+                console.log(`Procesando indicador ID: ${indicador.idIndicador}, buscando en map...`);
+                console.log(`  - sentidosMap[${indicador.idIndicador}] =`, sentidosMap[indicador.idIndicador]);
                 if (indicador.idIndicador && sentidosMap[indicador.idIndicador]) {
                   indicador.sentido = sentidosMap[indicador.idIndicador];
-                  console.log(`  -> Sentido asignado desde BD local: ${indicador.sentido}`);
+                  console.log(`  -> Sentido asignado: ${indicador.sentido}`);
                 } else {
                   // No asignar valor si no existe en BD local (quedará undefined)
                   indicador.sentido = null;
@@ -352,6 +347,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async cargarFechasPlazo() {
+    console.log('=== INICIO cargarFechasPlazo ===');
     try {
       const idsIndicadores: number[] = [];
       
@@ -369,23 +365,33 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
+      console.log('IDs de indicadores para fechas:', idsIndicadores);
+
       if (idsIndicadores.length === 0) {
+        console.log('No hay indicadores para cargar fechas');
         return;
       }
 
       const fechasMap = await this._grService.obtenerFechasPlazoFinalPorIndicadores(idsIndicadores);
+      console.log('Fechas recibidas del backend:', fechasMap);
 
       this.listDataTable.forEach(trabajador => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
           trabajador.listPrioridad.forEach(prioridad => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
               prioridad.listIndicador.forEach(indicador => {
+                console.log(`Procesando indicador ${indicador.idIndicador}, fecha en map: ${fechasMap[indicador.idIndicador]}`);
                 if (indicador.idIndicador && fechasMap[indicador.idIndicador]) {
                   const fechaPlazo = fechasMap[indicador.idIndicador];
+                  console.log(`  -> Fecha encontrada: ${fechaPlazo}`);
+                  
+                  // Guardar la fecha directamente en el indicador
+                  indicador.fechaPlazoFinal = fechaPlazo;
                   
                   if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
                     const ultimaEvidencia = indicador.listEvidencia[indicador.listEvidencia.length - 1];
                     ultimaEvidencia.fechaPlazoFinal = fechaPlazo;
+                    console.log(`  -> Fecha asignada a última evidencia`);
                   } else {
                     if (!indicador.listEvidencia) {
                       indicador.listEvidencia = [];
@@ -394,7 +400,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                       esFinal: true,
                       fechaPlazoFinal: fechaPlazo
                     });
+                    console.log(`  -> Creada evidencia final con fecha`);
                   }
+                } else {
+                  console.log(`  -> No hay fecha para este indicador`);
                 }
               });
             }

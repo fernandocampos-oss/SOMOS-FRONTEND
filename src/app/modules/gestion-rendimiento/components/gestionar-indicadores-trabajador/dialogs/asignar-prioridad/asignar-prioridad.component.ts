@@ -356,13 +356,32 @@ export class AsignarPrioridadComponent implements OnInit {
       prioridadDto.indicador = indicador;
       prioridadDto.listEvidencia = evidencias;
       prioridadDto.sentidoIndicador = formValues.frmSentidoIndicador; // Agregar sentido
-      // Agregar fecha de plazo final
+      
+      // DEBUG: Verificar valores antes de enviar
+      console.log('=== DEBUG ASIGNAR PRIORIDAD ===');
+      console.log('formValues.frmSentidoIndicador:', formValues.frmSentidoIndicador);
+      console.log('formEvidencia.value.frmPlazoFinal:', this.formEvidencia.value.frmPlazoFinal);
+      console.log('Tipo de frmPlazoFinal:', typeof this.formEvidencia.value.frmPlazoFinal);
+      
+      // Agregar fecha de plazo final - manejar tanto Moment como Date
       if(this.formEvidencia.value.frmPlazoFinal){
-        prioridadDto.fechaPlazoFinal = moment(this.formEvidencia.value.frmPlazoFinal._d).format('YYYY-MM-DDTHH:mm:ss');
+        const fechaValue = this.formEvidencia.value.frmPlazoFinal;
+        // Verificar si es un objeto Moment (tiene _d) o un Date nativo
+        if (fechaValue._d) {
+          prioridadDto.fechaPlazoFinal = moment(fechaValue._d).format('YYYY-MM-DDTHH:mm:ss');
+        } else if (fechaValue instanceof Date) {
+          prioridadDto.fechaPlazoFinal = moment(fechaValue).format('YYYY-MM-DDTHH:mm:ss');
+        } else {
+          prioridadDto.fechaPlazoFinal = moment(fechaValue).format('YYYY-MM-DDTHH:mm:ss');
+        }
+        console.log('fechaPlazoFinal formateada:', prioridadDto.fechaPlazoFinal);
       }
       if(indicador.flDesPrioridad == '1'){
         prioridadDto.prioridadNombre = indicador.desPrioridad;
       }
+      
+      console.log('=== DTO FINAL A ENVIAR ===');
+      console.log('prioridadDto:', JSON.stringify(prioridadDto, null, 2));
     }else{
       /*prioridadDto = new UpdatePrioridadDto();
       prioridadDto.actividad = actividad;
