@@ -128,6 +128,20 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "network": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.network.ts"
+                }
+              ],
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false
             }
           }
         },
@@ -139,6 +153,9 @@
           "configurations": {
             "production": {
               "browserTarget": "marcacion:build:production"
+            },
+            "network": {
+              "browserTarget": "marcacion:build:network"
             }
           }
         },
