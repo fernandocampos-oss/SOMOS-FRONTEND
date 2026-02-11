@@ -39,13 +39,13 @@ const routes: Routes = [
       title: 'Administrar Campañas'
     }
   },
-  {
-    path: AppRoute.ADMINISTRAR_RENUEVA,
-    component: AdministrarProyectosComponent,
-    data: {
-      title: 'Administrar Proyectos de Renueva Essalud'
-    }
-  },
+  // {
+  //   path: AppRoute.ADMINISTRAR_RENUEVA,
+  //   component: AdministrarProyectosComponent,
+  //   data: {
+  //     title: 'Administrar Proyectos de Renueva Essalud'
+  //   }
+  // },
   {
     path: AppRoute.ADMINISTRAR_ENCUESTA,
     component: AdministrarEncuestasComponent,
