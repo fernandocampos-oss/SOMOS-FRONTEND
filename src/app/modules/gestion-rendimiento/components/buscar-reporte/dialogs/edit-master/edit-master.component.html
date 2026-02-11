@@ -22,13 +22,7 @@
             <input matInput formControlName="frmDescripcionPrioridad" minlength="1" maxlength="250" (keypress)="validaTexto($event)" />
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Fecha de asignación</mat-label>
-            <input matInput [min]="minFechaEvidencia" formControlName="fechaAsignacion"
-                [matDatepicker]="fechaPrioridadPicker" (focus)="fechaPrioridadPicker.open()" />
-            <mat-datepicker-toggle matSuffix [for]="fechaPrioridadPicker"></mat-datepicker-toggle>
-            <mat-datepicker #fechaPrioridadPicker></mat-datepicker>
-        </mat-form-field>
+
 
         <mat-divider></mat-divider>
         <mat-dialog-actions align="end">

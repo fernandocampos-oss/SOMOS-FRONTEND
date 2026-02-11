@@ -55,11 +55,13 @@ export class AsignarPrioridadComponent implements OnInit {
     frmTipoValorMeta: ['', Validators.required],
     frmValorMeta: ['',[Validators.pattern(this.expNumero)]],
     frmPeso: ['', [Validators.required]],
+    frmSentidoIndicador: ['ascendente', Validators.required], // Sentido del indicador
   });
 
   formEvidencia = this._formBuilder.group({
     frmDescripcion: ['',[Validators.pattern(this.expTextoFrmDescripcionPrioridad), Validators.maxLength(350)]],
     frmPlazo: [''],
+    frmPlazoFinal: ['', Validators.required], // Fecha plazo final
   });
 
   listTipoValorMeta: any[] = [];
@@ -72,6 +74,7 @@ export class AsignarPrioridadComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<AsignarPrioridadComponent>,
     private _dialog: MatDialog,
     private _notification: NotificationService,
     private _formBuilder: FormBuilder,
@@ -120,23 +123,34 @@ export class AsignarPrioridadComponent implements OnInit {
     let infActividad:any;
     infActividad = this.listActividad.find((dtActi:any)=>dtActi.idActividad == 1);
     this.formPrioridad.controls["frmActividad"].setValue(infActividad);
+    
+    // Si viene trabajador pre-seleccionado desde "Añadir nueva Prioridad"
+    if(this.data.trabajador != undefined && this.data.bloqueado){
+      let unTraba:any = this.listEquipo.find((dtEquipo:any)=>dtEquipo.integrante.idVotante == this.data.trabajador.idVotante);
+      if(unTraba){
+        this.formPrioridad.controls["frmTrabajador"].setValue(unTraba);
+        this.formPrioridad.controls["frmTrabajador"].disable(); // Bloquear selector de trabajador
+        this.sumaTotalPesoIndicadoresByTrabajador(this.data.trabajador.idVotante);
+      }
+    }
+    
     if(this.data.idPersona != undefined){
       this.activaEdicion = true;
-      console.log("Data:",this.data);
+      // console.log("Data:",this.data);
       //this.idIndicador = this.data.prioridad.listIndicador[0].idIndicador;
       let infIndicador:any = this.data.prioridad.listIndicador.find((dtInd:any)=>dtInd.idIndicador == this.data.idIndicador);
-      console.log("Indicador:",infIndicador);
+      // console.log("Indicador:",infIndicador);
       this.idPrioridad = this.data.prioridad.idPrioridad;
       this.idIndicador = this.data.idIndicador;
       /* Modificación Prioridad - Inicio */
       this.desPrioridad = this.data.nomPrioridad;
       this.flPrioridad = infIndicador.flDesPrioridad;
-      console.log("FL 1:",this.flPrioridad);
+      // console.log("FL 1:",this.flPrioridad);
       if(this.flPrioridad === null){
         this.flPrioridad = '1';
         this.desPrioridad = this.data.descripcion;
       }
-      console.log("FL 3:",this.flPrioridad);
+      // console.log("FL 3:",this.flPrioridad);
       /* Modificación Prioridad - Fin */
       let unTraba:any = this.listEquipo.find((dtEquipo:any)=>dtEquipo.integrante.idVotante == this.data.idPersona);
       this.formPrioridad.controls["frmTrabajador"].setValue(unTraba);
@@ -192,7 +206,7 @@ export class AsignarPrioridadComponent implements OnInit {
         this.table.renderRows();
       }
     }
-    console.log("Fl 2:",this.flPrioridad);
+    // console.log("Fl 2:",this.flPrioridad);
     this.habEdiTarea();
   }
 
@@ -276,7 +290,7 @@ export class AsignarPrioridadComponent implements OnInit {
       }
       this.table.renderRows();
     }
-    console.log("Agregar:",this.listEvidencia);
+    // console.log("Agregar:",this.listEvidencia);
   }
 
   deleteTarea(index) {
@@ -292,35 +306,38 @@ export class AsignarPrioridadComponent implements OnInit {
     // console.log(this.formPrioridad.value.frmTrabajador.integrante.idVotante);
     // console.log(this.formPrioridad.value.frmActividad.idActividad);
 
+    // Usar getRawValue() para obtener también los valores de campos deshabilitados
+    const formValues = this.formPrioridad.getRawValue();
+
     let actividad = new ActividadRequest();
     if(this.flPrioridad == '0'){
-      actividad.idActividad = this.formPrioridad.value.frmActividad.idActividad;
+      actividad.idActividad = formValues.frmActividad.idActividad;
     }else{
       this.flPrioridad = '1';
       actividad.idActividad = 1; 
     }
     let votante = new VotanteRequest();
-    votante.idVotante = this.formPrioridad.value.frmTrabajador.integrante.idVotante;
+    votante.idVotante = formValues.frmTrabajador.integrante.idVotante;
 
     let tipoValorMeta = new TipoValorMeta();
-    tipoValorMeta.idTipoValorMeta = this.formPrioridad.value.frmTipoValorMeta;
+    tipoValorMeta.idTipoValorMeta = formValues.frmTipoValorMeta;
 
     let indicador = new IndicadorRequest();
-    indicador.descripcion = this.formPrioridad.value.frmDescripcionIndicador;
-    indicador.peso = this.formPrioridad.value.frmPeso;
+    indicador.descripcion = formValues.frmDescripcionIndicador;
+    indicador.peso = formValues.frmPeso;
     indicador.tipoValorMeta = tipoValorMeta;
     /* Modificación Prioridad - Inicio */
-    indicador.desPrioridad = this.formPrioridad.value.frmDescripcionPrioridad;
+    indicador.desPrioridad = formValues.frmDescripcionPrioridad;
     indicador.flDesPrioridad = this.flPrioridad;
     /* Modificación Prioridad - Fin */
 
     // se modifica la validacion de poner siempre 100% cuando es tipo meta 3
-    // if (this.formPrioridad.value.frmTipoValorMeta == 3) {
+    // if (formValues.frmTipoValorMeta == 3) {
     //   indicador.valorMeta = 100;
     // } else {
-    //   indicador.valorMeta = this.formPrioridad.value.frmValorMeta;
+    //   indicador.valorMeta = formValues.frmValorMeta;
     // }
-    indicador.valorMeta = this.formPrioridad.value.frmValorMeta;
+    indicador.valorMeta = formValues.frmValorMeta;
 
     let evidencias: EvidenciaRequest[] = [];
     for (let i of this.listEvidencia) {
@@ -338,9 +355,33 @@ export class AsignarPrioridadComponent implements OnInit {
       prioridadDto.votante = votante;
       prioridadDto.indicador = indicador;
       prioridadDto.listEvidencia = evidencias;
+      prioridadDto.sentidoIndicador = formValues.frmSentidoIndicador; // Agregar sentido
+      
+      // DEBUG: Verificar valores antes de enviar
+      // console.log('=== DEBUG ASIGNAR PRIORIDAD ===');
+      // console.log('formValues.frmSentidoIndicador:', formValues.frmSentidoIndicador);
+      // console.log('formEvidencia.value.frmPlazoFinal:', this.formEvidencia.value.frmPlazoFinal);
+      // console.log('Tipo de frmPlazoFinal:', typeof this.formEvidencia.value.frmPlazoFinal);
+      
+      // Agregar fecha de plazo final - manejar tanto Moment como Date
+      if(this.formEvidencia.value.frmPlazoFinal){
+        const fechaValue = this.formEvidencia.value.frmPlazoFinal;
+        // Verificar si es un objeto Moment (tiene _d) o un Date nativo
+        if (fechaValue._d) {
+          prioridadDto.fechaPlazoFinal = moment(fechaValue._d).format('YYYY-MM-DDTHH:mm:ss');
+        } else if (fechaValue instanceof Date) {
+          prioridadDto.fechaPlazoFinal = moment(fechaValue).format('YYYY-MM-DDTHH:mm:ss');
+        } else {
+          prioridadDto.fechaPlazoFinal = moment(fechaValue).format('YYYY-MM-DDTHH:mm:ss');
+        }
+        // console.log('fechaPlazoFinal formateada:', prioridadDto.fechaPlazoFinal);
+      }
       if(indicador.flDesPrioridad == '1'){
         prioridadDto.prioridadNombre = indicador.desPrioridad;
       }
+      
+      // console.log('=== DTO FINAL A ENVIAR ===');
+      // console.log('prioridadDto:', JSON.stringify(prioridadDto, null, 2));
     }else{
       /*prioridadDto = new UpdatePrioridadDto();
       prioridadDto.actividad = actividad;
@@ -348,7 +389,7 @@ export class AsignarPrioridadComponent implements OnInit {
       modelTipo.idTipoValorMeta = this.idTipoValorMetaSeleccionado;*/
 
     }
-    console.log("Para grabar: ",indicador.flDesPrioridad);
+    // console.log("Para grabar: ",indicador.flDesPrioridad);
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false
     });
@@ -358,7 +399,7 @@ export class AsignarPrioridadComponent implements OnInit {
         if(this.data.idPersona == undefined){
           this._grService.registrarIndicador(prioridadDto).then(data => {
             this._notification.success("Se registró correctamente");
-            this._dialog.closeAll();
+            this.dialogRef.close(true);
           });
         }else{
           this._grService.modificarIndicador(this.idIndicador, indicador).then((data) => {
@@ -373,7 +414,7 @@ export class AsignarPrioridadComponent implements OnInit {
                 }
               });
               this._notification.success("Indicador actualizado");
-              this._dialog.closeAll();
+              this.dialogRef.close(true);
             } else {
               this._notification.error("Actualizar Indicador: Error");
             }
@@ -460,6 +501,70 @@ export class AsignarPrioridadComponent implements OnInit {
   }
 
   valida(){
-    console.log("Valida Frm:",this.formPrioridad);
+    // console.log("Valida Frm:",this.formPrioridad);
+  }
+
+  onlyNumbersAndDecimal(event: KeyboardEvent): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    const inputElement = event.target as HTMLInputElement;
+    const currentValue = inputElement.value;
+    const selectionStart = inputElement.selectionStart;
+    const selectionEnd = inputElement.selectionEnd;
+    
+    // Obtener el carácter que se está ingresando
+    const char = String.fromCharCode(charCode);
+    const newValue = currentValue.substring(0, selectionStart) + char + currentValue.substring(selectionEnd);
+    
+    // Permitir punto decimal
+    if (charCode === 46) {
+      // Verificar que no haya ya un punto decimal
+      if (currentValue.indexOf('.') !== -1) {
+        return false;
+      }
+      return true;
+    }
+    
+    // Solo permitir números 0-9
+    if (charCode >= 48 && charCode <= 57) {
+      // Si el valor actual es "0" y se escribe un dígito diferente de 0, reemplazar el 0
+      if (currentValue === '0' && char !== '0') {
+        inputElement.value = '';
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: parseFloat(char) });
+        }, 0);
+        return false;
+      }
+      
+      // No permitir más ceros si el campo ya es "0"
+      if (char === '0' && currentValue === '0') {
+        return false;
+      }
+      
+      // Validar que el nuevo valor no supere 100
+      const numericValue = parseFloat(newValue);
+      if (!isNaN(numericValue) && numericValue > 100) {
+        // Si supera 100, establecer automáticamente en 100
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: 100 });
+        }, 0);
+        return false;
+      }
+      
+      // Verificar que no se escriba un tercer dígito entero
+      // Si ya tengo 2 dígitos antes del punto decimal (o sin punto), no permitir más
+      const parteEntera = newValue.split('.')[0];
+      if (parteEntera.length > 3 || (parteEntera.length === 3 && parteEntera !== '100')) {
+        // Si intenta escribir más de 3 dígitos o 3 dígitos que no sean "100", establecer en 100
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: 100 });
+        }, 0);
+        return false;
+      }
+      
+      return true;
+    }
+    
+    // Bloquear todo lo demás (incluyendo el signo menos)
+    return false;
   }
 }

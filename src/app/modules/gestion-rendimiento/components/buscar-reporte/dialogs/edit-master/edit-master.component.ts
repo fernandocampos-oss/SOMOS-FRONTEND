@@ -40,7 +40,7 @@ export class EditMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
+    // console.log(this.data);
     if (this.data.switch == 1) {
       this.listarActividades();
       this.getInitPrioridad();
@@ -112,8 +112,7 @@ export class EditMasterComponent implements OnInit {
       let update = await this._grService.modificarPrioridad(this.data.idPrioridad, model).then((data) => {
         if (data = 1) {
           this._notification.success("Prioridad Actualizada Correctamente");
-          // this._dialogRef.closeAll();
-          this._dialogRef.close();
+          this._dialogRef.close(true);
         } else {
           this._notification.error("Actualizar Prioridad: Error");
         }
@@ -137,8 +136,7 @@ export class EditMasterComponent implements OnInit {
         let update = await this._grService.modificarIndicador(this.data.indicador.idIndicador, model).then((data) => {
           if (data = 1) {
             this._notification.success("Indicador actualizada");
-            // this._dialogRef.closeAll();
-            this._dialogRef.close();
+            this._dialogRef.close(true);
           } else {
             this._notification.error("Actualizar Indicador: Error");
           }
@@ -154,8 +152,7 @@ export class EditMasterComponent implements OnInit {
       let update = await this._grService.modificarEvidencia(this.data.evidencia.idEvidencia, this.evidencia).then((data) => {
         if (data = 1) {
           this._notification.success("Evidencia actualizada");
-          // this._dialogRef.closeAll();
-          this._dialogRef.close();
+          this._dialogRef.close(true);
         } else {
           this._notification.error("Actualizar Evidencia: Error");
         }

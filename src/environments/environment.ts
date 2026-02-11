@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   moduloGr: true,
-  apiUrl: 'http://localhost:80/api',
+  apiUrl: 'http://localhost/api',
   // apiUrl: 'https://appsqa.essalud.gob.pe/marcaciones-service/api',
   environmentName: 'PÁGINA EN DESARROLLO (LOCAL)',
   recaptchaSiteKey: '6LeCrusqAAAAADekhdRw7__HWF4id1pYDkhsSkhh',
@@ -14,6 +14,6 @@ export const environment = {
     replaysOnErrorSampleRate: 1.0,
     showDialog: false
   },
-  // uriSctr: 'http://localhost:4200/#/',
+  // uriSctr: 'http://localhost:4201/#/',
   // uriSctr: 'http://10.0.0.200:8580/sctr-demo/index.html',
 };

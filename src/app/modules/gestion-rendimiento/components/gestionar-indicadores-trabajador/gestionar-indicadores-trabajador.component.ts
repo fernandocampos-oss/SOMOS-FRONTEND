@@ -13,6 +13,9 @@ import { EditMasterComponent } from '../buscar-reporte/dialogs/edit-master/edit-
 import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
 import { CalificarComponent } from './dialogs/calificar/calificar.component';
 import { RegistrarSustentoComponent } from '@modules/indicadores-trabajador/components/registrar-sustento/registrar-sustento.component';
+import { ComentarioDialogComponent } from './dialogs/comentario-dialog/comentario-dialog.component';
+import { FechaPlazoDialogComponent } from './dialogs/fecha-plazo-dialog/fecha-plazo-dialog.component';
+import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 import { da } from 'date-fns/locale';
 
 @Component({
@@ -21,7 +24,8 @@ import { da } from 'date-fns/locale';
   styleUrls: ['./gestionar-indicadores-trabajador.component.scss']
 })
 export class GestionarIndicadoresTrabajadorComponent implements OnInit {
-  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'evidencia', 'tipo_formula', 'comentario', 'logro_final', 'puntuacion_meta'];
+  displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'sentido_indicador', 'valor_esperado', 'peso', 'evidencia', 'plazos', 'comentario', 'valor_alcanzado', 'puntuacion_meta'];
+  columnsRow4: string[] = ['indicador_producto', 'sentido_indicador', 'valor_esperado', 'peso', 'evidencia', 'plazos', 'comentario'];
   // groupedColumns: string[] = ['grouped'];
   // menuToggle = new EventEmitter<void>();
 
@@ -31,6 +35,88 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   porcentajeTotal: number = 0;
   idSegmento: number = 0;
   flagEvaluador: boolean = true;
+
+  // Opciones para el selector personalizado
+  comentarioOptions = [
+    { value: '', label: '[Seleccione]' },
+    { value: 'logrado', label: 'Logrado' },
+    { value: 'proceso', label: 'En proceso' },
+    { value: 'no_presento', label: 'No presentó' }
+  ];
+
+  comentarioFinalOptions = [
+    { value: '', label: '[Seleccione]' },
+    { value: 'si_presenta', label: 'SÍ presenta' },
+    { value: 'no_presenta', label: 'NO presenta' }
+  ];
+
+  // Valores seleccionados para cada tipo de comentario
+  comentarioSinEvidencias: string = '';
+  comentarioIndividuales: string = '';
+  comentarioFinal: string = '';
+
+  // Métodos para manejar cambios de selección específicos por evidencia
+  async onComentarioChange(tipo: string, valor: string, indicador?: any, evidencia?: any, index?: number): Promise<void> {
+    // console.log removed for production
+    // console.log removed for production
+    // console.log removed for production
+    // console.log removed for production
+    
+    switch(tipo) {
+      case 'sinEvidencias':
+        if (indicador) {
+          indicador.comentarioSinEvidencias = valor || '';
+        }
+        break;
+      case 'individuales':
+        if (evidencia && evidencia.idEvidencia) {
+          evidencia.comentario = valor || '';
+          // Guardar en BD local con tipo 'individual'
+          try {
+            await this._grService.guardarComentarioEstado(
+              evidencia.idEvidencia,
+              valor || '',
+              evidencia.comentarioAdicional || '',
+              'individual'
+            );
+    // console.log removed for production
+            this._notification.success('Comentario guardado correctamente');
+          } catch (error) {
+            // console.error('Error al guardar comentario:', error);
+            this._notification.error('Error: No se pudo conectar con el servidor. Verifica que el backend esté corriendo.');
+          }
+        }
+        break;
+      case 'final':
+        if (indicador) {
+          indicador.comentarioFinal = valor || '';
+          
+          // Guardar en BD local con tipo 'final' - usar la última evidencia como referencia
+          if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+            const evidenciaFinal = indicador.listEvidencia[indicador.listEvidencia.length - 1];
+            if (evidenciaFinal && evidenciaFinal.idEvidencia) {
+              try {
+                // Guardar usando tipo 'final' para distinguir del comentario individual
+                await this._grService.guardarComentarioEstado(
+                  evidenciaFinal.idEvidencia,
+                  valor || '',
+                  evidenciaFinal.comentarioAdicional || '',
+                  'final'
+                );
+    // console.log removed for production
+                this._notification.success('Comentario final guardado correctamente');
+              } catch (error) {
+                // console.error('Error al guardar comentario final:', error);
+                this._notification.error('Error: No se pudo guardar el comentario final');
+              }
+            }
+          }
+        }
+        break;
+    }
+    
+    //console.log('Valor actualizado para:', tipo, valor || '[Sin selección]');
+  }
 
   constructor(
     private _dialog: MatDialog,
@@ -53,27 +139,355 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async loadTableJefe() {
-    let listPrioridades = await this._grService.listarPrioridadesPrincipal().then((data) => {
+    let listPrioridades = await this._grService.listarPrioridadesPrincipal().then(async (data) => {
       if (data.length > 0) {
-        console.log("info:",data);
+    // console.log removed for production
         this.listDataTable = data;
+        
+        // Inicializar propiedades de comentario para cada elemento
+        this.listDataTable.forEach(element => {
+          if (element.listIndicador) {
+            element.listIndicador.forEach(indicador => {
+              // Inicializar comentarios del indicador
+              if (!indicador.hasOwnProperty('comentarioSinEvidencias')) {
+                indicador.comentarioSinEvidencias = '';
+              }
+              if (!indicador.hasOwnProperty('comentarioFinal')) {
+                indicador.comentarioFinal = '';
+              }
+              
+              // Inicializar valor alcanzado
+              if (!indicador.hasOwnProperty('valorAlcanzado')) {
+                indicador.valorAlcanzado = 0;
+              }
+              if (!indicador.hasOwnProperty('editingValorAlcanzado')) {
+                indicador.editingValorAlcanzado = false;
+              }
+              
+              // Inicializar comentarios de cada evidencia
+              if (indicador.listEvidencia) {
+                indicador.listEvidencia.forEach(evidencia => {
+                  if (!evidencia.hasOwnProperty('comentario')) {
+                    evidencia.comentario = '';
+                  }
+                });
+              }
+            });
+          }
+        });
+
+        // Cargar sentidos de indicadores desde BD local DESPUÉS de tener los datos
+        await this.cargarSentidosIndicadores();
+        
+        // Cargar comentarios de evidencias desde BD local
+        await this.cargarComentariosEvidencias();
+        
+        // Cargar fechas de plazo desde BD local
+        await this.cargarFechasPlazo();
+        
+        // Cargar valores alcanzados desde BD local
+        await this.cargarValoresAlcanzados();
+
+        // Cargar resultados finales desde BD local
+        await this.cargarResultadosFinales();
       }
     });
   }
 
-  async registrarPrioridad() {
+  async cargarSentidosIndicadores() {
+    // console.log removed for production
+    try {
+      // Recolectar todos los IDs de indicadores (recorriendo la estructura anidada correctamente)
+      const idsIndicadores: number[] = [];
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+                if (indicador.idIndicador) {
+                  idsIndicadores.push(indicador.idIndicador);
+                }
+              });
+            }
+          });
+        }
+      });
+
+    // console.log removed for production
+
+      if (idsIndicadores.length === 0) {
+    // console.log removed for production
+        return;
+      }
+
+      // Obtener sentidos en batch desde la BD local
+    // console.log removed for production
+      const sentidosMap = await this._grService.obtenerSentidosMultiples(idsIndicadores);
+    // console.log removed for production
+    // console.log removed for production
+    // console.log removed for production
+      
+      // Asignar sentidos a cada indicador (recorriendo la estructura anidada correctamente)
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+    // console.log removed for production
+    // console.log removed for production
+                if (indicador.idIndicador && sentidosMap[indicador.idIndicador]) {
+                  indicador.sentido = sentidosMap[indicador.idIndicador];
+    // console.log removed for production
+                } else {
+                  // No asignar valor si no existe en BD local (quedará undefined)
+                  indicador.sentido = null;
+    // console.log removed for production
+                }
+              });
+            }
+          });
+        }
+      });
+
+    // console.log removed for production
+    // console.log removed for production
+    } catch (error) {
+      // console.error('Error cargando sentidos:', error);
+      // Asignar valor por defecto en caso de error (recorriendo la estructura anidada correctamente)
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+                // No asignar valor por defecto en caso de error
+                // Dejar que quede null para que se muestre "Sin definir"
+                if (!indicador.sentido) {
+                  indicador.sentido = null;
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+    // console.log removed for production
+  }
+
+  async cargarComentariosEvidencias() {
+    // console.log removed for production
+    try {
+      // Recolectar todos los IDs de evidencias
+      const idsEvidencias: number[] = [];
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+                if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+                  indicador.listEvidencia.forEach(evidencia => {
+                    if (evidencia.idEvidencia) {
+                      idsEvidencias.push(evidencia.idEvidencia);
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+
+    // console.log removed for production
+
+      if (idsEvidencias.length === 0) {
+    // console.log removed for production
+        return;
+      }
+
+      // Obtener comentarios en batch desde la BD local (ahora retorna objeto con clave compuesta idEvidencia_tipo)
+    // console.log removed for production
+      const comentariosMap = await this._grService.obtenerComentariosEstadoMultiples(idsEvidencias);
+    // console.log removed for production
+
+      // Asignar comentarios a cada evidencia
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+                if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+                  indicador.listEvidencia.forEach((evidencia, index) => {
+                    if (evidencia.idEvidencia) {
+                      // Buscar comentario individual
+                      const claveIndividual = evidencia.idEvidencia + '_individual';
+                      if (comentariosMap[claveIndividual]) {
+                        const comentarioData = comentariosMap[claveIndividual];
+                        evidencia.comentario = comentarioData.estadoDropdown || '';
+                        evidencia.comentarioAdicional = comentarioData.comentarioAdicional || '';
+    // console.log removed for production
+                      }
+                      
+                      // Si es la última evidencia, buscar también comentario final
+                      if (index === indicador.listEvidencia.length - 1) {
+                        const claveFinal = evidencia.idEvidencia + '_final';
+                        if (comentariosMap[claveFinal]) {
+                          const comentarioFinalData = comentariosMap[claveFinal];
+                          indicador.comentarioFinal = comentarioFinalData.estadoDropdown || '';
+    // console.log removed for production
+                        }
+                      }
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+
+    // console.log removed for production
+    } catch (error) {
+      // console.error('Error cargando comentarios:', error);
+    }
+    // console.log removed for production
+  }
+
+  async cargarFechasPlazo() {
+    // console.log removed for production
+    try {
+      const idsIndicadores: number[] = [];
+      
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+                if (indicador.idIndicador) {
+                  idsIndicadores.push(indicador.idIndicador);
+                }
+              });
+            }
+          });
+        }
+      });
+
+    // console.log removed for production
+
+      if (idsIndicadores.length === 0) {
+    // console.log removed for production
+        return;
+      }
+
+      const fechasMap = await this._grService.obtenerFechasPlazoFinalPorIndicadores(idsIndicadores);
+    // console.log removed for production
+
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+              prioridad.listIndicador.forEach(indicador => {
+    // console.log removed for production
+                if (indicador.idIndicador && fechasMap[indicador.idIndicador]) {
+                  const fechaPlazo = fechasMap[indicador.idIndicador];
+    // console.log removed for production
+                  
+                  // Guardar la fecha directamente en el indicador
+                  indicador.fechaPlazoFinal = fechaPlazo;
+                  
+                  if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+                    const ultimaEvidencia = indicador.listEvidencia[indicador.listEvidencia.length - 1];
+                    ultimaEvidencia.fechaPlazoFinal = fechaPlazo;
+    // console.log removed for production
+                  } else {
+                    if (!indicador.listEvidencia) {
+                      indicador.listEvidencia = [];
+                    }
+                    indicador.listEvidencia.push({
+                      esFinal: true,
+                      fechaPlazoFinal: fechaPlazo
+                    });
+    // console.log removed for production
+                  }
+                } else {
+    // console.log removed for production
+                }
+              });
+            }
+          });
+        }
+      });
+    } catch (error) {
+      // console.error('Error cargando fechas de plazo:', error);
+    }
+  }
+
+  async cargarValoresAlcanzados() {
+    // console.log removed for production
+    try {
+      // Recolectar todos los IDs de prioridades
+      const idsPrioridades: number[] = [];
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.idPrioridad) {
+              idsPrioridades.push(prioridad.idPrioridad);
+            }
+          });
+        }
+      });
+
+      if (idsPrioridades.length === 0) {
+    // console.log removed for production
+        return;
+      }
+
+    // console.log removed for production
+
+      // Llamar al servicio para obtener múltiples valores alcanzados
+      const valoresMap = await this._grService.obtenerValoresAlcanzadosMultiples(idsPrioridades);
+    // console.log removed for production
+
+      // Asignar valores alcanzados a cada prioridad
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+          trabajador.listPrioridad.forEach(prioridad => {
+            if (prioridad.idPrioridad && valoresMap[prioridad.idPrioridad] !== undefined) {
+              const valorAlcanzado = valoresMap[prioridad.idPrioridad];
+              
+              // Asignar el valor a todos los indicadores de esta prioridad
+              if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+                prioridad.listIndicador.forEach(indicador => {
+                  indicador.valorAlcanzado = valorAlcanzado;
+    // console.log removed for production
+                });
+              }
+            }
+          });
+        }
+      });
+
+    // console.log removed for production
+    } catch (error) {
+      // console.error('Error cargando valores alcanzados:', error);
+    }
+    // console.log removed for production
+  }
+
+  async registrarPrioridad(trabajador?: any) {
     const dialogRef: MatDialogRef<AsignarPrioridadComponent> = this._dialog.open(AsignarPrioridadComponent, {
       disableClose: true,
       width: '60%',
       maxHeight: '80vh',
       autoFocus: false,
       data: {
-        // modal: element
+        trabajador: trabajador, // Pasar el trabajador pre-seleccionado
+        bloqueado: trabajador ? true : false // Si viene trabajador, bloquearlo
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
     // this.loadTable();
   }
@@ -93,7 +507,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -109,9 +525,92 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
 
+  }
+
+  async eliminarEvidencia(indicador: any) {
+    if (!indicador.listEvidencia || indicador.listEvidencia.length === 0) {
+      this._notification.warning('No hay evidencias para eliminar');
+      return;
+    }
+
+    // Obtener la penúltima evidencia (la última evidencia inicial)
+    const ultimaEvidenciaInicial = indicador.listEvidencia[indicador.listEvidencia.length - 1];
+    
+    if (!ultimaEvidenciaInicial || !ultimaEvidenciaInicial.idEvidencia) {
+      this._notification.warning('No se puede eliminar esta evidencia');
+      return;
+    }
+
+    // Usar dialog de confirmación de Angular Material
+    const confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
+    });
+    confirmDialogRef.componentInstance.confirmMessage = '¿Está seguro que desea eliminar esta evidencia?';
+    
+    confirmDialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        try {
+          await this._grService.deleteEvidenciaById(ultimaEvidenciaInicial.idEvidencia);
+          this._notification.success('Evidencia eliminada correctamente');
+          
+          // Eliminar del array local inmediatamente
+          indicador.listEvidencia = indicador.listEvidencia.filter(
+            (ev: any) => ev.idEvidencia !== ultimaEvidenciaInicial.idEvidencia
+          );
+          
+          // Recargar los datos completos
+          await this.loadTableJefe();
+        } catch (error) {
+          // console.error('Error al eliminar evidencia:', error);
+          this._notification.error('Error al eliminar la evidencia');
+        }
+      }
+    });
+  }
+
+  async eliminarArchivoEvidencia(evidencia: any) {
+    if (!evidencia || !evidencia.idEvidencia) {
+      this._notification.warning('No se puede eliminar el archivo de esta evidencia');
+      return;
+    }
+
+    // Verificar que tenga un archivo cargado
+    if (!evidencia.sustentoExtensionFile) {
+      this._notification.warning('Esta evidencia no tiene archivo adjunto');
+      return;
+    }
+
+    // Usar dialog de confirmación
+    const confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
+    });
+    confirmDialogRef.componentInstance.confirmMessage = '¿Está seguro que desea eliminar el archivo de esta evidencia? La evidencia se mantendrá pero sin archivo adjunto.';
+    
+    confirmDialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        try {
+          // Llamar al servicio para eliminar solo el archivo (limpiar campos de sustento)
+          await this._grService.eliminarArchivoEvidencia(evidencia.idEvidencia);
+          this._notification.success('Archivo eliminado correctamente');
+          
+          // Limpiar campos localmente
+          evidencia.sustentoExtensionFile = null;
+          evidencia.sustentoDescripcion = null;
+          evidencia.sustentoFechaRegistro = null;
+          
+          // Recargar los datos completos
+          await this.loadTableJefe();
+        } catch (error) {
+          // console.error('Error al eliminar archivo:', error);
+          this._notification.error('Error al eliminar el archivo de la evidencia');
+        }
+      }
+    });
   }
 
   modalMiEquipo() {
@@ -146,7 +645,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -164,7 +665,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -213,6 +716,61 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadTableJefe();
+    });
+  }
+
+  // Método para abrir dialog de comentario
+  abrirComentarioDialog(evidencia: any, esFinal: boolean = false) {
+    if (!evidencia || !evidencia.idEvidencia) {
+      this._notification.warning('No hay evidencia asociada');
+      return;
+    }
+    
+    const dialogRef: MatDialogRef<ComentarioDialogComponent> = this._dialog.open(ComentarioDialogComponent, {
+      disableClose: false,
+      width: '500px',
+      maxHeight: '80vh',
+      autoFocus: false,
+      data: {
+        idEvidencia: evidencia.idEvidencia,
+        esFinal: esFinal
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.actualizado) {
+        // Recargar datos si se actualizó el comentario
+        this.loadTableJefe();
+      }
+    });
+  }
+
+  abrirFechaPlazoDialog(evidencia: any, indicador: any) {
+    if (!evidencia || !evidencia.idEvidencia) {
+      this._notification.warning('No hay evidencia asociada');
+      return;
+    }
+
+    if (!indicador || !indicador.idIndicador) {
+      this._notification.warning('No se encontró el indicador asociado');
+      return;
+    }
+    
+    const dialogRef: MatDialogRef<FechaPlazoDialogComponent> = this._dialog.open(FechaPlazoDialogComponent, {
+      disableClose: false,
+      width: '400px',
+      autoFocus: false,
+      data: {
+        idEvidencia: evidencia.idEvidencia,
+        idIndicador: indicador.idIndicador
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.actualizado) {
+        // Recargar datos si se actualizó la fecha
+        this.loadTableJefe();
+      }
     });
   }
 
@@ -268,7 +826,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let indicador:any = registro.listIndicador.find((dtInd:any)=>dtInd.idIndicador == idInd);
     let indicador = {...aux};
     registro.listIndicador = [];
-    console.log("Capturado:",indicador);
+    // console.log removed for production
     registro.listIndicador.push(indicador);*/
     let info:any = {
       "idPersona":idVotante,
@@ -285,7 +843,62 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
+    });
+  }
+
+  confirmarEliminarIndicador(idIndicador: number, prioridad: any): void {
+    // Verificar que haya al menos un indicador
+    if (prioridad.listIndicador.length <= 1) {
+      this._notification.warning('No se puede eliminar el único indicador de esta prioridad');
+      return;
+    }
+
+    // Abrir dialog de confirmación
+    const confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
+    });
+    confirmDialogRef.componentInstance.confirmMessage = '¿Está seguro que desea eliminar este indicador?';
+    
+    confirmDialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        try {
+          await this._grService.deleteIndicadorById(idIndicador);
+          this._notification.success('Indicador eliminado correctamente');
+          
+          // Eliminar del array local inmediatamente
+          prioridad.listIndicador = prioridad.listIndicador.filter(
+            (ind: any) => ind.idIndicador !== idIndicador
+          );
+          
+          // Recargar los datos completos
+          await this.loadTableJefe();
+        } catch (error) {
+          // console.error('Error al eliminar indicador:', error);
+          this._notification.error('Error al eliminar el indicador');
+        }
+      }
+    });
+  }
+
+  confirmarEliminarPrioridad(idPrioridad: number, trabajador: any): void {
+    const dialogRef = this._dialog.open(ConfirmarPanelComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = '¿Está seguro de eliminar esta prioridad? Se eliminarán todos los indicadores y evidencias asociadas. Esta acción no se puede deshacer.';
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._grService.deletePrioridadById(idPrioridad).then(() => {
+          this._notification.success('Prioridad eliminada correctamente');
+          // Recargar datos
+          this.loadTableJefe();
+        }).catch(error => {
+          this._notification.error('Error al eliminar la prioridad');
+        });
+      }
     });
   }
 
@@ -319,7 +932,37 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadTableJefe();
+      if (result) {
+        this.loadTableJefe();
+      }
+    });
+  }
+
+  registrarSustentoFinal(indicador: any) {
+    // Si no existe evidenciaFinal, usar la última evidencia del array o crear referencia
+    const evidenciaFinal = indicador.evidenciaFinal || (indicador.listEvidencia && indicador.listEvidencia.length > 0 
+      ? indicador.listEvidencia[indicador.listEvidencia.length - 1] 
+      : null);
+
+    if (!evidenciaFinal) {
+      this._notification.warning('No se puede registrar sustento final sin evidencias iniciales');
+      return;
+    }
+
+    const dialogRef: MatDialogRef<RegistrarSustentoComponent> = this._matDialog.open(RegistrarSustentoComponent, {
+      disableClose: false,
+      width: '780px',
+      autoFocus: true,
+      data: {
+        model: evidenciaFinal,
+        esFinal: true // Marcar que es evidencia final
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadTableJefe();
+      }
     });
   }
   async verificaEvaluador(){
@@ -327,4 +970,376 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         this.flagEvaluador = data
       });
   }
+
+  // Métodos para edición del valor alcanzado
+  editValorAlcanzado(indicador: any): void {
+    // Guardar el valor original en caso de cancelar
+    indicador.originalValorAlcanzado = indicador.valorAlcanzado;
+    indicador.editingValorAlcanzado = true;
+  }
+
+  onValorAlcanzadoInput(event: any, indicador: any): void {
+    const inputValue = event.target.value;
+    
+    // Validar que solo sea un número positivo
+    if (inputValue !== '' && (isNaN(inputValue) || parseFloat(inputValue) <= 0)) {
+      // Si no es válido, restaurar el valor anterior
+      event.target.value = indicador.valorAlcanzado || 0;
+      return;
+    }
+    
+    // Si es válido, actualizar temporalmente
+    indicador.valorAlcanzado = inputValue === '' ? 0 : parseFloat(inputValue);
+  }
+
+  async saveValorAlcanzado(indicador: any) {
+    // Validar una vez más antes de guardar
+    if (indicador.valorAlcanzado === undefined || indicador.valorAlcanzado === null || 
+        isNaN(indicador.valorAlcanzado) || indicador.valorAlcanzado <= 0) {
+      // Si no es válido, usar 0 como valor por defecto
+      indicador.valorAlcanzado = 0;
+    }
+    
+    // Salir del modo edición
+    indicador.editingValorAlcanzado = false;
+    delete indicador.originalValorAlcanzado;
+    
+    // Guardar en BD local
+    try {
+      // Buscar el idPrioridad del indicador (necesitamos encontrar la prioridad padre)
+      let idPrioridad = null;
+      for (const trabajador of this.listDataTable) {
+        if (trabajador.listPrioridad) {
+          for (const prioridad of trabajador.listPrioridad) {
+            if (prioridad.listIndicador && prioridad.listIndicador.includes(indicador)) {
+              idPrioridad = prioridad.idPrioridad;
+              break;
+            }
+          }
+        }
+        if (idPrioridad) break;
+      }
+      
+      if (idPrioridad) {
+    // console.log removed for production
+        await this._grService.guardarValorAlcanzado(idPrioridad, indicador.valorAlcanzado);
+        this._notification.success('Valor alcanzado guardado correctamente');
+      } else {
+        // console.error('No se encontró idPrioridad para el indicador');
+      }
+    } catch (error) {
+      // console.error('Error al guardar valor alcanzado:', error);
+      this._notification.error('Error al guardar el valor alcanzado');
+    }
+  }
+
+  cancelEditValorAlcanzado(indicador: any): void {
+    // Restaurar el valor original
+    indicador.valorAlcanzado = indicador.originalValorAlcanzado;
+    indicador.editingValorAlcanzado = false;
+    delete indicador.originalValorAlcanzado;
+  }
+
+  /**
+   * Calcula el puntaje por meta según la fórmula:
+   * =SI.ERROR(SI($L$18="No";"No corresponde";SI(O(M21="";E21="[Seleccione]");"-";SI(SI(E21="Ascendente";(M21/F21)*100*G21;(((1-(M21/F21))+1)*100*G21))>(G21*100);(G21*100);SI(E21="Ascendente";(M21/F21)*100*G21;SI(Y(E21="Descendente";(M21>F21*2));0;((1-(M21/F21))+1)*100*G21)))));"-")
+   * 
+   * Donde:
+   * - E21 = sentido del indicador (Ascendente/Descendente)
+   * - F21 = valor esperado (meta)
+   * - G21 = peso (como porcentaje, ej: 50)
+   * - M21 = valor alcanzado
+   */
+  /**
+   * Calcula la altura total que debe ocupar un indicador
+   * según el número de evidencias (cada evidencia = 44px + 12px margin = 56px)
+   * Siempre hay al menos 1 evidencia inicial + 1 evidencia final = 112px mínimo
+   */
+  calcularAlturaIndicador(indicador: any): number {
+    const ALTURA_EVIDENCIA = 56; // 44px min-height + 12px margin-bottom
+    
+    // Contar evidencias iniciales
+    let numEvidenciasIniciales = 0;
+    if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+      numEvidenciasIniciales = indicador.listEvidencia.length;
+    } else {
+      // Si no hay evidencias, mostrar placeholder inicial
+      numEvidenciasIniciales = 1;
+    }
+    
+    // Siempre hay 1 evidencia final
+    const numEvidenciaFinal = 1;
+    
+    // Altura total
+    const alturaTotal = (numEvidenciasIniciales + numEvidenciaFinal) * ALTURA_EVIDENCIA;
+    
+    return alturaTotal;
+  }
+
+  calcularPuntajePorMeta(indicador: any): string {
+    try {
+      // Validar que tengamos todos los datos necesarios
+      const sentido = indicador.sentido;
+      const valorEsperado = parseFloat(indicador.valorMeta);
+      const peso = parseFloat(indicador.peso);
+      const valorAlcanzado = parseFloat(indicador.valorAlcanzado);
+
+      // SI(O(M21="";E21="[Seleccione]");"-"; ...)
+      if (!sentido || sentido === '' || isNaN(valorAlcanzado) || valorAlcanzado === null || valorAlcanzado === undefined) {
+        return '-';
+      }
+
+      if (isNaN(valorEsperado) || isNaN(peso)) {
+        return '-';
+      }
+
+      // Convertir peso de porcentaje a decimal (50 -> 0.5)
+      const pesoDecimal = peso / 100;
+
+      let puntaje: number;
+
+      // Calcular según el sentido
+      if (sentido.toLowerCase() === 'ascendente') {
+        // Para ascendente: (M21/F21)*100*G21
+        puntaje = (valorAlcanzado / valorEsperado) * 100 * pesoDecimal;
+      } else if (sentido.toLowerCase() === 'descendente') {
+        // Para descendente: primero verificar si M21 > F21*2
+        if (valorAlcanzado > valorEsperado * 2) {
+          return '0';
+        }
+        // Si no: ((1-(M21/F21))+1)*100*G21
+        puntaje = ((1 - (valorAlcanzado / valorEsperado)) + 1) * 100 * pesoDecimal;
+      } else {
+        return '-';
+      }
+
+      // Verificar que no exceda el peso máximo (G21*100)
+      const pesoMaximo = peso;
+      if (puntaje > pesoMaximo) {
+        puntaje = pesoMaximo;
+      }
+
+      // Asegurar que no sea negativo
+      if (puntaje < 0) {
+        puntaje = 0;
+      }
+
+      // Retornar con 2 decimales
+      return puntaje.toFixed(2);
+    } catch (error) {
+      // console.error('Error al calcular puntaje por meta:', error);
+      return 'Error';
+    }
+  }
+
+  calcularPuntuacionFinal(trabajador: any): string {
+    try {
+      let sumaTotal = 0;
+      
+      // Recorrer todas las prioridades del trabajador
+      if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+        trabajador.listPrioridad.forEach((prioridad: any) => {
+          // Recorrer todos los indicadores de la prioridad
+          if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+            prioridad.listIndicador.forEach((indicador: any) => {
+              const puntaje = this.calcularPuntajePorMeta(indicador);
+              // Solo sumar si es un número válido (no es '-' ni 'Error')
+              if (puntaje !== '-' && puntaje !== 'Error') {
+                const valor = parseFloat(puntaje);
+                if (!isNaN(valor)) {
+                  sumaTotal += valor;
+                }
+              }
+            });
+          }
+        });
+      }
+      
+      return sumaTotal.toFixed(2);
+    } catch (error) {
+      // console.error('Error al calcular puntuación final:', error);
+      return '0.00';
+    }
+  }
+
+  calcularCalificacion(trabajador: any): string {
+    try {
+      const puntuacionFinal = this.calcularPuntuacionFinal(trabajador);
+      
+      if (puntuacionFinal === '-' || puntuacionFinal === 'Error') {
+        return '-';
+      }
+
+      const puntaje = parseFloat(puntuacionFinal);
+
+      if (isNaN(puntaje)) {
+        return '-';
+      }
+
+      if (puntaje >= 100) {
+        return 'Rendimiento Distinguido';
+      } else if (puntaje >= 60) {
+        return 'Buen rendimiento';
+      } else {
+        return 'Rendimiento sujeto a observación';
+      }
+    } catch (error) {
+      // console.error('Error al calcular calificación:', error);
+      return '-';
+    }
+  }
+  // ========== Resultados Finales ==========
+  async cargarResultadosFinales() {
+    try {
+      const anioActual = new Date().getFullYear();
+      const idsVotantes: number[] = [];
+
+      this.listDataTable.forEach(trabajador => {
+        if (trabajador.idVotante) {
+          idsVotantes.push(trabajador.idVotante);
+        }
+      });
+
+      if (idsVotantes.length === 0) return;
+
+      const resultados = await this._grService.obtenerResultadosFinalesMultiples(idsVotantes, anioActual);
+
+      this.listDataTable.forEach(trabajador => {
+        const resultado = resultados[trabajador.idVotante];
+        if (resultado) {
+          trabajador.resultadosFinales = resultado;
+        } else {
+          // Inicializar con valores por defecto
+          trabajador.resultadosFinales = {
+            rendimientoDistinguido: '[Seleccione]',
+            accionesCapacitacion: '',
+            otrasAcciones: '',
+            fechaReunion: null
+          };
+        }
+      });
+    // console.log removed for production
+    } catch (error) {
+      console.warn('No se pudieron cargar resultados finales (endpoint puede no estar disponible):', error);
+      // Inicializar todos con valores por defecto
+      this.listDataTable.forEach(trabajador => {
+        trabajador.resultadosFinales = {
+          rendimientoDistinguido: '[Seleccione]',
+          accionesCapacitacion: '',
+          otrasAcciones: '',
+          fechaReunion: null
+        };
+      });
+    }
+  }
+
+  async guardarResultadoFinal(trabajador: any) {
+    try {
+      const anioActual = new Date().getFullYear();
+      const resultados = trabajador.resultadosFinales || {};
+
+      await this._grService.guardarResultadosFinales(
+        trabajador.idVotante,
+        anioActual,
+        resultados.rendimientoDistinguido || '[Seleccione]',
+        resultados.accionesCapacitacion || '',
+        resultados.otrasAcciones || '',
+        resultados.fechaReunion || null
+      );
+
+      this._notification.success('Resultados finales guardados');
+    } catch (error) {
+      // console.error('Error al guardar:', error);
+      this._notification.error('Error al guardar');
+    }
+  }
+
+  onRendimientoDistinguidoChange(trabajador: any, value: string) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    trabajador.resultadosFinales.rendimientoDistinguido = value;
+    
+    // Solo guardar si el valor es diferente de '[Seleccione]'
+    if (value !== '[Seleccione]') {
+      this.guardarResultadoFinal(trabajador);
+    }
+  }
+
+  onAccionesCapacitacionChange(trabajador: any, value: string) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    trabajador.resultadosFinales.accionesCapacitacion = value;
+  }
+
+  onOtrasAccionesChange(trabajador: any, value: string) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    trabajador.resultadosFinales.otrasAcciones = value;
+  }
+
+  async guardarTextoResultadoFinal(trabajador: any) {
+    await this.guardarResultadoFinal(trabajador);
+  }
+
+  // Métodos para editar/guardar acciones de capacitación
+  editarAccionesCapacitacion(trabajador: any) {
+    if (!trabajador.resultadosFinales) {
+      trabajador.resultadosFinales = {
+        rendimientoDistinguido: '[Seleccione]',
+        accionesCapacitacion: '',
+        otrasAcciones: '',
+        fechaReunion: null
+      };
+    }
+    trabajador.tempAccionesCapacitacion = trabajador.resultadosFinales.accionesCapacitacion;
+    trabajador.editingAccionesCapacitacion = true;
+  }
+
+  async guardarAccionesCapacitacion(trabajador: any) {
+    trabajador.editingAccionesCapacitacion = false;
+    await this.guardarResultadoFinal(trabajador);
+  }
+
+  cancelarAccionesCapacitacion(trabajador: any) {
+    trabajador.resultadosFinales.accionesCapacitacion = trabajador.tempAccionesCapacitacion;
+    trabajador.editingAccionesCapacitacion = false;
+  }
+
+  // Métodos para editar/guardar otras acciones
+  editarOtrasAcciones(trabajador: any) {
+    if (!trabajador.resultadosFinales) {
+      trabajador.resultadosFinales = {
+        rendimientoDistinguido: '[Seleccione]',
+        accionesCapacitacion: '',
+        otrasAcciones: '',
+        fechaReunion: null
+      };
+    }
+    trabajador.tempOtrasAcciones = trabajador.resultadosFinales.otrasAcciones;
+    trabajador.editingOtrasAcciones = true;
+  }
+
+  async guardarOtrasAcciones(trabajador: any) {
+    trabajador.editingOtrasAcciones = false;
+    await this.guardarResultadoFinal(trabajador);
+  }
+
+  cancelarOtrasAcciones(trabajador: any) {
+    trabajador.resultadosFinales.otrasAcciones = trabajador.tempOtrasAcciones;
+    trabajador.editingOtrasAcciones = false;
+  }
+
+  async onFechaReunionChange(trabajador: any, fecha: any) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    let fechaStr = null;
+    if (fecha instanceof Date && !isNaN(fecha.getTime())) {
+      const year = fecha.getFullYear();
+      const month = String(fecha.getMonth() + 1).padStart(2, '0');
+      const day = String(fecha.getDate()).padStart(2, '0');
+      fechaStr = `${year}-${month}-${day}`;
+    }
+    trabajador.resultadosFinales.fechaReunion = fechaStr;
+    await this.guardarResultadoFinal(trabajador);
+  }
 }
+
+
+
+

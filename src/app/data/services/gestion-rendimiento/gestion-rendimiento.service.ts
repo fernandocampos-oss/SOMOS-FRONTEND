@@ -78,8 +78,8 @@ export class GestionRendimientoService {
 
   async listarTipoValorMeta() {
     const url = `${URL_BASE}/indicadores/listar/tipoValorMeta`;
-    // console.log(url);
-    return await this.http.get<Object[]>(url).toPromise();
+    const data = await this.http.get<any[]>(url).toPromise();
+    return data.filter(item => item.descripcion?.toLowerCase() !== 'promedio');
   }
 
   async registrarIndicador(indicadorRequest: any) {
@@ -196,15 +196,35 @@ export class GestionRendimientoService {
     return await this.http.put(url, model).toPromise();
   }
 
+  async deleteEvidenciaById(id: number) {
+    const url = `${URL_BASE}/evidencias/eliminar/${id}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  async eliminarArchivoEvidencia(id: number) {
+    const url = `${URL_BASE}/evidencias/eliminar/sustento/${id}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  async deleteIndicadorById(id: number) {
+    const url = `${URL_BASE}/indicadores/eliminar/${id}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  async deletePrioridadById(id: number) {
+    const url = `${URL_BASE}/prioridades/eliminar/${id}`;
+    return await this.http.delete(url).toPromise();
+  }
+
   async procesarExcelVotante(personas: CargaMasivaVotante[]) {
     const url = `${URL_BASE}/equipos/carga/excel/votante`;
-    console.log(url, personas);
+    // console.log(url, personas);
     return await this.http.post<CargaMasivaVotante[]>(url, personas).toPromise();
   }
 
   async listarVotantePerfil() {
     const url = `${URL_BASE}/equipos/listar/perfil/votantes`;
-    console.log(url);
+    // console.log(url);
     return await this.http.get<Object[]>(url).toPromise();
   }
 
@@ -219,4 +239,154 @@ export class GestionRendimientoService {
     return await this.http.put(url, {'idEvidencia':id,'comentario':comentario, 'calificacion':calificacion}).toPromise();
   }
 
+  // Métodos para sentido de indicadores
+  async obtenerSentidoIndicador(idIndicador: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/sentido-indicador/${idIndicador}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerSentidosMultiples(idIndicadores: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/sentido-indicador/batch`;
+    const response = await this.http.post(url, idIndicadores).toPromise();
+    // console.log('Respuesta del backend (sentidos):', response);
+    // console.log('IDs solicitados:', idIndicadores);
+    return response;
+  }
+
+  // Métodos para tipo de evidencia
+  async guardarEvidenciaTipo(idEvidencia: number, idIndicador: number, tipo: string, orden: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/guardar`;
+    return await this.http.post(url, { idEvidencia, idIndicador, tipo, orden }).toPromise();
+  }
+
+  async obtenerEvidenciaTipo(idEvidencia: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/obtener/${idEvidencia}`;
+    try {
+      return await this.http.get(url).toPromise();
+    } catch (error: any) {
+      // Si es 404, retornar null sin mostrar error (registro aún no existe)
+      if (error?.status === 404) {
+        return null;
+      }
+      // Para otros errores, re-lanzar
+      throw error;
+    }
+  }
+
+  async obtenerEvidenciasPorIndicador(idIndicador: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/indicador/${idIndicador}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerEvidenciasTipoMultiples(idsEvidencia: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/batch`;
+    return await this.http.post(url, idsEvidencia).toPromise();
+  }
+  
+  async obtenerFechasPlazoFinalPorIndicadores(idsIndicador: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/fechas-plazo-final`;
+    return await this.http.post(url, idsIndicador).toPromise();
+  }
+
+  async eliminarEvidenciaTipo(idEvidencia: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/eliminar/${idEvidencia}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  async reordenarEvidencias(idIndicador: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/reordenar/${idIndicador}`;
+    return await this.http.post(url, {}).toPromise();
+  }
+
+  async actualizarFechaPlazo(idEvidencia: number, idIndicador: number, fechaPlazo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/actualizar-fecha-plazo`;
+    return await this.http.post(url, { idEvidencia, idIndicador, fechaPlazo }).toPromise();
+  }
+
+  // Métodos para comentario estado
+  async guardarComentarioEstado(idEvidencia: number, estadoDropdown: string, comentarioAdicional: string, tipoComentario: string = 'individual'): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/guardar`;
+    return await this.http.post(url, { idEvidencia, tipoComentario, estadoDropdown, comentarioAdicional }).toPromise();
+  }
+
+  async obtenerComentarioEstado(idEvidencia: number, tipoComentario: string = 'individual'): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/obtener/${idEvidencia}/${tipoComentario}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerComentariosEstadoMultiples(idsEvidencia: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/batch-all`;
+    return await this.http.post(url, idsEvidencia).toPromise();
+  }
+
+  async eliminarComentarioEstado(idEvidencia: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/comentario-estado/eliminar/${idEvidencia}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  // Métodos para valor alcanzado prioridad
+  async guardarValorAlcanzado(idPrioridad: number, valorAlcanzado: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/valor-alcanzado/guardar`;
+    return await this.http.post(url, { idPrioridad, valorAlcanzado }).toPromise();
+  }
+
+  async obtenerValorAlcanzado(idPrioridad: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/valor-alcanzado/obtener/${idPrioridad}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async obtenerValoresAlcanzadosMultiples(idsPrioridad: number[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/valor-alcanzado/batch`;
+    return await this.http.post(url, idsPrioridad).toPromise();
+  }
+
+  async eliminarValorAlcanzado(idPrioridad: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/valor-alcanzado/eliminar/${idPrioridad}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  // ========== Resultados Finales ==========
+  async guardarResultadosFinales(idVotante: number, anio: number, rendimientoDistinguido: string, 
+                                   accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/resultados-finales/guardar`;
+    const body = {
+      idVotante,
+      anio,
+      // Convertir '[Seleccione]' a null antes de enviar
+      rendimientoDistinguido: rendimientoDistinguido === '[Seleccione]' ? null : rendimientoDistinguido,
+      accionesCapacitacion: accionesCapacitacion || null,
+      otrasAcciones: otrasAcciones || null,
+      fechaReunion: fechaReunion || null
+    };
+    return await this.http.post(url, body).toPromise();
+  }
+
+  async obtenerResultadosFinales(idVotante: number, anio: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/resultados-finales/obtener/${idVotante}/${anio}`;
+    try {
+      return await this.http.get(url).toPromise();
+    } catch (error: any) {
+      if (error?.status === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  async obtenerResultadosFinalesMultiples(idsVotantes: number[], anio: number): Promise<any> {
+    try {
+      const url = `${URL_BASE}/gdr/resultados-finales/batch`;
+      const body = { idsVotantes, anio };
+      return await this.http.post(url, body).toPromise();
+    } catch (error) {
+      // console.error('Error al obtener resultados finales múltiples:', error);
+      return {}; // Retornar objeto vacío en caso de error
+    }
+  }
+
+  async eliminarResultadosFinales(idVotante: number, anio: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/resultados-finales/eliminar/${idVotante}/${anio}`;
+    return await this.http.delete(url).toPromise();
+  }
 }
+

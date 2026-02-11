@@ -6,6 +6,8 @@ export class PrioridadRequestDto {
     indicador?: IndicadorRequest;
     listEvidencia?: EvidenciaRequest[];
     prioridadNombre?: string;
+    sentidoIndicador?: string;
+    fechaPlazoFinal?: string; // Fecha de plazo final para la evidencia final
   }
 
   export class ActividadRequest {

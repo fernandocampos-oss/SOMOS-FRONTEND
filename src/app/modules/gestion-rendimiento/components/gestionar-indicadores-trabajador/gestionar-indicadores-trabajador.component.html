@@ -57,232 +57,698 @@
                     <br>
                     <p class="color-mensaje">Sin registros por mostrar</p>
                 </div>
-                <div *ngIf="i.listPrioridad.length !== 0">
-                    <table mat-table [dataSource]="i.listPrioridad" class="workersTable anotherTable">
+                <div *ngIf="i.listPrioridad.length !== 0" style="overflow-x: auto; width: 100%;">
+                    <table mat-table [dataSource]="i.listPrioridad" class="workersTable anotherTable gdr-table-2025">
+                        
+                        <!-- Columna N° -->
                         <ng-container matColumnDef="item">
-                            <th mat-header-cell *matHeaderCellDef>N°</th>
-                            <td mat-cell *matCellDef="let element, index as i">{{i+1}}</td>
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2" class="col-item">N°</th>
+                            <td mat-cell *matCellDef="let element, index as idx">{{idx+1}}</td>
                         </ng-container>
+
+                        <!-- Columna PRIORIDADES ANUALES -->
                         <ng-container matColumnDef="prioridad">
-                            <th mat-header-cell *matHeaderCellDef>Prioridades anuales de gestión del órgano o unidad
-                                orgánica</th>
-                            <td mat-cell *matCellDef="let element">
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2" class="col-prioridad">PRIORIDADES ANUALES DE GESTIÓN DEL ÓRGANO O UNIDAD ORGÁNICA</th>
+                            <td mat-cell *matCellDef="let element; let isLast = last">
                                 <div class="eviItem">
                                     <span class="demo-2">{{element.prioridadNombre ? element.prioridadNombre :'-'}}</span>
                                 </div>
-                                <button mat-icon-button class="add-prioridad"
-                                    matTooltip="Añadir nuevo Indicador/Producto"
-                                    (click)="agregarIndicador(element, i.idVotante, i)">
+                                <button *ngIf="isLast" mat-icon-button class="add-prioridad"
+                                    matTooltip="Añadir nueva Prioridad"
+                                    (click)="registrarPrioridad(i)">
                                     <mat-icon>add_circle</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
                                     (click)="editarPrioridad(element.idPrioridad, element.idActividad, element.fechaAsignacionPrioridad, 1, element.prioridadNombre)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
+                                <button mat-icon-button color="warn" matTooltip="Eliminar Prioridad"
+                                    (click)="confirmarEliminarPrioridad(element.idPrioridad, i)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
                             </td>
                         </ng-container>
+
+                        <!-- Columna INDICADOR/PRODUCTO -->
                         <ng-container matColumnDef="indicador_producto">
-                            <th mat-header-cell *matHeaderCellDef>Indicador / Producto</th>
+                            <th mat-header-cell *matHeaderCellDef>INDICADOR / PRODUCTO</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let x of element.listIndicador" class="matrixCube" style="font-size:14px">
-                                        <div matLine>
+                                <div>
+                                    <div *ngFor="let x of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; flex-direction: column; justify-content: center; padding: 4px 8px;">
                                             <div>
                                                 <span class="demo-2">{{x.nombreIndicador}}</span>
                                             </div>
-                                            <div>
-                                                <button mat-icon-button class="has-success"
-                                                    matTooltip="Añadir nueva evidencia para este Indicador/Producto"
-                                                    (click)="agregarEvidencia(x)">
-                                                    <mat-icon matListIcon>add_circle</mat-icon>
+                                            <div style="display: flex; justify-content: center; margin-top: 8px; gap: 8px;">
+                                                <button *ngIf="isLast" mat-icon-button class="add-prioridad" matTooltip="Añadir nuevo Indicador/Producto"
+                                                    (click)="agregarIndicador(element, i.idVotante, i)">
+                                                    <mat-icon>add_circle</mat-icon>
                                                 </button>
-                                                <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
+                                                <button mat-icon-button color="primary" matTooltip="Editar Indicador"
                                                     (click)="abrirEditor(i.idVotante, element, x.idIndicador, element.prioridadNombre)">
                                                     <mat-icon>edit</mat-icon>
                                                 </button>
-                                            </div>
-                                            <div class="metapeso">
-                                                <span *ngIf="((x.codTipoValorMeta =='03') || (x.codTipoValorMeta == '04') || (x.codTipoValorMeta == '06'))">
-                                                    Meta:<b> {{x.valorMeta}}</b>% 
-                                                </span>
-                                                <span *ngIf="((x.codTipoValorMeta =='01') || (x.codTipoValorMeta == '02') || (x.codTipoValorMeta == '05'))">
-                                                    Meta:<b> {{x.valorMeta}}</b> 
-                                                </span>
-                                                <span>
-                                                    Peso:<b> {{x.peso}}</b>%
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <mat-divider></mat-divider>
-                                    </mat-list-item>
-                                </mat-list>
-                            </td>
-                        </ng-container>
-                        <!-- 
-                        <ng-container matColumnDef="valor_meta">
-                            <th mat-header-cell *matHeaderCellDef>Valor meta</th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let y of element.listIndicador" style="font-size:14px">
-                                        <div *ngIf="((y.codTipoValorMeta =='03') || (y.codTipoValorMeta == '04'))">
-                                            {{y.valorMeta}}%
-                                        </div>
-                                        <div *ngIf="((y.codTipoValorMeta =='01') || (y.codTipoValorMeta == '02'))">
-                                            {{y.valorMeta}}
-                                        </div>
-                                        <mat-divider></mat-divider>
-                                    </mat-list-item>
-                                </mat-list>
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="peso">
-                            <th mat-header-cell *matHeaderCellDef>Peso</th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let indicador of element.listIndicador"
-                                        style="font-size:14px">
-                                        {{indicador.peso}}%
-                                        <mat-divider></mat-divider>
-                                    </mat-list-item>
-                                </mat-list>
-                            </td>
-                        </ng-container>
-                        -->
-                        <ng-container matColumnDef="evidencia">
-                            <th mat-header-cell *matHeaderCellDef>Evidencia</th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
-                                        <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
-                                            <!-- -->
-                                            <div class="eviItem">
-                                                <span>
-                                                    - {{t.descripcion}}
-                                                </span>
-                                                <span class="date">
-                                                    ({{t.plazo | date: 'dd-MM-yyyy'}})
-                                                </span>
-                                            </div>
-                                            <!--<div class="eviItem">
-                                                <button mat-icon-button color="warn"
-                                                    [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
-                                                    (click)="verEvidenciaPdf(t)">
-                                                    <mat-icon>picture_as_pdf</mat-icon>
+                                                <button mat-icon-button color="warn" matTooltip="Eliminar Indicador"
+                                                    [disabled]="element.listIndicador.length === 1"
+                                                    (click)="confirmarEliminarIndicador(x.idIndicador, element)">
+                                                    <mat-icon>delete</mat-icon>
                                                 </button>
                                             </div>
-                                            
-                                            <span>- {{t.descripcion}}</span>
-                                            <button mat-icon-button color="primary" matTooltip="Editar Evidencia"
-                                                (click)="editarEvidencia(t, 3)">
-                                                <mat-icon>edit</mat-icon>
-                                            </button> -->
-                                            <button mat-icon-button class="has-success"
-                                                matTooltip="Registrar Sustento"
-                                                [disabled]="t.sustentoExtensionFile !==null"
-                                                (click)="registrarSustento(t)">
-                                                <mat-icon>add_circle</mat-icon>
-                                            </button>
-                                            <button mat-icon-button color="warn"
-                                                [disabled]="t.sustentoExtensionFile !=='pdf'" matTooltip="Ver PDF"
-                                                (click)="verEvidenciaPdf(t)">
-                                                <mat-icon>picture_as_pdf</mat-icon>
-                                            </button>
                                         </div>
-                                        <mat-divider></mat-divider>
-                                    </mat-list-item>
-                                </mat-list>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
-                        <!-- 
-                        <ng-container matColumnDef="plazo">
-                            <th mat-header-cell *matHeaderCellDef>Plazo</th>
+
+                        <!-- Columna SENTIDO DEL INDICADOR -->
+                        <ng-container matColumnDef="sentido_indicador">
+                            <th mat-header-cell *matHeaderCellDef>SENTIDO DEL INDICADOR</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let z of element.listIndicador" style="font-size:14px">
-                                        <p matLine *ngFor="let t of z.listEvidencia">
-                                            <span class="demo-2">{{t.plazo | date: 'MMMM y' | titlecase}}</span>
-                                            <span class="demo-2">{{t.plazo | date: 'dd-MM-yyyy'}}</span>
-                                        </p>
-                                        <mat-divider></mat-divider>
-                                    </mat-list-item>
-                                </mat-list>
-                            </td>
-                        </ng-container>
-                        -->
-                        <ng-container matColumnDef="tipo_formula">
-                            <th mat-header-cell *matHeaderCellDef>Tipo fórmula</th>
-                            <td mat-cell *matCellDef="let element"></td>
-                        </ng-container>
-                        <ng-container matColumnDef="comentario">
-                            <th mat-header-cell *matHeaderCellDef>Comentario</th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-list>
-                                    <mat-list-item *ngFor="let z of element.listIndicador" class="matrixCube" style="font-size:14px">
-                                        <div mat-line *ngFor="let t of z.listEvidencia" class="contentEvi">
-                                            <!-- -->
-                                            <div class="eviItem">
-                                                <span>
-                                                    {{t.comentario}}
-                                                    <p *ngIf="t.calificacion == 0">No entregado</p> 
-                                                    <p *ngIf="t.calificacion == 1">En proceso de logro</p> 
-                                                    <p *ngIf="t.calificacion == 2">Entregado</p> 
-                                                    <p *ngIf="t.calificacion == 3">Logrado</p> 
-                                                    <p *ngIf="t.calificacion == 4">No Logrado</p> 
+                                <div>
+                                    <div *ngFor="let x of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center;">
+                                            <div style="text-align: center;">
+                                                <span *ngIf="x.sentido === 'ascendente'" style="color: #4caf50; font-weight: 600;">
+                                                    Ascendente
+                                                </span>
+                                                <span *ngIf="x.sentido === 'descendente'" style="color: #f44336; font-weight: 600;">
+                                                    Descendente
+                                                </span>
+                                                <span *ngIf="!x.sentido" style="color: #999; font-style: italic;">
+                                                    Sin definir
                                                 </span>
                                             </div>
-                                            <button mat-icon-button color="warn"
-                                                matTooltip="Agregar Calificación"
-                                                (click)="abrirCalificar(t.idEvidencia)"  
-                                                *ngIf="flagEvaluador">
-                                                <mat-icon *ngIf="t.comentario!=null">edit</mat-icon>
-                                                <mat-icon *ngIf="t.comentario==null">add_circle</mat-icon>
-                                            </button>
-                                            <br>
                                         </div>
-                                        <mat-divider></mat-divider>
-                                    </mat-list-item>
-                                </mat-list>
+                                    </div>
+                                </div>
                             </td>
                         </ng-container>
-                        <ng-container matColumnDef="logro_final">
-                            <th mat-header-cell *matHeaderCellDef>Logro final por meta</th>
-                            <td mat-cell *matCellDef="let element"></td>
+
+                        <!-- Columna VALOR ESPERADO (META) -->
+                        <ng-container matColumnDef="valor_esperado">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">VALOR ESPERADO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    <div *ngFor="let x of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center;">
+                                            <div style="text-align: center;">
+                                                <span *ngIf="((x.codTipoValorMeta =='03') || (x.codTipoValorMeta == '04') || (x.codTipoValorMeta == '06'))" style="display: block; text-align: center;">
+                                                    {{x.valorMeta}}%
+                                                </span>
+                                                <span *ngIf="((x.codTipoValorMeta =='01') || (x.codTipoValorMeta == '02') || (x.codTipoValorMeta == '05'))" style="display: block; text-align: center;">
+                                                    {{x.valorMeta}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </ng-container>
+
+                        <!-- Columna PESO -->
+                        <ng-container matColumnDef="peso">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">PESO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    <div *ngFor="let x of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(x)" style="display: flex; align-items: center; justify-content: center;">
+                                            <div style="text-align: center;">
+                                                <span style="display: block; text-align: center;">{{x.peso}}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna EVIDENCIA -->
+                        <ng-container matColumnDef="evidencia">
+                            <th mat-header-cell *matHeaderCellDef>EVIDENCIA</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    <div *ngFor="let z of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" style="display: flex; flex-direction: column; justify-content: flex-start; padding: 4px 0;">
+                                        <!-- EVIDENCIAS INICIALES -->
+                                        
+                                        <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
+                                        <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0">
+                                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; margin-top: 4px; height: 44px;">
+                                                <div style="flex: 1; max-width: 180px;">
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px;">
+                                                        <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap;">EVIDENCIA 1:</span>
+                                                        <div class="evidencia-buttons-container" style="display: flex; align-items: center; gap: 4px;">
+                                                            <span style="color: #999; font-style: italic; font-size: 9px; margin-right: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[Sin evidencia aún]</span>
+                                                            <button mat-icon-button class="has-success btn-evidencia-external"
+                                                                matTooltip="Agregar evidencia inicial" (click)="agregarEvidencia(z)">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="width: 48px;"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Caso 2: Con evidencias - mostrar lista con controles -->
+                                        <div *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
+                                            <div *ngFor="let t of z.listEvidencia; let i = index; let isFirst = first" 
+                                                 class="evidencia-individual-container"
+                                                 [style.margin-top.px]="isFirst ? 4 : 0"
+                                                 style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px; overflow: visible;">
+                                                <!-- Evidencia individual -->
+                                                <div style="flex: 1; max-width: 140px;">
+                                                    <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px; display: flex; flex-direction: column; justify-content: center;">
+                                                        <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap; line-height: 16px; text-align: center;">EVIDENCIA {{i+1}}:</span>
+                                                        <div class="evidencia-buttons-container" style="display: flex; justify-content: center; gap: 4px; margin-top: 2px;">
+                                                            <!-- Mostrar botón de agregar solo si NO tiene archivo -->
+                                                            <button *ngIf="!t.sustentoExtensionFile" mat-icon-button class="has-success btn-evidencia-small"
+                                                                matTooltip="Registrar Sustento"
+                                                                (click)="registrarSustento(t)">
+                                                                <mat-icon>add_circle</mat-icon>
+                                                            </button>
+                                                            <!-- Mostrar botones de ver/eliminar cuando SÍ tiene archivo -->
+                                                            <button *ngIf="t.sustentoExtensionFile === 'pdf'" mat-icon-button color="primary" class="btn-evidencia-small"
+                                                                matTooltip="Ver PDF"
+                                                                (click)="verEvidenciaPdf(t)">
+                                                                <mat-icon>picture_as_pdf</mat-icon>
+                                                            </button>
+                                                            <button *ngIf="t.sustentoExtensionFile" mat-icon-button color="warn" class="btn-evidencia-small"
+                                                                matTooltip="Eliminar archivo"
+                                                                (click)="eliminarArchivoEvidencia(t)">
+                                                                <mat-icon>delete</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Controles individuales para cada evidencia -->
+                                                <div class="evidencia-external-controls" style="position: relative; display: flex; flex-direction: column; gap: 4px; width: 48px; overflow: visible;">
+                                                    <button *ngIf="i === z.listEvidencia.length - 1" mat-icon-button class="has-success btn-evidencia-external"
+                                                        matTooltip="Agregar evidencia inicial"
+                                                        (click)="agregarEvidencia(z)">
+                                                        <mat-icon>add_circle</mat-icon>
+                                                    </button>
+                                                    <button *ngIf="i === z.listEvidencia.length - 1" mat-icon-button color="warn" class="btn-evidencia-external"
+                                                        matTooltip="Eliminar evidencia inicial"
+                                                        [disabled]="z.listEvidencia.length <= 1"
+                                                        (click)="eliminarEvidencia(z)">
+                                                        <mat-icon>remove_circle</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- EVIDENCIA FINAL (siempre aparece, con o sin iniciales) -->
+                                        <div class="evidencia-final-container" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; height: 44px; overflow: visible;">
+                                            <div style="flex: 1; max-width: 140px;">
+                                                <div style="padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-height: 44px; display: flex; flex-direction: column; justify-content: center;">
+                                                    <span style="font-size: 10px; color: #d84315; font-weight: bold; white-space: nowrap; line-height: 16px; text-align: center;">EVIDENCIA FINAL:</span>
+                                                    <div class="evidencia-buttons-container" style="display: flex; justify-content: center; gap: 4px; margin-top: 2px;">
+                                                        <!-- Mostrar botón de agregar solo si NO tiene archivo o no existe evidenciaFinal -->
+                                                        <button *ngIf="!z.evidenciaFinal || !z.evidenciaFinal.sustentoExtensionFile" mat-icon-button class="has-success btn-evidencia-small"
+                                                            matTooltip="Registrar Sustento Final"
+                                                            (click)="registrarSustentoFinal(z)">
+                                                            <mat-icon>add_circle</mat-icon>
+                                                        </button>
+                                                        <!-- Mostrar botones cuando SÍ tiene archivo -->
+                                                        <button *ngIf="z.evidenciaFinal?.sustentoExtensionFile === 'pdf'" mat-icon-button color="primary" class="btn-evidencia-small"
+                                                            matTooltip="Ver PDF Final"
+                                                            (click)="verEvidenciaPdf(z.evidenciaFinal)">
+                                                            <mat-icon>picture_as_pdf</mat-icon>
+                                                        </button>
+                                                        <button *ngIf="z.evidenciaFinal?.sustentoExtensionFile" mat-icon-button color="warn" class="btn-evidencia-small"
+                                                            matTooltip="Eliminar archivo final"
+                                                            (click)="eliminarArchivoEvidencia(z.evidenciaFinal)">
+                                                            <mat-icon>delete</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="width: 48px;"></div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna PLAZOS -->
+                        <ng-container matColumnDef="plazos">
+                            <th mat-header-cell *matHeaderCellDef>PLAZOS</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    <div *ngFor="let z of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" style="display: flex; flex-direction: column; justify-content: flex-start; padding: 4px 0;">
+                                        <!-- PLAZOS INICIALES -->
+                                        
+                                        <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
+                                        <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0">
+                                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; margin-top: 4px; height: 44px;">
+                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 16px;">PLAZO</div>
+                                                    <div style="font-size: 10px; color: #999; text-align: center; line-height: 16px;">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Caso 2: Con evidencias - mostrar plazos individuales -->
+                                        <div *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
+                                            <div *ngFor="let t of z.listEvidencia; let i = index; let isFirst = first" 
+                                                 [style.margin-top.px]="isFirst ? 4 : 0"
+                                                 style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px;">
+                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 16px;">PLAZO</div>
+                                                    <div style="font-size: 10px; color: #333; font-weight: 500; text-align: center; line-height: 16px;">{{t.plazo ? (t.plazo | date: 'dd/MM/yyyy') : '-'}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- PLAZO FINAL (siempre aparece, con o sin evidencias iniciales) -->
+                                        <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; height: 44px;">
+                                            <div style="padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                                                    <div style="font-size: 10px; color: #d84315; font-weight: bold; line-height: 16px;">PLAZO</div>
+                                                    <button mat-icon-button 
+                                                            style="width: 14px; height: 14px; line-height: 14px; padding: 0; min-width: 14px;" 
+                                                            matTooltip="Editar fecha de plazo" 
+                                                            matTooltipPosition="below"
+                                                            (click)="abrirFechaPlazoDialog(z.listEvidencia && z.listEvidencia.length > 0 ? z.listEvidencia[z.listEvidencia.length - 1] : null, z)">
+                                                        <mat-icon style="font-size: 10px; color: #d84315; line-height: 14px;">edit</mat-icon>
+                                                    </button>
+                                                </div>
+                                                <div style="font-size: 10px; text-align: center; line-height: 16px; color: #333;">
+                                                    {{z.listEvidencia && z.listEvidencia.length > 0 && z.listEvidencia[z.listEvidencia.length - 1].fechaPlazoFinal ? (z.listEvidencia[z.listEvidencia.length - 1].fechaPlazoFinal | date: 'dd/MM/yyyy') : '-'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna COMENTARIOS (ETAPA DE SEGUIMIENTO) -->
+                        <ng-container matColumnDef="comentario">
+                            <th mat-header-cell *matHeaderCellDef class="col-comentarios">COMENTARIOS</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    <div *ngFor="let z of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" style="display: flex; flex-direction: column; justify-content: flex-start; padding: 4px 0;">
+                                        <!-- COMENTARIOS INICIALES -->
+                                        
+                                        <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
+                                        <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0">
+                                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; margin-top: 4px; height: 44px;">
+                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 85px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 16px;">COMENTARIO</div>
+                                                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                                                        <select [(ngModel)]="z.comentarioSinEvidencias" 
+                                                                (change)="onComentarioChange('sinEvidencias', z.comentarioSinEvidencias, z)"
+                                                                style="font-size: 9px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 2px; background: white; max-width: 60px;">
+                                                            <option value="">[Selec.]</option>
+                                                            <option value="logrado">Logrado</option>
+                                                            <option value="proceso">En proceso</option>
+                                                            <option value="no_presento">No presentó</option>
+                                                        </select>
+                                                        <button mat-icon-button class="btn-evidencia-small"
+                                                                matTooltip="Ver comentario" 
+                                                                matTooltipPosition="below">
+                                                            <mat-icon>visibility</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Caso 2: Con evidencias - mostrar comentarios individuales -->
+                                        <div *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
+                                            <div *ngFor="let t of z.listEvidencia; let i = index; let isFirst = first" 
+                                                 [style.margin-top.px]="isFirst ? 4 : 0"
+                                                 style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px;">
+                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 85px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 16px;">COMENTARIO</div>
+                                                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                                                        <select [(ngModel)]="t.comentario" 
+                                                                (change)="onComentarioChange('individuales', t.comentario, z, t, i)"
+                                                                style="font-size: 9px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 2px; background: white; max-width: 60px;">
+                                                            <option value="">[Selec.]</option>
+                                                            <option value="logrado">Logrado</option>
+                                                            <option value="proceso">En proceso</option>
+                                                            <option value="no_presento">No presentó</option>
+                                                        </select>
+                                                        <button mat-icon-button class="btn-evidencia-small"
+                                                                matTooltip="Ver comentario" 
+                                                                matTooltipPosition="below"
+                                                                (click)="abrirComentarioDialog(t)">
+                                                            <mat-icon>visibility</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- COMENTARIO FINAL (siempre aparece, con o sin evidencias iniciales) -->
+                                        <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; height: 44px;">
+                                            <div style="padding: 4px 8px; background-color: #fff8dc; border-left: 3px solid #d84315; border-radius: 3px; min-width: 85px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                <div style="font-size: 10px; color: #d84315; font-weight: bold; text-align: center; line-height: 16px;">COMENTARIO</div>
+                                                <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                                                    <select [(ngModel)]="z.comentarioFinal" 
+                                                            (change)="onComentarioChange('final', z.comentarioFinal, z)"
+                                                            style="font-size: 9px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 2px; background: white; max-width: 60px;">
+                                                        <option value="">[Selec.]</option>
+                                                        <option value="si_presenta">SÍ presenta</option>
+                                                        <option value="no_presenta">NO presenta</option>
+                                                    </select>
+                                                    <button mat-icon-button class="btn-evidencia-small"
+                                                            matTooltip="Ver comentario" 
+                                                            matTooltipPosition="below"
+                                                            (click)="abrirComentarioDialog(z.listEvidencia && z.listEvidencia.length > 0 ? z.listEvidencia[z.listEvidencia.length - 1] : null, true)">
+                                                        <mat-icon>visibility</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna VALOR ALCANZADO -->
+                        <ng-container matColumnDef="valor_alcanzado">
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">VALOR ALCANZADO</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    <div *ngFor="let z of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 4px; gap: 8px;">
+                                            <!-- Mostrar valor alcanzado -->
+                                            <div *ngIf="!z.editingValorAlcanzado" style="font-size: 16px; font-weight: bold; color: #333; min-height: 24px; display: flex; align-items: center;">
+                                                <span *ngIf="((z.codTipoValorMeta =='03') || (z.codTipoValorMeta == '04') || (z.codTipoValorMeta == '06'))">
+                                                    {{ z.valorAlcanzado || '0' }}%
+                                                </span>
+                                                <span *ngIf="((z.codTipoValorMeta =='01') || (z.codTipoValorMeta == '02') || (z.codTipoValorMeta == '05'))">
+                                                    {{ z.valorAlcanzado || '0' }}
+                                                </span>
+                                            </div>
+                                            
+                                            <!-- Campo de edición -->
+                                            <div *ngIf="z.editingValorAlcanzado" style="width: 80px;">
+                                                <mat-form-field appearance="outline" style="width: 100%; font-size: 12px;">
+                                                    <input matInput 
+                                                           type="number" 
+                                                           min="0"
+                                                           step="0.01"
+                                                           [value]="z.valorAlcanzado || 0"
+                                                           (input)="onValorAlcanzadoInput($event, z)"
+                                                           (keyup.enter)="saveValorAlcanzado(z)"
+                                                           (keyup.escape)="cancelEditValorAlcanzado(z)"
+                                                           #valorInput>
+                                                    <span *ngIf="((z.codTipoValorMeta =='03') || (z.codTipoValorMeta == '04') || (z.codTipoValorMeta == '06'))" matSuffix>%</span>
+                                                </mat-form-field>
+                                            </div>
+                                            
+                                            <!-- Botones de acción -->
+                                            <div style="display: flex; gap: 4px; justify-content: center; margin-top: 4px;">
+                                                <!-- Botón editar -->
+                                                <button *ngIf="!z.editingValorAlcanzado"
+                                                        mat-icon-button 
+                                                        color="primary" 
+                                                        matTooltip="Editar valor alcanzado"
+                                                        (click)="editValorAlcanzado(z)">
+                                                    <mat-icon>edit</mat-icon>
+                                                </button>
+                                                
+                                                <!-- Botones guardar/cancelar -->
+                                                <ng-container *ngIf="z.editingValorAlcanzado">
+                                                    <button mat-icon-button 
+                                                            color="primary"
+                                                            matTooltip="Guardar"
+                                                            (click)="saveValorAlcanzado(z)">
+                                                        <mat-icon>check</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button 
+                                                            color="warn"
+                                                            matTooltip="Cancelar"
+                                                            (click)="cancelEditValorAlcanzado(z)">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna PUNTAJE POR META -->
                         <ng-container matColumnDef="puntuacion_meta">
-                            <th mat-header-cell *matHeaderCellDef>Puntuacion por meta</th>
-                            <td mat-cell *matCellDef="let element"></td>
+                            <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">PUNTAJE POR META</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div>
+                                    <div *ngFor="let z of element.listIndicador; let isLast = last" [style.border-bottom]="!isLast ? '2px solid #e0e0e0' : 'none'">
+                                        <div [style.min-height.px]="calcularAlturaIndicador(z)" style="display: flex; align-items: center; justify-content: center; padding: 8px 4px;">
+                                            <span [style.color]="calcularPuntajePorMeta(z) === 'Error' ? '#f44336' : (calcularPuntajePorMeta(z) === '-' ? '#999' : '#333')" 
+                                                  [style.font-weight]="calcularPuntajePorMeta(z) !== '-' && calcularPuntajePorMeta(z) !== 'Error' ? 'bold' : 'normal'"
+                                                  [style.font-size]="'16px'">
+                                                {{ calcularPuntajePorMeta(z) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </ng-container>
 
-                        <!-- Header row first group -->
-                        <ng-container matColumnDef="header-row-first-group">
-                            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="5">
-                                ETAPA DE PLANIFICACIÓN  
+                        <!-- Sub-header: META -->
+                        <ng-container matColumnDef="header-meta">
+                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="6" class="header-meta">
+                                M E T A
                             </th>
                         </ng-container>
 
-                        <!-- Header row second group -->
-                        <ng-container matColumnDef="header-row-second-group">
-                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="1">ETAPA DE SEGUIMIENTO</th>
-                        </ng-container>
-
-                        <!-- Header row third group -->
-                        <ng-container matColumnDef="header-row-third-group">
-                            <th mat-header-cell *matHeaderCellDef [attr.colspan]="2">ETAPA DE EVALUACIÓN</th>
-                        </ng-container>
-
-                        <tr mat-header-row
-                            *matHeaderRowDef="['header-row-first-group', 'header-row-second-group', 'header-row-third-group']">
-                        </tr>
-
-                        <!-- <ng-container matColumnDef="grouped">
-                            <th mat-header-cell *matHeaderCellDef colspan="11" class="centered">ETAPA DE PLANIFICACIÓN
+                        <!-- Header: SEGUIMIENTO Y RETROALIMENTACIÓN -->
+                        <ng-container matColumnDef="header-seguimiento-retro">
+                            <th mat-header-cell *matHeaderCellDef class="header-meta">
+                                SEGUIMIENTO
                             </th>
                         </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="groupedColumns; sticky: false"></tr> -->
 
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <!-- Definición de las filas de encabezado -->
+                        <tr mat-header-row *matHeaderRowDef="['item', 'prioridad', 'header-meta', 'header-seguimiento-retro', 'valor_alcanzado', 'puntuacion_meta']" class="row-meta"></tr>
+                        <tr mat-header-row *matHeaderRowDef="columnsRow4" class="row-columnas"></tr>
+
+                        <!-- Fila de datos -->
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
+                    
+                    <!-- Nueva tabla de Resultados Finales -->
+                    <br>
+                    <table class="workersTable anotherTable gdr-table-2025" style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <tbody>
+                            <!-- Fila de título RESULTADOS FINALES -->
+                            <tr>
+                                <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 14px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase;">
+                                    RESULTADOS FINALES
+                                </td>
+                            </tr>
+                            
+                            <!-- Fila de encabezados -->
+                            <tr>
+                                <th style="background-color: #c85a28; color: white; padding: 12px; width: 15%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.3);">
+                                    CRITERIOS PARA LA CALIFICACIÓN<br><span style="font-size: 9px; font-style: italic; opacity: 0.9;">(Esta sección debe ser consultada con la ORH)</span>
+                                </th>
+                                <th style="background-color: #1e3a5f; color: white; padding: 12px; width: 12%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.3);">
+                                    PUNTUACIÓN<br>FINAL
+                                </th>
+                                <th style="background-color: #1e3a5f; color: white; padding: 12px; width: 15%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.3);">
+                                    CALIFICACIÓN
+                                </th>
+                                <th style="background-color: #1e3a5f; color: white; padding: 12px; width: 38%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.3);">
+                                    REUNIÓN DE RETROALIMENTACIÓN<br>Y ACCIONES DE MEJORA
+                                </th>
+                                <th style="background-color: #1e3a5f; color: white; padding: 12px; width: 20%; font-size: 11px; text-align: center; vertical-align: middle; font-weight: 600;">
+                                    FECHA DE REUNIÓN
+                                </th>
+                            </tr>
+                            
+                            <!-- Fila de datos -->
+                            <tr>
+                                <!-- Columna CRITERIOS -->
+                                <td style="padding: 14px; background-color: #fef4ed; vertical-align: top; border-right: 2px solid #e0e0e0;">
+                                    <div style="background-color: #c85a28; color: white; padding: 10px; margin-bottom: 12px; font-weight: 600; font-size: 10px; text-align: center; border-radius: 4px;">
+                                        PERMANENCIA EN EL PUESTO ANTES DE EMPEZAR LA ETAPA DE EVALUACIÓN
+                                    </div>
+                                    <div style="padding: 10px; font-size: 10px; line-height: 1.6; background-color: white; border-radius: 4px; margin-bottom: 14px; border-left: 4px solid #c85a28;">
+                                        Tiene 6 meses o más desempeñando el puesto que es objeto de evaluación
+                                    </div>
+                                    <div style="background-color: #c85a28; color: white; padding: 10px; margin-bottom: 10px; font-weight: 600; font-size: 10px; text-align: center; border-radius: 4px;">
+                                        LA JUNTA DE DIRECTIVOS OTORGÓ RENDIMIENTO DISTINGUIDO AL SERVIDOR
+                                    </div>
+                                    <div style="padding: 0 4px;">
+                                        <select style="width: 100%; padding: 10px; font-size: 11px; border: 2px solid #c85a28; border-radius: 4px; background-color: white;"
+                                                [value]="i.resultadosFinales?.rendimientoDistinguido || '[Seleccione]'"
+                                                (change)="onRendimientoDistinguidoChange(i, $event.target.value)">
+                                            <option value="[Seleccione]">[Seleccione]</option>
+                                            <option value="Si">Sí</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                
+                                <!-- Columna PUNTUACIÓN FINAL -->
+                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; border-right: 2px solid #e0e0e0; padding: 20px;">
+                                    <div style="font-size: 42px; font-weight: 700; color: #1e3a5f; line-height: 1; margin-bottom: 8px;">
+                                        {{calcularPuntuacionFinal(i)}}
+                                    </div>
+                                    <div style="font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        Puntos
+                                    </div>
+                                </td>
+                                
+                                <!-- Columna CALIFICACIÓN -->
+                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; padding: 14px; border-right: 2px solid #e0e0e0;">
+                                    <div style="font-weight: 700; font-size: 18px; line-height: 1.4; text-align: center;"
+                                         [style.color]="calcularCalificacion(i) === 'Rendimiento Distinguido' ? '#4caf50' : (calcularCalificacion(i) === 'Buen rendimiento' ? '#2196f3' : '#f44336')">
+                                        {{calcularCalificacion(i)}}
+                                    </div>
+                                </td>
+                                
+                                <!-- Columna REUNIÓN DE RETROALIMENTACIÓN -->
+                                <td style="padding: 0; background-color: #fafafa; vertical-align: top; border-right: 2px solid #e0e0e0;">
+                                    <div style="width: 100%; box-sizing: border-box; padding: 12px; background-color: white;">
+                                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 8px; position: relative;">
+                                            <div style="font-weight: 600; font-size: 10px; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px;">
+                                                ACCIONES DE CAPACITACIÓN
+                                            </div>
+                                            <div style="display: flex; gap: 4px; margin-left: 8px;">
+                                                <button *ngIf="!i.editingAccionesCapacitacion"
+                                                        mat-icon-button 
+                                                        color="primary" 
+                                                        matTooltip="Editar acciones de capacitación"
+                                                        style="width: 28px; height: 28px;"
+                                                        (click)="editarAccionesCapacitacion(i)">
+                                                    <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">edit</mat-icon>
+                                                </button>
+                                                
+                                                <ng-container *ngIf="i.editingAccionesCapacitacion">
+                                                    <button mat-icon-button 
+                                                            color="primary"
+                                                            matTooltip="Guardar"
+                                                            style="width: 28px; height: 28px;"
+                                                            (click)="guardarAccionesCapacitacion(i)">
+                                                        <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">check</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button 
+                                                            color="warn"
+                                                            matTooltip="Cancelar"
+                                                            style="width: 28px; height: 28px;"
+                                                            (click)="cancelarAccionesCapacitacion(i)">
+                                                        <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">close</mat-icon>
+                                                    </button>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        
+                                        <div *ngIf="!i.editingAccionesCapacitacion" 
+                                             style="width: 95%; margin: 0 auto; box-sizing: border-box; height: 80px; padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #2196f3; border-radius: 4px; font-size: 12px; line-height: 1.5; color: #333; text-align: center; overflow-y: auto; word-wrap: break-word;">
+                                            {{i.resultadosFinales?.accionesCapacitacion || 'Sin registros'}}
+                                        </div>
+                                        
+                                        <textarea *ngIf="i.editingAccionesCapacitacion"
+                                                  style="width: 95%; margin: 0 auto; box-sizing: border-box; height: 80px; border: 2px solid #2196f3; padding: 12px; font-size: 12px; border-radius: 4px; resize: vertical; font-family: inherit;"
+                                                  placeholder="Ingrese las acciones de capacitación recomendadas..."
+                                                  [(ngModel)]="i.resultadosFinales.accionesCapacitacion"></textarea>
+                                    </div>
+                                    
+                                    <div style="width: 100%; box-sizing: border-box; padding: 12px; background-color: white;">
+                                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 8px; position: relative;">
+                                            <div style="font-weight: 600; font-size: 10px; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px;">
+                                                OTRAS ACCIONES PARA LA MEJORA
+                                            </div>
+                                            <div style="display: flex; gap: 4px; margin-left: 8px;">
+                                                <button *ngIf="!i.editingOtrasAcciones"
+                                                        mat-icon-button 
+                                                        color="primary" 
+                                                        matTooltip="Editar otras acciones"
+                                                        style="width: 28px; height: 28px;"
+                                                        (click)="editarOtrasAcciones(i)">
+                                                    <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">edit</mat-icon>
+                                                </button>
+                                                
+                                                <ng-container *ngIf="i.editingOtrasAcciones">
+                                                    <button mat-icon-button 
+                                                            color="primary"
+                                                            matTooltip="Guardar"
+                                                            style="width: 28px; height: 28px;"
+                                                            (click)="guardarOtrasAcciones(i)">
+                                                        <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">check</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button 
+                                                            color="warn"
+                                                            matTooltip="Cancelar"
+                                                            style="width: 28px; height: 28px;"
+                                                            (click)="cancelarOtrasAcciones(i)">
+                                                        <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">close</mat-icon>
+                                                    </button>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        
+                                        <div *ngIf="!i.editingOtrasAcciones" 
+                                             style="width: 95%; margin: 0 auto; box-sizing: border-box; height: 80px; padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #4caf50; border-radius: 4px; font-size: 12px; line-height: 1.5; color: #333; text-align: center; overflow-y: auto; word-wrap: break-word;">
+                                            {{i.resultadosFinales?.otrasAcciones || 'Sin registros'}}
+                                        </div>
+                                        
+                                        <textarea *ngIf="i.editingOtrasAcciones"
+                                                  style="width: 95%; margin: 0 auto; box-sizing: border-box; height: 80px; border: 2px solid #4caf50; padding: 12px; font-size: 12px; border-radius: 4px; resize: vertical; font-family: inherit;"
+                                                  placeholder="Ingrese otras acciones recomendadas para mejorar el desempeño..."
+                                                  [(ngModel)]="i.resultadosFinales.otrasAcciones"></textarea>
+                                    </div>
+                                </td>
+                                
+                                <!-- Columna FECHA -->
+                                <td style="text-align: center; vertical-align: middle; background-color: #f5f5f5; padding: 16px;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <mat-icon style="font-size: 20px; color: #1e3a5f;">event</mat-icon>
+                                            <span style="font-size: 11px; font-weight: 600; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px;">
+                                                Fecha de Reunión
+                                            </span>
+                                        </div>
+                                        <input type="date" 
+                                               style="width: 100%; max-width: 180px; padding: 12px; border: 2px solid #1e3a5f; border-radius: 6px; font-size: 12px; text-align: center; background-color: white; color: #333; font-weight: 500;"
+                                               [value]="i.resultadosFinales?.fechaReunion || ''"
+                                               (change)="onFechaReunionChange(i, $event.target.valueAsDate)">
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Fila de FIRMAS -->
+                            <tr>
+                                <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 12px; font-weight: 700; font-size: 12px; letter-spacing: 0.5px;">
+                                    FIRMAS DE LA REUNIÓN DE RETROALIMENTACIÓN FINAL<br>
+                                    <span style="font-style: italic; font-size: 10px; font-weight: 400; opacity: 0.9;">(En etapa de Evaluación)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center; padding: 40px 20px; background-color: #f9f9f9; border-right: 3px solid #1e3a5f;">
+                                    <div style="font-weight: 700; font-size: 12px; color: #1e3a5f; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        FIRMA EVALUADO/A
+                                    </div>
+                                    <div style="border-top: 2px solid #1e3a5f; width: 70%; margin: 0 auto; padding-top: 8px; font-size: 10px; color: #666;">
+                                        Nombre y Firma
+                                    </div>
+                                </td>
+                                <td colspan="3" style="text-align: center; padding: 40px 20px; background-color: #f9f9f9;">
+                                    <div style="font-weight: 700; font-size: 12px; color: #1e3a5f; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        FIRMA EVALUADOR/A
+                                    </div>
+                                    <div style="border-top: 2px solid #1e3a5f; width: 70%; margin: 0 auto; padding-top: 8px; font-size: 10px; color: #666;">
+                                        Nombre y Firma
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
                     <!-- 
                     <br />
                     <span><strong>Peso Total:</strong> {{i.pesoTotal}}%</span>

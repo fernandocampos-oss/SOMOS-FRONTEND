@@ -18,6 +18,7 @@ import { AppRoute } from '@data/constants';
 import { SegmentoVotante } from '@data/enums';
 import { InscripcionService } from '@data/services/inscripcion.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
+import { PlataformaIntegralService } from '@data/services/plataforma-integral.service';
 import { environment } from '@env';
 import { EditUserComponent } from './edit-user/edit-user.component';
 
@@ -55,7 +56,8 @@ export class SidenavComponent implements OnInit {
               private _zonaService   : ZonaService,
               private _userService   : UsuarioService,
               private _gestionRendimientoService: GestionRendimientoService,
-              private _inscripcionService   : InscripcionService) {
+              private _inscripcionService   : InscripcionService,
+              private _plataformaIntegralService: PlataformaIntegralService) {
     this.matIconRegistry.addSvgIcon("remote_menu",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/remote_menu.svg"));
     this.matIconRegistry.addSvgIcon("ddjj",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/ddjj.svg"));
     this.matIconRegistry.addSvgIcon("marcacion_icon",this.domSanitizer.bypassSecurityTrustResourceUrl("assets/images/svg/carneMarcacionIcon.svg"));
@@ -188,6 +190,18 @@ export class SidenavComponent implements OnInit {
 
   openLinkCAFAE() {
     window.open('https://www.gob.pe/institucion/essalud/campa%C3%B1as/68712-elecciones-cafae-essalud', '_blank');
+  }
+
+  openPIGRH() {
+    this._plataformaIntegralService.generarToken().subscribe({
+      next: (response) => {
+        window.open(response.urlPlataforma, '_blank');
+      },
+      error: (error) => {
+        console.error('Error al generar token para PIGRH:', error);
+        alert('Error al conectar con PIGRH. Por favor, intente nuevamente.');
+      }
+    });
   }
 	
 }

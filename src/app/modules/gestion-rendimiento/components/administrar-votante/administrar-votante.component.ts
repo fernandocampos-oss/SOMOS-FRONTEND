@@ -77,7 +77,7 @@ export class AdministrarVotanteComponent implements OnInit {
   }
 
   async actualizarSegmentoVotante(idSegmento: any, idVotante: any) {
-    console.log("idSegmento ", idSegmento, " idVotante ", idVotante);
+    // console.log("idSegmento ", idSegmento, " idVotante ", idVotante);
 
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false,

@@ -35,11 +35,13 @@ export class AsignarIndicadorComponent implements OnInit {
     frmTipoValorMeta: ['', Validators.required],
     frmValorMeta: [''],
     frmPeso: ['', Validators.required],
+    frmSentidoIndicador: ['ascendente', Validators.required], // Nuevo campo
   });
   
   formEvidencia = this._formBuilder.group({
     frmDescripcion: [''],
     frmPlazo: [''],
+    frmPlazoFinal: ['', Validators.required],
   });
 
   listTipoValorMeta: any[] = [];
@@ -53,6 +55,7 @@ export class AsignarIndicadorComponent implements OnInit {
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<AsignarIndicadorComponent>,
     private _dialog: MatDialog,
     private _notification: NotificationService,
     private _formBuilder: FormBuilder,
@@ -61,9 +64,9 @@ export class AsignarIndicadorComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarTipoValorMeta();
-    console.log(this.data)
+    // console.log(this.data)
     this.porcentajeGrabado = this.data.trabajador.pesoTotal;
-    console.log("Data: ",this.data);
+    // console.log("Data: ",this.data);
     this.nomPrioridad = this.data.descripcion;
   }
 
@@ -74,7 +77,7 @@ export class AsignarIndicadorComponent implements OnInit {
   async listarTipoValorMeta() {
     let listarTipoValorMeta = await this._grService.listarTipoValorMeta().then((data) => {
       if (data.length > 0) {
-        this.listTipoValorMeta = data;
+        this.listTipoValorMeta = data.filter((item: any) => item.descripcion.toLowerCase() !== 'promedio');
       } else {
         this._notification.warning("Lista de tipo valor meta vacio");
       }
@@ -124,6 +127,7 @@ export class AsignarIndicadorComponent implements OnInit {
     indicador.tipoValorMeta = tipoValorMeta;
     indicador.flDesPrioridad = '1';
     indicador.desPrioridad = this.data.prioridadSelected.prioridadNombre;
+    indicador.sentidoIndicador = this.formPrioridad.value.frmSentidoIndicador; // Nuevo campo
     if (this.formPrioridad.value.frmTipoValorMeta == 3) {
       indicador.valorMeta = 100;
     } else {
@@ -145,6 +149,11 @@ export class AsignarIndicadorComponent implements OnInit {
     prioridadExistDto.votante = votante;
     prioridadExistDto.indicador = indicador;
     prioridadExistDto.listEvidencia = evidencias;
+    prioridadExistDto.sentidoIndicador = this.formPrioridad.value.frmSentidoIndicador;
+    
+    if(this.formEvidencia.value.frmPlazoFinal){
+      prioridadExistDto.fechaPlazoFinal = moment(this.formEvidencia.value.frmPlazoFinal._d).format('YYYY-MM-DDTHH:mm:ss');
+    }
 
     this.confirmDialogRef = this._dialog.open(ConfirmarPanelComponent, {
       disableClose: false
@@ -155,13 +164,77 @@ export class AsignarIndicadorComponent implements OnInit {
 
         this._grService.registrarIndicadorExistPrioridad(prioridadExistDto).then(data => {
           this._notification.success("Se registró correctamente");
-          this._dialog.closeAll();
+          this.dialogRef.close(true);
         });
-        // this._dialog.closeAll();
+        // this.dialogRef.close(true);
       }
       this.confirmDialogRef = null;
     });
 
+  }
+
+  onlyNumbersAndDecimal(event: KeyboardEvent): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    const inputElement = event.target as HTMLInputElement;
+    const currentValue = inputElement.value;
+    const selectionStart = inputElement.selectionStart;
+    const selectionEnd = inputElement.selectionEnd;
+    
+    // Obtener el carácter que se está ingresando
+    const char = String.fromCharCode(charCode);
+    const newValue = currentValue.substring(0, selectionStart) + char + currentValue.substring(selectionEnd);
+    
+    // Permitir punto decimal
+    if (charCode === 46) {
+      // Verificar que no haya ya un punto decimal
+      if (currentValue.indexOf('.') !== -1) {
+        return false;
+      }
+      return true;
+    }
+    
+    // Solo permitir números 0-9
+    if (charCode >= 48 && charCode <= 57) {
+      // Si el valor actual es "0" y se escribe un dígito diferente de 0, reemplazar el 0
+      if (currentValue === '0' && char !== '0') {
+        inputElement.value = '';
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: parseFloat(char) });
+        }, 0);
+        return false;
+      }
+      
+      // No permitir más ceros si el campo ya es "0"
+      if (char === '0' && currentValue === '0') {
+        return false;
+      }
+      
+      // Validar que el nuevo valor no supere 100
+      const numericValue = parseFloat(newValue);
+      if (!isNaN(numericValue) && numericValue > 100) {
+        // Si supera 100, establecer automáticamente en 100
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: 100 });
+        }, 0);
+        return false;
+      }
+      
+      // Verificar que no se escriba un tercer dígito entero
+      // Si ya tengo 2 dígitos antes del punto decimal (o sin punto), no permitir más
+      const parteEntera = newValue.split('.')[0];
+      if (parteEntera.length > 3 || (parteEntera.length === 3 && parteEntera !== '100')) {
+        // Si intenta escribir más de 3 dígitos o 3 dígitos que no sean "100", establecer en 100
+        setTimeout(() => {
+          this.formPrioridad.patchValue({ frmPeso: 100 });
+        }, 0);
+        return false;
+      }
+      
+      return true;
+    }
+    
+    // Bloquear todo lo demás (incluyendo el signo menos)
+    return false;
   }
 
 }

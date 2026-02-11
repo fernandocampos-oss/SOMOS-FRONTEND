@@ -1,0 +1,32 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>Editar Fecha de Plazo Final</h2>
+  
+  <mat-dialog-content>
+    <div *ngIf="cargando" style="text-align: center; padding: 20px;">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <form [formGroup]="formFechaPlazo" *ngIf="!cargando">
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Fecha de Plazo</mat-label>
+        <input matInput 
+               [matDatepicker]="picker" 
+               formControlName="fechaPlazo"
+               placeholder="Seleccione una fecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="cerrar()">Cancelar</button>
+
+    <button mat-raised-button 
+            color="primary" 
+            [disabled]="cargando || !formFechaPlazo.valid"
+            (click)="guardarFechaPlazo()">
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</div>

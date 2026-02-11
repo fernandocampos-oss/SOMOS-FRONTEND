@@ -15,6 +15,340 @@
 
 table {
     width: 100%;
+    table-layout: auto !important; /* Volver a auto para mejor adaptabilidad */
+}
+
+.gdr-table-2025 .matrixCube {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* CSS MUY ESPECÍFICO PARA FORZAR CAMBIOS */
+
+/* 1. Forzar que las celdas empiecen desde arriba */
+.gdr-table-2025 td.mat-cell {
+    vertical-align: top !important;
+    padding: 0 !important;
+}
+
+/* 2. Eliminar TODOS los espacios de mat-list */
+.gdr-table-2025 mat-list {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.gdr-table-2025 mat-list-item {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.gdr-table-2025 mat-list-item .mat-list-item-content {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Estilos específicos para la columna de VALOR ALCANZADO */
+.mat-column-valor_alcanzado {
+    width: 120px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+    
+    mat-form-field {
+        width: 80px !important;
+        font-size: 12px !important;
+        
+        .mat-form-field-wrapper {
+            padding-bottom: 0 !important;
+        }
+        
+        .mat-form-field-infix {
+            padding: 0.5em 0 !important;
+            border-top: 0.5em solid transparent !important;
+        }
+        
+        input {
+            text-align: center !important;
+            font-size: 12px !important;
+        }
+    }
+    
+    /* Dar más altura a la celda para que el botón sea visible */
+    .mat-list-item {
+        min-height: 60px !important;
+    }
+    
+    .matrixCube {
+        min-height: 60px !important;
+    }
+}
+
+/* 4. Forzar padding de contenedores principales */
+.gdr-table-2025 div[style*="padding"][style*="0"] {
+    padding: 0 !important;
+}
+
+/* ===== SECCIÓN CONSOLIDADA: ESPACIADO DE EVIDENCIAS ===== */
+
+/* REGLA CON CLASE ESPECÍFICA: Contenedores individuales de evidencias */
+.gdr-table-2025 .evidencia-individual-container {
+    height: 44px !important;
+}
+
+/* REGLA CON CLASE ESPECÍFICA: Evidencia final */
+.gdr-table-2025 .evidencia-final-container {
+    height: 44px !important;
+}
+
+/* ===== BOTONES PEQUEÑOS DE EVIDENCIA ===== */
+/* Corrige el efecto ripple/focus para que aparezca en el lugar correcto */
+.btn-evidencia-small {
+    width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+    padding: 0 !important;
+    min-width: 16px !important;
+    
+    .mat-button-wrapper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 16px !important;
+        height: 16px !important;
+        padding: 0 !important;
+        line-height: 16px !important;
+    }
+    
+    .mat-button-ripple,
+    .mat-button-focus-overlay,
+    .mat-ripple {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 50% !important;
+    }
+    
+    mat-icon {
+        font-size: 11px !important;
+        width: 11px !important;
+        height: 11px !important;
+        line-height: 11px !important;
+    }
+}
+
+/* Botones externos (agregar/eliminar evidencia) - tamaño 20px */
+.btn-evidencia-external {
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 20px !important;
+    padding: 0 !important;
+    min-width: 20px !important;
+    
+    .mat-button-wrapper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 20px !important;
+        height: 20px !important;
+        padding: 0 !important;
+        line-height: 20px !important;
+    }
+    
+    .mat-button-ripple,
+    .mat-button-focus-overlay,
+    .mat-ripple {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 20px !important;
+        height: 20px !important;
+        border-radius: 50% !important;
+    }
+    
+    mat-icon {
+        font-size: 14px !important;
+        width: 14px !important;
+        height: 14px !important;
+        line-height: 14px !important;
+    }
+}
+
+/* Alineación de botones en columna de evidencia */
+.evidencia-buttons-container {
+    /* Sin transformación para mantener alineación */
+}
+
+.evidencia-external-controls {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+/* Estilos para la tabla GDR 2025 */
+.gdr-table-2025 {
+    width: 100%;
+    border-collapse: collapse;
+    
+    /* Header principal: CICLO */
+    .header-ciclo {
+        background-color: #5B9BD5 !important;
+        color: white !important;
+        font-weight: bold;
+        text-align: center;
+        padding: 12px 8px;
+        font-size: 14px;
+        border: 1px solid #333 !important;
+    }
+
+    /* Headers de ETAPAS */
+    .header-etapa {
+        font-weight: bold;
+        text-align: center;
+        padding: 10px 8px;
+        font-size: 13px;
+        border: 1px solid #333 !important;
+        color: #333 !important;
+    }
+
+    .header-planificacion {
+        background-color: #B4C7E7 !important;
+    }
+
+    .header-seguimiento {
+        background-color: #C5E0B4 !important;
+    }
+
+    .header-evaluacion {
+        background-color: #FFD966 !important;
+    }
+
+    /* Header META */
+    .header-meta {
+        background-color: #D9E1F2 !important;
+        color: #333 !important;
+        font-weight: bold;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    /* Filas de encabezado */
+    .row-ciclo th {
+        height: 40px;
+    }
+
+    .row-etapas th {
+        height: 35px;
+    }
+
+    .row-preguntas th {
+        background-color: #FFFFFF !important;
+        color: #333 !important;
+        font-weight: normal;
+        text-align: center;
+        padding: 10px 8px;
+        font-size: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    .row-meta th {
+        height: 30px;
+        background-color: #D9E1F2 !important;
+        color: #333 !important;
+        font-weight: bold;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    .row-columnas th {
+        background-color: #E7E6E6 !important;
+        color: #333 !important;
+        font-weight: bold;
+        text-align: center !important;
+        vertical-align: middle !important;
+        border: 1px solid #333 !important;
+        padding: 8px 4px !important;
+        font-size: 11px;
+        line-height: 1.2;
+        height: auto;
+        min-height: 50px;
+    }
+
+    /* Columnas específicas */
+    .col-item {
+        width: 40px;
+    }
+
+    .col-prioridad {
+        min-width: 150px;
+    }
+
+    .col-comentarios {
+        min-width: 120px !important;
+        max-width: 120px !important;
+        width: 120px !important;
+    }
+
+    /* Preguntas en headers */
+    .pregunta-cell {
+        padding: 12px 8px !important;
+        vertical-align: top !important;
+        
+        .mat-form-field .mat-select {
+            text-align: center !important;
+            margin-top: -5px !important;
+        }
+        
+        .mat-form-field .mat-select .mat-select-value {
+            text-align: center !important;
+        }
+        
+        .mat-form-field .mat-select .mat-select-placeholder {
+            text-align: center !important;
+        }
+    }
+
+    /* Celdas de datos */
+    td.mat-cell {
+        text-align: center !important;
+        vertical-align: middle !important;
+        border: 1px solid #CCC !important;
+        padding: 2px 4px !important; /* Reducido de 8px a 2px */
+        font-size: 12px;
+    }
+
+    /* CONSOLIDADO: Overrides específicos para mat-list en evidencias */
+    .mat-list {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .mat-list-item {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    .mat-list-item .mat-list-item-content {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Celda de comentarios */
+    .comentarios-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
 }
 
 .red-background {
@@ -94,13 +428,8 @@ mat-expansion-panel {
 .mat-column-evidencia {
     word-wrap: break-word !important;
     white-space: unset !important;
-    flex: 0 0 8% !important;
-    width: 25% !important;
+    max-width: 130px !important;
     overflow-wrap: break-word;
-    word-wrap: break-word;
-
-    word-break: break-word;
-
     -ms-hyphens: auto;
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
@@ -113,10 +442,6 @@ mat-expansion-panel {
     flex: 0 0 8% !important;
     width: 11% !important;
     overflow-wrap: break-word;
-    word-wrap: break-word;
-
-    word-break: break-word;
-
     -ms-hyphens: auto;
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
@@ -128,6 +453,286 @@ mat-expansion-panel {
 //     // margin-top: 1px;
 //     padding: 0px 0px 0px 0px;
 // }
+
+// Corregir efectos visuales del botón Ver comentario
+.btn-ver-comentario {
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    // Asegurar que el botón tenga las dimensiones correctas
+    &.mat-icon-button {
+        width: 18px !important;
+        height: 18px !important;
+        line-height: 18px !important;
+        min-width: 18px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    // Corregir posicionamiento del wrapper del botón
+    .mat-button-wrapper {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    // Centrar el icono
+    mat-icon {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    // Corregir efectos visuales para que coincidan exactamente con el botón
+    .mat-button-ripple,
+    .mat-button-focus-overlay {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 50% !important;
+        pointer-events: none !important;
+        transform: none !important;
+    }
+    
+    // Corregir ripple específicamente
+    .mat-button-ripple.mat-button-ripple-round {
+        border-radius: 50% !important;
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    // Asegurar que el focus overlay esté centrado
+    .mat-button-focus-overlay {
+        opacity: 0 !important;
+        transition: opacity 200ms !important;
+    }
+    
+    &:focus .mat-button-focus-overlay {
+        opacity: 0.12 !important;
+    }
+}
+
+// Estilos específicos para mat-select en comentarios (versión corregida)
+.mat-column-comentarios {
+    max-width: 120px !important; /* Aumentar ancho total de la columna */
+    width: 120px !important;
+    min-width: 120px !important;
+    flex: 0 0 120px !important; /* Forzar flex específico para comentarios */
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    
+    mat-form-field {
+        width: 70px !important; /* Mantener ancho del selector como estaba */
+        font-size: 8px !important;
+        
+        .mat-form-field-wrapper {
+            padding-bottom: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .mat-form-field-infix {
+            padding: 2px 0 4px 0 !important;
+            border-top: none !important;
+            width: 65px !important; /* Volver al ancho anterior del infix */
+        }
+        
+        .mat-select {
+            font-size: 8px !important;
+            
+            .mat-select-trigger {
+                height: 18px !important;
+                min-height: 18px !important;
+                transform: translateY(-6px) !important; /* Subir todo el trigger 6px */
+            }
+            
+            .mat-select-value {
+                font-size: 8px !important;
+                line-height: 12px !important; /* Reducir line-height */
+                transform: translateY(-6px) !important; /* Subir el valor 6px */
+                margin-top: -6px !important; /* Margen negativo adicional */
+            }
+            
+            .mat-select-value-text {
+                transform: translateY(-6px) !important; /* Subir el texto 6px */
+                margin-top: -6px !important; /* Margen negativo adicional */
+            }
+            
+            .mat-select-arrow-wrapper {
+                transform: translateY(-8px) !important; /* Ajustar flecha también */
+            }
+        }
+        
+        .mat-form-field-outline {
+            .mat-form-field-outline-start,
+            .mat-form-field-outline-gap,
+            .mat-form-field-outline-end {
+                border-width: 1px !important;
+            }
+        }
+    }
+}
+
+/* Selector más específico para mover texto hacia arriba en comentarios */
+.mat-column-comentarios mat-form-field .mat-select .mat-select-trigger .mat-select-value,
+.mat-column-comentarios mat-form-field .mat-select .mat-select-trigger .mat-select-placeholder,
+.mat-column-comentarios .mat-select-value,
+.mat-column-comentarios .mat-select-placeholder {
+    transform: translateY(-6px) !important;
+    margin-top: -6px !important;
+    padding-top: 0px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+}
+
+/* Ajustar también la flecha */
+.mat-column-comentarios mat-form-field .mat-select .mat-select-arrow-wrapper {
+    transform: translateY(-6px) !important;
+    margin-top: -6px !important;
+}
+
+/* Forzar ancho en todos los elementos de la columna comentarios */
+.mat-column-comentarios .mat-list-item,
+.mat-column-comentarios .matrixCube {
+    width: 120px !important;
+    max-width: 120px !important;
+    min-width: 120px !important;
+}
+
+/* Forzar ancho en los contenedores internos de comentarios */
+.mat-column-comentarios div[style*="background-color: #f9f9f9"],
+.mat-column-comentarios div[style*="background-color: #fff8dc"] {
+    width: 110px !important;
+    max-width: 110px !important;
+    min-width: 110px !important;
+}
+
+/* Forzar ancho en el mat-line */
+.mat-column-comentarios .mat-line {
+    width: 120px !important;
+    max-width: 120px !important;
+}
+
+// Ajustar el selector de comentarios - Solución agresiva
+.col-comentarios {
+    min-width: 120px !important;
+    max-width: 120px !important;
+    width: 120px !important;
+    
+    mat-form-field {
+        height: 22px !important;
+        
+        .mat-form-field-wrapper {
+            height: 22px !important;
+            padding-bottom: 0 !important;
+        }
+        
+        .mat-form-field-flex {
+            height: 22px !important;
+            align-items: center !important;
+        }
+        
+        .mat-form-field-infix {
+            padding: 0px 8px !important;
+            text-align: center !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 22px !important;
+            border-top: none !important;
+        }
+        
+        .mat-select {
+            text-align: center !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1 !important;
+            height: 22px !important;
+            
+            .mat-select-value {
+                text-align: center !important;
+                width: 100% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1 !important;
+                height: 22px !important;
+                
+                .mat-select-value-text {
+                    text-align: center !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    line-height: 1 !important;
+                }
+            }
+            
+            .mat-select-placeholder {
+                text-align: center !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1 !important;
+                height: 22px !important;
+            }
+            
+            .mat-select-arrow-wrapper {
+                margin: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+        }
+        
+        .mat-form-field-outline {
+            padding: 0 4px !important;
+        }
+        
+        // Centrar verticalmente el trigger
+        .mat-select-trigger {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 22px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            line-height: 1 !important;
+        }
+        
+        // Ajustar la línea de outline
+        .mat-form-field-outline-start,
+        .mat-form-field-outline-end {
+            height: 22px !important;
+        }
+        
+        .mat-form-field-outline-gap {
+            height: 22px !important;
+        }
+        
+        // Eliminar subscript que empuja hacia abajo
+        .mat-form-field-subscript-wrapper {
+            display: none !important;
+        }
+    }
+}
 
 td,
 th {
@@ -173,6 +778,43 @@ mat-panel-description {
 
 .mat-table {
     border: 1px solid #cad2dc;
+}
+
+/* Forzar ancho total de columna comentarios */
+th.mat-header-cell.col-comentarios,
+td.mat-cell.mat-column-comentarios {
+    width: 120px !important;
+    max-width: 120px !important;
+    min-width: 120px !important;
+    flex: 0 0 120px !important;
+}
+
+/* Centrar contenido de la columna VALOR ESPERADO */
+.mat-column-valor_esperado {
+    text-align: center !important;
+    
+    .mat-list-item {
+        justify-content: center !important;
+        
+        .mat-list-item-content {
+            justify-content: center !important;
+            text-align: center !important;
+        }
+    }
+}
+
+/* Centrar contenido de la columna PESO */
+.mat-column-peso {
+    text-align: center !important;
+    
+    .mat-list-item {
+        justify-content: center !important;
+        
+        .mat-list-item-content {
+            justify-content: center !important;
+            text-align: center !important;
+        }
+    }
 }
 
 th.mat-header-cell, td.mat-cell {
