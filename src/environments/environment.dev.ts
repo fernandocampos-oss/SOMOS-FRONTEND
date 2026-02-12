@@ -1,7 +1,8 @@
 export const environment = {
   production: true,
   moduloGr: true,
-  apiUrl: 'http://localhost/api',
+  // apiUrl: 'http://localhost/api',
+  apiUrl: 'https://appsqa.essalud.gob.pe/marcaciones-service/api',
   environmentName: 'PÁGINA EN DESARROLLO (LOCAL)',
   recaptchaSiteKey: '6LeCrusqAAAAADekhdRw7__HWF4id1pYDkhsSkhh',
   sentry: {
