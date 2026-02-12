@@ -56,10 +56,10 @@
             </mat-list-item>
           </ng-container>
         </div>
-        <mat-list-item *ngIf="user.id == 291 || user.id == 12560" routerLinkActive="active" [routerLink]="['/administracion/renueva-proyectos']" [routerLinkActiveOptions]="{ exact: true }">
+        <!-- <mat-list-item *ngIf="user.id == 291 || user.id == 12560" routerLinkActive="active" [routerLink]="['/administracion/renueva-proyectos']" [routerLinkActiveOptions]="{ exact: true }">
           <mat-icon mat-list-icon>library_books</mat-icon>
           <span class="option" matLine>Proyectos de Renueva EsSalud </span>
-        </mat-list-item>
+        </mat-list-item> -->
         <mat-list-item *ngIf="user.id == 11511" routerLinkActive="active" [routerLink]="['/administracion/encuestas']" [routerLinkActiveOptions]="{ exact: true }"><!---------------------AQUI----------------------->
           <mat-icon mat-list-icon>assignment</mat-icon>
           <span class="option" matLine>Encuestas Asignadas </span>
@@ -77,16 +77,14 @@
           </mat-list-item>
           -->
         </ng-container>
-        <mat-list-item (click)='openLinkCAFAE()'>
+        <!-- <mat-list-item (click)='openLinkCAFAE()'>
           <mat-icon mat-list-icon>link</mat-icon>
           <span class="option" matLine>Elecciones CAFAE Essalud 2024</span>
-        </mat-list-item>
-          <!-- OCULTAR PIGRH  -->
+        </mat-list-item>-->
         <mat-list-item (click)='openPIGRH()'>
           <mat-icon mat-list-icon>open_in_new</mat-icon>
           <span class="option" matLine>PIGRH - Plataforma Integral de Gestión del Recurso Humano</span>
         </mat-list-item>
-
         <mat-list-item routerLinkActive="active" [routerLink]="['/plazas']" [routerLinkActiveOptions]="{ exact: true }" *ngIf='tienePermisoModuloPlaza'>
           <mat-icon mat-list-icon>assignment</mat-icon>
           <span class="option" matLine>Plazas</span>
