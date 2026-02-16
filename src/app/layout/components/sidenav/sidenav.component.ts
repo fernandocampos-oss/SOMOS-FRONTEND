@@ -195,7 +195,36 @@ export class SidenavComponent implements OnInit {
   openPIGRH() {
     this._plataformaIntegralService.generarToken().subscribe({
       next: (response) => {
-        window.open(response.urlPlataforma, '_blank');
+        // Construir URL del backend de PIGRH según el ambiente
+        const url = new URL(response.urlPlataforma);
+        let urlDestino: string;
+        
+        if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+          // Desarrollo local: backend PIGRH en puerto 3000
+          urlDestino = `${url.protocol}//${url.hostname}:3000/api/sso/ingreso`;
+        } else if (url.hostname.includes('appsqa')) {
+          // Ambiente QA
+          urlDestino = 'https://appsqa.essalud.gob.pe/sisprom-v2-service/api/sso/ingreso';
+        } else {
+          // Producción
+          urlDestino = 'https://pigrh.essalud.gob.pe/api/sso/ingreso';
+        }
+        
+        // Crear formulario POST oculto para enviar token de forma segura
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = urlDestino;
+        form.target = '_blank';
+        
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = 'token';
+        tokenInput.value = response.token;
+        
+        form.appendChild(tokenInput);
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
       },
       error: (error) => {
         console.error('Error al generar token para PIGRH:', error);
