@@ -69,7 +69,8 @@ export class AsignarPrioridadComponent implements OnInit {
   onChangeValueTipoValorMeta: number;
 
   confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
-  pesoTotalIndicadoresTrabajador: number;
+  pesoTotalIndicadoresTrabajador: number = 0;
+  pesoIndicadorOriginal: number = 0;
   showHelpCPlanilla = false;
 
   constructor(
@@ -120,6 +121,7 @@ export class AsignarPrioridadComponent implements OnInit {
     this.activaEdicion = false;
     this.desPrioridad = null;
     this.flPrioridad = '1';
+    this.pesoIndicadorOriginal = 0;
     let infActividad:any;
     infActividad = this.listActividad.find((dtActi:any)=>dtActi.idActividad == 1);
     this.formPrioridad.controls["frmActividad"].setValue(infActividad);
@@ -187,6 +189,7 @@ export class AsignarPrioridadComponent implements OnInit {
       this.formPrioridad.controls["frmTipoValorMeta"].setValue(infIndicador.idTipoValorMeta);
       this.onChangeValueTipoValorMeta = infIndicador.idTipoValorMeta;
       this.formPrioridad.controls["frmPeso"].setValue(infIndicador.peso);
+      this.pesoIndicadorOriginal = infIndicador.peso;
       this.formPrioridad.controls["frmValorMeta"].setValue(infIndicador.valorMeta);
       //this.listEvidencia = this.data.prioridad.listIndicador[0].listEvidencia;
       this.listEvidencia = [];
