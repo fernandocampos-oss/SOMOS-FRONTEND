@@ -237,4 +237,15 @@ export class AsignarIndicadorComponent implements OnInit {
     return false;
   }
 
+  validaNumero(event: any): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    // Solo permitir números 0-9 (códigos 48-57)
+    if (charCode >= 48 && charCode <= 57) {
+      return true;
+    }
+    // Bloquear todo lo demás
+    event.preventDefault();
+    return false;
+  }
+
 }

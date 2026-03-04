@@ -21,7 +21,7 @@
             <div *ngIf="onChangeValueTipoValorMeta == 1 || onChangeValueTipoValorMeta == 2 || onChangeValueTipoValorMeta == 5">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor numérico</mat-label>
-                    <input matInput formControlName="frmValorMeta" maxlength="3" required />
+                    <input matInput formControlName="frmValorMeta" maxlength="3" (keypress)="validaNumero($event)" required />
                 </mat-form-field>
             </div>
             <!-- Agregado de Valor de Meta -->
@@ -29,7 +29,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Valor porcentual</mat-label>
                     <input matInput formControlName="frmValorMeta" minlength="1" maxlength="3"
-                        class="example-right-align" required />
+                        class="example-right-align" (keypress)="validaNumero($event)" required />
                     <span matSuffix class="percent-align">%</span>
                 </mat-form-field>
             </div>
@@ -46,6 +46,7 @@
                         <p class="primary-button">¡Peso inválido!</p>
                         <br>
                         <p>El porcentaje total no debe superar el 100%</p>
+                        <br>
                         <p>El peso mínimo debe ser 20%</p>
                         <br>
                         <p>Ya tiene grabado {{porcentajeGrabado}}% en los Indicadores/Productos</p>
