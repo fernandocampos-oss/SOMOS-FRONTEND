@@ -18,14 +18,14 @@
                 </mat-select>
             </mat-form-field>
             <!-- Agregado de Valor de Meta -->
-            <div *ngIf="onChangeValueTipoValorMeta == 1 || onChangeValueTipoValorMeta == 2 || onChangeValueTipoValorMeta == 5">
+            <div *ngIf="onChangeValueTipoValorMeta == 1 || onChangeValueTipoValorMeta == 6">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor numérico</mat-label>
                     <input matInput formControlName="frmValorMeta" maxlength="3" (keypress)="validaNumero($event)" required />
                 </mat-form-field>
             </div>
             <!-- Agregado de Valor de Meta -->
-            <div *ngIf="onChangeValueTipoValorMeta == 3 || onChangeValueTipoValorMeta == 4 || onChangeValueTipoValorMeta == 6">
+            <div *ngIf="onChangeValueTipoValorMeta == 3 || onChangeValueTipoValorMeta == 7">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor porcentual</mat-label>
                     <input matInput formControlName="frmValorMeta" minlength="1" maxlength="3"
