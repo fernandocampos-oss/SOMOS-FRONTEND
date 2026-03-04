@@ -79,7 +79,7 @@ export class AsignarIndicadorComponent implements OnInit {
       if (data.length > 0) {
         this.listTipoValorMeta = data.filter((item: any) => item.descripcion.toLowerCase() !== 'promedio');
       } else {
-        this._notification.warning("Lista de tipo valor meta vacio");
+        this._notification.warning("Lista de tipo valor esperado vacio");
       }
     });
   }

@@ -175,9 +175,7 @@ export class SidenavComponent implements OnInit {
     let load = await this._gestionRendimientoService.getVotanteByIdUsuario().then((data: any) => {
       if (data != null) {
         this.usuarioVotante = data;
-        if (this.user.id == this.usuarioVotante.idUsuario) {
-          this.votanteSegmento = this.usuarioVotante.idSegmento;
-        }
+        this.votanteSegmento = this.usuarioVotante.idSegmento;
       }
     });
   }

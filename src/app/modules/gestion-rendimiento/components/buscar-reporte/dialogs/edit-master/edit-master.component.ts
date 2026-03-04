@@ -67,7 +67,7 @@ export class EditMasterComponent implements OnInit {
       if (data.length > 0) {
         this.listTipoValorMeta = data;
       } else {
-        this._notification.warning("Lista de tipo valor meta vacio");
+        this._notification.warning("Lista de tipo valor esperado vacio");
       }
     });
   }

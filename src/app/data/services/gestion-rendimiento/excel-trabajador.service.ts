@@ -790,7 +790,7 @@ export class ExcelTrabajadorService {
     titleIndicador.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
     let titleValorMeta = worksheet.getCell('C19');
-    titleValorMeta.value = 'VALOR META';
+    titleValorMeta.value = 'VALOR ESPERADO';
     titleValorMeta.font = {
       name: 'Calibri',
       size: 8,
