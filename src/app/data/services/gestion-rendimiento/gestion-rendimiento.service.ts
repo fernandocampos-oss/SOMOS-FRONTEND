@@ -303,6 +303,11 @@ export class GestionRendimientoService {
     return await this.http.post(url, { idEvidencia, idIndicador, fechaPlazo }).toPromise();
   }
 
+  async actualizarFechaPlazoFinal(idIndicador: number, fechaPlazo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/actualizar-fecha-plazo-final/${idIndicador}`;
+    return await this.http.post(url, { fechaPlazo }).toPromise();
+  }
+
   // Métodos para comentario estado
   async guardarComentarioEstado(idEvidencia: number, estadoDropdown: string, comentarioAdicional: string, tipoComentario: string = 'individual'): Promise<any> {
     const url = `${URL_BASE}/gdr/comentario-estado/guardar`;

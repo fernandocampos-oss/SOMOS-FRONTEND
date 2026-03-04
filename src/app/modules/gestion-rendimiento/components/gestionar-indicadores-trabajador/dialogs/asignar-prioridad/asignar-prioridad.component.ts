@@ -191,6 +191,12 @@ export class AsignarPrioridadComponent implements OnInit {
       this.formPrioridad.controls["frmPeso"].setValue(infIndicador.peso);
       this.pesoIndicadorOriginal = infIndicador.peso;
       this.formPrioridad.controls["frmValorMeta"].setValue(infIndicador.valorMeta);
+      // Cargar fecha de plazo final si existe (usando moment para evitar problemas de timezone)
+      if(infIndicador.fechaPlazoFinal){
+        // Agregar T12:00:00 para evitar que se interprete como UTC medianoche
+        const fechaStr = infIndicador.fechaPlazoFinal.toString().substring(0, 10) + 'T12:00:00';
+        this.formEvidencia.controls["frmPlazoFinal"].setValue(new Date(fechaStr));
+      }
       //this.listEvidencia = this.data.prioridad.listIndicador[0].listEvidencia;
       this.listEvidencia = [];
       if(infIndicador.listEvidencia.length > 0){
@@ -405,7 +411,7 @@ export class AsignarPrioridadComponent implements OnInit {
             this.dialogRef.close(true);
           });
         }else{
-          this._grService.modificarIndicador(this.idIndicador, indicador).then((data) => {
+          this._grService.modificarIndicador(this.idIndicador, indicador).then(async (data) => {
             if (data = 1) {
               this.listEvidencia.forEach((dtEvi:any)=>{
                 if(dtEvi.tiene == 0){
@@ -416,6 +422,19 @@ export class AsignarPrioridadComponent implements OnInit {
                   });
                 }
               });
+              // Actualizar fecha de plazo final si existe
+              if(this.formEvidencia.value.frmPlazoFinal){
+                const fechaValue = this.formEvidencia.value.frmPlazoFinal;
+                let fechaPlazoStr: string;
+                if (fechaValue._d) {
+                  fechaPlazoStr = moment(fechaValue._d).format('YYYY-MM-DD');
+                } else if (fechaValue instanceof Date) {
+                  fechaPlazoStr = moment(fechaValue).format('YYYY-MM-DD');
+                } else {
+                  fechaPlazoStr = moment(fechaValue).format('YYYY-MM-DD');
+                }
+                await this._grService.actualizarFechaPlazoFinal(this.idIndicador, fechaPlazoStr);
+              }
               this._notification.success("Indicador actualizado");
               this.dialogRef.close(true);
             } else {
