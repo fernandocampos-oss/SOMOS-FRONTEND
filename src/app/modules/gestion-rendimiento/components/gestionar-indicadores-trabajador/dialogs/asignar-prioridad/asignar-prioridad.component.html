@@ -92,15 +92,17 @@
             <mat-form-field appearance="outline" class="size-field">
                 <mat-label>Peso del Indicador/Producto</mat-label>
                 <input matInput formControlName="frmPeso" class="example-right-align" type="number" minlength="1"
-                    maxlength="3" min="0" max="100" step="0.01" (focus)="showHelpCPlanilla = true" (focusout)="showHelpCPlanilla = false"
+                    maxlength="3" min="20" max="100" step="0.01" (focus)="showHelpCPlanilla = true" (focusout)="showHelpCPlanilla = false"
                     (keypress)="onlyNumbersAndDecimal($event)">
                 <span matSuffix class="percent-align">%</span>
-                <div *ngIf="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador)>100" class="descriptor">
+                <div *ngIf="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador)>100 || formPrioridad.value.frmPeso < 20" class="descriptor">
                     <div *ngIf="showHelpCPlanilla">
                         <br>
                         <p class="primary-button">¡Peso inválido!</p>
                         <br>
                         <p>El porcentaje total no debe superar el 100%</p>
+                        <br>
+                        <p>El peso mínimo debe ser 20%</p>
                         <br>
                         <p>Ya tiene grabado {{pesoTotalIndicadoresTrabajador}}% en los Indicadores/Productos</p>
                     </div>
@@ -112,7 +114,7 @@
             <div align="end">
                 <button mat-button mat-dialog-close color="primary">Cancelar</button>&nbsp;
                 <button mat-raised-button matStepperNext color="primary"
-                    [disabled]="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador)>100 || formPrioridad.value.frmTipoValorMeta === '' || formPrioridad.invalid || formPrioridad.value.frmPeso==0">
+                    [disabled]="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador)>100 || formPrioridad.value.frmTipoValorMeta === '' || formPrioridad.invalid || formPrioridad.value.frmPeso==0 || formPrioridad.value.frmPeso < 20">
                     <span>Siguiente</span>
                     <mat-icon>chevron_right</mat-icon>
                 </button>
