@@ -18,6 +18,8 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
   rol: number;
 
   condicionGr: any;
+  esMaestroGdr: boolean = false;
+  dniUsuario: string = '';
 
   constructor(
     private _router: Router,
@@ -33,6 +35,7 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getSegmentoModuloGR();
+    this.verificarMaestroGdr();
   }
 
   ngAfterViewInit() {
@@ -46,6 +49,19 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  async verificarMaestroGdr() {
+    try {
+      const response = await this._grService.esMaestroGdr();
+      if (response) {
+        this.esMaestroGdr = response.esMaestroGdr || false;
+        this.dniUsuario = response.dni || '';
+      }
+    } catch (error) {
+      console.error('Error verificando Maestro GDR:', error);
+      this.esMaestroGdr = false;
+    }
   }
 
   back() {

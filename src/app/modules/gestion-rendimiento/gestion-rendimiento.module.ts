@@ -26,6 +26,11 @@ import { CalificarComponent } from './components/gestionar-indicadores-trabajado
 import { CustomSelectComponent } from './components/gestionar-indicadores-trabajador/custom-select/custom-select.component';
 import { ComentarioDialogComponent } from './components/gestionar-indicadores-trabajador/dialogs/comentario-dialog/comentario-dialog.component';
 import { FechaPlazoDialogComponent } from './components/gestionar-indicadores-trabajador/dialogs/fecha-plazo-dialog/fecha-plazo-dialog.component';
+// Maestro GDR Components
+import { GestionarMaestrosGdrComponent } from './components/gestionar-maestros-gdr/gestionar-maestros-gdr.component';
+import { GestionarEvaluadoresComponent } from './components/gestionar-evaluadores/gestionar-evaluadores.component';
+import { AsignarTrabajadoresEvaluadorComponent } from './components/asignar-trabajadores-evaluador/asignar-trabajadores-evaluador.component';
+import { DashboardSeguimientoComponent } from './components/dashboard-seguimiento/dashboard-seguimiento.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +52,12 @@ import { FechaPlazoDialogComponent } from './components/gestionar-indicadores-tr
     PanelObservadoComponent,
     CustomSelectComponent,
     ComentarioDialogComponent,
-    FechaPlazoDialogComponent
+    FechaPlazoDialogComponent,
+    // Maestro GDR Components
+    GestionarMaestrosGdrComponent,
+    GestionarEvaluadoresComponent,
+    AsignarTrabajadoresEvaluadorComponent,
+    DashboardSeguimientoComponent
   ],
   imports: [
     CommonModule,

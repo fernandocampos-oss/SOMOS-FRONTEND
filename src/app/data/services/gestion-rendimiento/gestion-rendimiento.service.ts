@@ -393,5 +393,44 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/gdr/resultados-finales/eliminar/${idVotante}/${anio}`;
     return await this.http.delete(url).toPromise();
   }
+
+  // ============================================
+  // MAESTRO GDR - Endpoints
+  // ============================================
+
+  async esMaestroGdr(): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/es-maestro`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async listarMaestrosGdr(): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/listar`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async listarTodosMaestrosGdr(): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/listar-todos`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async agregarMaestroGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/agregar`;
+    return await this.http.post(url, { dni }).toPromise();
+  }
+
+  async desactivarMaestroGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/desactivar/${dni}`;
+    return await this.http.put(url, {}).toPromise();
+  }
+
+  async activarMaestroGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/activar/${dni}`;
+    return await this.http.put(url, {}).toPromise();
+  }
+
+  async estadisticasMaestroGdr(): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/estadisticas`;
+    return await this.http.get(url).toPromise();
+  }
 }
 
