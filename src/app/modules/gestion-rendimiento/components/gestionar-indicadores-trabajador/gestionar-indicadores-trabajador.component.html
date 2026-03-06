@@ -244,6 +244,7 @@
                                                 <div class="evidencia-external-controls" style="position: relative; display: flex; flex-direction: column; gap: 4px; width: 48px; overflow: visible;">
                                                     <button *ngIf="i === z.listEvidencia.length - 1" mat-icon-button class="has-success btn-evidencia-external"
                                                         matTooltip="Agregar evidencia inicial"
+                                                        [disabled]="z.listEvidencia.length >= 2"
                                                         (click)="agregarEvidencia(z)">
                                                         <mat-icon>add_circle</mat-icon>
                                                     </button>
