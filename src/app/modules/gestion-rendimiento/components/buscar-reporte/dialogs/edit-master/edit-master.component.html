@@ -54,13 +54,13 @@
             </mat-select>
         </mat-form-field>
 
-        <div *ngIf="this.idTipoValorMetaSeleccionado==1 || this.idTipoValorMetaSeleccionado==2">
+        <div *ngIf="this.idTipoValorMetaSeleccionado==1 || this.idTipoValorMetaSeleccionado==6">
             <mat-form-field appearance="outline">
                 <mat-label>Valor numérico</mat-label>
                 <input matInput formControlName="valorMeta" maxlength="3" required />
             </mat-form-field>
         </div>
-        <div *ngIf="this.idTipoValorMetaSeleccionado==3 || this.idTipoValorMetaSeleccionado==4">
+        <div *ngIf="this.idTipoValorMetaSeleccionado==3 || this.idTipoValorMetaSeleccionado==7">
             <mat-form-field appearance="outline">
                 <mat-label>Valor porcentual</mat-label>
                 <input matInput formControlName="valorMeta" minlength="1" maxlength="3" class="example-right-align"
