@@ -53,6 +53,154 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
+                <!-- ============================================ -->
+                <!-- SECCIÓN: REUNIÓN DE ESTABLECIMIENTO DE METAS -->
+                <!-- ============================================ -->
+                <div class="reunion-metas-section" style="
+                    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+                    border: 2px solid #4caf50;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin: 16px 0;
+                    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+                ">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <mat-icon style="color: #2e7d32; font-size: 28px; width: 28px; height: 28px;">handshake</mat-icon>
+                        <h3 style="margin: 0; color: #1b5e20; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Reunión de Establecimiento de Metas
+                        </h3>
+                        <span *ngIf="i.reunionMetas?.confirmado" style="
+                            background: #4caf50;
+                            color: white;
+                            padding: 4px 12px;
+                            border-radius: 20px;
+                            font-size: 11px;
+                            font-weight: 600;
+                            display: flex;
+                            align-items: center;
+                            gap: 4px;
+                        ">
+                            <mat-icon style="font-size: 14px; width: 14px; height: 14px;">check_circle</mat-icon>
+                            CONFIRMADO
+                        </span>
+                    </div>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end;">
+                        <!-- Campo: ¿Asistió a la reunión? -->
+                        <div style="flex: 1; min-width: 200px;">
+                            <label style="display: block; font-size: 12px; font-weight: 600; color: #2e7d32; margin-bottom: 8px;">
+                                ¿Se realizó la reunión de establecimiento de metas?
+                            </label>
+                            <select 
+                                [value]="i.reunionMetas?.asistio || '-'"
+                                (change)="onAsistenciaReunionChange(i, $any($event.target).value)"
+                                [disabled]="i.reunionMetas?.confirmado"
+                                style="
+                                    width: 100%;
+                                    padding: 12px 16px;
+                                    border: 2px solid #4caf50;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                    background: white;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                "
+                                [style.opacity]="i.reunionMetas?.confirmado ? '0.7' : '1'"
+                                [style.cursor]="i.reunionMetas?.confirmado ? 'not-allowed' : 'pointer'"
+                            >
+                                <option value="-">[Seleccione]</option>
+                                <option value="S">Sí</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+
+                        <!-- Campo: Fecha de la reunión (visible siempre, editable solo si asistió = Sí) -->
+                        <div style="flex: 1; min-width: 200px;">
+                            <label style="display: block; font-size: 12px; font-weight: 600; color: #2e7d32; margin-bottom: 8px;">
+                                Fecha de la reunión
+                                <span *ngIf="i.reunionMetas?.asistio === 'S'" style="color: #d32f2f;">*</span>
+                            </label>
+                            <input type="date"
+                                [value]="i.reunionMetas?.fechaReunion || ''"
+                                (change)="onFechaReunionMetasChange(i, $any($event.target).valueAsDate)"
+                                [disabled]="i.reunionMetas?.confirmado || i.reunionMetas?.asistio !== 'S'"
+                                style="
+                                    width: 100%;
+                                    padding: 12px 16px;
+                                    border: 2px solid #4caf50;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                    background: white;
+                                "
+                                [style.opacity]="(i.reunionMetas?.confirmado || i.reunionMetas?.asistio !== 'S') ? '0.5' : '1'"
+                                [style.cursor]="(i.reunionMetas?.confirmado || i.reunionMetas?.asistio !== 'S') ? 'not-allowed' : 'pointer'"
+                            >
+                        </div>
+
+                        <!-- Botón Confirmar -->
+                        <div *ngIf="!i.reunionMetas?.confirmado" style="flex: 0 0 auto;">
+                            <button mat-raised-button color="primary"
+                                (click)="confirmarReunionMetas(i)"
+                                [disabled]="i.reunionMetas?.asistio === '-' || (i.reunionMetas?.asistio === 'S' && !i.reunionMetas?.fechaReunion)"
+                                style="
+                                    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+                                    padding: 12px 24px;
+                                    font-weight: 600;
+                                    border-radius: 8px;
+                                ">
+                                Confirmar Reunión
+                            </button>
+                        </div>
+
+                        <!-- Botón Reiniciar (solo Maestro GDR) -->
+                        <div *ngIf="i.reunionMetas?.confirmado && esMaestroGdr" style="flex: 0 0 auto;">
+                            <button mat-raised-button color="warn"
+                                (click)="reiniciarConfirmacionReunion(i)"
+                                style="padding: 12px 24px; font-weight: 600; border-radius: 8px;">
+                                <mat-icon>restart_alt</mat-icon>
+                                Reiniciar Confirmación
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Info de reinicio si aplica -->
+                    <div *ngIf="i.reunionMetas?.reiniciadoPor" style="
+                        margin-top: 12px;
+                        padding: 8px 12px;
+                        background: #fff3e0;
+                        border-radius: 6px;
+                        font-size: 11px;
+                        color: #e65100;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                    ">
+                        <mat-icon style="font-size: 16px; width: 16px; height: 16px;">info</mat-icon>
+                        Reiniciado por DNI: {{i.reunionMetas.reiniciadoPor}} el {{i.reunionMetas.fechaReinicio | date:'dd/MM/yyyy HH:mm'}}
+                    </div>
+
+                    <!-- Mensaje si no está confirmado -->
+                    <div *ngIf="!i.reunionMetas?.confirmado" style="
+                        margin-top: 16px;
+                        padding: 12px 16px;
+                        background: #fff8e1;
+                        border: 1px solid #ffc107;
+                        border-radius: 8px;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    ">
+                        <mat-icon style="color: #f57c00;">warning</mat-icon>
+                        <span style="font-size: 13px; color: #e65100;">
+                            <strong>Importante:</strong> Debe confirmar la reunión de establecimiento de metas para poder visualizar y gestionar los indicadores del trabajador.
+                        </span>
+                    </div>
+                </div>
+                <!-- FIN SECCIÓN REUNIÓN DE METAS -->
+
+                <!-- CONTENIDO PRINCIPAL: Solo visible si la reunión está confirmada -->
+                <ng-container *ngIf="i.reunionMetas?.confirmado">
+
                 <div *ngIf="i.listPrioridad.length == 0" style="text-align: center">
                     <br>
                     <p class="color-mensaje">Sin registros por mostrar</p>
@@ -191,7 +339,7 @@
                                         <!-- EVIDENCIAS INICIALES -->
                                         
                                         <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
-                                        <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0">
+                                        <div *ngIf="getEvidenciasIniciales(z).length === 0">
                                             <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; margin-top: 4px; height: 44px;">
                                                 <div style="flex: 1; max-width: 180px;">
                                                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px;">
@@ -210,8 +358,8 @@
                                         </div>
                                         
                                         <!-- Caso 2: Con evidencias - mostrar lista con controles -->
-                                        <div *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
-                                            <div *ngFor="let t of z.listEvidencia; let i = index; let isFirst = first" 
+                                        <div *ngIf="getEvidenciasIniciales(z).length > 0">
+                                            <div *ngFor="let t of getEvidenciasIniciales(z); let i = index; let isFirst = first" 
                                                  class="evidencia-individual-container"
                                                  [style.margin-top.px]="isFirst ? 4 : 0"
                                                  style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px; overflow: visible;">
@@ -242,15 +390,15 @@
                                                 </div>
                                                 <!-- Controles individuales para cada evidencia -->
                                                 <div class="evidencia-external-controls" style="position: relative; display: flex; flex-direction: column; gap: 4px; width: 48px; overflow: visible;">
-                                                    <button *ngIf="i === z.listEvidencia.length - 1" mat-icon-button class="has-success btn-evidencia-external"
+                                                    <button *ngIf="i === getEvidenciasIniciales(z).length - 1" mat-icon-button class="has-success btn-evidencia-external"
                                                         matTooltip="Agregar evidencia inicial"
-                                                        [disabled]="z.listEvidencia.length >= 2"
+                                                        [disabled]="getEvidenciasIniciales(z).length >= 2"
                                                         (click)="agregarEvidencia(z)">
                                                         <mat-icon>add_circle</mat-icon>
                                                     </button>
-                                                    <button *ngIf="i === z.listEvidencia.length - 1" mat-icon-button color="warn" class="btn-evidencia-external"
+                                                    <button *ngIf="i === getEvidenciasIniciales(z).length - 1" mat-icon-button color="warn" class="btn-evidencia-external"
                                                         matTooltip="Eliminar evidencia inicial"
-                                                        [disabled]="z.listEvidencia.length <= 1"
+                                                        [disabled]="getEvidenciasIniciales(z).length <= 1"
                                                         (click)="eliminarEvidencia(z)">
                                                         <mat-icon>remove_circle</mat-icon>
                                                     </button>
@@ -302,7 +450,7 @@
                                         <!-- PLAZOS INICIALES -->
                                         
                                         <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
-                                        <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0">
+                                        <div *ngIf="getEvidenciasIniciales(z).length === 0">
                                             <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; margin-top: 4px; height: 44px;">
                                                 <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
                                                     <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 16px;">PLAZO</div>
@@ -312,8 +460,8 @@
                                         </div>
                                         
                                         <!-- Caso 2: Con evidencias - mostrar plazos individuales -->
-                                        <div *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
-                                            <div *ngFor="let t of z.listEvidencia; let i = index; let isFirst = first" 
+                                        <div *ngIf="getEvidenciasIniciales(z).length > 0">
+                                            <div *ngFor="let t of getEvidenciasIniciales(z); let i = index; let isFirst = first" 
                                                  [style.margin-top.px]="isFirst ? 4 : 0"
                                                  style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px;">
                                                 <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
@@ -332,12 +480,12 @@
                                                             style="width: 14px; height: 14px; line-height: 14px; padding: 0; min-width: 14px;" 
                                                             matTooltip="Editar fecha de plazo" 
                                                             matTooltipPosition="below"
-                                                            (click)="abrirFechaPlazoDialog(z.listEvidencia && z.listEvidencia.length > 0 ? z.listEvidencia[z.listEvidencia.length - 1] : null, z)">
+                                                            (click)="abrirFechaPlazoDialog(z.evidenciaFinal, z)">
                                                         <mat-icon style="font-size: 10px; color: #d84315; line-height: 14px;">edit</mat-icon>
                                                     </button>
                                                 </div>
                                                 <div style="font-size: 10px; text-align: center; line-height: 16px; color: #333;">
-                                                    {{z.listEvidencia && z.listEvidencia.length > 0 && z.listEvidencia[z.listEvidencia.length - 1].fechaPlazoFinal ? (z.listEvidencia[z.listEvidencia.length - 1].fechaPlazoFinal | date: 'dd/MM/yyyy') : '-'}}
+                                                    {{z.evidenciaFinal && z.evidenciaFinal.fechaPlazoFinal ? (z.evidenciaFinal.fechaPlazoFinal | date: 'dd/MM/yyyy') : '-'}}
                                                 </div>
                                             </div>
                                         </div>
@@ -357,7 +505,7 @@
                                         <!-- COMENTARIOS INICIALES -->
                                         
                                         <!-- Caso 1: Sin evidencias - mostrar fila inicial vacía -->
-                                        <div *ngIf="!z.listEvidencia || z.listEvidencia.length === 0">
+                                        <div *ngIf="getEvidenciasIniciales(z).length === 0">
                                             <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; margin-top: 4px; height: 44px;">
                                                 <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 85px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
                                                     <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 16px;">COMENTARIO</div>
@@ -381,8 +529,8 @@
                                         </div>
                                         
                                         <!-- Caso 2: Con evidencias - mostrar comentarios individuales -->
-                                        <div *ngIf="z.listEvidencia && z.listEvidencia.length > 0">
-                                            <div *ngFor="let t of z.listEvidencia; let i = index; let isFirst = first" 
+                                        <div *ngIf="getEvidenciasIniciales(z).length > 0">
+                                            <div *ngFor="let t of getEvidenciasIniciales(z); let i = index; let isFirst = first"
                                                  [style.margin-top.px]="isFirst ? 4 : 0"
                                                  style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px;">
                                                 <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 85px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
@@ -422,7 +570,7 @@
                                                     <button mat-icon-button class="btn-evidencia-small"
                                                             matTooltip="Ver comentario" 
                                                             matTooltipPosition="below"
-                                                            (click)="abrirComentarioDialog(z.listEvidencia && z.listEvidencia.length > 0 ? z.listEvidencia[z.listEvidencia.length - 1] : null, true)">
+                                                            (click)="abrirComentarioDialog(z.evidenciaFinal, true)">
                                                         <mat-icon>visibility</mat-icon>
                                                     </button>
                                                 </div>
@@ -755,6 +903,10 @@
                     <span><strong>Peso Total:</strong> {{i.pesoTotal}}%</span>
                     -->
                 </div>
+
+                </ng-container>
+                <!-- FIN CONTENIDO PRINCIPAL (requiere reunión confirmada) -->
+
             </mat-expansion-panel>
         </mat-accordion>
     </div>

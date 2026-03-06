@@ -36,6 +36,12 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   idSegmento: number = 0;
   flagEvaluador: boolean = true;
 
+  // Variables para Reunión de Establecimiento de Metas
+  idVotanteEvaluador: number = 0;
+  dniEvaluador: string = '';
+  periodoActual: string = new Date().getFullYear().toString();
+  esMaestroGdr: boolean = false;
+
   // Opciones para el selector personalizado
   comentarioOptions = [
     { value: '', label: '[Seleccione]' },
@@ -91,9 +97,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         if (indicador) {
           indicador.comentarioFinal = valor || '';
           
-          // Guardar en BD local con tipo 'final' - usar la última evidencia como referencia
+          // Guardar en BD local con tipo 'final' - buscar evidencia con descripcion 'SUSTENTO FINAL'
           if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-            const evidenciaFinal = indicador.listEvidencia[indicador.listEvidencia.length - 1];
+            const evidenciaFinal = indicador.listEvidencia.find((ev: any) => ev.descripcion === 'SUSTENTO FINAL');
             if (evidenciaFinal && evidenciaFinal.idEvidencia) {
               try {
                 // Guardar usando tipo 'final' para distinguir del comentario individual
@@ -128,8 +134,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadTableJefe();
-    this.getSegmentoModuloGR();
+    this.inicializar();
+  }
+
+  async inicializar() {
+    // Primero obtener los datos del evaluador actual
+    await this.getSegmentoModuloGR();
+    // Luego cargar la tabla con los trabajadores
+    await this.loadTableJefe();
   }
 
   async actualizar() {
@@ -141,34 +153,44 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   async loadTableJefe() {
     let listPrioridades = await this._grService.listarPrioridadesPrincipal().then(async (data) => {
       if (data.length > 0) {
-    // console.log removed for production
         this.listDataTable = data;
         
-        // Inicializar propiedades de comentario para cada elemento
-        this.listDataTable.forEach(element => {
-          if (element.listIndicador) {
-            element.listIndicador.forEach(indicador => {
-              // Inicializar comentarios del indicador
-              if (!indicador.hasOwnProperty('comentarioSinEvidencias')) {
-                indicador.comentarioSinEvidencias = '';
-              }
-              if (!indicador.hasOwnProperty('comentarioFinal')) {
-                indicador.comentarioFinal = '';
-              }
-              
-              // Inicializar valor alcanzado
-              if (!indicador.hasOwnProperty('valorAlcanzado')) {
-                indicador.valorAlcanzado = 0;
-              }
-              if (!indicador.hasOwnProperty('editingValorAlcanzado')) {
-                indicador.editingValorAlcanzado = false;
-              }
-              
-              // Inicializar comentarios de cada evidencia
-              if (indicador.listEvidencia) {
-                indicador.listEvidencia.forEach(evidencia => {
-                  if (!evidencia.hasOwnProperty('comentario')) {
-                    evidencia.comentario = '';
+        // Inicializar propiedades para cada trabajador → prioridad → indicador
+        this.listDataTable.forEach(trabajador => {
+          if (trabajador.listPrioridad) {
+            trabajador.listPrioridad.forEach(prioridad => {
+              if (prioridad.listIndicador) {
+                prioridad.listIndicador.forEach(indicador => {
+                  // Inicializar comentarios del indicador
+                  if (!indicador.hasOwnProperty('comentarioSinEvidencias')) {
+                    indicador.comentarioSinEvidencias = '';
+                  }
+                  if (!indicador.hasOwnProperty('comentarioFinal')) {
+                    indicador.comentarioFinal = '';
+                  }
+                  
+                  // Inicializar valor alcanzado
+                  if (!indicador.hasOwnProperty('valorAlcanzado')) {
+                    indicador.valorAlcanzado = 0;
+                  }
+                  if (!indicador.hasOwnProperty('editingValorAlcanzado')) {
+                    indicador.editingValorAlcanzado = false;
+                  }
+                  
+                  // Asignar evidenciaFinal buscando por descripcion 'SUSTENTO FINAL'
+                  if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+                    indicador.evidenciaFinal = indicador.listEvidencia.find(
+                      (ev: any) => ev.descripcion === 'SUSTENTO FINAL'
+                    );
+                  }
+                  
+                  // Inicializar comentarios de cada evidencia
+                  if (indicador.listEvidencia) {
+                    indicador.listEvidencia.forEach(evidencia => {
+                      if (!evidencia.hasOwnProperty('comentario')) {
+                        evidencia.comentario = '';
+                      }
+                    });
                   }
                 });
               }
@@ -190,8 +212,117 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
         // Cargar resultados finales desde BD local
         await this.cargarResultadosFinales();
+
+        // Cargar datos de reunión de establecimiento de metas
+        await this.cargarReunionesEstablecimientoMetas();
       }
     });
+  }
+
+  /**
+   * Carga los datos de reunión de establecimiento de metas para cada trabajador
+   */
+  async cargarReunionesEstablecimientoMetas() {
+    if (!this.idVotanteEvaluador || this.listDataTable.length === 0) return;
+
+    for (const trabajador of this.listDataTable) {
+      try {
+        const reunion = await this._grService.obtenerOCrearReunionMetas(
+          trabajador.idVotante,
+          this.idVotanteEvaluador,
+          this.periodoActual
+        );
+        trabajador.reunionMetas = reunion;
+      } catch (error) {
+        console.error('Error cargando reunión de metas para trabajador:', trabajador.idVotante, error);
+        trabajador.reunionMetas = null;
+      }
+    }
+  }
+
+  /**
+   * Actualiza la asistencia de la reunión de establecimiento de metas
+   */
+  async onAsistenciaReunionChange(trabajador: any, asistio: string) {
+    if (!trabajador.reunionMetas) return;
+    
+    try {
+      // Si cambia a "No" o "-", limpiar la fecha
+      const fechaReunion = asistio === 'S' ? trabajador.reunionMetas.fechaReunion : null;
+      
+      const resultado = await this._grService.actualizarAsistenciaReunion(
+        trabajador.reunionMetas.idReunion,
+        asistio,
+        fechaReunion
+      );
+      trabajador.reunionMetas = resultado;
+      this._notification.success('Asistencia actualizada');
+    } catch (error: any) {
+      this._notification.error(error?.error?.error || 'Error al actualizar asistencia');
+    }
+  }
+
+  /**
+   * Actualiza la fecha de la reunión de establecimiento de metas
+   */
+  async onFechaReunionMetasChange(trabajador: any, fecha: Date) {
+    if (!trabajador.reunionMetas || trabajador.reunionMetas.asistio !== 'S') return;
+    
+    try {
+      const fechaStr = fecha ? fecha.toISOString().split('T')[0] : null;
+      const resultado = await this._grService.actualizarAsistenciaReunion(
+        trabajador.reunionMetas.idReunion,
+        'S',
+        fechaStr
+      );
+      trabajador.reunionMetas = resultado;
+      this._notification.success('Fecha actualizada');
+    } catch (error: any) {
+      this._notification.error(error?.error?.error || 'Error al actualizar fecha');
+    }
+  }
+
+  /**
+   * Confirma la reunión de establecimiento de metas
+   */
+  async confirmarReunionMetas(trabajador: any) {
+    if (!trabajador.reunionMetas) return;
+    
+    // Validar
+    if (trabajador.reunionMetas.asistio === '-') {
+      this._notification.warning('Debe seleccionar si asistió o no a la reunión');
+      return;
+    }
+    if (trabajador.reunionMetas.asistio === 'S' && !trabajador.reunionMetas.fechaReunion) {
+      this._notification.warning('Debe ingresar la fecha de la reunión');
+      return;
+    }
+    
+    try {
+      const resultado = await this._grService.confirmarReunionMetas(trabajador.reunionMetas.idReunion);
+      trabajador.reunionMetas = resultado;
+      this._notification.success('Reunión confirmada exitosamente');
+    } catch (error: any) {
+      this._notification.error(error?.error?.error || 'Error al confirmar reunión');
+    }
+  }
+
+  /**
+   * Reinicia la confirmación de la reunión (solo Maestro GDR)
+   */
+  async reiniciarConfirmacionReunion(trabajador: any) {
+    if (!trabajador.reunionMetas || !this.esMaestroGdr) return;
+    
+    try {
+      const resultado = await this._grService.reiniciarConfirmacionReunion(
+        trabajador.reunionMetas.idReunion,
+        this.dniEvaluador
+      );
+      trabajador.reunionMetas = resultado;
+      this._notification.success('Confirmación reiniciada');
+    } catch (error: any) {
+      this._notification.error(error?.error?.error || 'Error al reiniciar confirmación');
+    }
   }
 
   async cargarSentidosIndicadores() {
@@ -394,8 +525,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                   indicador.fechaPlazoFinal = fechaPlazo;
                   
                   if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-                    const ultimaEvidencia = indicador.listEvidencia[indicador.listEvidencia.length - 1];
-                    ultimaEvidencia.fechaPlazoFinal = fechaPlazo;
+                    // Buscar la evidencia final por descripcion 'SUSTENTO FINAL'
+                    const evidenciaFinal = indicador.listEvidencia.find((ev: any) => ev.descripcion === 'SUSTENTO FINAL');
+                    if (evidenciaFinal) {
+                      evidenciaFinal.fechaPlazoFinal = fechaPlazo;
+                    }
     // console.log removed for production
                   } else {
                     if (!indicador.listEvidencia) {
@@ -778,6 +912,8 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let load = await this._grService.getVotanteByIdUsuario().then((data: any) => {
       if (data) {
         this.idSegmento = data.idSegmento;
+        this.idVotanteEvaluador = data.idVotante;
+        this.dniEvaluador = data.numeroDocumento || '';
         if (data.codCondicion != null) {
           let string = data.codCondicion;
           let parts = string.split(",");
@@ -789,6 +925,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       }
     });
+
+    // Verificar si es Maestro GDR
+    try {
+      const resultado = await this._grService.esMaestroGdr();
+      this.esMaestroGdr = resultado?.esMaestro || false;
+    } catch (error) {
+      this.esMaestroGdr = false;
+    }
   }
 
   async generarExcelDirectivo() {
@@ -939,13 +1083,23 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   registrarSustentoFinal(indicador: any) {
-    // Si no existe evidenciaFinal, usar la última evidencia del array o crear referencia
-    const evidenciaFinal = indicador.evidenciaFinal || (indicador.listEvidencia && indicador.listEvidencia.length > 0 
-      ? indicador.listEvidencia[indicador.listEvidencia.length - 1] 
-      : null);
+    // Buscar la evidencia final por descripción 'SUSTENTO FINAL'
+    let evidenciaFinal = null;
+    
+    if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
+      // Buscar la evidencia con descripcion = 'SUSTENTO FINAL'
+      evidenciaFinal = indicador.listEvidencia.find(
+        (ev: any) => ev.descripcion === 'SUSTENTO FINAL'
+      );
+    }
+    
+    // Fallback: usar indicador.evidenciaFinal si existe
+    if (!evidenciaFinal && indicador.evidenciaFinal) {
+      evidenciaFinal = indicador.evidenciaFinal;
+    }
 
     if (!evidenciaFinal) {
-      this._notification.warning('No se puede registrar sustento final sin evidencias iniciales');
+      this._notification.warning('No se encontró la evidencia final para este indicador');
       return;
     }
 
@@ -1050,6 +1204,17 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
    * - G21 = peso (como porcentaje, ej: 50)
    * - M21 = valor alcanzado
    */
+  
+  /**
+   * Obtiene solo las evidencias iniciales (excluye la evidencia final con descripcion 'SUSTENTO FINAL')
+   */
+  getEvidenciasIniciales(indicador: any): any[] {
+    if (!indicador.listEvidencia || indicador.listEvidencia.length === 0) {
+      return [];
+    }
+    return indicador.listEvidencia.filter((ev: any) => ev.descripcion !== 'SUSTENTO FINAL');
+  }
+
   /**
    * Calcula la altura total que debe ocupar un indicador
    * según el número de evidencias (cada evidencia = 44px + 12px margin = 56px)
@@ -1058,12 +1223,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   calcularAlturaIndicador(indicador: any): number {
     const ALTURA_EVIDENCIA = 56; // 44px min-height + 12px margin-bottom
     
-    // Contar evidencias iniciales
-    let numEvidenciasIniciales = 0;
-    if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-      numEvidenciasIniciales = indicador.listEvidencia.length;
-    } else {
-      // Si no hay evidencias, mostrar placeholder inicial
+    // Contar evidencias iniciales (excluyendo 'SUSTENTO FINAL')
+    let numEvidenciasIniciales = this.getEvidenciasIniciales(indicador).length;
+    if (numEvidenciasIniciales === 0) {
+      // Si no hay evidencias iniciales, mostrar placeholder inicial
       numEvidenciasIniciales = 1;
     }
     

@@ -31,6 +31,7 @@ import { GestionarMaestrosGdrComponent } from './components/gestionar-maestros-g
 import { GestionarEvaluadoresComponent } from './components/gestionar-evaluadores/gestionar-evaluadores.component';
 import { AsignarTrabajadoresEvaluadorComponent } from './components/asignar-trabajadores-evaluador/asignar-trabajadores-evaluador.component';
 import { DashboardSeguimientoComponent } from './components/dashboard-seguimiento/dashboard-seguimiento.component';
+import { SeguimientoTrabajadorComponent } from './components/seguimiento-trabajador/seguimiento-trabajador.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { DashboardSeguimientoComponent } from './components/dashboard-seguimient
     GestionarMaestrosGdrComponent,
     GestionarEvaluadoresComponent,
     AsignarTrabajadoresEvaluadorComponent,
-    DashboardSeguimientoComponent
+    DashboardSeguimientoComponent,
+    SeguimientoTrabajadorComponent
   ],
   imports: [
     CommonModule,

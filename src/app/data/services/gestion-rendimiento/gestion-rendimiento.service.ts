@@ -166,6 +166,16 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
+  async findVotanteByDni(dni: string) {
+    const url = `${URL_BASE}/equipos/buscar/votante/dni?dni=${dni}`;
+    return await this.http.get<any>(url).toPromise();
+  }
+
+  async findVotanteById(idVotante: number) {
+    const url = `${URL_BASE}/equipos/buscar/votante/id/${idVotante}`;
+    return await this.http.get<any>(url).toPromise();
+  }
+
   async registrarEvidenciaExistIndicador(dto: IndicadorExistRequestDto) {
     const url = `${URL_BASE}/evidencias/registrar/exist-indicador`;
     // console.log(url, dto);
@@ -430,6 +440,68 @@ export class GestionRendimientoService {
 
   async estadisticasMaestroGdr(): Promise<any> {
     const url = `${URL_BASE}/maestro-gdr/estadisticas`;
+    return await this.http.get(url).toPromise();
+  }
+
+  // ============================================
+  // REUNIÓN ESTABLECIMIENTO DE METAS - Endpoints
+  // ============================================
+
+  /**
+   * Obtener o crear registro de reunión para la combinación evaluado-evaluador-periodo
+   */
+  async obtenerOCrearReunionMetas(idVotanteEvaluado: number, idVotanteEvaluador: number, periodo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/obtener-o-crear`;
+    return await this.http.post(url, { idVotanteEvaluado, idVotanteEvaluador, periodo }).toPromise();
+  }
+
+  /**
+   * Buscar reunión por parámetros
+   */
+  async buscarReunionMetas(idVotanteEvaluado: number, idVotanteEvaluador: number, periodo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/buscar?idVotanteEvaluado=${idVotanteEvaluado}&idVotanteEvaluador=${idVotanteEvaluador}&periodo=${periodo}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Actualizar asistencia de la reunión
+   * @param asistio '-' = No seleccionado, 'S' = Sí asistió, 'N' = No asistió
+   * @param fechaReunion Solo obligatorio si asistio = 'S'
+   */
+  async actualizarAsistenciaReunion(idReunion: number, asistio: string, fechaReunion?: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/${idReunion}/asistencia`;
+    return await this.http.put(url, { asistio, fechaReunion }).toPromise();
+  }
+
+  /**
+   * Confirmar la reunión (bloquea edición)
+   */
+  async confirmarReunionMetas(idReunion: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/${idReunion}/confirmar`;
+    return await this.http.put(url, {}).toPromise();
+  }
+
+  /**
+   * Reiniciar confirmación (solo Maestro GDR)
+   */
+  async reiniciarConfirmacionReunion(idReunion: number, dniMaestroGdr: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/${idReunion}/reiniciar`;
+    return await this.http.put(url, { dniMaestroGdr }).toPromise();
+  }
+
+  /**
+   * Buscar reuniones de un evaluado (para Maestro GDR)
+   */
+  async buscarReunionesMetasPorEvaluado(idVotanteEvaluado: number, periodo: string): Promise<any[]> {
+    const url = `${URL_BASE}/gdr/reunion-metas/por-evaluado?idVotanteEvaluado=${idVotanteEvaluado}&periodo=${periodo}`;
+    return await this.http.get<any[]>(url).toPromise() || [];
+  }
+
+  /**
+   * Verificar si ya está confirmado
+   */
+  async estaConfirmadaReunion(idVotanteEvaluado: number, idVotanteEvaluador: number, periodo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/esta-confirmado?idVotanteEvaluado=${idVotanteEvaluado}&idVotanteEvaluador=${idVotanteEvaluador}&periodo=${periodo}`;
     return await this.http.get(url).toPromise();
   }
 }
