@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
 import { ActividadResponse, CargaMasivaVotante, EmailNotificacionRequestDto, EquipoRequest, EvidenciaResponseDto, EvidenciaSustentoRequestDto, VotanteSegmentoVotante } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
@@ -600,5 +600,65 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/gdr/dashboard/avance/excel`;
     return await this.http.post(url, request, { responseType: 'blob' }).toPromise() as Blob;
   }
-}
 
+  // ==================== GESTIÓN DE EVALUADORES ====================
+
+  /**
+   * Listar evaluadores paginado (id_segmento = 3)
+   */
+  async listarEvaluadores(page: number = 0, size: number = 50, filtro: string = '', soloConTrabajadores: boolean = false): Promise<any> {
+    let url = `${URL_BASE}/gdr/evaluadores/listar?page=${page}&size=${size}&filtro=${filtro}`;
+    if (soloConTrabajadores) {
+      url += '&soloConTrabajadores=true';
+    }
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Buscar trabajador por DNI para agregar como evaluador
+   */
+  async buscarTrabajadorParaEvaluador(dni: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/buscar/${dni}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Agregar un evaluador individual
+   */
+  async agregarEvaluador(dni: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/agregar/${dni}`;
+    return await this.http.post(url, {}).toPromise();
+  }
+
+  /**
+   * Validar carga masiva de evaluadores (preview)
+   */
+  async validarCargaMasivaEvaluadores(dnis: string[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/carga-masiva/validar`;
+    return await this.http.post(url, { dnis }).toPromise();
+  }
+
+  /**
+   * Confirmar carga masiva de evaluadores
+   */
+  async confirmarCargaMasivaEvaluadores(dnis: string[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/carga-masiva/confirmar`;
+    return await this.http.post(url, { dnis }).toPromise();
+  }
+
+  /**
+   * Cambiar segmento de un evaluador (quitar rol)
+   */
+  async cambiarSegmentoEvaluador(idVotante: number, nuevoSegmento: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/cambiar-segmento`;
+    return await this.http.put(url, { idVotante, nuevoSegmento }).toPromise();
+  }
+
+  /**
+   * Exportar lista de evaluadores a Excel
+   */
+  async exportarEvaluadoresExcel(): Promise<Blob> {
+    const url = `${URL_BASE}/gdr/evaluadores/exportar-excel`;
+    return await this.http.get(url, { responseType: 'blob' }).toPromise() as Blob;
+  }
+}

@@ -45,6 +45,7 @@ export class SidenavComponent implements OnInit {
 
   activarModuloGr: boolean = environment.moduloGr;
   tienePermisoModuloPlaza: boolean;
+  esMaestroGdr: boolean = false;
 
   constructor(private dialog: MatDialog,
               private _menuService   : MenuService,
@@ -84,6 +85,7 @@ export class SidenavComponent implements OnInit {
 
     this.getSegmentoModuloGR();
     this.validarTienePermisoModuloPlaza('PLAZAS');
+    this.verificarEsMaestroGdr();
   }
 
   private _initialize() {
@@ -178,6 +180,15 @@ export class SidenavComponent implements OnInit {
         this.votanteSegmento = this.usuarioVotante.idSegmento;
       }
     });
+  }
+
+  async verificarEsMaestroGdr() {
+    try {
+      const response = await this._gestionRendimientoService.esMaestroGdr();
+      this.esMaestroGdr = response?.esMaestroGdr || false;
+    } catch (error) {
+      this.esMaestroGdr = false;
+    }
   }
 
   validarTienePermisoModuloPlaza(modulo: string) {

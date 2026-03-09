@@ -1,21 +1,109 @@
 <div class="container-component">
   <div class="header-section">
     <h3>Gestionar Evaluadores</h3>
-    <p class="subtitle">Asigna o quita el id_segmento = 3 (condición de evaluador) a los usuarios</p>
+    <p class="subtitle">Administra los usuarios con rol de evaluador (id_segmento = 3)</p>
   </div>
 
-  <mat-card>
+  <!-- Acciones principales -->
+  <mat-card class="acciones-card">
     <mat-card-content>
-      <div class="placeholder-content">
-        <mat-icon class="placeholder-icon">supervised_user_circle</mat-icon>
-        <h4>Módulo en Desarrollo</h4>
-        <p>Aquí podrás ver todos los usuarios y asignarles o quitarles la condición de evaluador (id_segmento = 3)</p>
-        <p class="info-text">Funcionalidades pendientes:</p>
-        <ul>
-          <li>Buscar usuarios por DNI o nombre</li>
-          <li>Ver usuarios con segmento = 3</li>
-          <li>Asignar/quitar segmento de evaluador</li>
-        </ul>
+      <div class="acciones-row">
+        <button mat-raised-button color="primary" (click)="abrirDialogAgregar()">
+          <mat-icon>person_add</mat-icon>
+          Agregar Evaluador
+        </button>
+        <button mat-raised-button color="accent" (click)="abrirDialogCargaMasiva()">
+          <mat-icon>upload_file</mat-icon>
+          Carga Masiva
+        </button>
+        <button mat-raised-button (click)="exportarExcel()" [disabled]="evaluadores.length === 0">
+          <mat-icon>download</mat-icon>
+          Exportar Excel
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tabla de evaluadores -->
+  <mat-card class="tabla-card">
+    <mat-card-content>
+      <!-- Filtro -->
+      <div class="filtro-container">
+        <mat-form-field appearance="outline" class="filtro-field">
+          <mat-label>Buscar por DNI</mat-label>
+          <input matInput 
+                 [(ngModel)]="filtroTexto" 
+                 placeholder="Ingrese DNI..." 
+                 (keyup.enter)="buscarEnServidor()">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="buscarEnServidor()">
+          <mat-icon>search</mat-icon> Buscar
+        </button>
+        <button mat-button (click)="limpiarFiltro()" *ngIf="filtroTexto">
+          <mat-icon>clear</mat-icon> Limpiar
+        </button>
+        
+        <mat-checkbox 
+          [checked]="soloConTrabajadores"
+          (change)="toggleFiltroConTrabajadores()"
+          class="filtro-checkbox">
+          Solo con trabajadores asignados
+          <span class="badge-count" *ngIf="totalConTrabajadores > 0">({{ totalConTrabajadores }})</span>
+        </mat-checkbox>
+      </div>
+
+      <!-- Tabla -->
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <!-- DNI Column -->
+          <ng-container matColumnDef="numeroDocumento">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
+            <td mat-cell *matCellDef="let element">{{ element.numeroDocumento }}</td>
+          </ng-container>
+
+          <!-- Nombre Column -->
+          <ng-container matColumnDef="nombreCompleto">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Completo</th>
+            <td mat-cell *matCellDef="let element">{{ element.nombreCompleto }}</td>
+          </ng-container>
+
+          <!-- Acciones Column -->
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="warn" matTooltip="Quitar rol de evaluador" (click)="quitarEvaluador(element)">
+                <mat-icon>person_remove</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- No data row -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+              No se encontraron evaluadores
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Paginador servidor -->
+      <mat-paginator [length]="totalElements"
+                     [pageSize]="pageSize"
+                     [pageIndex]="currentPage"
+                     [pageSizeOptions]="[25, 50, 100]" 
+                     (page)="onPageChange($event)"
+                     showFirstLastButtons
+                     aria-label="Seleccionar página">
+      </mat-paginator>
+
+      <!-- Loading -->
+      <div class="loading-container" *ngIf="isLoading">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Cargando evaluadores...</p>
       </div>
     </mat-card-content>
   </mat-card>

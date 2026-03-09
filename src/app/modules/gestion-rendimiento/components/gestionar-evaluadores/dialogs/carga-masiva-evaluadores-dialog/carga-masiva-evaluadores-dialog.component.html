@@ -1,0 +1,145 @@
+<h2 mat-dialog-title>Carga Masiva de Evaluadores</h2>
+
+<mat-dialog-content>
+  <!-- PASO 1: Selección de archivo -->
+  <div class="paso-seleccion" *ngIf="paso === 'seleccion'">
+    <div class="instrucciones">
+      <mat-icon>info</mat-icon>
+      <div>
+        <p><strong>Instrucciones:</strong></p>
+        <ul>
+          <li>El archivo Excel debe contener solo una columna con los DNIs</li>
+          <li>Los DNIs deben estar en la columna A, sin encabezado</li>
+          <li>Cada DNI debe tener exactamente 8 dígitos numéricos</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="file-upload">
+      <input type="file" accept=".xlsx,.xls" #fileInput (change)="onFileSelected($event)" hidden>
+      <button mat-raised-button color="primary" (click)="fileInput.click()">
+        <mat-icon>upload_file</mat-icon>
+        Seleccionar archivo Excel
+      </button>
+      <span class="file-name" *ngIf="nombreArchivo">{{ nombreArchivo }}</span>
+    </div>
+  </div>
+
+  <!-- PASO 2: Validando -->
+  <div class="paso-validando" *ngIf="paso === 'validando'">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Validando DNIs...</p>
+  </div>
+
+  <!-- PASO 3: Preview de datos válidos -->
+  <div class="paso-preview" *ngIf="paso === 'preview' && validacionResponse">
+    <div class="resumen-header">
+      <div class="resumen-item exito">
+        <mat-icon>check_circle</mat-icon>
+        <div>
+          <span class="numero">{{ validacionResponse.totalExitosos }}</span>
+          <span class="texto">DNIs válidos</span>
+        </div>
+      </div>
+      <div class="resumen-item info">
+        <mat-icon>person_add</mat-icon>
+        <div>
+          <span class="numero">{{ totalNuevos }}</span>
+          <span class="texto">Nuevos evaluadores</span>
+        </div>
+      </div>
+      <div class="resumen-item warning" *ngIf="totalYaEvaluadores > 0">
+        <mat-icon>info</mat-icon>
+        <div>
+          <span class="numero">{{ totalYaEvaluadores }}</span>
+          <span class="texto">Ya son evaluadores</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabla-preview">
+      <table mat-table [dataSource]="validacionResponse.evaluadoresValidos">
+        <ng-container matColumnDef="fila">
+          <th mat-header-cell *matHeaderCellDef>Fila</th>
+          <td mat-cell *matCellDef="let element">{{ element.fila }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dni">
+          <th mat-header-cell *matHeaderCellDef>DNI</th>
+          <td mat-cell *matCellDef="let element">{{ element.dni }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombreCompleto">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let element">{{ element.nombreCompleto }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="unidad">
+          <th mat-header-cell *matHeaderCellDef>Unidad</th>
+          <td mat-cell *matCellDef="let element">{{ element.unidad || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let element">
+            <span class="badge nuevo" *ngIf="!element.yaEsEvaluador">Nuevo</span>
+            <span class="badge existente" *ngIf="element.yaEsEvaluador">Ya es evaluador</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsPreview"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsPreview;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- PASO 4: Errores -->
+  <div class="paso-error" *ngIf="paso === 'error'">
+    <div class="error-header">
+      <mat-icon>error</mat-icon>
+      <h4>Se encontraron errores en el archivo</h4>
+    </div>
+    
+    <div class="tabla-errores">
+      <table mat-table [dataSource]="erroresFormato">
+        <ng-container matColumnDef="fila">
+          <th mat-header-cell *matHeaderCellDef>Fila</th>
+          <td mat-cell *matCellDef="let element">{{ element.fila }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dni">
+          <th mat-header-cell *matHeaderCellDef>Valor</th>
+          <td mat-cell *matCellDef="let element">{{ element.dni }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mensaje">
+          <th mat-header-cell *matHeaderCellDef>Error</th>
+          <td mat-cell *matCellDef="let element" class="error-text">{{ element.mensaje }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsError"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsError;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- PASO 5: Procesando -->
+  <div class="paso-procesando" *ngIf="paso === 'procesando'">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Procesando carga masiva...</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-button (click)="reiniciar()" *ngIf="paso === 'error' || paso === 'preview'">
+    <mat-icon>refresh</mat-icon>
+    Reiniciar
+  </button>
+  <button mat-raised-button color="primary" 
+          (click)="confirmarCarga()" 
+          *ngIf="paso === 'preview'"
+          [disabled]="totalNuevos === 0">
+    Aceptar ({{ totalNuevos }} nuevos)
+  </button>
+</mat-dialog-actions>

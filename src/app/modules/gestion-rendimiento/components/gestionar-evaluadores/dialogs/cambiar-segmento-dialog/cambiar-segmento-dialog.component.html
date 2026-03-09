@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Cambiar Rol de Evaluador</h2>
+
+<mat-dialog-content>
+  <div class="info-usuario">
+    <p><strong>DNI:</strong> {{ data.dni }}</p>
+    <p><strong>Nombre:</strong> {{ data.nombre }}</p>
+  </div>
+
+  <div class="mensaje-alerta">
+    <mat-icon color="warn">warning</mat-icon>
+    <span>Al cambiar el segmento, este usuario dejará de ser evaluador.</span>
+  </div>
+
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nuevo Segmento</mat-label>
+      <mat-select formControlName="nuevoSegmento" required>
+        <mat-option *ngFor="let segmento of segmentos" [value]="segmento.id">
+          {{ segmento.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('nuevoSegmento').hasError('required')">
+        Seleccione un segmento
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" 
+          [disabled]="form.invalid"
+          (click)="confirmar()">
+    Confirmar Cambio
+  </button>
+</mat-dialog-actions>

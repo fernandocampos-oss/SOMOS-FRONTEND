@@ -12,28 +12,44 @@
       <!-- VISTA MAESTRO GDR -->
       <mat-tab-group *ngIf="esMaestroGdr">
         <mat-tab label="Configuración Ciclo GDR">
-          <app-configuracion-ciclo-gdr></app-configuracion-ciclo-gdr>
+          <ng-template matTabContent>
+            <app-configuracion-ciclo-gdr></app-configuracion-ciclo-gdr>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Gestionar Maestros GDR">
-          <app-gestionar-maestros-gdr></app-gestionar-maestros-gdr>
+          <ng-template matTabContent>
+            <app-gestionar-maestros-gdr></app-gestionar-maestros-gdr>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Gestionar Evaluadores">
-          <app-gestionar-evaluadores></app-gestionar-evaluadores>
+          <ng-template matTabContent>
+            <app-gestionar-evaluadores></app-gestionar-evaluadores>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Asignar Trabajadores">
-          <app-asignar-trabajadores-evaluador></app-asignar-trabajadores-evaluador>
+          <ng-template matTabContent>
+            <app-asignar-trabajadores-evaluador></app-asignar-trabajadores-evaluador>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Seguimiento Trabajador">
-          <app-seguimiento-trabajador></app-seguimiento-trabajador>
+          <ng-template matTabContent>
+            <app-seguimiento-trabajador></app-seguimiento-trabajador>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Dashboard Seguimiento">
-          <app-dashboard-seguimiento></app-dashboard-seguimiento>
+          <ng-template matTabContent>
+            <app-dashboard-seguimiento></app-dashboard-seguimiento>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Información Formato GDR">
-          <app-reporte-usuario-gdr></app-reporte-usuario-gdr>
+          <ng-template matTabContent>
+            <app-reporte-usuario-gdr></app-reporte-usuario-gdr>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Buscar Formato GDR Excel">
-          <app-buscar-reporte></app-buscar-reporte>
+          <ng-template matTabContent>
+            <app-buscar-reporte></app-buscar-reporte>
+          </ng-template>
         </mat-tab>
       </mat-tab-group>
       
