@@ -4,6 +4,7 @@ import { GestionRendimientoService } from '@data/services/gestion-rendimiento/ge
 import { NotificationService, SnackbarService } from '@core/services';
 import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
 import { ComentarioDialogComponent } from '../gestionar-indicadores-trabajador/dialogs/comentario-dialog/comentario-dialog.component';
+import { NotificationDialogComponent } from '@shared/notification-dialog/notification-dialog.component';
 
 @Component({
   selector: 'app-seguimiento-trabajador',
@@ -21,6 +22,7 @@ export class SeguimientoTrabajadorComponent implements OnInit {
   reunionMetas: any = null;
   formatoGdr: any = null;
   evaluador: any = null;
+  resultadosFinales: any = null;
 
   // DNI del Maestro GDR actual
   dniMaestroGdr: string = '';
@@ -84,6 +86,9 @@ export class SeguimientoTrabajadorComponent implements OnInit {
 
       // Cargar formato GDR del trabajador
       await this.cargarFormatoGdr();
+
+      // Cargar resultados finales
+      await this.cargarResultadosFinales();
 
       this._snackbar.success('Trabajador encontrado');
     } catch (error) {
@@ -367,6 +372,7 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     this.reunionMetas = null;
     this.formatoGdr = null;
     this.evaluador = null;
+    this.resultadosFinales = null;
   }
 
   getAsistenciaTexto(asistio: string): string {
@@ -419,6 +425,26 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {});
+  }
+
+  // Método para ver descripción de evidencia a presentar
+  verDescripcionEvidencia(evidencia: any) {
+    if (!evidencia) {
+      this._notification.warning('No hay evidencia');
+      return;
+    }
+    
+    const descripcion = evidencia.descripcion || 'Sin descripción';
+    
+    this._dialog.open(NotificationDialogComponent, {
+      disableClose: false,
+      width: '450px',
+      autoFocus: false,
+      data: {
+        title: 'Evidencia a presentar',
+        message: descripcion
+      }
+    });
   }
 
   /**
@@ -527,6 +553,43 @@ export class SeguimientoTrabajadorComponent implements OnInit {
       case 'si_presenta': return 'SÍ presenta';
       case 'no_presenta': return 'NO presenta';
       default: return '-';
+    }
+  }
+
+  // Cargar resultados finales del trabajador
+  async cargarResultadosFinales() {
+    if (!this.trabajadorEncontrado || !this.trabajadorEncontrado.idVotante) {
+      this.resultadosFinales = null;
+      return;
+    }
+
+    try {
+      const anioActual = new Date().getFullYear();
+      const resultados = await this._grService.obtenerResultadosFinalesMultiples(
+        [this.trabajadorEncontrado.idVotante],
+        anioActual
+      );
+      
+      // El endpoint devuelve un objeto donde la clave es el idVotante
+      const resultado = resultados[this.trabajadorEncontrado.idVotante];
+      if (resultado) {
+        this.resultadosFinales = resultado;
+      } else {
+        this.resultadosFinales = {
+          rendimientoDistinguido: null,
+          accionesCapacitacion: null,
+          otrasAcciones: null,
+          fechaReunion: null
+        };
+      }
+    } catch (error) {
+      console.error('Error cargando resultados finales:', error);
+      this.resultadosFinales = {
+        rendimientoDistinguido: null,
+        accionesCapacitacion: null,
+        otrasAcciones: null,
+        fechaReunion: null
+      };
     }
   }
 }

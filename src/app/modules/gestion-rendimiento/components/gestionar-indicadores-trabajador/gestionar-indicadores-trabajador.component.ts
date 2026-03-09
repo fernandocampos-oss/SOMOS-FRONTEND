@@ -17,6 +17,7 @@ import { ComentarioDialogComponent } from './dialogs/comentario-dialog/comentari
 import { FechaPlazoDialogComponent } from './dialogs/fecha-plazo-dialog/fecha-plazo-dialog.component';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 import { RegistrarFormatoComponent } from './dialogs/registrar-formato/registrar-formato.component';
+import { NotificationDialogComponent } from '@shared/notification-dialog/notification-dialog.component';
 import { da } from 'date-fns/locale';
 
 @Component({
@@ -868,6 +869,26 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadTableJefe();
+    });
+  }
+
+  // Método para ver descripción de evidencia a presentar
+  verDescripcionEvidencia(evidencia: any) {
+    if (!evidencia) {
+      this._notification.warning('No hay evidencia');
+      return;
+    }
+    
+    const descripcion = evidencia.descripcion || 'Sin descripción';
+    
+    this._dialog.open(NotificationDialogComponent, {
+      disableClose: false,
+      width: '450px',
+      autoFocus: false,
+      data: {
+        title: 'Evidencia a presentar',
+        message: descripcion
+      }
     });
   }
 

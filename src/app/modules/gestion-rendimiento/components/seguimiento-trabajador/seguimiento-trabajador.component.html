@@ -236,6 +236,10 @@
                         <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px; display: flex; flex-direction: column; justify-content: center;">
                           <span style="font-size: 10px; color: #666; font-weight: bold; text-align: center;">EVIDENCIA {{i+1}}:</span>
                           <div style="display: flex; justify-content: center; gap: 4px; margin-top: 2px;">
+                            <button mat-icon-button style="width: 24px; height: 24px; line-height: 24px;"
+                                    matTooltip="Ver evidencia a presentar" (click)="verDescripcionEvidencia(t)">
+                              <mat-icon style="font-size: 18px;">visibility</mat-icon>
+                            </button>
                             <span *ngIf="!t.sustentoExtensionFile" style="font-size: 9px; color: #999; font-style: italic;">Sin archivo</span>
                             <button *ngIf="t.sustentoExtensionFile === 'pdf'" mat-icon-button color="primary" style="width: 24px; height: 24px; line-height: 24px;"
                                     matTooltip="Ver PDF" (click)="verEvidenciaPdf(t)">
@@ -431,29 +435,27 @@
           <tbody>
             <!-- Título RESULTADOS FINALES -->
             <tr>
-              <td colspan="4" style="background-color: #1e3a5f; color: white; text-align: center; padding: 14px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase;">
+              <td colspan="5" style="background-color: #1e3a5f; color: white; text-align: center; padding: 14px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase;">
                 RESULTADOS FINALES
               </td>
             </tr>
             <!-- Encabezados -->
             <tr style="background-color: #f5f5f5; border-bottom: 2px solid #1e3a5f;">
-              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid #ddd;">CRITERIOS</th>
-              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid #ddd;">PUNTUACIÓN FINAL</th>
-              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid #ddd;">CALIFICACIÓN</th>
-              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px;">REUNIÓN DE RETROALIMENTACIÓN</th>
+              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid #ddd; width: 15%;">RENDIMIENTO DISTINGUIDO</th>
+              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid #ddd; width: 12%;">PUNTUACIÓN FINAL</th>
+              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid #ddd; width: 15%;">CALIFICACIÓN</th>
+              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid #ddd; width: 38%;">REUNIÓN DE RETROALIMENTACIÓN Y ACCIONES DE MEJORA</th>
+              <th style="padding: 12px; text-align: center; font-weight: 700; font-size: 13px; width: 20%;">FECHA DE REUNIÓN</th>
             </tr>
             <!-- Datos -->
             <tr style="border-bottom: 1px solid #eee;">
-              <!-- Criterios -->
-              <td style="padding: 16px; vertical-align: middle; border-right: 1px solid #eee;">
-                <div style="font-weight: 600; font-size: 12px; color: #333; margin-bottom: 8px;">
-                  Criterios para Calificación:
+              <!-- Rendimiento Distinguido -->
+              <td style="padding: 16px; vertical-align: middle; border-right: 1px solid #eee; text-align: center;">
+                <div style="background-color: #c85a28; color: white; padding: 10px; margin-bottom: 10px; font-weight: 600; font-size: 10px; text-align: center; border-radius: 4px;">
+                  LA JUNTA DE DIRECTIVOS OTORGÓ RENDIMIENTO DISTINGUIDO AL SERVIDOR
                 </div>
-                <div style="font-size: 11px; line-height: 1.6; color: #555;">
-                  <div style="margin-bottom: 4px;">• <b>Rendimiento Distinguido:</b> 95 a 100%</div>
-                  <div style="margin-bottom: 4px;">• <b>Buen Rendimiento:</b> 85 a menos de 95%</div>
-                  <div style="margin-bottom: 4px;">• <b>Rendimiento Sujeto a Observación:</b> 65 a menos de 85%</div>
-                  <div>• <b>Desaprobado:</b> Menos de 65%</div>
+                <div style="font-size: 16px; font-weight: 700; padding: 8px; border: 2px solid #c85a28; border-radius: 4px; background-color: #f9f9f9;">
+                  {{ resultadosFinales?.rendimientoDistinguido || '[Sin definir]' }}
                 </div>
               </td>
               <!-- Puntuación Final -->
@@ -468,19 +470,38 @@
                   {{ getCalificacion(calcularPuntuacionFinal()) }}
                 </div>
               </td>
-              <!-- Reunión de Retroalimentación -->
-              <td style="padding: 16px; vertical-align: middle;">
-                <div style="font-size: 12px; color: #666;">
-                  <div style="margin-bottom: 8px;">
-                    <span style="font-weight: 600;">Fecha de Reunión:</span>
-                    <span *ngIf="reunionMetas?.fechaReunion"> {{ reunionMetas.fechaReunion }}</span>
-                    <span *ngIf="!reunionMetas?.fechaReunion" style="color: #999;"> Sin definir</span>
+              <!-- Reunión de Retroalimentación y Acciones -->
+              <td style="padding: 0; vertical-align: top; border-right: 1px solid #eee;">
+                <!-- Acciones de Capacitación -->
+                <div style="padding: 12px; border-bottom: 1px solid #eee;">
+                  <div style="font-weight: 600; font-size: 10px; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px; text-align: center;">
+                    ACCIONES DE CAPACITACIÓN
                   </div>
-                  <div>
-                    <span style="font-weight: 600;">Estado:</span>
-                    <span *ngIf="reunionMetas?.confirmado" style="color: #4caf50; font-weight: 600;"> ✓ Confirmada</span>
-                    <span *ngIf="reunionMetas && !reunionMetas.confirmado" style="color: #ff9800; font-weight: 600;"> Pendiente</span>
-                    <span *ngIf="!reunionMetas" style="color: #999;"> Sin registro</span>
+                  <div style="padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #2196f3; border-radius: 4px; font-size: 12px; line-height: 1.5; color: #333; min-height: 40px;">
+                    {{ resultadosFinales?.accionesCapacitacion || 'Sin registros' }}
+                  </div>
+                </div>
+                <!-- Otras Acciones -->
+                <div style="padding: 12px;">
+                  <div style="font-weight: 600; font-size: 10px; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px; text-align: center;">
+                    OTRAS ACCIONES PARA LA MEJORA
+                  </div>
+                  <div style="padding: 12px; background-color: #f9f9f9; border: 2px solid #e0e0e0; border-left: 4px solid #4caf50; border-radius: 4px; font-size: 12px; line-height: 1.5; color: #333; min-height: 40px;">
+                    {{ resultadosFinales?.otrasAcciones || 'Sin registros' }}
+                  </div>
+                </div>
+              </td>
+              <!-- Fecha de Reunión -->
+              <td style="padding: 16px; text-align: center; vertical-align: middle;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <mat-icon style="font-size: 20px; color: #1e3a5f;">event</mat-icon>
+                    <span style="font-size: 11px; font-weight: 600; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.3px;">
+                      Fecha de Reunión
+                    </span>
+                  </div>
+                  <div style="font-size: 14px; font-weight: 600; padding: 12px; border: 2px solid #1e3a5f; border-radius: 6px; background-color: #f9f9f9; min-width: 120px;">
+                    {{ resultadosFinales?.fechaReunion ? (resultadosFinales.fechaReunion | date:'dd/MM/yyyy') : 'Sin definir' }}
                   </div>
                 </div>
               </td>

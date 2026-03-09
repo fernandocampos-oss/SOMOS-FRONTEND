@@ -241,6 +241,12 @@
                                                     <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px; display: flex; flex-direction: column; justify-content: center;">
                                                         <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap; line-height: 16px; text-align: center;">EVIDENCIA {{evIdx+1}}:</span>
                                                         <div class="evidencia-buttons-container" style="display: flex; justify-content: center; gap: 4px; margin-top: 2px;">
+                                                            <!-- Botón para ver descripción de evidencia a presentar -->
+                                                            <button mat-icon-button class="btn-evidencia-small"
+                                                                matTooltip="Ver evidencia a presentar"
+                                                                (click)="verDescripcionEvidencia(t)">
+                                                                <mat-icon>visibility</mat-icon>
+                                                            </button>
                                                             <!-- Mostrar botón de agregar solo si NO tiene archivo -->
                                                             <button *ngIf="!t.sustentoExtensionFile" mat-icon-button class="has-success btn-evidencia-small"
                                                                 matTooltip="Registrar Sustento"
@@ -575,8 +581,7 @@
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
                     
-                    <!-- Nueva tabla de Resultados Finales - Solo visible si fase POST está activa -->
-                    <ng-container *ngIf="configuracionGdr?.fasePostActiva">
+                    <!-- Nueva tabla de Resultados Finales - Siempre visible, controles desactivados si fase POST no está activa -->
                     <br>
                     <table class="workersTable anotherTable gdr-table-2025" style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <tbody>
@@ -622,7 +627,8 @@
                                     <div style="padding: 0 4px;">
                                         <select style="width: 100%; padding: 10px; font-size: 11px; border: 2px solid #c85a28; border-radius: 4px; background-color: white;"
                                                 [value]="i.resultadosFinales?.rendimientoDistinguido || '[Seleccione]'"
-                                                (change)="onRendimientoDistinguidoChange(i, $event.target.value)">
+                                                (change)="onRendimientoDistinguidoChange(i, $event.target.value)"
+                                                [disabled]="!configuracionGdr?.fasePostActiva">
                                             <option value="[Seleccione]">[Seleccione]</option>
                                             <option value="Si">Sí</option>
                                             <option value="No">No</option>
@@ -661,7 +667,8 @@
                                                         color="primary" 
                                                         matTooltip="Editar acciones de capacitación"
                                                         style="width: 28px; height: 28px;"
-                                                        (click)="editarAccionesCapacitacion(i)">
+                                                        (click)="editarAccionesCapacitacion(i)"
+                                                        [disabled]="!configuracionGdr?.fasePostActiva">
                                                     <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">edit</mat-icon>
                                                 </button>
                                                 
@@ -706,7 +713,8 @@
                                                         color="primary" 
                                                         matTooltip="Editar otras acciones"
                                                         style="width: 28px; height: 28px;"
-                                                        (click)="editarOtrasAcciones(i)">
+                                                        (click)="editarOtrasAcciones(i)"
+                                                        [disabled]="!configuracionGdr?.fasePostActiva">
                                                     <mat-icon style="font-size: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center;">edit</mat-icon>
                                                 </button>
                                                 
@@ -753,7 +761,8 @@
                                         <input type="date" 
                                                style="width: 100%; max-width: 180px; padding: 12px; border: 2px solid #1e3a5f; border-radius: 6px; font-size: 12px; text-align: center; background-color: white; color: #333; font-weight: 500;"
                                                [value]="i.resultadosFinales?.fechaReunion || ''"
-                                               (change)="onFechaReunionChange(i, $event.target.valueAsDate)">
+                                               (change)="onFechaReunionChange(i, $event.target.valueAsDate)"
+                                               [disabled]="!configuracionGdr?.fasePostActiva">
                                     </div>
                                 </td>
                             </tr>
@@ -786,7 +795,6 @@
                             FIN Fila de FIRMAS -->
                         </tbody>
                     </table>
-                    </ng-container>
                     
                     <!-- 
                     <br />
