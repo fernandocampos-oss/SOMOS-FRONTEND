@@ -34,6 +34,8 @@ import { AgregarEvaluadorDialogComponent } from './components/gestionar-evaluado
 import { CargaMasivaEvaluadoresDialogComponent } from './components/gestionar-evaluadores/dialogs/carga-masiva-evaluadores-dialog/carga-masiva-evaluadores-dialog.component';
 import { CambiarSegmentoDialogComponent } from './components/gestionar-evaluadores/dialogs/cambiar-segmento-dialog/cambiar-segmento-dialog.component';
 import { AsignarTrabajadoresEvaluadorComponent } from './components/asignar-trabajadores-evaluador/asignar-trabajadores-evaluador.component';
+import { AgregarTrabajadorDialogComponent } from './components/asignar-trabajadores-evaluador/dialogs/agregar-trabajador-dialog/agregar-trabajador-dialog.component';
+import { CargaMasivaTrabajadoresDialogComponent } from './components/asignar-trabajadores-evaluador/dialogs/carga-masiva-trabajadores-dialog/carga-masiva-trabajadores-dialog.component';
 import { DashboardSeguimientoComponent } from './components/dashboard-seguimiento/dashboard-seguimiento.component';
 import { SeguimientoTrabajadorComponent } from './components/seguimiento-trabajador/seguimiento-trabajador.component';
 import { ConfiguracionCicloGdrComponent } from './components/configuracion-ciclo-gdr/configuracion-ciclo-gdr.component';
@@ -67,6 +69,8 @@ import { ConfiguracionCicloGdrComponent } from './components/configuracion-ciclo
     CargaMasivaEvaluadoresDialogComponent,
     CambiarSegmentoDialogComponent,
     AsignarTrabajadoresEvaluadorComponent,
+    AgregarTrabajadorDialogComponent,
+    CargaMasivaTrabajadoresDialogComponent,
     DashboardSeguimientoComponent,
     SeguimientoTrabajadorComponent,
     ConfiguracionCicloGdrComponent

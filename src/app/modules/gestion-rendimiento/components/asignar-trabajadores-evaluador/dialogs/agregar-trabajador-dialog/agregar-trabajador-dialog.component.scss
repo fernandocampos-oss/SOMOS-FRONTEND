@@ -1,0 +1,90 @@
+.subtitle {
+  margin: -16px 0 16px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.busqueda-section {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  
+  .dni-field {
+    flex: 1;
+  }
+  
+  button {
+    margin-top: 4px;
+  }
+}
+
+.resultado-busqueda {
+  margin-top: 16px;
+}
+
+.error-card, .warning-card, .success-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  
+  mat-icon {
+    flex-shrink: 0;
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    
+    strong {
+      font-size: 16px;
+    }
+    
+    span {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .disponible {
+      color: #4caf50;
+      font-weight: 500;
+    }
+  }
+}
+
+.error-card {
+  background-color: #ffebee;
+  
+  mat-icon {
+    color: #f44336;
+  }
+  
+  span {
+    color: #c62828;
+  }
+}
+
+.warning-card {
+  background-color: #fff3e0;
+  
+  mat-icon {
+    color: #ff9800;
+  }
+}
+
+.success-card {
+  background-color: #e8f5e9;
+  
+  mat-icon {
+    color: #4caf50;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}

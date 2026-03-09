@@ -661,4 +661,54 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/gdr/evaluadores/exportar-excel`;
     return await this.http.get(url, { responseType: 'blob' }).toPromise() as Blob;
   }
+
+  // ==================== ASIGNAR TRABAJADORES ====================
+
+  /**
+   * Listar trabajadores asignados a un evaluador
+   */
+  async listarTrabajadoresPorEvaluador(idEvaluador: number): Promise<any[]> {
+    const url = `${URL_BASE}/gdr/evaluadores/${idEvaluador}/trabajadores`;
+    return await this.http.get(url).toPromise() as any[];
+  }
+
+  /**
+   * Buscar trabajador por DNI para asignar
+   */
+  async buscarTrabajadorParaAsignar(idEvaluador: number, dni: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/${idEvaluador}/buscar-trabajador/${dni}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Asignar trabajador a evaluador
+   */
+  async asignarTrabajador(idEvaluador: number, dniTrabajador: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/${idEvaluador}/asignar/${dniTrabajador}`;
+    return await this.http.post(url, {}).toPromise();
+  }
+
+  /**
+   * Desasignar trabajador de evaluador
+   */
+  async desasignarTrabajador(idEquipo: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/trabajador/${idEquipo}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  /**
+   * Validar carga masiva de asignaciones trabajadores
+   */
+  async validarCargaMasivaTrabajadores(filas: string[][]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/trabajadores/carga-masiva/validar`;
+    return await this.http.post(url, { filas }).toPromise();
+  }
+
+  /**
+   * Confirmar carga masiva de asignaciones trabajadores
+   */
+  async confirmarCargaMasivaTrabajadores(filas: string[][]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/trabajadores/carga-masiva/confirmar`;
+    return await this.http.post(url, { filas }).toPromise();
+  }
 }
