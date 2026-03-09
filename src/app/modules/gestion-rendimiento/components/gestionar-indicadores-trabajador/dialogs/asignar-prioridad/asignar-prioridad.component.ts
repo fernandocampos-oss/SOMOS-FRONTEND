@@ -501,6 +501,20 @@ export class AsignarPrioridadComponent implements OnInit {
     this.idEviEditar = 0;
   }
 
+  /**
+   * Resetea solo los campos de descripción y plazo de evidencia,
+   * preservando el valor de frmPlazoFinal
+   */
+  resetEvidenciaCampos(): void {
+    const plazoFinalValue = this.formEvidencia.controls["frmPlazoFinal"].value;
+    this.formEvidencia.controls["frmDescripcion"].reset();
+    this.formEvidencia.controls["frmPlazo"].reset();
+    // Restaurar el valor del plazo final
+    if (plazoFinalValue) {
+      this.formEvidencia.controls["frmPlazoFinal"].setValue(plazoFinalValue);
+    }
+  }
+
   habEdiTarea(){
     if(this.activaEdicion == true){
       this.formEvidencia.controls["frmDescripcion"].disable();

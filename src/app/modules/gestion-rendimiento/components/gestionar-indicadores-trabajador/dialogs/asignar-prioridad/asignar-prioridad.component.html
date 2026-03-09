@@ -151,11 +151,11 @@
                 <mat-grid-tile [colspan]="(idIndicador==0?1:2)">
                     <button mat-raised-button color="primary" class="botonPoi" *ngIf="idIndicador==0"
                         [disabled]="listEvidencia.length >= 2"
-                        (click)="crearTarea(); formEvidencia.reset()">Añadir</button>
+                        (click)="crearTarea(); resetEvidenciaCampos()">Añadir</button>
                     <button mat-raised-button color="warn" class="botonPoiWarn" *ngIf="idIndicador>0" [disabled]="idEviEditar==0"
-                        (click)="cancelaEdicion(); formEvidencia.reset()">Cancelar</button>
+                        (click)="cancelaEdicion(); resetEvidenciaCampos()">Cancelar</button>
                     <button mat-raised-button color="primary" class="botonPoi" *ngIf="idIndicador>0" [disabled]="idEviEditar==0"
-                        (click)="actualizarTarea(); formEvidencia.reset()">Actualizar</button>
+                        (click)="actualizarTarea(); resetEvidenciaCampos()">Actualizar</button>
                 </mat-grid-tile>
             </mat-grid-list>
             <div style="max-height: 260px; overflow-y: auto;">
