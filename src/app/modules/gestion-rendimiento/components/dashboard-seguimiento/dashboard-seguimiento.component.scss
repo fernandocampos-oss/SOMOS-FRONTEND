@@ -16,47 +16,186 @@
   }
 }
 
-.placeholder-content {
-  text-align: center;
-  padding: 40px;
-  
-  .placeholder-icon {
-    font-size: 64px;
-    width: 64px;
-    height: 64px;
-    color: #1976d2;
+// Filtros
+.filtros-card {
+  margin-bottom: 20px;
+}
+
+.filtros-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.filtro-field {
+  min-width: 150px;
+}
+
+.filtro-unidad {
+  min-width: 250px;
+}
+
+// Resumen cards
+.resumen-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.resumen-card {
+  .resumen-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+    mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: #1976d2;
+    }
+    
+    .resumen-data {
+      display: flex;
+      flex-direction: column;
+      
+      .resumen-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .resumen-label {
+        font-size: 14px;
+        color: #666;
+      }
+    }
+  }
+}
+
+// Tabla
+.tabla-card {
+  .filter-field {
+    width: 300px;
     margin-bottom: 16px;
   }
   
-  h4 {
-    color: #333;
-    margin-bottom: 8px;
+  .table-container {
+    overflow-x: auto;
   }
+  
+  table {
+    width: 100%;
+    
+    th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+    }
+    
+    td, th {
+      text-align: center;
+      white-space: nowrap;
+      padding: 8px 12px;
+    }
+    
+    td:first-child, th:first-child {
+      text-align: left;
+    }
+    
+    td:nth-child(2), th:nth-child(2) {
+      text-align: left;
+      max-width: 250px;
+      white-space: normal;
+    }
+  }
+}
+
+// Estados de avance
+.avance-alto {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.avance-medio {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.avance-bajo {
+  color: #f44336;
+  font-weight: bold;
+}
+
+// Badge distinguido
+.badge-distinguido {
+  background-color: #ffc107;
+  color: #333;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+// No data
+.no-data-cell {
+  text-align: center !important;
+  padding: 40px !important;
+  color: #666;
+}
+
+// Loading
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
   
   p {
+    margin-top: 16px;
     color: #666;
   }
-  
-  .info-text {
-    margin-top: 20px;
-    font-weight: 500;
-  }
-  
-  ul {
-    text-align: left;
-    display: inline-block;
-    color: #666;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .filtros-row {
+    flex-direction: column;
+    align-items: stretch;
     
-    li {
-      margin: 8px 0;
-      
-      ul {
-        margin-top: 4px;
-        
-        li {
-          margin: 4px 0;
-        }
-      }
+    .filtro-field, .filtro-unidad {
+      width: 100%;
     }
+    
+    button {
+      width: 100%;
+    }
+  }
+  
+  .resumen-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+// Iconos de fases
+.fase-completada {
+  color: #4caf50;
+  font-size: 24px;
+}
+
+.fase-pendiente {
+  color: #bdbdbd;
+  font-size: 24px;
+}
+
+.fase-count {
+  font-weight: bold;
+  color: #1976d2;
+}
+
+@media (max-width: 480px) {
+  .resumen-cards {
+    grid-template-columns: 1fr;
   }
 }

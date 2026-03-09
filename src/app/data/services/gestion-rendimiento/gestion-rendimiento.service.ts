@@ -566,5 +566,39 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/gdr/configuracion/${periodo}/evidencia/${numero}`;
     return await this.http.get<boolean>(url).toPromise() || false;
   }
+
+  // ============================================
+  // DASHBOARD DE AVANCE GDR
+  // ============================================
+
+  /**
+   * Obtener dashboard de avance GDR
+   * @param request Filtros: anio, listCodRed, codUnidad, tipoAgrupacion (PERSONA, UNIDAD, ORGANO), allRed
+   */
+  async obtenerDashboardAvance(request: {
+    anio: string,
+    listCodRed?: string[],
+    codUnidad?: string,
+    tipoAgrupacion: string,
+    allRed?: boolean
+  }): Promise<any[]> {
+    const url = `${URL_BASE}/gdr/dashboard/avance`;
+    return await this.http.post<any[]>(url, request).toPromise() || [];
+  }
+
+  /**
+   * Exportar dashboard de avance a Excel
+   * @param request Filtros para el dashboard
+   */
+  async exportarDashboardExcel(request: {
+    anio: string,
+    listCodRed?: string[],
+    codUnidad?: string,
+    tipoAgrupacion: string,
+    allRed?: boolean
+  }): Promise<Blob> {
+    const url = `${URL_BASE}/gdr/dashboard/avance/excel`;
+    return await this.http.post(url, request, { responseType: 'blob' }).toPromise() as Blob;
+  }
 }
 
