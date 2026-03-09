@@ -201,6 +201,9 @@ export class AsignarPrioridadComponent implements OnInit {
       this.listEvidencia = [];
       if(infIndicador.listEvidencia.length > 0){
         infIndicador.listEvidencia.forEach((dtEvi:any)=>{
+          // Excluir la evidencia final (SUSTENTO FINAL) de la lista editable
+          if(dtEvi.descripcion === 'SUSTENTO FINAL') return;
+          
           let fecha = new Date(dtEvi.plazo);
           let tienepdf:number = (dtEvi.sustentoDescripcion == null?0:1);
           this.listEvidencia.push({

@@ -11,6 +11,9 @@
     <div class="card shadow no-padd">
       <!-- VISTA MAESTRO GDR -->
       <mat-tab-group *ngIf="esMaestroGdr">
+        <mat-tab label="Configuración Ciclo GDR">
+          <app-configuracion-ciclo-gdr></app-configuracion-ciclo-gdr>
+        </mat-tab>
         <mat-tab label="Gestionar Maestros GDR">
           <app-gestionar-maestros-gdr></app-gestionar-maestros-gdr>
         </mat-tab>

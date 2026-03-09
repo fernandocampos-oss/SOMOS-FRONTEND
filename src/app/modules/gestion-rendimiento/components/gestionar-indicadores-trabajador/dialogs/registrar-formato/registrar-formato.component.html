@@ -1,0 +1,88 @@
+<div class="registrar-formato-dialog">
+  <!-- PASO 1: Pregunta sobre reunión de metas -->
+  <div *ngIf="paso === 1" class="paso-reunion">
+    <div class="header">
+      <div class="icon-container">
+        <mat-icon style="color: white !important;">groups</mat-icon>
+      </div>
+      <h2>Reunión de Establecimiento de Metas</h2>
+      <p class="trabajador-info">
+        {{ data.nombreCompleto }}
+      </p>
+    </div>
+
+    <div class="content">
+      <div class="form-group">
+        <label>¿Se realizó la reunión de establecimiento de metas?</label>
+        <select [(ngModel)]="asistioReunion" class="select-field">
+          <option value="-">[Seleccione]</option>
+          <option value="S">Sí</option>
+          <option value="N">No</option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="asistioReunion === 'S'">
+        <label>Fecha de la reunión <span class="required">*</span></label>
+        <input type="date" [(ngModel)]="fechaReunion" class="date-field">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-button (click)="cancelar()" class="btn-cancelar">
+        Cancelar
+      </button>
+      <button mat-raised-button color="primary" 
+              (click)="avanzarPaso()" 
+              [disabled]="!puedeAvanzar()"
+              class="btn-continuar">
+        Continuar
+      </button>
+    </div>
+  </div>
+
+  <!-- PASO 2: Confirmación final con mensaje Directiva -->
+  <div *ngIf="paso === 2" class="paso-confirmacion">
+    <div class="header warning">
+      <div class="icon-container warning">
+        <mat-icon>warning</mat-icon>
+      </div>
+      <h2>Confirmar Registro de Formato</h2>
+    </div>
+
+    <div class="content">
+      <div class="mensaje-directiva">
+        <mat-icon class="info-icon">info</mat-icon>
+        <p>
+          Una vez que cierre la edición del presente formato, no podrá realizar modificaciones, 
+          salvo que inicie el proceso de modificación de metas conforme a la 
+          <strong>Directiva N.° 068-2020-SERVIR-PE</strong>. 
+          Se recomienda revisar cuidadosamente la información antes de confirmar.
+        </p>
+      </div>
+
+      <div class="resumen">
+        <h4>Resumen:</h4>
+        <ul>
+          <li><strong>Trabajador:</strong> {{ data.nombreCompleto }}</li>
+          <li><strong>Período:</strong> {{ data.periodo }}</li>
+          <li><strong>Reunión realizada:</strong> {{ asistioReunion === 'S' ? 'Sí' : 'No' }}</li>
+          <li *ngIf="asistioReunion === 'S'"><strong>Fecha reunión:</strong> {{ fechaReunion }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-button (click)="volver()" class="btn-volver" [disabled]="guardando">
+        <mat-icon>arrow_back</mat-icon>
+        Volver
+      </button>
+      <button mat-raised-button color="warn" 
+              (click)="confirmar()"
+              [disabled]="guardando"
+              class="btn-confirmar">
+        <mat-icon>{{ guardando ? 'hourglass_empty' : 'check_circle' }}</mat-icon>
+        {{ guardando ? 'Procesando...' : 'ESTOY SEGURO, CONFIRMAR' }}
+      </button>
+    </div>
+  </div>
+</div>

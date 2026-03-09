@@ -16,6 +16,7 @@ import { RegistrarSustentoComponent } from '@modules/indicadores-trabajador/comp
 import { ComentarioDialogComponent } from './dialogs/comentario-dialog/comentario-dialog.component';
 import { FechaPlazoDialogComponent } from './dialogs/fecha-plazo-dialog/fecha-plazo-dialog.component';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
+import { RegistrarFormatoComponent } from './dialogs/registrar-formato/registrar-formato.component';
 import { da } from 'date-fns/locale';
 
 @Component({
@@ -41,6 +42,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   dniEvaluador: string = '';
   periodoActual: string = new Date().getFullYear().toString();
   esMaestroGdr: boolean = false;
+
+  // Configuración del ciclo GDR
+  configuracionGdr: any = null;
 
   // Opciones para el selector personalizado
   comentarioOptions = [
@@ -140,8 +144,22 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   async inicializar() {
     // Primero obtener los datos del evaluador actual
     await this.getSegmentoModuloGR();
+    // Cargar configuración del ciclo GDR
+    await this.cargarConfiguracionGdr();
     // Luego cargar la tabla con los trabajadores
     await this.loadTableJefe();
+  }
+
+  /**
+   * Carga la configuración del ciclo GDR para el periodo actual
+   */
+  async cargarConfiguracionGdr(): Promise<void> {
+    try {
+      this.configuracionGdr = await this._grService.obtenerConfiguracionGdr(this.periodoActual);
+    } catch (error) {
+      console.error('Error al cargar configuración GDR:', error);
+      this.configuracionGdr = null;
+    }
   }
 
   async actualizar() {
@@ -1500,6 +1518,143 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     }
     trabajador.resultadosFinales.fechaReunion = fechaStr;
     await this.guardarResultadoFinal(trabajador);
+  }
+
+  // ========== Registrar Formato ==========
+  /**
+   * Calcula el peso total de los indicadores de un trabajador
+   */
+  calcularPesoTotal(trabajador: any): number {
+    let pesoTotal = 0;
+    if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
+      trabajador.listPrioridad.forEach((prioridad: any) => {
+        if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
+          prioridad.listIndicador.forEach((indicador: any) => {
+            const peso = parseFloat(indicador.peso) || 0;
+            pesoTotal += peso;
+          });
+        }
+      });
+    }
+    return pesoTotal;
+  }
+
+  /**
+   * Verifica si se puede registrar sustento para una evidencia inicial
+   * @param trabajador El trabajador actual
+   * @param evIdx Índice de la evidencia (0 = EVIDENCIA 1, 1 = EVIDENCIA 2)
+   */
+  puedeRegistrarSustento(trabajador: any, evIdx: number): boolean {
+    // Debe tener el formato confirmado
+    if (!trabajador.reunionMetas?.confirmado) {
+      return false;
+    }
+    // Verificar la evidencia correspondiente
+    if (evIdx === 0) {
+      return this.configuracionGdr?.evidencia1Activa === true;
+    } else if (evIdx === 1) {
+      return this.configuracionGdr?.evidencia2Activa === true;
+    }
+    return false;
+  }
+
+  /**
+   * Verifica si se puede registrar sustento final
+   * @param trabajador El trabajador actual
+   */
+  puedeRegistrarSustentoFinal(trabajador: any): boolean {
+    // Debe tener el formato confirmado
+    if (!trabajador.reunionMetas?.confirmado) {
+      return false;
+    }
+    // Verificar evidencia final activa
+    return this.configuracionGdr?.evidenciaFinalActiva === true;
+  }
+
+  /**
+   * Verifica si el botón Registrar Formato debe estar habilitado
+   * Condiciones: fase planificación activa + peso total = 100% + al menos 1 prioridad con indicadores
+   */
+  puedeRegistrarFormato(trabajador: any): boolean {
+    // Si ya está confirmado, no se puede volver a registrar
+    if (trabajador.reunionMetas?.confirmado) {
+      return false;
+    }
+    
+    // Verificar que la fase de planificación esté activa
+    if (!this.configuracionGdr?.fasePlanificacionActiva) {
+      return false;
+    }
+    
+    // Verificar que tenga prioridades con indicadores
+    if (!trabajador.listPrioridad || trabajador.listPrioridad.length === 0) {
+      return false;
+    }
+    
+    // Verificar que el peso total sea 100%
+    const pesoTotal = this.calcularPesoTotal(trabajador);
+    return pesoTotal === 100;
+  }
+
+  /**
+   * Obtiene el tooltip para el botón Registrar Formato
+   */
+  getTooltipRegistrarFormato(trabajador: any): string {
+    if (trabajador.reunionMetas?.confirmado) {
+      return 'Formato ya registrado';
+    }
+    
+    // Verificar fase de planificación
+    if (!this.configuracionGdr?.fasePlanificacionActiva) {
+      return 'La fase de PLANIFICACIÓN no está activa';
+    }
+    
+    if (!trabajador.listPrioridad || trabajador.listPrioridad.length === 0) {
+      return 'Debe agregar al menos una prioridad con indicadores';
+    }
+    
+    const pesoTotal = this.calcularPesoTotal(trabajador);
+    if (pesoTotal !== 100) {
+      return `El peso total debe ser 100% (actualmente: ${pesoTotal}%)`;
+    }
+    
+    return 'Registrar formato y bloquear edición';
+  }
+
+  /**
+   * Abre el diálogo de Registrar Formato
+   */
+  abrirRegistrarFormato(trabajador: any): void {
+    const dialogRef = this._dialog.open(RegistrarFormatoComponent, {
+      disableClose: true,
+      width: '600px',
+      maxHeight: '80vh',
+      autoFocus: false,
+      data: {
+        trabajador: trabajador,
+        idVotante: trabajador.idVotante,
+        idVotanteEvaluador: this.idVotanteEvaluador,
+        nombreCompleto: `${trabajador.trabajadorApellido || ''}, ${trabajador.trabajadorNombre || ''}`.trim(),
+        periodo: this.periodoActual
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.confirmado) {
+        // Actualizar el estado local del trabajador
+        if (!trabajador.reunionMetas) {
+          trabajador.reunionMetas = {};
+        }
+        trabajador.reunionMetas.confirmado = true;
+        trabajador.reunionMetas.fechaReunion = result.fechaReunion;
+        trabajador.reunionMetas.huboReunion = result.huboReunion;
+        
+        this._notification.success('Formato registrado correctamente. La edición ha sido bloqueada.');
+        
+        // Recargar los datos para asegurar sincronización
+        this.loadTableJefe();
+      }
+    });
   }
 }
 

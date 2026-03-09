@@ -43,6 +43,18 @@
                         <div class="pesoTotal">
                             Peso Total: <b>{{i.pesoTotal}}</b>%
                         </div>
+                        <!-- Botón Registrar Formato -->
+                        <div class="registrar-formato-container" style="margin-left: 16px;">
+                            <button mat-raised-button 
+                                    [color]="i.reunionMetas?.confirmado ? 'accent' : 'primary'"
+                                    (click)="$event.stopPropagation(); abrirRegistrarFormato(i)"
+                                    [disabled]="!puedeRegistrarFormato(i)"
+                                    [matTooltip]="getTooltipRegistrarFormato(i)"
+                                    style="font-size: 11px; padding: 4px 12px;">
+                                <mat-icon style="font-size: 18px; width: 18px; height: 18px;">{{ i.reunionMetas?.confirmado ? 'check_circle' : 'assignment_turned_in' }}</mat-icon>
+                                {{ i.reunionMetas?.confirmado ? 'FORMATO REGISTRADO' : 'Registrar Formato' }}
+                            </button>
+                        </div>
                         <!--
                         <div class="send-email">
                             <button mat-button color="primary" (click)="$event.stopPropagation(); notificarCorreo(i.email)"
@@ -55,153 +67,7 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <!-- ============================================ -->
-                <!-- SECCIÓN: REUNIÓN DE ESTABLECIMIENTO DE METAS -->
-                <!-- ============================================ -->
-                <div class="reunion-metas-section" style="
-                    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-                    border: 2px solid #4caf50;
-                    border-radius: 12px;
-                    padding: 20px;
-                    margin: 16px 0;
-                    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
-                ">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <mat-icon style="color: #2e7d32; font-size: 28px; width: 28px; height: 28px;">handshake</mat-icon>
-                        <h3 style="margin: 0; color: #1b5e20; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
-                            Reunión de Establecimiento de Metas
-                        </h3>
-                        <span *ngIf="i.reunionMetas?.confirmado" style="
-                            background: #4caf50;
-                            color: white;
-                            padding: 4px 12px;
-                            border-radius: 20px;
-                            font-size: 11px;
-                            font-weight: 600;
-                            display: flex;
-                            align-items: center;
-                            gap: 4px;
-                        ">
-                            <mat-icon style="font-size: 14px; width: 14px; height: 14px;">check_circle</mat-icon>
-                            CONFIRMADO
-                        </span>
-                    </div>
-
-                    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end;">
-                        <!-- Campo: ¿Asistió a la reunión? -->
-                        <div style="flex: 1; min-width: 200px;">
-                            <label style="display: block; font-size: 12px; font-weight: 600; color: #2e7d32; margin-bottom: 8px;">
-                                ¿Se realizó la reunión de establecimiento de metas?
-                            </label>
-                            <select 
-                                [value]="i.reunionMetas?.asistio || '-'"
-                                (change)="onAsistenciaReunionChange(i, $any($event.target).value)"
-                                [disabled]="i.reunionMetas?.confirmado"
-                                style="
-                                    width: 100%;
-                                    padding: 12px 16px;
-                                    border: 2px solid #4caf50;
-                                    border-radius: 8px;
-                                    font-size: 14px;
-                                    background: white;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                                "
-                                [style.opacity]="i.reunionMetas?.confirmado ? '0.7' : '1'"
-                                [style.cursor]="i.reunionMetas?.confirmado ? 'not-allowed' : 'pointer'"
-                            >
-                                <option value="-">[Seleccione]</option>
-                                <option value="S">Sí</option>
-                                <option value="N">No</option>
-                            </select>
-                        </div>
-
-                        <!-- Campo: Fecha de la reunión (visible siempre, editable solo si asistió = Sí) -->
-                        <div style="flex: 1; min-width: 200px;">
-                            <label style="display: block; font-size: 12px; font-weight: 600; color: #2e7d32; margin-bottom: 8px;">
-                                Fecha de la reunión
-                                <span *ngIf="i.reunionMetas?.asistio === 'S'" style="color: #d32f2f;">*</span>
-                            </label>
-                            <input type="date"
-                                [value]="i.reunionMetas?.fechaReunion || ''"
-                                (change)="onFechaReunionMetasChange(i, $any($event.target).valueAsDate)"
-                                [disabled]="i.reunionMetas?.confirmado || i.reunionMetas?.asistio !== 'S'"
-                                style="
-                                    width: 100%;
-                                    padding: 12px 16px;
-                                    border: 2px solid #4caf50;
-                                    border-radius: 8px;
-                                    font-size: 14px;
-                                    background: white;
-                                "
-                                [style.opacity]="(i.reunionMetas?.confirmado || i.reunionMetas?.asistio !== 'S') ? '0.5' : '1'"
-                                [style.cursor]="(i.reunionMetas?.confirmado || i.reunionMetas?.asistio !== 'S') ? 'not-allowed' : 'pointer'"
-                            >
-                        </div>
-
-                        <!-- Botón Confirmar -->
-                        <div *ngIf="!i.reunionMetas?.confirmado" style="flex: 0 0 auto;">
-                            <button mat-raised-button color="primary"
-                                (click)="confirmarReunionMetas(i)"
-                                [disabled]="i.reunionMetas?.asistio === '-' || (i.reunionMetas?.asistio === 'S' && !i.reunionMetas?.fechaReunion)"
-                                style="
-                                    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
-                                    padding: 12px 24px;
-                                    font-weight: 600;
-                                    border-radius: 8px;
-                                ">
-                                Confirmar Reunión
-                            </button>
-                        </div>
-
-                        <!-- Botón Reiniciar (solo Maestro GDR) -->
-                        <div *ngIf="i.reunionMetas?.confirmado && esMaestroGdr" style="flex: 0 0 auto;">
-                            <button mat-raised-button color="warn"
-                                (click)="reiniciarConfirmacionReunion(i)"
-                                style="padding: 12px 24px; font-weight: 600; border-radius: 8px;">
-                                <mat-icon>restart_alt</mat-icon>
-                                Reiniciar Confirmación
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Info de reinicio si aplica -->
-                    <div *ngIf="i.reunionMetas?.reiniciadoPor" style="
-                        margin-top: 12px;
-                        padding: 8px 12px;
-                        background: #fff3e0;
-                        border-radius: 6px;
-                        font-size: 11px;
-                        color: #e65100;
-                        display: flex;
-                        align-items: center;
-                        gap: 6px;
-                    ">
-                        <mat-icon style="font-size: 16px; width: 16px; height: 16px;">info</mat-icon>
-                        Reiniciado por DNI: {{i.reunionMetas.reiniciadoPor}} el {{i.reunionMetas.fechaReinicio | date:'dd/MM/yyyy HH:mm'}}
-                    </div>
-
-                    <!-- Mensaje si no está confirmado -->
-                    <div *ngIf="!i.reunionMetas?.confirmado" style="
-                        margin-top: 16px;
-                        padding: 12px 16px;
-                        background: #fff8e1;
-                        border: 1px solid #ffc107;
-                        border-radius: 8px;
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                    ">
-                        <mat-icon style="color: #f57c00;">warning</mat-icon>
-                        <span style="font-size: 13px; color: #e65100;">
-                            <strong>Importante:</strong> Debe confirmar la reunión de establecimiento de metas para poder visualizar y gestionar los indicadores del trabajador.
-                        </span>
-                    </div>
-                </div>
-                <!-- FIN SECCIÓN REUNIÓN DE METAS -->
-
-                <!-- CONTENIDO PRINCIPAL: Solo visible si la reunión está confirmada -->
-                <ng-container *ngIf="i.reunionMetas?.confirmado">
+                <!-- CONTENIDO PRINCIPAL -->
 
                 <div *ngIf="i.listPrioridad.length == 0" style="text-align: center">
                     <br>
@@ -223,19 +89,22 @@
                                 <div class="eviItem">
                                     <span class="demo-2">{{element.prioridadNombre ? element.prioridadNombre :'-'}}</span>
                                 </div>
-                                <button *ngIf="isLast" mat-icon-button class="add-prioridad"
-                                    matTooltip="Añadir nueva Prioridad"
-                                    (click)="registrarPrioridad(i)">
-                                    <mat-icon>add_circle</mat-icon>
-                                </button>
-                                <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
-                                    (click)="editarPrioridad(element.idPrioridad, element.idActividad, element.fechaAsignacionPrioridad, 1, element.prioridadNombre)">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
-                                <button mat-icon-button color="warn" matTooltip="Eliminar Prioridad"
-                                    (click)="confirmarEliminarPrioridad(element.idPrioridad, i)">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
+                                <!-- Botones CRUD solo visibles si NO está confirmado -->
+                                <ng-container *ngIf="!i.reunionMetas?.confirmado">
+                                    <button *ngIf="isLast" mat-icon-button class="add-prioridad"
+                                        matTooltip="Añadir nueva Prioridad"
+                                        (click)="registrarPrioridad(i)">
+                                        <mat-icon>add_circle</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="primary" matTooltip="Editar Prioridad"
+                                        (click)="editarPrioridad(element.idPrioridad, element.idActividad, element.fechaAsignacionPrioridad, 1, element.prioridadNombre)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn" matTooltip="Eliminar Prioridad"
+                                        (click)="confirmarEliminarPrioridad(element.idPrioridad, i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </ng-container>
                             </td>
                         </ng-container>
 
@@ -249,7 +118,8 @@
                                             <div>
                                                 <span class="demo-2">{{x.nombreIndicador}}</span>
                                             </div>
-                                            <div style="display: flex; justify-content: center; margin-top: 8px; gap: 8px;">
+                                            <!-- Botones CRUD solo visibles si NO está confirmado -->
+                                            <div *ngIf="!i.reunionMetas?.confirmado" style="display: flex; justify-content: center; margin-top: 8px; gap: 8px;">
                                                 <button *ngIf="isLast" mat-icon-button class="add-prioridad" matTooltip="Añadir nuevo Indicador/Producto"
                                                     (click)="agregarIndicador(element, i.idVotante, i)">
                                                     <mat-icon>add_circle</mat-icon>
@@ -349,7 +219,8 @@
                                                         <div class="evidencia-buttons-container" style="display: flex; align-items: center; gap: 4px;">
                                                             <span style="color: #999; font-style: italic; font-size: 9px; margin-right: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[Sin evidencia aún]</span>
                                                             <button mat-icon-button class="has-success btn-evidencia-external"
-                                                                matTooltip="Agregar evidencia inicial" (click)="agregarEvidencia(z)">
+                                                                matTooltip="Agregar evidencia inicial" (click)="agregarEvidencia(z)"
+                                                                [disabled]="i.reunionMetas?.confirmado">
                                                                 <mat-icon>add_circle</mat-icon>
                                                             </button>
                                                         </div>
@@ -361,30 +232,33 @@
                                         
                                         <!-- Caso 2: Con evidencias - mostrar lista con controles -->
                                         <div *ngIf="getEvidenciasIniciales(z).length > 0">
-                                            <div *ngFor="let t of getEvidenciasIniciales(z); let i = index; let isFirst = first" 
+                                            <div *ngFor="let t of getEvidenciasIniciales(z); let evIdx = index; let isFirst = first" 
                                                  class="evidencia-individual-container"
                                                  [style.margin-top.px]="isFirst ? 4 : 0"
                                                  style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px; overflow: visible;">
                                                 <!-- Evidencia individual -->
                                                 <div style="flex: 1; max-width: 140px;">
                                                     <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-height: 44px; display: flex; flex-direction: column; justify-content: center;">
-                                                        <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap; line-height: 16px; text-align: center;">EVIDENCIA {{i+1}}:</span>
+                                                        <span style="font-size: 10px; color: #666; font-weight: bold; white-space: nowrap; line-height: 16px; text-align: center;">EVIDENCIA {{evIdx+1}}:</span>
                                                         <div class="evidencia-buttons-container" style="display: flex; justify-content: center; gap: 4px; margin-top: 2px;">
                                                             <!-- Mostrar botón de agregar solo si NO tiene archivo -->
                                                             <button *ngIf="!t.sustentoExtensionFile" mat-icon-button class="has-success btn-evidencia-small"
                                                                 matTooltip="Registrar Sustento"
-                                                                (click)="registrarSustento(t)">
+                                                                (click)="registrarSustento(t)"
+                                                                [disabled]="!puedeRegistrarSustento(i, evIdx)">
                                                                 <mat-icon>add_circle</mat-icon>
                                                             </button>
                                                             <!-- Mostrar botones de ver/eliminar cuando SÍ tiene archivo -->
                                                             <button *ngIf="t.sustentoExtensionFile === 'pdf'" mat-icon-button color="primary" class="btn-evidencia-small"
                                                                 matTooltip="Ver PDF"
-                                                                (click)="verEvidenciaPdf(t)">
+                                                                (click)="verEvidenciaPdf(t)"
+                                                                [disabled]="!puedeRegistrarSustento(i, evIdx)">
                                                                 <mat-icon>picture_as_pdf</mat-icon>
                                                             </button>
                                                             <button *ngIf="t.sustentoExtensionFile" mat-icon-button color="warn" class="btn-evidencia-small"
                                                                 matTooltip="Eliminar archivo"
-                                                                (click)="eliminarArchivoEvidencia(t)">
+                                                                (click)="eliminarArchivoEvidencia(t)"
+                                                                [disabled]="!puedeRegistrarSustento(i, evIdx)">
                                                                 <mat-icon>delete</mat-icon>
                                                             </button>
                                                         </div>
@@ -392,15 +266,15 @@
                                                 </div>
                                                 <!-- Controles individuales para cada evidencia -->
                                                 <div class="evidencia-external-controls" style="position: relative; display: flex; flex-direction: column; gap: 4px; width: 48px; overflow: visible;">
-                                                    <button *ngIf="i === getEvidenciasIniciales(z).length - 1" mat-icon-button class="has-success btn-evidencia-external"
+                                                    <button *ngIf="evIdx === getEvidenciasIniciales(z).length - 1" mat-icon-button class="has-success btn-evidencia-external"
                                                         matTooltip="Agregar evidencia inicial"
-                                                        [disabled]="getEvidenciasIniciales(z).length >= 2"
+                                                        [disabled]="i.reunionMetas?.confirmado || getEvidenciasIniciales(z).length >= 2"
                                                         (click)="agregarEvidencia(z)">
                                                         <mat-icon>add_circle</mat-icon>
                                                     </button>
-                                                    <button *ngIf="i === getEvidenciasIniciales(z).length - 1" mat-icon-button color="warn" class="btn-evidencia-external"
+                                                    <button *ngIf="evIdx === getEvidenciasIniciales(z).length - 1" mat-icon-button color="warn" class="btn-evidencia-external"
                                                         matTooltip="Eliminar evidencia inicial"
-                                                        [disabled]="getEvidenciasIniciales(z).length <= 1"
+                                                        [disabled]="i.reunionMetas?.confirmado || getEvidenciasIniciales(z).length <= 1"
                                                         (click)="eliminarEvidencia(z)">
                                                         <mat-icon>remove_circle</mat-icon>
                                                     </button>
@@ -417,18 +291,21 @@
                                                         <!-- Mostrar botón de agregar solo si NO tiene archivo o no existe evidenciaFinal -->
                                                         <button *ngIf="!z.evidenciaFinal || !z.evidenciaFinal.sustentoExtensionFile" mat-icon-button class="has-success btn-evidencia-small"
                                                             matTooltip="Registrar Sustento Final"
-                                                            (click)="registrarSustentoFinal(z)">
+                                                            (click)="registrarSustentoFinal(z)"
+                                                            [disabled]="!puedeRegistrarSustentoFinal(i)">
                                                             <mat-icon>add_circle</mat-icon>
                                                         </button>
                                                         <!-- Mostrar botones cuando SÍ tiene archivo -->
                                                         <button *ngIf="z.evidenciaFinal?.sustentoExtensionFile === 'pdf'" mat-icon-button color="primary" class="btn-evidencia-small"
                                                             matTooltip="Ver PDF Final"
-                                                            (click)="verEvidenciaPdf(z.evidenciaFinal)">
+                                                            (click)="verEvidenciaPdf(z.evidenciaFinal)"
+                                                            [disabled]="!puedeRegistrarSustentoFinal(i)">
                                                             <mat-icon>picture_as_pdf</mat-icon>
                                                         </button>
                                                         <button *ngIf="z.evidenciaFinal?.sustentoExtensionFile" mat-icon-button color="warn" class="btn-evidencia-small"
                                                             matTooltip="Eliminar archivo final"
-                                                            (click)="eliminarArchivoEvidencia(z.evidenciaFinal)">
+                                                            (click)="eliminarArchivoEvidencia(z.evidenciaFinal)"
+                                                            [disabled]="!puedeRegistrarSustentoFinal(i)">
                                                             <mat-icon>delete</mat-icon>
                                                         </button>
                                                     </div>
@@ -463,7 +340,7 @@
                                         
                                         <!-- Caso 2: Con evidencias - mostrar plazos individuales -->
                                         <div *ngIf="getEvidenciasIniciales(z).length > 0">
-                                            <div *ngFor="let t of getEvidenciasIniciales(z); let i = index; let isFirst = first" 
+                                            <div *ngFor="let t of getEvidenciasIniciales(z); let plzIdx = index; let isFirst = first" 
                                                  [style.margin-top.px]="isFirst ? 4 : 0"
                                                  style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px;">
                                                 <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 75px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
@@ -482,7 +359,8 @@
                                                             style="width: 14px; height: 14px; line-height: 14px; padding: 0; min-width: 14px;" 
                                                             matTooltip="Editar fecha de plazo" 
                                                             matTooltipPosition="below"
-                                                            (click)="abrirFechaPlazoDialog(z.evidenciaFinal, z)">
+                                                            (click)="abrirFechaPlazoDialog(z.evidenciaFinal, z)"
+                                                            [disabled]="!i.reunionMetas?.confirmado">
                                                         <mat-icon style="font-size: 10px; color: #d84315; line-height: 14px;">edit</mat-icon>
                                                     </button>
                                                 </div>
@@ -514,32 +392,7 @@
                                                     <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
                                                         <select [(ngModel)]="z.comentarioSinEvidencias" 
                                                                 (change)="onComentarioChange('sinEvidencias', z.comentarioSinEvidencias, z)"
-                                                                style="font-size: 9px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 2px; background: white; max-width: 60px;">
-                                                            <option value="">[Selec.]</option>
-                                                            <option value="logrado">Logrado</option>
-                                                            <option value="proceso">En proceso</option>
-                                                            <option value="no_presento">No presentó</option>
-                                                        </select>
-                                                        <button mat-icon-button class="btn-evidencia-small"
-                                                                matTooltip="Ver comentario" 
-                                                                matTooltipPosition="below">
-                                                            <mat-icon>visibility</mat-icon>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Caso 2: Con evidencias - mostrar comentarios individuales -->
-                                        <div *ngIf="getEvidenciasIniciales(z).length > 0">
-                                            <div *ngFor="let t of getEvidenciasIniciales(z); let i = index; let isFirst = first"
-                                                 [style.margin-top.px]="isFirst ? 4 : 0"
-                                                 style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px;">
-                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 85px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
-                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 16px;">COMENTARIO</div>
-                                                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
-                                                        <select [(ngModel)]="t.comentario" 
-                                                                (change)="onComentarioChange('individuales', t.comentario, z, t, i)"
+                                                                [disabled]="!i.reunionMetas?.confirmado || !configuracionGdr?.faseSeguimientoActiva"
                                                                 style="font-size: 9px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 2px; background: white; max-width: 60px;">
                                                             <option value="">[Selec.]</option>
                                                             <option value="logrado">Logrado</option>
@@ -549,7 +402,36 @@
                                                         <button mat-icon-button class="btn-evidencia-small"
                                                                 matTooltip="Ver comentario" 
                                                                 matTooltipPosition="below"
-                                                                (click)="abrirComentarioDialog(t)">
+                                                                [disabled]="!i.reunionMetas?.confirmado || !configuracionGdr?.faseSeguimientoActiva">
+                                                            <mat-icon>visibility</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Caso 2: Con evidencias - mostrar comentarios individuales -->
+                                        <div *ngIf="getEvidenciasIniciales(z).length > 0">
+                                            <div *ngFor="let t of getEvidenciasIniciales(z); let cmtIdx = index; let isFirst = first"
+                                                 [style.margin-top.px]="isFirst ? 4 : 0"
+                                                 style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; height: 44px;">
+                                                <div style="padding: 4px 8px; background-color: #f9f9f9; border-left: 3px solid #666; border-radius: 3px; min-width: 85px; display: flex; flex-direction: column; justify-content: center; min-height: 44px;">
+                                                    <div style="font-size: 10px; color: #666; font-weight: bold; text-align: center; line-height: 16px;">COMENTARIO</div>
+                                                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                                                        <select [(ngModel)]="t.comentario" 
+                                                                (change)="onComentarioChange('individuales', t.comentario, z, t, cmtIdx)"
+                                                                [disabled]="!i.reunionMetas?.confirmado || !configuracionGdr?.faseSeguimientoActiva"
+                                                                style="font-size: 9px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 2px; background: white; max-width: 60px;">
+                                                            <option value="">[Selec.]</option>
+                                                            <option value="logrado">Logrado</option>
+                                                            <option value="proceso">En proceso</option>
+                                                            <option value="no_presento">No presentó</option>
+                                                        </select>
+                                                        <button mat-icon-button class="btn-evidencia-small"
+                                                                matTooltip="Ver comentario" 
+                                                                matTooltipPosition="below"
+                                                                (click)="abrirComentarioDialog(t)"
+                                                                [disabled]="!i.reunionMetas?.confirmado || !configuracionGdr?.faseSeguimientoActiva">
                                                             <mat-icon>visibility</mat-icon>
                                                         </button>
                                                     </div>
@@ -564,6 +446,7 @@
                                                 <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
                                                     <select [(ngModel)]="z.comentarioFinal" 
                                                             (change)="onComentarioChange('final', z.comentarioFinal, z)"
+                                                            [disabled]="!i.reunionMetas?.confirmado || !configuracionGdr?.faseSeguimientoActiva"
                                                             style="font-size: 9px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 2px; background: white; max-width: 60px;">
                                                         <option value="">[Selec.]</option>
                                                         <option value="si_presenta">SÍ presenta</option>
@@ -572,7 +455,8 @@
                                                     <button mat-icon-button class="btn-evidencia-small"
                                                             matTooltip="Ver comentario" 
                                                             matTooltipPosition="below"
-                                                            (click)="abrirComentarioDialog(z.evidenciaFinal, true)">
+                                                            (click)="abrirComentarioDialog(z.evidenciaFinal, true)"
+                                                            [disabled]="!i.reunionMetas?.confirmado || !configuracionGdr?.faseSeguimientoActiva">
                                                         <mat-icon>visibility</mat-icon>
                                                     </button>
                                                 </div>
@@ -624,7 +508,8 @@
                                                         mat-icon-button 
                                                         color="primary" 
                                                         matTooltip="Editar valor alcanzado"
-                                                        (click)="editValorAlcanzado(z)">
+                                                        (click)="editValorAlcanzado(z)"
+                                                        [disabled]="!i.reunionMetas?.confirmado || !configuracionGdr?.faseEvaluacionActiva">
                                                     <mat-icon>edit</mat-icon>
                                                 </button>
                                                 
@@ -690,7 +575,8 @@
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
                     
-                    <!-- Nueva tabla de Resultados Finales -->
+                    <!-- Nueva tabla de Resultados Finales - Solo visible si fase POST está activa -->
+                    <ng-container *ngIf="configuracionGdr?.fasePostActiva">
                     <br>
                     <table class="workersTable anotherTable gdr-table-2025" style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <tbody>
@@ -900,6 +786,7 @@
                             FIN Fila de FIRMAS -->
                         </tbody>
                     </table>
+                    </ng-container>
                     
                     <!-- 
                     <br />
@@ -907,8 +794,7 @@
                     -->
                 </div>
 
-                </ng-container>
-                <!-- FIN CONTENIDO PRINCIPAL (requiere reunión confirmada) -->
+                <!-- FIN CONTENIDO PRINCIPAL -->
 
             </mat-expansion-panel>
         </mat-accordion>

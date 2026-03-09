@@ -504,5 +504,67 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/gdr/reunion-metas/esta-confirmado?idVotanteEvaluado=${idVotanteEvaluado}&idVotanteEvaluador=${idVotanteEvaluador}&periodo=${periodo}`;
     return await this.http.get(url).toPromise();
   }
+
+  // ============================================
+  // CONFIGURACIÓN GDR - Fases y Evidencias
+  // ============================================
+
+  /**
+   * Obtener o crear configuración GDR para un periodo
+   */
+  async obtenerConfiguracionGdr(periodo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Actualizar configuración de fases
+   */
+  async actualizarFasesGdr(periodo: string, fases: {
+    fasePreActiva: boolean,
+    fasePlanificacionActiva: boolean,
+    faseSeguimientoActiva: boolean,
+    faseEvaluacionActiva: boolean,
+    fasePostActiva: boolean
+  }): Promise<any> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}/fases`;
+    return await this.http.put(url, fases).toPromise();
+  }
+
+  /**
+   * Actualizar configuración de evidencias
+   */
+  async actualizarEvidenciasGdr(periodo: string, evidencias: {
+    evidencia1Activa: boolean,
+    evidencia2Activa: boolean,
+    evidenciaFinalActiva: boolean
+  }): Promise<any> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}/evidencias`;
+    return await this.http.put(url, evidencias).toPromise();
+  }
+
+  /**
+   * Actualizar configuración completa
+   */
+  async actualizarConfiguracionGdr(periodo: string, config: any): Promise<any> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}`;
+    return await this.http.put(url, config).toPromise();
+  }
+
+  /**
+   * Verificar si una fase está activa
+   */
+  async esFaseActiva(periodo: string, fase: string): Promise<boolean> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}/fase/${fase}`;
+    return await this.http.get<boolean>(url).toPromise() || false;
+  }
+
+  /**
+   * Verificar si una evidencia está activa
+   */
+  async esEvidenciaActiva(periodo: string, numero: number): Promise<boolean> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}/evidencia/${numero}`;
+    return await this.http.get<boolean>(url).toPromise() || false;
+  }
 }
 
