@@ -975,11 +975,13 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async generarExcelDirectivo() {
-    // Filtrar trabajadores con formato registrado
-    const trabajadoresConFormato = this.listDataTable.filter(t => t.reunionMetas?.confirmado === true);
+    // Filtrar trabajadores con formato registrado Y que hayan tenido reunión de metas (asistio = 'S')
+    const trabajadoresConFormato = this.listDataTable.filter(
+      t => t.reunionMetas?.confirmado === true && t.reunionMetas?.asistio === 'S'
+    );
     
     if (trabajadoresConFormato.length === 0) {
-      this._notification.warning('No hay trabajadores con formato registrado para descargar');
+      this._notification.warning('No hay trabajadores con formato registrado y reunión de metas realizada para descargar');
       return;
     }
 

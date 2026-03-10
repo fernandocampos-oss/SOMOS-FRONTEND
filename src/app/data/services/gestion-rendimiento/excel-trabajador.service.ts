@@ -35,7 +35,7 @@ export class ExcelTrabajadorService {
     jefe: any, 
     listPrioridades: any[], 
     reunionData?: { asistio: string, fecha: string },
-    resultadosFinales?: { rendimientoDistinguido: string, accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string }
+    resultadosFinales?: { rendimientoDistinguido: string, accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string, permanenciaSeisMeses: string }
   ) {
     const datePipe = new DatePipe('en-US');
     try {
@@ -176,7 +176,18 @@ export class ExcelTrabajadorService {
         numeroPrioridad++;
       }
 
-      // SECCIÓN 3 - RESULTADOS FINALES (filas 40-42 del template)
+      // Ocultar filas vacías en el rango 21-35 (rango reservado para prioridades)
+      const FILA_FIN_PRIORIDADES = 35;
+      for (let fila = filaActual; fila <= FILA_FIN_PRIORIDADES; fila++) {
+        worksheet.getRow(fila).hidden = true;
+      }
+
+      // Las filas de resultados se mantienen en posición fija (40, 41, 42)
+      const filaResultados = 40;
+      const filaOtrasAcciones = 41;
+      const filaJuntaDirectivos = 42;
+
+      // SECCIÓN 3 - RESULTADOS FINALES
       // Calcular puntuación final (suma de todos los puntajes de indicadores)
       let puntuacionFinal = 0;
       for (const prioridad of listPrioridades) {
@@ -197,24 +208,30 @@ export class ExcelTrabajadorService {
         calificacion = 'Rendimiento sujeto a observación';
       }
       
-      // Fila 40: Puntuación Final (D-F), Calificación (G-H), Acciones Capacitación (J-L), Fecha Reunión (M-N)
-      this.setCellValueMerged(worksheet, 40, 'D', puntuacionFinal.toFixed(2));
-      this.setCellValueMerged(worksheet, 40, 'G', calificacion);
-      this.setCellValueMerged(worksheet, 40, 'J', resultadosFinales?.accionesCapacitacion || '-');
+      // Fila dinámica: Permanencia en el puesto (B-C)
+      const permanenciaTexto = resultadosFinales?.permanenciaSeisMeses === 'NO' 
+        ? 'Tiene menos de 6 meses desempeñando el puesto que es objeto de evaluación'
+        : 'Tiene 6 meses o más desempeñando el puesto que es objeto de evaluación';
+      this.setCellValueMerged(worksheet, filaResultados, 'B', permanenciaTexto);
+      
+      // Fila dinámica: Puntuación Final (D-F), Calificación (G-H), Acciones Capacitación (J-L), Fecha Reunión (M-N)
+      this.setCellValueMerged(worksheet, filaResultados, 'D', puntuacionFinal.toFixed(2));
+      this.setCellValueMerged(worksheet, filaResultados, 'G', calificacion);
+      this.setCellValueMerged(worksheet, filaResultados, 'J', resultadosFinales?.accionesCapacitacion || '-');
       
       // Fecha de reunión de retroalimentación
       const fechaReunionStr = resultadosFinales?.fechaReunion 
         ? datePipe.transform(resultadosFinales.fechaReunion, 'dd/MM/yyyy') || '-'
         : '-';
-      this.setCellValueMerged(worksheet, 40, 'M', fechaReunionStr);
+      this.setCellValueMerged(worksheet, filaResultados, 'M', fechaReunionStr);
       
-      // Fila 41: Otras Acciones (J-L)
-      this.setCellValueMerged(worksheet, 41, 'J', resultadosFinales?.otrasAcciones || '-');
+      // Fila dinámica: Otras Acciones (J-L)
+      this.setCellValueMerged(worksheet, filaOtrasAcciones, 'J', resultadosFinales?.otrasAcciones || '-');
       
-      // Fila 42: Junta Directivos Sí/No (B-C)
+      // Fila dinámica: Junta Directivos Sí/No (B-C)
       const juntaDirectivos = resultadosFinales?.rendimientoDistinguido;
       const juntaStr = (juntaDirectivos && juntaDirectivos !== '[Seleccione]') ? juntaDirectivos : '-';
-      this.setCellValueMerged(worksheet, 42, 'B', juntaStr);
+      this.setCellValueMerged(worksheet, filaJuntaDirectivos, 'B', juntaStr);
 
       // Generar y guardar el archivo
       const buffer = await workbook.xlsx.writeBuffer();

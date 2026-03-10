@@ -33,6 +33,7 @@ export class RegistrarFormatoComponent implements OnInit {
 
   puedeAvanzar(): boolean {
     if (this.asistioReunion === '-') return false;
+    if (this.asistioReunion === 'N') return false;
     if (this.asistioReunion === 'S' && !this.fechaReunion) return false;
     return true;
   }

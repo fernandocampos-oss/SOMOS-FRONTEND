@@ -25,6 +25,15 @@
         <label>Fecha de la reunión <span class="required">*</span></label>
         <input type="date" [(ngModel)]="fechaReunion" class="date-field">
       </div>
+
+      <div class="mensaje-advertencia" *ngIf="asistioReunion === 'N'" 
+           style="background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 16px; margin-top: 16px; display: flex; align-items: flex-start; gap: 12px;">
+        <mat-icon style="color: #856404; flex-shrink: 0;">warning</mat-icon>
+        <p style="margin: 0; color: #856404; font-size: 14px; line-height: 1.5;">
+          <strong>No se puede continuar.</strong><br>
+          Es obligatorio realizar la reunión de establecimiento de metas con el trabajador antes de registrar el formato GDR.
+        </p>
+      </div>
     </div>
 
     <div class="actions">
