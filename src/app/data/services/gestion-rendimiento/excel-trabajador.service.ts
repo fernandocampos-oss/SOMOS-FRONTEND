@@ -2,7 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Workbook, Worksheet } from 'exceljs';
+import { Workbook, Worksheet, Borders, Alignment } from 'exceljs';
 import * as fs from 'file-saver';
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -15,9 +15,29 @@ export class ExcelTrabajadorService {
   fileName: string = "GDR_";
   filaInicioFooter: number = 0;
 
+  private readonly BORDER_THIN: Partial<Borders> = {
+    top: { style: 'thin' },
+    left: { style: 'thin' },
+    bottom: { style: 'thin' },
+    right: { style: 'thin' }
+  };
+
+  private readonly ALIGNMENT_CENTER: Partial<Alignment> = {
+    vertical: 'middle',
+    horizontal: 'center',
+    wrapText: true
+  };
+
   constructor(private http: HttpClient) { }
 
-  async exportExcelTrabajador(trabajador: any, jefe: any, listPrioridades: any[], reunionData?: { asistio: string, fecha: string }) {
+  async exportExcelTrabajador(
+    trabajador: any, 
+    jefe: any, 
+    listPrioridades: any[], 
+    reunionData?: { asistio: string, fecha: string },
+    resultadosFinales?: { rendimientoDistinguido: string, accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string }
+  ) {
+    const datePipe = new DatePipe('en-US');
     try {
       // Cargar la plantilla desde assets usando fetch
       const templateUrl = 'assets/docs/modeloGDR.xlsx';
@@ -47,6 +67,155 @@ export class ExcelTrabajadorService {
       worksheet.getCell('D18').value = reunionData?.asistio || '-';
       worksheet.getCell('H18').value = reunionData?.fecha || '-';
 
+      // SECCIÓN 3 - PRIORIDADES, INDICADORES Y EVIDENCIAS (desde fila 21)
+      let filaActual = 21;
+      let numeroPrioridad = 1;
+      
+      for (const prioridad of listPrioridades) {
+        const listIndicadores = prioridad.listIndicador || [];
+        
+        // Calcular total de filas para esta prioridad
+        let totalFilasPrioridad = 0;
+        for (const indicador of listIndicadores) {
+          const numEvidencias = (indicador.listEvidencia || []).length;
+          totalFilasPrioridad += numEvidencias > 0 ? numEvidencias : 1;
+        }
+        if (totalFilasPrioridad === 0) totalFilasPrioridad = 1;
+        
+        const filaInicioPrioridad = filaActual;
+        
+        for (const indicador of listIndicadores) {
+          const listEvidencias = indicador.listEvidencia || [];
+          const numEvidencias = listEvidencias.length > 0 ? listEvidencias.length : 1;
+          const filaInicioIndicador = filaActual;
+          
+          if (listEvidencias.length > 0) {
+            // Llenar cada evidencia en su fila
+            for (const evidencia of listEvidencias) {
+              // Columna H: Descripción evidencia
+              this.setCellValue(worksheet, filaActual, 'H', evidencia.descripcion);
+              
+              // Columna I: Plazo
+              const plazoFormateado = evidencia.plazo ? datePipe.transform(evidencia.plazo, 'dd/MM/yyyy') : '-';
+              this.setCellValue(worksheet, filaActual, 'I', plazoFormateado);
+              
+              // Columna J: Estado (Logrado, En Proceso, etc.)
+              this.setCellValue(worksheet, filaActual, 'J', evidencia.estadoDropdown || '-');
+              
+              // Columna K: Comentario adicional (K-L mergeadas en plantilla)
+              this.setCellValueMerged(worksheet, filaActual, 'K', evidencia.comentarioAdicional || '-');
+              
+              filaActual++;
+            }
+          } else {
+            // Si no hay evidencias, dejar fila vacía para las columnas de evidencia
+            this.setCellValue(worksheet, filaActual, 'H', '-');
+            this.setCellValue(worksheet, filaActual, 'I', '-');
+            this.setCellValue(worksheet, filaActual, 'J', '-');
+            this.setCellValueMerged(worksheet, filaActual, 'K', '-');
+            filaActual++;
+          }
+          
+          // Columna D: Indicador/Producto
+          this.setCellValue(worksheet, filaInicioIndicador, 'D', indicador.nombreIndicador || '-');
+          if (numEvidencias > 1) {
+            worksheet.mergeCells(`D${filaInicioIndicador}:D${filaInicioIndicador + numEvidencias - 1}`);
+          }
+          
+          // Columna E: Sentido del indicador
+          this.setCellValue(worksheet, filaInicioIndicador, 'E', indicador.sentido || '-');
+          if (numEvidencias > 1) {
+            worksheet.mergeCells(`E${filaInicioIndicador}:E${filaInicioIndicador + numEvidencias - 1}`);
+          }
+          
+          // Columna F: Valor esperado (meta) - con % si es porcentaje según codTipoValorMeta
+          const esPorcentaje = ['03', '04', '06'].includes(indicador.codTipoValorMeta);
+          const valorMetaFormateado = indicador.valorMeta != null 
+            ? (esPorcentaje ? `${indicador.valorMeta}%` : indicador.valorMeta) 
+            : '-';
+          this.setCellValue(worksheet, filaInicioIndicador, 'F', valorMetaFormateado);
+          if (numEvidencias > 1) {
+            worksheet.mergeCells(`F${filaInicioIndicador}:F${filaInicioIndicador + numEvidencias - 1}`);
+          }
+          
+          // Columna G: Peso (siempre con %)
+          const pesoFormateado = indicador.peso != null ? `${indicador.peso}%` : '-';
+          this.setCellValue(worksheet, filaInicioIndicador, 'G', pesoFormateado);
+          if (numEvidencias > 1) {
+            worksheet.mergeCells(`G${filaInicioIndicador}:G${filaInicioIndicador + numEvidencias - 1}`);
+          }
+          
+          // Columna M: Valor alcanzado - con % si es porcentaje según codTipoValorMeta
+          const valorAlcanzadoFormateado = indicador.valorAlcanzado != null 
+            ? (esPorcentaje ? `${indicador.valorAlcanzado}%` : indicador.valorAlcanzado) 
+            : '-';
+          this.setCellValue(worksheet, filaInicioIndicador, 'M', valorAlcanzadoFormateado);
+          if (numEvidencias > 1) {
+            worksheet.mergeCells(`M${filaInicioIndicador}:M${filaInicioIndicador + numEvidencias - 1}`);
+          }
+          
+          // Columna N: Puntaje por meta
+          this.setCellValue(worksheet, filaInicioIndicador, 'N', indicador.puntajePorMeta ?? '-');
+          if (numEvidencias > 1) {
+            worksheet.mergeCells(`N${filaInicioIndicador}:N${filaInicioIndicador + numEvidencias - 1}`);
+          }
+        }
+        
+        // Columna B: Número de prioridad
+        this.setCellValue(worksheet, filaInicioPrioridad, 'B', numeroPrioridad);
+        if (totalFilasPrioridad > 1) {
+          worksheet.mergeCells(`B${filaInicioPrioridad}:B${filaInicioPrioridad + totalFilasPrioridad - 1}`);
+        }
+        
+        // Columna C: Prioridad nombre
+        this.setCellValue(worksheet, filaInicioPrioridad, 'C', prioridad.prioridadNombre || '-');
+        if (totalFilasPrioridad > 1) {
+          worksheet.mergeCells(`C${filaInicioPrioridad}:C${filaInicioPrioridad + totalFilasPrioridad - 1}`);
+        }
+        
+        numeroPrioridad++;
+      }
+
+      // SECCIÓN 3 - RESULTADOS FINALES (filas 40-42 del template)
+      // Calcular puntuación final (suma de todos los puntajes de indicadores)
+      let puntuacionFinal = 0;
+      for (const prioridad of listPrioridades) {
+        for (const indicador of (prioridad.listIndicador || [])) {
+          if (indicador.puntajePorMeta != null && !isNaN(indicador.puntajePorMeta)) {
+            puntuacionFinal += parseFloat(indicador.puntajePorMeta);
+          }
+        }
+      }
+      
+      // Calcular calificación basada en puntuación
+      let calificacion = '-';
+      if (puntuacionFinal >= 100) {
+        calificacion = 'Rendimiento Distinguido';
+      } else if (puntuacionFinal >= 60) {
+        calificacion = 'Buen rendimiento';
+      } else if (puntuacionFinal > 0) {
+        calificacion = 'Rendimiento sujeto a observación';
+      }
+      
+      // Fila 40: Puntuación Final (D-F), Calificación (G-H), Acciones Capacitación (J-L), Fecha Reunión (M-N)
+      this.setCellValueMerged(worksheet, 40, 'D', puntuacionFinal.toFixed(2));
+      this.setCellValueMerged(worksheet, 40, 'G', calificacion);
+      this.setCellValueMerged(worksheet, 40, 'J', resultadosFinales?.accionesCapacitacion || '-');
+      
+      // Fecha de reunión de retroalimentación
+      const fechaReunionStr = resultadosFinales?.fechaReunion 
+        ? datePipe.transform(resultadosFinales.fechaReunion, 'dd/MM/yyyy') || '-'
+        : '-';
+      this.setCellValueMerged(worksheet, 40, 'M', fechaReunionStr);
+      
+      // Fila 41: Otras Acciones (J-L)
+      this.setCellValueMerged(worksheet, 41, 'J', resultadosFinales?.otrasAcciones || '-');
+      
+      // Fila 42: Junta Directivos Sí/No (B-C)
+      const juntaDirectivos = resultadosFinales?.rendimientoDistinguido;
+      const juntaStr = (juntaDirectivos && juntaDirectivos !== '[Seleccione]') ? juntaDirectivos : '-';
+      this.setCellValueMerged(worksheet, 42, 'B', juntaStr);
+
       // Generar y guardar el archivo
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], { type: EXCEL_TYPE });
@@ -54,6 +223,25 @@ export class ExcelTrabajadorService {
     } catch (error) {
       console.error('Error al generar Excel desde plantilla:', error);
     }
+  }
+
+  /**
+   * Helper para establecer valor y formato a una celda
+   */
+  private setCellValue(worksheet: Worksheet, row: number, col: string, value: any): void {
+    const cell = worksheet.getRow(row).getCell(col);
+    cell.value = value;
+    cell.alignment = this.ALIGNMENT_CENTER;
+    cell.border = this.BORDER_THIN;
+  }
+
+  /**
+   * Helper para establecer valor en celda mergeada (sin modificar bordes para no romper el merge)
+   */
+  private setCellValueMerged(worksheet: Worksheet, row: number, col: string, value: any): void {
+    const cell = worksheet.getRow(row).getCell(col);
+    cell.value = value;
+    cell.alignment = this.ALIGNMENT_CENTER;
   }
 
   formatoEvidencias(wb: Worksheet, listEvidencia, position) {

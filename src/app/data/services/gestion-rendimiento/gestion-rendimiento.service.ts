@@ -362,7 +362,8 @@ export class GestionRendimientoService {
 
   // ========== Resultados Finales ==========
   async guardarResultadosFinales(idVotante: number, anio: number, rendimientoDistinguido: string, 
-                                   accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string): Promise<any> {
+                                   accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string,
+                                   permanenciaSeisMeses: string = 'SI'): Promise<any> {
     const url = `${URL_BASE}/gdr/resultados-finales/guardar`;
     const body = {
       idVotante,
@@ -371,7 +372,8 @@ export class GestionRendimientoService {
       rendimientoDistinguido: rendimientoDistinguido === '[Seleccione]' ? null : rendimientoDistinguido,
       accionesCapacitacion: accionesCapacitacion || null,
       otrasAcciones: otrasAcciones || null,
-      fechaReunion: fechaReunion || null
+      fechaReunion: fechaReunion || null,
+      permanenciaSeisMeses: permanenciaSeisMeses || 'SI'
     };
     return await this.http.post(url, body).toPromise();
   }

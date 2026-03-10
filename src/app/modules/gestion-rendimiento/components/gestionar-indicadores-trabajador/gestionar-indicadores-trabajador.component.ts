@@ -1023,8 +1023,20 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     jefe.codUnidad = main.evaluadorCodUnidad;
     jefe.numeroDocumento = main.evaluadorNumeroDocumento;
 
-    // console.log("data excel", main.listPrioridad);
-    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad, { asistio: main.reunionAsistio, fecha: main.reunionFecha });
+    // Buscar datos de resultados finales del trabajador en listDataTable (match por nombre)
+    const nombreEvaluado = main.evaluadoNombreCompleto?.toUpperCase().trim();
+    const trabajadorFrontend = this.listDataTable.find(
+      t => `${t.trabajadorApellido} ${t.trabajadorNombre}`.toUpperCase().trim() === nombreEvaluado
+    );
+    const resultadosFinales = trabajadorFrontend?.resultadosFinales || null;
+
+    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(
+      trabajador, 
+      jefe, 
+      main.listPrioridad, 
+      { asistio: main.reunionAsistio, fecha: main.reunionFecha },
+      resultadosFinales
+    );
   }
 
   abrirEditor(idVotante:number, registro:any, idInd:number, nombrePrioridad:string){
@@ -1469,7 +1481,8 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         resultados.rendimientoDistinguido || '[Seleccione]',
         resultados.accionesCapacitacion || '',
         resultados.otrasAcciones || '',
-        resultados.fechaReunion || null
+        resultados.fechaReunion || null,
+        resultados.permanenciaSeisMeses || 'SI'
       );
 
       this._notification.success('Resultados finales guardados');
@@ -1487,6 +1500,12 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     if (value !== '[Seleccione]') {
       this.guardarResultadoFinal(trabajador);
     }
+  }
+
+  onPermanenciaChange(trabajador: any, value: string) {
+    if (!trabajador.resultadosFinales) trabajador.resultadosFinales = {};
+    trabajador.resultadosFinales.permanenciaSeisMeses = value;
+    this.guardarResultadoFinal(trabajador);
   }
 
   onAccionesCapacitacionChange(trabajador: any, value: string) {

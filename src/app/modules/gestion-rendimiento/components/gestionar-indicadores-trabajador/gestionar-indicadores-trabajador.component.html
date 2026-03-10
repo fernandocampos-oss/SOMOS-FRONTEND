@@ -618,8 +618,14 @@
                                     <div style="background-color: #c85a28; color: white; padding: 10px; margin-bottom: 12px; font-weight: 600; font-size: 10px; text-align: center; border-radius: 4px;">
                                         PERMANENCIA EN EL PUESTO ANTES DE EMPEZAR LA ETAPA DE EVALUACIÓN
                                     </div>
-                                    <div style="padding: 10px; font-size: 10px; line-height: 1.6; background-color: white; border-radius: 4px; margin-bottom: 14px; border-left: 4px solid #c85a28;">
-                                        Tiene 6 meses o más desempeñando el puesto que es objeto de evaluación
+                                    <div style="padding: 0 4px; margin-bottom: 14px;">
+                                        <select style="width: 100%; padding: 10px; font-size: 10px; border: 2px solid #c85a28; border-radius: 4px; background-color: white; line-height: 1.4;"
+                                                [value]="i.resultadosFinales?.permanenciaSeisMeses || 'SI'"
+                                                (change)="onPermanenciaChange(i, $event.target.value)"
+                                                [disabled]="!configuracionGdr?.fasePostActiva">
+                                            <option value="SI">Tiene 6 meses o más desempeñando el puesto que es objeto de evaluación</option>
+                                            <option value="NO">Tiene menos de 6 meses desempeñando el puesto que es objeto de evaluación</option>
+                                        </select>
                                     </div>
                                     <div style="background-color: #c85a28; color: white; padding: 10px; margin-bottom: 10px; font-weight: 600; font-size: 10px; text-align: center; border-radius: 4px;">
                                         LA JUNTA DE DIRECTIVOS OTORGÓ RENDIMIENTO DISTINGUIDO AL SERVIDOR
