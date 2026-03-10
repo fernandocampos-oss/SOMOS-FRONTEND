@@ -975,12 +975,34 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async generarExcelDirectivo() {
+    // Filtrar trabajadores con formato registrado
+    const trabajadoresConFormato = this.listDataTable.filter(t => t.reunionMetas?.confirmado === true);
+    
+    if (trabajadoresConFormato.length === 0) {
+      this._notification.warning('No hay trabajadores con formato registrado para descargar');
+      return;
+    }
+
+    // Crear set de nombres para búsqueda rápida
+    const nombresConFormato = new Set(
+      trabajadoresConFormato.map(t => 
+        `${t.trabajadorApellido} ${t.trabajadorNombre}`.toUpperCase().trim()
+      )
+    );
+
     let load = await this._grService.generarExcelDirectivo().then((data: any) => {
-      if (data != null || data.length > 0) {
+      if (data != null && data.length > 0) {
+        let descargados = 0;
         for (let i of data) {
-          if (i.listPrioridad.length > 0) {
+          // Solo generar Excel si tiene formato registrado
+          const nombreCompleto = i.evaluadoNombreCompleto?.toUpperCase().trim();
+          if (i.listPrioridad.length > 0 && nombresConFormato.has(nombreCompleto)) {
             this.servicioExcelDirectivo(i);
+            descargados++;
           }
+        }
+        if (descargados > 0) {
+          this._notification.success(`Se descargaron ${descargados} formato(s) GDR`);
         }
       }
     });
