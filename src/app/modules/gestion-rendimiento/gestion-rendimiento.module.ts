@@ -39,6 +39,7 @@ import { CargaMasivaTrabajadoresDialogComponent } from './components/asignar-tra
 import { DashboardSeguimientoComponent } from './components/dashboard-seguimiento/dashboard-seguimiento.component';
 import { SeguimientoTrabajadorComponent } from './components/seguimiento-trabajador/seguimiento-trabajador.component';
 import { ConfiguracionCicloGdrComponent } from './components/configuracion-ciclo-gdr/configuracion-ciclo-gdr.component';
+import { GestionarSegmentosGdrComponent } from './components/gestionar-segmentos-gdr/gestionar-segmentos-gdr.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { ConfiguracionCicloGdrComponent } from './components/configuracion-ciclo
     CargaMasivaTrabajadoresDialogComponent,
     DashboardSeguimientoComponent,
     SeguimientoTrabajadorComponent,
-    ConfiguracionCicloGdrComponent
+    ConfiguracionCicloGdrComponent,
+    GestionarSegmentosGdrComponent
   ],
   imports: [
     CommonModule,

@@ -115,7 +115,7 @@ export class IndicadoresTrabajadorComponent implements OnInit {
     jefe.codUnidad = main.evaluadorCodUnidad;
     jefe.numeroDocumento = main.evaluadorNumeroDocumento;
 
-    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
+    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad, { asistio: main.reunionAsistio, fecha: main.reunionFecha });
   }
 
 }

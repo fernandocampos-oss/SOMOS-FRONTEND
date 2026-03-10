@@ -711,4 +711,72 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/gdr/evaluadores/trabajadores/carga-masiva/confirmar`;
     return await this.http.post(url, { filas }).toPromise();
   }
+
+  // ============================================
+  // SEGMENTO GDR - Endpoints
+  // ============================================
+
+  /**
+   * Listar todos los segmentos
+   */
+  async listarSegmentosGdr(): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/listar`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Buscar segmentos por DNI (parcial)
+   */
+  async buscarSegmentosGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/buscar?dni=${dni}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Obtener lista de segmentos válidos
+   */
+  async obtenerSegmentosValidos(): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/segmentos-validos`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Agregar nuevo segmento
+   */
+  async agregarSegmentoGdr(dni: string, segmento: string): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/agregar`;
+    return await this.http.post(url, { dni, segmento }).toPromise();
+  }
+
+  /**
+   * Actualizar segmento existente
+   */
+  async actualizarSegmentoGdr(dni: string, segmento: string): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/actualizar`;
+    return await this.http.put(url, { dni, segmento }).toPromise();
+  }
+
+  /**
+   * Eliminar segmento por DNI
+   */
+  async eliminarSegmentoGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/eliminar/${dni}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  /**
+   * Carga masiva de segmentos
+   */
+  async cargaMasivaSegmentosGdr(registros: { dni: string; segmento: string }[]): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/carga-masiva`;
+    return await this.http.post(url, { registros }).toPromise();
+  }
+
+  /**
+   * Contar total de segmentos
+   */
+  async contarSegmentosGdr(): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/contar`;
+    return await this.http.get(url).toPromise();
+  }
 }

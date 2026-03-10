@@ -1014,6 +1014,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     trabajador.cargo = main.evaluadoPuesto;
     trabajador.segmento = main.evaluadoSegmento;
     trabajador.codUnidad = main.evaluadoCodUnidad;
+    trabajador.numeroDocumento = main.evaluadoNumeroDocumento;
 
     let jefe = new Persona();
     jefe.nombre = main.evaluadorNombreCompleto;
@@ -1023,7 +1024,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     jefe.numeroDocumento = main.evaluadorNumeroDocumento;
 
     // console.log("data excel", main.listPrioridad);
-    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
+    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad, { asistio: main.reunionAsistio, fecha: main.reunionFecha });
   }
 
   abrirEditor(idVotante:number, registro:any, idInd:number, nombrePrioridad:string){
