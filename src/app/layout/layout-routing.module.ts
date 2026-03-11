@@ -95,6 +95,13 @@ export const ROUTES: Routes = [
             (m) => m.PlazasModule
           ),
       },
+      {
+        path: AppRoute.MATERIALES,
+        loadChildren: () =>
+          import('../modules/materiales/materiales.module').then(
+            (m) => m.MaterialesModule
+          ),
+      },
       // {
       //   path: AppRoute.DDJJ_CONFLICTO,
       //   loadChildren: () =>

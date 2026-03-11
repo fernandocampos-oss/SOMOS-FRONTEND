@@ -1,0 +1,139 @@
+<div class="page">
+  <div class="matero-page-header header-search" style="display: flex;">
+    <h1 class="matero-page-title">
+      <div>
+        <mat-icon>assignment</mat-icon> Maestro de Materiales<br>
+        <div class="optionsBar">
+          <button mat-raised-button color="primary" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+        </div>
+      </div>
+    </h1>
+    <div class="busqueda-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del material</mat-label>
+        <input matInput [(ngModel)]="nombreMaterial">
+      </mat-form-field>
+
+      <button mat-raised-button class="btn-busqueda" color="primary" (click)="buscarMaestroMaterial()">
+        Buscar
+      </button>
+    </div>
+  </div>
+  <div class="page__body">
+    <div class="card shadow no-padd mat-elevation-z8 tabla-scroll">
+      <table mat-table #tablaMaestroMaterial [dataSource]="listMaestroMaterial" matSort style="width: 100%; padding: 1rem;">
+        <ng-container matColumnDef="codigoMaterial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Código de material</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.codigoMaterial}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombreMaterial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre de material</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.nombreMaterial}}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsMaestroMaterial; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsMaestroMaterial;"></tr>
+      </table>
+      <div class='text-search-box'>
+        <span class='text-search-result'>{{ busquedaResultadoMaestro }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+  <div class="matero-page-header header-search" style="display: flex;">
+    <h1 class="matero-page-title">
+      <div>
+        <mat-icon>assignment</mat-icon> Stock de Materiales<br>
+      </div>
+    </h1>
+    <div class="busqueda-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Código del material</mat-label>
+        <input matInput [(ngModel)]="codigoMaterial">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Código de red</mat-label>
+        <input matInput [(ngModel)]="codigoRed">
+      </mat-form-field>
+
+      <button mat-raised-button class="btn-busqueda" color="primary" (click)="buscarStockMaterial()">
+        Buscar
+      </button>
+    </div>
+  </div>
+  <div class="page__body">
+    <div class="card shadow no-padd mat-elevation-z8 tabla-scroll">
+      <table mat-table #tablaStockMaterial [dataSource]="listStockMaterial" matSort style="width: 100%; padding: 1rem;">
+        <ng-container matColumnDef="codigoRed">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Código de red</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.codigoRed}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombreRed">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre de red</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.nombreRed}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="codigoCentro">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Código de centro</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.codigoCentro}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombreCentro">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre de centro</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.nombreCentro}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="codigoMaterial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Código de material</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.codigoMaterial}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombreMaterial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre de material</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.nombreMaterial}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="medidaMaterial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Medida de material</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.medidaMaterial}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cantidadMaterial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad de material</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.cantidadMaterial}}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsStockMaterial; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsStockMaterial;"></tr>
+      </table>
+      <div class='text-search-box'>
+        <span class='text-search-result'>{{ busquedaResultadoStock }}</span>
+      </div>
+    </div>
+  </div>
+</div>

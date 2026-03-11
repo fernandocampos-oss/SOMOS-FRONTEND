@@ -89,6 +89,10 @@
           <mat-icon mat-list-icon>assignment</mat-icon>
           <span class="option" matLine>Plazas</span>
         </mat-list-item>
+        <mat-list-item routerLinkActive="active" [routerLink]="['/materiales']" [routerLinkActiveOptions]="{ exact: true }" *ngIf='tienePermisoModuloMaterial'>
+          <mat-icon mat-list-icon>assignment</mat-icon>
+          <span class="option" matLine>Materiales</span>
+        </mat-list-item>
       </ng-container>
     </mat-nav-list>
   </div>
