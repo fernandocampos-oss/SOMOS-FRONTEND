@@ -216,7 +216,7 @@ export class SidenavComponent implements OnInit {
           urlDestino = 'https://appsqa.essalud.gob.pe/sisprom-v2-service/api/sso/ingreso';
         } else {
           // Producción
-          urlDestino = 'https://pigrh.essalud.gob.pe/api/sso/ingreso';
+          urlDestino = 'https://apps.essalud.gob.pe/sisprom-v2-service/api/sso/ingreso';
         }
         
         // Crear formulario POST oculto para enviar token de forma segura
