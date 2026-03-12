@@ -1428,7 +1428,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
 
       // 4. Rendimiento Distinguido: puntaje >= 100 Y opción "Sí" seleccionada
-      if (rendimientoDistinguido === 'Sí' && puntaje >= 100) {
+      if (rendimientoDistinguido === 'Si' && puntaje >= 100) {
         return 'Rendimiento Distinguido';
       }
 
@@ -1438,7 +1438,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
 
       // 6. Buen rendimiento para otros segmentos: puntaje >= 60
-      const segmentosConUmbral60 = ['MANDO MEDIO', 'EJECUTOR', 'OPERADOR Y DE ASISTENCIA'];
+      const segmentosConUmbral60 = ['MANDO MEDIO', 'EJECUTOR', 'OPERADOR Y ASISTENCIA'];
       if (puntaje >= 60 && segmentosConUmbral60.includes(segmento)) {
         return 'Buen rendimiento';
       }

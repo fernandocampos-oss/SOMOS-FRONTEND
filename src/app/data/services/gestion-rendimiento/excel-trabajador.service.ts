@@ -218,7 +218,7 @@ export class ExcelTrabajadorService {
         calificacion = '-';
       }
       // 4. Rendimiento Distinguido: puntaje >= 100 Y opción "Sí" seleccionada
-      else if (rendimientoDistinguido === 'Sí' && puntuacionFinal >= 100) {
+      else if (rendimientoDistinguido === 'Si' && puntuacionFinal >= 100) {
         calificacion = 'Rendimiento Distinguido';
       }
       // 5. Buen rendimiento para DIRECTIVO: puntaje >= 70
@@ -226,7 +226,7 @@ export class ExcelTrabajadorService {
         calificacion = 'Buen rendimiento';
       }
       // 6. Buen rendimiento para otros segmentos: puntaje >= 60
-      else if (puntuacionFinal >= 60 && ['MANDO MEDIO', 'EJECUTOR', 'OPERADOR Y DE ASISTENCIA'].includes(segmento)) {
+      else if (puntuacionFinal >= 60 && ['MANDO MEDIO', 'EJECUTOR', 'OPERADOR Y ASISTENCIA'].includes(segmento)) {
         calificacion = 'Buen rendimiento';
       }
       // 7. Caso contrario → Rendimiento sujeto a observación
