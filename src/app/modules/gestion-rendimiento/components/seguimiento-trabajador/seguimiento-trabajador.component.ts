@@ -78,6 +78,9 @@ export class SeguimientoTrabajadorComponent implements OnInit {
 
       this.trabajadorEncontrado = trabajador;
 
+      // Buscar el segmento del trabajador desde tabla segmento_gdr
+      await this.cargarSegmentoTrabajador();
+
       // Buscar la reunión de establecimiento de metas
       await this.cargarReunionMetas();
 
@@ -96,6 +99,23 @@ export class SeguimientoTrabajadorComponent implements OnInit {
       this._notification.error('Error al buscar el trabajador');
     } finally {
       this.buscando = false;
+    }
+  }
+
+  async cargarSegmentoTrabajador() {
+    if (!this.trabajadorEncontrado || !this.dniBusqueda) return;
+
+    try {
+      // Buscar segmento del trabajador desde tabla segmento_gdr
+      const segmentos = await this._grService.buscarSegmentosGdr(this.dniBusqueda);
+      if (segmentos && segmentos.length > 0) {
+        this.trabajadorEncontrado.segmento = segmentos[0].segmento;
+      } else {
+        this.trabajadorEncontrado.segmento = '';
+      }
+    } catch (error) {
+      console.log('No se encontró segmento del trabajador:', error);
+      this.trabajadorEncontrado.segmento = '';
     }
   }
 
@@ -528,20 +548,56 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     return Math.round(totalPuntaje * 100) / 100;
   }
 
-  // Obtener calificación según puntuación
+  // Obtener calificación según el algoritmo completo
   getCalificacion(puntuacion: number): string {
-    if (puntuacion >= 95) return 'Rendimiento Distinguido';
-    if (puntuacion >= 85) return 'Buen Rendimiento';
-    if (puntuacion >= 65) return 'Rendimiento Sujeto a Observación';
-    if (puntuacion >= 50) return 'Desaprobado';
-    return 'Desaprobado';
+    // 1. Si no asistió a reunión de metas → Desaprobado
+    if (this.reunionMetas?.asistio === 'N') {
+      return 'Desaprobado';
+    }
+
+    // 2. Si tiene menos de 6 meses → No corresponde calificación
+    if (this.resultadosFinales?.permanenciaSeisMeses === 'NO') {
+      return 'No corresponde calificación';
+    }
+
+    // 3. Si no hay puntuación válida
+    if (!puntuacion || isNaN(puntuacion) || puntuacion <= 0) {
+      return '-';
+    }
+
+    const segmento = (this.trabajadorEncontrado?.segmento || '').toUpperCase();
+    const rendimientoDistinguido = this.resultadosFinales?.rendimientoDistinguido;
+
+    // 4. Rendimiento Distinguido: puntaje >= 100 Y opción "Sí" seleccionada
+    if (rendimientoDistinguido === 'Sí' && puntuacion >= 100) {
+      return 'Rendimiento Distinguido';
+    }
+
+    // 5. Buen rendimiento para DIRECTIVO: puntaje >= 70
+    if (segmento === 'DIRECTIVO' && puntuacion >= 70) {
+      return 'Buen rendimiento';
+    }
+
+    // 6. Buen rendimiento para otros segmentos: puntaje >= 60
+    const segmentosConUmbral60 = ['MANDO MEDIO', 'EJECUTOR', 'OPERADOR Y DE ASISTENCIA'];
+    if (puntuacion >= 60 && segmentosConUmbral60.includes(segmento)) {
+      return 'Buen rendimiento';
+    }
+
+    // 7. Caso contrario → Rendimiento sujeto a observación
+    return 'Rendimiento sujeto a observación';
   }
 
   getCalificacionColor(puntuacion: number): string {
-    if (puntuacion >= 95) return '#4caf50';
-    if (puntuacion >= 85) return '#8bc34a';
-    if (puntuacion >= 65) return '#ff9800';
-    return '#f44336';
+    const calificacion = this.getCalificacion(puntuacion);
+    switch (calificacion) {
+      case 'Rendimiento Distinguido': return '#4caf50';
+      case 'Buen rendimiento': return '#8bc34a';
+      case 'No corresponde calificación': return '#9e9e9e';
+      case 'Desaprobado': return '#f44336';
+      case 'Rendimiento sujeto a observación': return '#ff9800';
+      default: return '#9e9e9e';
+    }
   }
 
   // Obtener texto de comentario

@@ -236,7 +236,7 @@ export class SidenavComponent implements OnInit {
         document.body.removeChild(form);
       },
       error: (error) => {
-        console.error('Error al generar token para PIGRH:', error);
+        //console.error('Error al generar token para PIGRH:', error);
         alert('Error al conectar con PIGRH. Por favor, intente nuevamente.');
       }
     });

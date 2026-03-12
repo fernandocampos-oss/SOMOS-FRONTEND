@@ -198,13 +198,39 @@ export class ExcelTrabajadorService {
         }
       }
       
-      // Calcular calificación basada en puntuación
+      // Calcular calificación basada en el algoritmo completo
       let calificacion = '-';
-      if (puntuacionFinal >= 100) {
+      const segmento = trabajador.segmento?.toUpperCase() || '';
+      const asistioReunion = reunionData?.asistio;
+      const permanenciaSeisMeses = resultadosFinales?.permanenciaSeisMeses;
+      const rendimientoDistinguido = resultadosFinales?.rendimientoDistinguido;
+
+      // 1. Si no asistió a reunión de metas → Desaprobado
+      if (asistioReunion === 'N') {
+        calificacion = 'Desaprobado';
+      }
+      // 2. Si tiene menos de 6 meses → No corresponde calificación
+      else if (permanenciaSeisMeses === 'NO') {
+        calificacion = 'No corresponde calificación';
+      }
+      // 3. Si no hay puntaje válido
+      else if (puntuacionFinal <= 0) {
+        calificacion = '-';
+      }
+      // 4. Rendimiento Distinguido: puntaje >= 100 Y opción "Sí" seleccionada
+      else if (rendimientoDistinguido === 'Sí' && puntuacionFinal >= 100) {
         calificacion = 'Rendimiento Distinguido';
-      } else if (puntuacionFinal >= 60) {
+      }
+      // 5. Buen rendimiento para DIRECTIVO: puntaje >= 70
+      else if (segmento === 'DIRECTIVO' && puntuacionFinal >= 70) {
         calificacion = 'Buen rendimiento';
-      } else if (puntuacionFinal > 0) {
+      }
+      // 6. Buen rendimiento para otros segmentos: puntaje >= 60
+      else if (puntuacionFinal >= 60 && ['MANDO MEDIO', 'EJECUTOR', 'OPERADOR Y DE ASISTENCIA'].includes(segmento)) {
+        calificacion = 'Buen rendimiento';
+      }
+      // 7. Caso contrario → Rendimiento sujeto a observación
+      else {
         calificacion = 'Rendimiento sujeto a observación';
       }
       

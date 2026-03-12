@@ -1403,6 +1403,16 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
   calcularCalificacion(trabajador: any): string {
     try {
+      // 1. Si no asistió a reunión de metas → Desaprobado
+      if (trabajador.reunionMetas?.asistio === 'N') {
+        return 'Desaprobado';
+      }
+
+      // 2. Si tiene menos de 6 meses → No corresponde calificación
+      if (trabajador.resultadosFinales?.permanenciaSeisMeses === 'NO') {
+        return 'No corresponde calificación';
+      }
+
       const puntuacionFinal = this.calcularPuntuacionFinal(trabajador);
       
       if (puntuacionFinal === '-' || puntuacionFinal === 'Error') {
@@ -1410,18 +1420,31 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
 
       const puntaje = parseFloat(puntuacionFinal);
+      const segmento = (trabajador.evaluadoSegmento || trabajador.segmento || '').toUpperCase();
+      const rendimientoDistinguido = trabajador.resultadosFinales?.rendimientoDistinguido;
 
       if (isNaN(puntaje)) {
         return '-';
       }
 
-      if (puntaje >= 100) {
+      // 4. Rendimiento Distinguido: puntaje >= 100 Y opción "Sí" seleccionada
+      if (rendimientoDistinguido === 'Sí' && puntaje >= 100) {
         return 'Rendimiento Distinguido';
-      } else if (puntaje >= 60) {
-        return 'Buen rendimiento';
-      } else {
-        return 'Rendimiento sujeto a observación';
       }
+
+      // 5. Buen rendimiento para DIRECTIVO: puntaje >= 70
+      if (segmento === 'DIRECTIVO' && puntaje >= 70) {
+        return 'Buen rendimiento';
+      }
+
+      // 6. Buen rendimiento para otros segmentos: puntaje >= 60
+      const segmentosConUmbral60 = ['MANDO MEDIO', 'EJECUTOR', 'OPERADOR Y DE ASISTENCIA'];
+      if (puntaje >= 60 && segmentosConUmbral60.includes(segmento)) {
+        return 'Buen rendimiento';
+      }
+
+      // 7. Caso contrario → Rendimiento sujeto a observación
+      return 'Rendimiento sujeto a observación';
     } catch (error) {
       // console.error('Error al calcular calificación:', error);
       return '-';
