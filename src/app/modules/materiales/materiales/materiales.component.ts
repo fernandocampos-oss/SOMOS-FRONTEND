@@ -4,6 +4,8 @@ import { MaterialService } from '@data/services/material.service';
 import { MatTable } from '@angular/material/table';
 import { MaestroMaterial } from '@data/models/material/maestro-material.model';
 import { StockMaterial } from '@data/models/material/stock-material.model';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-materiales',
@@ -48,6 +50,11 @@ export class MaterialesComponent implements OnInit {
     });
   }
 
+  obtenerStockMaterial(codigoMaterial: string) {
+    this.codigoMaterial = codigoMaterial;
+    this.buscarStockMaterial();
+  }
+
   buscarStockMaterial() {
     if (this.codigoMaterial == null) {
       this.codigoMaterial = '';
@@ -66,6 +73,42 @@ export class MaterialesComponent implements OnInit {
 
   back(){
     this._router.navigate([''], { relativeTo: this.route });
+  }
+
+  exportarExcel() {
+    const data = this.listStockMaterial.map(item => ({
+      'Código de red': item.codigoRed,
+      'Nombre de red': item.nombreRed,
+      'Código de almacén': item.codigoCentro,
+      'Nombre de almacén': item.nombreCentro,
+      'Código de material': item.codigoMaterial,
+      'Nombre de material': item.nombreMaterial,
+      'Medida de material': item.medidaMaterial,
+      'Cantidad de material': this.toNumber(item.cantidadMaterial)
+    }));
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { StockMaterial: worksheet },
+      SheetNames: ['StockMaterial']
+    };
+
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+
+    const blob: Blob = new Blob([excelBuffer], {
+      type:
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    });
+
+    FileSaver.saveAs(blob, 'stock_material.xlsx');
+  }
+
+  toNumber(valor: any): number {
+    if (!valor) { return 0; }
+    return Number(valor.toString().replace(/,/g, ''));
   }
 
 }

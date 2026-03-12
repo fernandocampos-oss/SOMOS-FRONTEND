@@ -64,3 +64,11 @@
   max-height: 400px;
   overflow: auto;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.link-material:hover {
+  font-weight: 600;
+}
