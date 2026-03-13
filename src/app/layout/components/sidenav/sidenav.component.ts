@@ -45,7 +45,8 @@ export class SidenavComponent implements OnInit {
 
   activarModuloGr: boolean = environment.moduloGr;
   tienePermisoModuloPlaza: boolean;
-  tienePermisoModuloMaterial: boolean;
+
+  rol: number;
 
   constructor(private dialog: MatDialog,
               private _menuService   : MenuService,
@@ -81,11 +82,11 @@ export class SidenavComponent implements OnInit {
       // })
       // this.nombre = data.nombres;
       // this.numDoc = data.numeroDocumento;
-    })
+    });
+    this.rol = this._authService.getRol();
 
     this.getSegmentoModuloGR();
     this.validarTienePermisoModuloPlaza();
-    this.validarTienePermisoModuloMaterial();
   }
 
   private _initialize() {
@@ -187,12 +188,6 @@ export class SidenavComponent implements OnInit {
   validarTienePermisoModuloPlaza() {
     this._userService.usuarioTienePermisoModulo('PLAZAS').subscribe((data)=> {
       this.tienePermisoModuloPlaza = data;
-    });
-  }
-
-  validarTienePermisoModuloMaterial() {
-    this._userService.usuarioTienePermisoModulo('MATERIALES').subscribe((data)=> {
-      this.tienePermisoModuloMaterial = data;
     });
   }
 
