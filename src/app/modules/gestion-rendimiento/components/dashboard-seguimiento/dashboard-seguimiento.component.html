@@ -1,0 +1,251 @@
+<div class="container-component">
+  <div class="header-section">
+    <h3>Dashboard de Avance GDR</h3>
+    <p class="subtitle">Monitoreo del avance del ciclo de Gestión del Rendimiento</p>
+  </div>
+
+  <!-- Filtros -->
+  <mat-card class="filtros-card">
+    <mat-card-content>
+      <div class="filtros-row">
+        <mat-form-field appearance="outline" class="filtro-field">
+          <mat-label>Año</mat-label>
+          <mat-select [(ngModel)]="anioActual">
+            <mat-option value="2024">2024</mat-option>
+            <mat-option value="2025">2025</mat-option>
+            <mat-option value="2026">2026</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filtro-field">
+          <mat-label>Agrupar por</mat-label>
+          <mat-select [(ngModel)]="tipoAgrupacion" (selectionChange)="onTipoAgrupacionChange()">
+            <mat-option value="PERSONA">Persona</mat-option>
+            <mat-option value="UNIDAD">Unidad Organizativa</mat-option>
+            <mat-option value="ORGANO">Órgano</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filtro-field filtro-unidad">
+          <mat-label>Unidad Organizativa</mat-label>
+          <mat-select [(ngModel)]="codUnidadSeleccionada">
+            <mat-option value="">Todas</mat-option>
+            <mat-option *ngFor="let unidad of unidades" [value]="unidad.codUnidad">
+              {{ unidad.descripcion }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="buscar()" [disabled]="isLoading">
+          <mat-icon>search</mat-icon>
+          Buscar
+        </button>
+
+        <button mat-raised-button color="accent" (click)="exportarExcel()" [disabled]="isLoading || datos.length === 0">
+          <mat-icon>file_download</mat-icon>
+          Exportar Excel
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Resumen -->
+  <div class="resumen-cards">
+    <mat-card class="resumen-card">
+      <mat-card-content>
+        <div class="resumen-item">
+          <mat-icon>people</mat-icon>
+          <div class="resumen-data">
+            <span class="resumen-value">{{ totalTrabajadores }}</span>
+            <span class="resumen-label">TRABAJADORES</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="resumen-card">
+      <mat-card-content>
+        <div class="resumen-item">
+          <mat-icon>trending_up</mat-icon>
+          <div class="resumen-data">
+            <span class="resumen-value">{{ totalIndicadores }}</span>
+            <span class="resumen-label">INDICADORES TOTALES</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="resumen-card">
+      <mat-card-content>
+        <div class="resumen-item">
+          <mat-icon>check_circle</mat-icon>
+          <div class="resumen-data">
+            <span class="resumen-value">{{ totalIndicadoresCompletados }}</span>
+            <span class="resumen-label">INDICADORES COMPLETADOS</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="resumen-card">
+      <mat-card-content>
+        <div class="resumen-item">
+          <mat-icon>speed</mat-icon>
+          <div class="resumen-data">
+            <span class="resumen-value">{{ promedioAvance | number:'1.1-1' }}%</span>
+            <span class="resumen-label">AVANCE PROMEDIO</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Tabla de datos -->
+  <mat-card class="tabla-card">
+    <mat-card-content>
+      <!-- Filtro de búsqueda -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." #input>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <div class="table-container" *ngIf="!isLoading">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
+          
+          <!-- Código -->
+          <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{ tipoAgrupacion === 'PERSONA' ? 'Nro. Documento' : 'Código' }}
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.codigo }}</td>
+          </ng-container>
+
+          <!-- Nombre -->
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{ tipoAgrupacion === 'PERSONA' ? 'Nombre Completo' : tipoAgrupacion === 'UNIDAD' ? 'Unidad Organizativa' : 'Órgano' }}
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+          </ng-container>
+
+          <!-- Total Trabajadores (solo para UNIDAD/ORGANO) -->
+          <ng-container matColumnDef="totalTrabajadores">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Trabajadores</th>
+            <td mat-cell *matCellDef="let element">{{ element.totalTrabajadores }}</td>
+          </ng-container>
+
+          <!-- Total Indicadores -->
+          <ng-container matColumnDef="totalIndicadores">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Indicadores</th>
+            <td mat-cell *matCellDef="let element">{{ element.totalIndicadores }}</td>
+          </ng-container>
+
+          <!-- Indicadores Completados -->
+          <ng-container matColumnDef="indicadoresCompletados">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Ind. Completados</th>
+            <td mat-cell *matCellDef="let element">{{ element.indicadoresCompletados }}</td>
+          </ng-container>
+
+          <!-- Evidencias Iniciales -->
+          <ng-container matColumnDef="evidenciasIniciales">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Evid. Iniciales</th>
+            <td mat-cell *matCellDef="let element">{{ element.evidenciasIniciales }}</td>
+          </ng-container>
+
+          <!-- Evidencias Finales -->
+          <ng-container matColumnDef="evidenciasFinales">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Evid. Finales</th>
+            <td mat-cell *matCellDef="let element">{{ element.evidenciasFinales }}</td>
+          </ng-container>
+
+          <!-- Total Evidencias -->
+          <ng-container matColumnDef="totalEvidencias">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Evid.</th>
+            <td mat-cell *matCellDef="let element">{{ element.totalEvidencias }}</td>
+          </ng-container>
+
+          <!-- Evidencias Subidas -->
+          <ng-container matColumnDef="evidenciasSubidas">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Evid. Subidas</th>
+            <td mat-cell *matCellDef="let element">{{ element.evidenciasSubidas }}</td>
+          </ng-container>
+
+          <!-- Fase Planeación -->
+          <ng-container matColumnDef="fasePlaneacion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>F. Planeación</th>
+            <td mat-cell *matCellDef="let element">
+              <ng-container *ngIf="tipoAgrupacion === 'PERSONA'; else showCountPlaneacion">
+                <mat-icon *ngIf="element.fasePlaneacion === 1" class="fase-completada">check_circle</mat-icon>
+                <mat-icon *ngIf="element.fasePlaneacion !== 1" class="fase-pendiente">radio_button_unchecked</mat-icon>
+              </ng-container>
+              <ng-template #showCountPlaneacion>
+                <span class="fase-count">{{ element.fasePlaneacion }}</span>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <!-- Fase Seguimiento -->
+          <ng-container matColumnDef="faseSeguimiento">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>F. Seguimiento</th>
+            <td mat-cell *matCellDef="let element">
+              <ng-container *ngIf="tipoAgrupacion === 'PERSONA'; else showCountSeguimiento">
+                <mat-icon *ngIf="element.faseSeguimiento === 1" class="fase-completada">check_circle</mat-icon>
+                <mat-icon *ngIf="element.faseSeguimiento !== 1" class="fase-pendiente">radio_button_unchecked</mat-icon>
+              </ng-container>
+              <ng-template #showCountSeguimiento>
+                <span class="fase-count">{{ element.faseSeguimiento }}</span>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <!-- Fase Evaluación -->
+          <ng-container matColumnDef="faseEvaluacion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>F. Evaluación</th>
+            <td mat-cell *matCellDef="let element">
+              <ng-container *ngIf="tipoAgrupacion === 'PERSONA'; else showCountEvaluacion">
+                <mat-icon *ngIf="element.faseEvaluacion === 1" class="fase-completada">check_circle</mat-icon>
+                <mat-icon *ngIf="element.faseEvaluacion !== 1" class="fase-pendiente">radio_button_unchecked</mat-icon>
+              </ng-container>
+              <ng-template #showCountEvaluacion>
+                <span class="fase-count">{{ element.faseEvaluacion }}</span>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <!-- Porcentaje de Avance -->
+          <ng-container matColumnDef="porcentajeAvance">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>% Avance</th>
+            <td mat-cell *matCellDef="let element">
+              <span [class]="getAvanceClass(element.porcentajeAvance)">
+                {{ element.porcentajeAvance | number:'1.1-1' }}%
+              </span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- No data row -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+              No se encontraron datos con los filtros seleccionados
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Paginador -->
+      <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" 
+                     showFirstLastButtons
+                     aria-label="Seleccionar página">
+      </mat-paginator>
+
+      <!-- Loading -->
+      <div class="loading-container" *ngIf="isLoading">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Cargando datos...</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

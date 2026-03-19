@@ -114,7 +114,7 @@ export class IndicadoresPendientesJefeComponent implements OnInit {
     jefe.numeroDocumento = main.evaluadorNumeroDocumento;
 
     // console.log("data excel", main.listPrioridad);
-    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad);
+    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(trabajador, jefe, main.listPrioridad, { asistio: main.reunionAsistio, fecha: main.reunionFecha });
   }
 
 }

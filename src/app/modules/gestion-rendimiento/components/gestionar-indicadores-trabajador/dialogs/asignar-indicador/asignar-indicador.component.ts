@@ -79,7 +79,7 @@ export class AsignarIndicadorComponent implements OnInit {
       if (data.length > 0) {
         this.listTipoValorMeta = data.filter((item: any) => item.descripcion.toLowerCase() !== 'promedio');
       } else {
-        this._notification.warning("Lista de tipo valor meta vacio");
+        this._notification.warning("Lista de tipo valor esperado vacio");
       }
     });
   }
@@ -234,6 +234,17 @@ export class AsignarIndicadorComponent implements OnInit {
     }
     
     // Bloquear todo lo demás (incluyendo el signo menos)
+    return false;
+  }
+
+  validaNumero(event: any): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    // Solo permitir números 0-9 (códigos 48-57)
+    if (charCode >= 48 && charCode <= 57) {
+      return true;
+    }
+    // Bloquear todo lo demás
+    event.preventDefault();
     return false;
   }
 

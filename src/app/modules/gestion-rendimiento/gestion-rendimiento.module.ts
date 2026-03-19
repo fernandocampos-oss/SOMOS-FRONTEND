@@ -26,6 +26,20 @@ import { CalificarComponent } from './components/gestionar-indicadores-trabajado
 import { CustomSelectComponent } from './components/gestionar-indicadores-trabajador/custom-select/custom-select.component';
 import { ComentarioDialogComponent } from './components/gestionar-indicadores-trabajador/dialogs/comentario-dialog/comentario-dialog.component';
 import { FechaPlazoDialogComponent } from './components/gestionar-indicadores-trabajador/dialogs/fecha-plazo-dialog/fecha-plazo-dialog.component';
+import { RegistrarFormatoComponent } from './components/gestionar-indicadores-trabajador/dialogs/registrar-formato/registrar-formato.component';
+// Maestro GDR Components
+import { GestionarMaestrosGdrComponent } from './components/gestionar-maestros-gdr/gestionar-maestros-gdr.component';
+import { GestionarEvaluadoresComponent } from './components/gestionar-evaluadores/gestionar-evaluadores.component';
+import { AgregarEvaluadorDialogComponent } from './components/gestionar-evaluadores/dialogs/agregar-evaluador-dialog/agregar-evaluador-dialog.component';
+import { CargaMasivaEvaluadoresDialogComponent } from './components/gestionar-evaluadores/dialogs/carga-masiva-evaluadores-dialog/carga-masiva-evaluadores-dialog.component';
+import { CambiarSegmentoDialogComponent } from './components/gestionar-evaluadores/dialogs/cambiar-segmento-dialog/cambiar-segmento-dialog.component';
+import { AsignarTrabajadoresEvaluadorComponent } from './components/asignar-trabajadores-evaluador/asignar-trabajadores-evaluador.component';
+import { AgregarTrabajadorDialogComponent } from './components/asignar-trabajadores-evaluador/dialogs/agregar-trabajador-dialog/agregar-trabajador-dialog.component';
+import { CargaMasivaTrabajadoresDialogComponent } from './components/asignar-trabajadores-evaluador/dialogs/carga-masiva-trabajadores-dialog/carga-masiva-trabajadores-dialog.component';
+import { DashboardSeguimientoComponent } from './components/dashboard-seguimiento/dashboard-seguimiento.component';
+import { SeguimientoTrabajadorComponent } from './components/seguimiento-trabajador/seguimiento-trabajador.component';
+import { ConfiguracionCicloGdrComponent } from './components/configuracion-ciclo-gdr/configuracion-ciclo-gdr.component';
+import { GestionarSegmentosGdrComponent } from './components/gestionar-segmentos-gdr/gestionar-segmentos-gdr.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +61,21 @@ import { FechaPlazoDialogComponent } from './components/gestionar-indicadores-tr
     PanelObservadoComponent,
     CustomSelectComponent,
     ComentarioDialogComponent,
-    FechaPlazoDialogComponent
+    FechaPlazoDialogComponent,
+    RegistrarFormatoComponent,
+    // Maestro GDR Components
+    GestionarMaestrosGdrComponent,
+    GestionarEvaluadoresComponent,
+    AgregarEvaluadorDialogComponent,
+    CargaMasivaEvaluadoresDialogComponent,
+    CambiarSegmentoDialogComponent,
+    AsignarTrabajadoresEvaluadorComponent,
+    AgregarTrabajadorDialogComponent,
+    CargaMasivaTrabajadoresDialogComponent,
+    DashboardSeguimientoComponent,
+    SeguimientoTrabajadorComponent,
+    ConfiguracionCicloGdrComponent,
+    GestionarSegmentosGdrComponent
   ],
   imports: [
     CommonModule,

@@ -2,13 +2,64 @@
   <div class="matero-page-header">
     <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon>Módulo de
       Gestión del Rendimiento<br>
-      <small class="mr-2">Aqui podrás registrar Indicadores/Productos y gestionar tus trabajadores</small><br><br>
+      <small class="mr-2" *ngIf="!esMaestroGdr">Aqui podrás registrar Indicadores/Productos y gestionar tus trabajadores - Perfil Evaluador</small>
+      <small class="mr-2" *ngIf="esMaestroGdr">Panel de Administración - Maestro GDR</small><br><br>
       <button mat-raised-button class="primary-button" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
     </h1>
   </div>
   <div class="page__body">
     <div class="card shadow no-padd">
-      <mat-tab-group>
+      <!-- VISTA MAESTRO GDR -->
+      <mat-tab-group *ngIf="esMaestroGdr">
+        <mat-tab label="Configuración Ciclo GDR">
+          <ng-template matTabContent>
+            <app-configuracion-ciclo-gdr></app-configuracion-ciclo-gdr>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Gestionar Maestros GDR">
+          <ng-template matTabContent>
+            <app-gestionar-maestros-gdr></app-gestionar-maestros-gdr>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Gestionar Evaluadores">
+          <ng-template matTabContent>
+            <app-gestionar-evaluadores></app-gestionar-evaluadores>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Segmentación GDR">
+          <ng-template matTabContent>
+            <app-gestionar-segmentos-gdr></app-gestionar-segmentos-gdr>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Asignar Trabajadores">
+          <ng-template matTabContent>
+            <app-asignar-trabajadores-evaluador></app-asignar-trabajadores-evaluador>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Seguimiento Trabajador">
+          <ng-template matTabContent>
+            <app-seguimiento-trabajador></app-seguimiento-trabajador>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Dashboard Seguimiento">
+          <ng-template matTabContent>
+            <app-dashboard-seguimiento></app-dashboard-seguimiento>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Información Formato GDR">
+          <ng-template matTabContent>
+            <app-reporte-usuario-gdr></app-reporte-usuario-gdr>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Buscar Formato GDR Excel">
+          <ng-template matTabContent>
+            <app-buscar-reporte></app-buscar-reporte>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+      
+      <!-- VISTA EVALUADOR (NO MAESTRO GDR) -->
+      <mat-tab-group *ngIf="!esMaestroGdr">
         <mat-tab label="Registro de nuevo Formato GDR" *ngIf="rol != trabajador">
           <gestion-rendimiento-gestionar-indicadores-trabajador></gestion-rendimiento-gestionar-indicadores-trabajador>
         </mat-tab>
@@ -25,11 +76,6 @@
             <app-buscar-reporte></app-buscar-reporte>
           </mat-tab>
         </div>
-        <!-- <div *ngIf="condicionGr ==='03'">
-          <mat-tab label="Administrar Segmento">
-            <gr-administrar-votante></gr-administrar-votante>
-          </mat-tab>
-        </div> -->
       </mat-tab-group>
     </div>
   </div>

@@ -1,4 +1,11 @@
 <h3 class="auth__subtitle">Asignar Evidencia</h3><br>
+<!-- Nota informativa -->
+<div style="background-color: #e3f2fd; padding: 12px; border-radius: 4px; margin-bottom: 16px; border-left: 4px solid #1976d2;">
+    <mat-icon style="vertical-align: middle; color: #1976d2;">info</mat-icon>
+    <span style="margin-left: 8px; color: #1565c0;">
+        <strong>Nota:</strong> En caso se requiera adjuntar más de un documento en un mismo plazo, consolidar toda la información en un solo archivo.
+    </span>
+</div>
 <form [formGroup]="formEvidenciasListadas">
     <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
         <mat-grid-tile [colspan]="6">
@@ -18,6 +25,7 @@
         </mat-grid-tile>
         <mat-grid-tile [colspan]="1">
             <button mat-raised-button color="primary" class="botonPoi"
+                [disabled]="listEvidencia.length >= 1"
                 (click)="crearEvidencia(); formEvidenciasListadas.reset()">Añadir</button>
         </mat-grid-tile>
     </mat-grid-list>

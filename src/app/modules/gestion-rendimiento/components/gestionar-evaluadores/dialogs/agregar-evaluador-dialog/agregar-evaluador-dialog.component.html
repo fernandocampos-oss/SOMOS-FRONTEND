@@ -1,0 +1,72 @@
+<h2 mat-dialog-title>Agregar Evaluador</h2>
+
+<mat-dialog-content>
+  <!-- Búsqueda por DNI -->
+  <div class="busqueda-section">
+    <mat-form-field appearance="outline" class="dni-field">
+      <mat-label>DNI del Trabajador</mat-label>
+      <input matInput [(ngModel)]="dni" placeholder="Ingrese DNI de 8 dígitos" 
+             maxlength="8" (keyup.enter)="buscarPorDni()">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="buscarPorDni()" [disabled]="isSearching">
+      <mat-icon>search</mat-icon>
+      Buscar
+    </button>
+  </div>
+
+  <!-- Loading de búsqueda -->
+  <div class="loading-section" *ngIf="isSearching">
+    <mat-spinner diameter="30"></mat-spinner>
+    <span>Buscando...</span>
+  </div>
+
+  <!-- Error de búsqueda -->
+  <div class="error-section" *ngIf="errorBusqueda">
+    <mat-icon>error</mat-icon>
+    <span>{{ errorBusqueda }}</span>
+  </div>
+
+  <!-- Preview del trabajador -->
+  <div class="preview-section" *ngIf="trabajador">
+    <h4>Datos del Trabajador</h4>
+    <div class="datos-grid">
+      <div class="dato-item">
+        <span class="label">DNI:</span>
+        <span class="value">{{ trabajador.numeroDocumento }}</span>
+      </div>
+      <div class="dato-item">
+        <span class="label">Nombre:</span>
+        <span class="value">{{ trabajador.nombreCompleto }}</span>
+      </div>
+      <div class="dato-item">
+        <span class="label">Cargo:</span>
+        <span class="value">{{ trabajador.cargo || '-' }}</span>
+      </div>
+      <div class="dato-item">
+        <span class="label">Unidad:</span>
+        <span class="value">{{ trabajador.unidad || '-' }}</span>
+      </div>
+      <div class="dato-item">
+        <span class="label">Régimen:</span>
+        <span class="value">{{ trabajador.regimen || '-' }}</span>
+      </div>
+    </div>
+
+    <!-- Advertencia si ya es evaluador -->
+    <div class="advertencia-evaluador" *ngIf="yaEsEvaluador">
+      <mat-icon>info</mat-icon>
+      <span>Este trabajador ya tiene el rol de evaluador</span>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-button (click)="limpiar()" *ngIf="trabajador">Limpiar</button>
+  <button mat-raised-button color="primary" 
+          (click)="confirmarAgregar()" 
+          [disabled]="!trabajador || isSaving || yaEsEvaluador">
+    <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+    <span *ngIf="!isSaving">Confirmar</span>
+  </button>
+</mat-dialog-actions>

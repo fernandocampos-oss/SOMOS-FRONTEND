@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env';
 import { Observable } from 'rxjs';
 import { ActividadResponse, CargaMasivaVotante, EmailNotificacionRequestDto, EquipoRequest, EvidenciaResponseDto, EvidenciaSustentoRequestDto, VotanteSegmentoVotante } from '@data/models/gestion-rendimiento/gestion-rendimiento.model';
@@ -166,6 +166,16 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
+  async findVotanteByDni(dni: string) {
+    const url = `${URL_BASE}/equipos/buscar/votante/dni?dni=${dni}`;
+    return await this.http.get<any>(url).toPromise();
+  }
+
+  async findVotanteById(idVotante: number) {
+    const url = `${URL_BASE}/equipos/buscar/votante/id/${idVotante}`;
+    return await this.http.get<any>(url).toPromise();
+  }
+
   async registrarEvidenciaExistIndicador(dto: IndicadorExistRequestDto) {
     const url = `${URL_BASE}/evidencias/registrar/exist-indicador`;
     // console.log(url, dto);
@@ -303,6 +313,11 @@ export class GestionRendimientoService {
     return await this.http.post(url, { idEvidencia, idIndicador, fechaPlazo }).toPromise();
   }
 
+  async actualizarFechaPlazoFinal(idIndicador: number, fechaPlazo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evidencia-tipo/actualizar-fecha-plazo-final/${idIndicador}`;
+    return await this.http.post(url, { fechaPlazo }).toPromise();
+  }
+
   // Métodos para comentario estado
   async guardarComentarioEstado(idEvidencia: number, estadoDropdown: string, comentarioAdicional: string, tipoComentario: string = 'individual'): Promise<any> {
     const url = `${URL_BASE}/gdr/comentario-estado/guardar`;
@@ -347,7 +362,8 @@ export class GestionRendimientoService {
 
   // ========== Resultados Finales ==========
   async guardarResultadosFinales(idVotante: number, anio: number, rendimientoDistinguido: string, 
-                                   accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string): Promise<any> {
+                                   accionesCapacitacion: string, otrasAcciones: string, fechaReunion: string,
+                                   permanenciaSeisMeses: string = 'SI'): Promise<any> {
     const url = `${URL_BASE}/gdr/resultados-finales/guardar`;
     const body = {
       idVotante,
@@ -356,7 +372,8 @@ export class GestionRendimientoService {
       rendimientoDistinguido: rendimientoDistinguido === '[Seleccione]' ? null : rendimientoDistinguido,
       accionesCapacitacion: accionesCapacitacion || null,
       otrasAcciones: otrasAcciones || null,
-      fechaReunion: fechaReunion || null
+      fechaReunion: fechaReunion || null,
+      permanenciaSeisMeses: permanenciaSeisMeses || 'SI'
     };
     return await this.http.post(url, body).toPromise();
   }
@@ -388,5 +405,380 @@ export class GestionRendimientoService {
     const url = `${URL_BASE}/gdr/resultados-finales/eliminar/${idVotante}/${anio}`;
     return await this.http.delete(url).toPromise();
   }
-}
 
+  // ============================================
+  // MAESTRO GDR - Endpoints
+  // ============================================
+
+  async esMaestroGdr(): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/es-maestro`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async listarMaestrosGdr(): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/listar`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async listarTodosMaestrosGdr(): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/listar-todos`;
+    return await this.http.get(url).toPromise();
+  }
+
+  async agregarMaestroGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/agregar`;
+    return await this.http.post(url, { dni }).toPromise();
+  }
+
+  async desactivarMaestroGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/desactivar/${dni}`;
+    return await this.http.put(url, {}).toPromise();
+  }
+
+  async activarMaestroGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/activar/${dni}`;
+    return await this.http.put(url, {}).toPromise();
+  }
+
+  async estadisticasMaestroGdr(): Promise<any> {
+    const url = `${URL_BASE}/maestro-gdr/estadisticas`;
+    return await this.http.get(url).toPromise();
+  }
+
+  // ============================================
+  // REUNIÓN ESTABLECIMIENTO DE METAS - Endpoints
+  // ============================================
+
+  /**
+   * Obtener o crear registro de reunión para la combinación evaluado-evaluador-periodo
+   */
+  async obtenerOCrearReunionMetas(idVotanteEvaluado: number, idVotanteEvaluador: number, periodo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/obtener-o-crear`;
+    return await this.http.post(url, { idVotanteEvaluado, idVotanteEvaluador, periodo }).toPromise();
+  }
+
+  /**
+   * Buscar reunión por parámetros
+   */
+  async buscarReunionMetas(idVotanteEvaluado: number, idVotanteEvaluador: number, periodo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/buscar?idVotanteEvaluado=${idVotanteEvaluado}&idVotanteEvaluador=${idVotanteEvaluador}&periodo=${periodo}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Actualizar asistencia de la reunión
+   * @param asistio '-' = No seleccionado, 'S' = Sí asistió, 'N' = No asistió
+   * @param fechaReunion Solo obligatorio si asistio = 'S'
+   */
+  async actualizarAsistenciaReunion(idReunion: number, asistio: string, fechaReunion?: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/${idReunion}/asistencia`;
+    return await this.http.put(url, { asistio, fechaReunion }).toPromise();
+  }
+
+  /**
+   * Confirmar la reunión (bloquea edición)
+   */
+  async confirmarReunionMetas(idReunion: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/${idReunion}/confirmar`;
+    return await this.http.put(url, {}).toPromise();
+  }
+
+  /**
+   * Reiniciar confirmación (solo Maestro GDR)
+   */
+  async reiniciarConfirmacionReunion(idReunion: number, dniMaestroGdr: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/${idReunion}/reiniciar`;
+    return await this.http.put(url, { dniMaestroGdr }).toPromise();
+  }
+
+  /**
+   * Buscar reuniones de un evaluado (para Maestro GDR)
+   */
+  async buscarReunionesMetasPorEvaluado(idVotanteEvaluado: number, periodo: string): Promise<any[]> {
+    const url = `${URL_BASE}/gdr/reunion-metas/por-evaluado?idVotanteEvaluado=${idVotanteEvaluado}&periodo=${periodo}`;
+    return await this.http.get<any[]>(url).toPromise() || [];
+  }
+
+  /**
+   * Verificar si ya está confirmado
+   */
+  async estaConfirmadaReunion(idVotanteEvaluado: number, idVotanteEvaluador: number, periodo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/reunion-metas/esta-confirmado?idVotanteEvaluado=${idVotanteEvaluado}&idVotanteEvaluador=${idVotanteEvaluador}&periodo=${periodo}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  // ============================================
+  // CONFIGURACIÓN GDR - Fases y Evidencias
+  // ============================================
+
+  /**
+   * Obtener o crear configuración GDR para un periodo
+   */
+  async obtenerConfiguracionGdr(periodo: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Actualizar configuración de fases
+   */
+  async actualizarFasesGdr(periodo: string, fases: {
+    fasePreActiva: boolean,
+    fasePlanificacionActiva: boolean,
+    faseSeguimientoActiva: boolean,
+    faseEvaluacionActiva: boolean,
+    fasePostActiva: boolean
+  }): Promise<any> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}/fases`;
+    return await this.http.put(url, fases).toPromise();
+  }
+
+  /**
+   * Actualizar configuración de evidencias
+   */
+  async actualizarEvidenciasGdr(periodo: string, evidencias: {
+    evidencia1Activa: boolean,
+    evidencia2Activa: boolean,
+    evidenciaFinalActiva: boolean
+  }): Promise<any> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}/evidencias`;
+    return await this.http.put(url, evidencias).toPromise();
+  }
+
+  /**
+   * Actualizar configuración completa
+   */
+  async actualizarConfiguracionGdr(periodo: string, config: any): Promise<any> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}`;
+    return await this.http.put(url, config).toPromise();
+  }
+
+  /**
+   * Verificar si una fase está activa
+   */
+  async esFaseActiva(periodo: string, fase: string): Promise<boolean> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}/fase/${fase}`;
+    return await this.http.get<boolean>(url).toPromise() || false;
+  }
+
+  /**
+   * Verificar si una evidencia está activa
+   */
+  async esEvidenciaActiva(periodo: string, numero: number): Promise<boolean> {
+    const url = `${URL_BASE}/gdr/configuracion/${periodo}/evidencia/${numero}`;
+    return await this.http.get<boolean>(url).toPromise() || false;
+  }
+
+  // ============================================
+  // DASHBOARD DE AVANCE GDR
+  // ============================================
+
+  /**
+   * Obtener dashboard de avance GDR
+   * @param request Filtros: anio, listCodRed, codUnidad, tipoAgrupacion (PERSONA, UNIDAD, ORGANO), allRed
+   */
+  async obtenerDashboardAvance(request: {
+    anio: string,
+    listCodRed?: string[],
+    codUnidad?: string,
+    tipoAgrupacion: string,
+    allRed?: boolean
+  }): Promise<any[]> {
+    const url = `${URL_BASE}/gdr/dashboard/avance`;
+    return await this.http.post<any[]>(url, request).toPromise() || [];
+  }
+
+  /**
+   * Exportar dashboard de avance a Excel
+   * @param request Filtros para el dashboard
+   */
+  async exportarDashboardExcel(request: {
+    anio: string,
+    listCodRed?: string[],
+    codUnidad?: string,
+    tipoAgrupacion: string,
+    allRed?: boolean
+  }): Promise<Blob> {
+    const url = `${URL_BASE}/gdr/dashboard/avance/excel`;
+    return await this.http.post(url, request, { responseType: 'blob' }).toPromise() as Blob;
+  }
+
+  // ==================== GESTIÓN DE EVALUADORES ====================
+
+  /**
+   * Listar evaluadores paginado (id_segmento = 3)
+   */
+  async listarEvaluadores(page: number = 0, size: number = 50, filtro: string = '', soloConTrabajadores: boolean = false): Promise<any> {
+    let url = `${URL_BASE}/gdr/evaluadores/listar?page=${page}&size=${size}&filtro=${filtro}`;
+    if (soloConTrabajadores) {
+      url += '&soloConTrabajadores=true';
+    }
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Buscar trabajador por DNI para agregar como evaluador
+   */
+  async buscarTrabajadorParaEvaluador(dni: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/buscar/${dni}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Agregar un evaluador individual
+   */
+  async agregarEvaluador(dni: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/agregar/${dni}`;
+    return await this.http.post(url, {}).toPromise();
+  }
+
+  /**
+   * Validar carga masiva de evaluadores (preview)
+   */
+  async validarCargaMasivaEvaluadores(dnis: string[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/carga-masiva/validar`;
+    return await this.http.post(url, { dnis }).toPromise();
+  }
+
+  /**
+   * Confirmar carga masiva de evaluadores
+   */
+  async confirmarCargaMasivaEvaluadores(dnis: string[]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/carga-masiva/confirmar`;
+    return await this.http.post(url, { dnis }).toPromise();
+  }
+
+  /**
+   * Cambiar segmento de un evaluador (quitar rol)
+   */
+  async cambiarSegmentoEvaluador(idVotante: number, nuevoSegmento: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/cambiar-segmento`;
+    return await this.http.put(url, { idVotante, nuevoSegmento }).toPromise();
+  }
+
+  /**
+   * Exportar lista de evaluadores a Excel
+   */
+  async exportarEvaluadoresExcel(): Promise<Blob> {
+    const url = `${URL_BASE}/gdr/evaluadores/exportar-excel`;
+    return await this.http.get(url, { responseType: 'blob' }).toPromise() as Blob;
+  }
+
+  // ==================== ASIGNAR TRABAJADORES ====================
+
+  /**
+   * Listar trabajadores asignados a un evaluador
+   */
+  async listarTrabajadoresPorEvaluador(idEvaluador: number): Promise<any[]> {
+    const url = `${URL_BASE}/gdr/evaluadores/${idEvaluador}/trabajadores`;
+    return await this.http.get(url).toPromise() as any[];
+  }
+
+  /**
+   * Buscar trabajador por DNI para asignar
+   */
+  async buscarTrabajadorParaAsignar(idEvaluador: number, dni: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/${idEvaluador}/buscar-trabajador/${dni}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Asignar trabajador a evaluador
+   */
+  async asignarTrabajador(idEvaluador: number, dniTrabajador: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/${idEvaluador}/asignar/${dniTrabajador}`;
+    return await this.http.post(url, {}).toPromise();
+  }
+
+  /**
+   * Desasignar trabajador de evaluador
+   */
+  async desasignarTrabajador(idEquipo: number): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/trabajador/${idEquipo}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  /**
+   * Validar carga masiva de asignaciones trabajadores
+   */
+  async validarCargaMasivaTrabajadores(filas: string[][]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/trabajadores/carga-masiva/validar`;
+    return await this.http.post(url, { filas }).toPromise();
+  }
+
+  /**
+   * Confirmar carga masiva de asignaciones trabajadores
+   */
+  async confirmarCargaMasivaTrabajadores(filas: string[][]): Promise<any> {
+    const url = `${URL_BASE}/gdr/evaluadores/trabajadores/carga-masiva/confirmar`;
+    return await this.http.post(url, { filas }).toPromise();
+  }
+
+  // ============================================
+  // SEGMENTO GDR - Endpoints
+  // ============================================
+
+  /**
+   * Listar todos los segmentos
+   */
+  async listarSegmentosGdr(): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/listar`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Buscar segmentos por DNI (parcial)
+   */
+  async buscarSegmentosGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/buscar?dni=${dni}`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Obtener lista de segmentos válidos
+   */
+  async obtenerSegmentosValidos(): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/segmentos-validos`;
+    return await this.http.get(url).toPromise();
+  }
+
+  /**
+   * Agregar nuevo segmento
+   */
+  async agregarSegmentoGdr(dni: string, segmento: string): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/agregar`;
+    return await this.http.post(url, { dni, segmento }).toPromise();
+  }
+
+  /**
+   * Actualizar segmento existente
+   */
+  async actualizarSegmentoGdr(dni: string, segmento: string): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/actualizar`;
+    return await this.http.put(url, { dni, segmento }).toPromise();
+  }
+
+  /**
+   * Eliminar segmento por DNI
+   */
+  async eliminarSegmentoGdr(dni: string): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/eliminar/${dni}`;
+    return await this.http.delete(url).toPromise();
+  }
+
+  /**
+   * Carga masiva de segmentos
+   */
+  async cargaMasivaSegmentosGdr(registros: { dni: string; segmento: string }[]): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/carga-masiva`;
+    return await this.http.post(url, { registros }).toPromise();
+  }
+
+  /**
+   * Contar total de segmentos
+   */
+  async contarSegmentosGdr(): Promise<any> {
+    const url = `${URL_BASE}/segmento-gdr/contar`;
+    return await this.http.get(url).toPromise();
+  }
+}

@@ -45,6 +45,7 @@ export class SidenavComponent implements OnInit {
 
   activarModuloGr: boolean = environment.moduloGr;
   tienePermisoModuloPlaza: boolean;
+  esMaestroGdr: boolean = false;
 
   rol: number;
 
@@ -86,7 +87,8 @@ export class SidenavComponent implements OnInit {
     this.rol = this._authService.getRol();
 
     this.getSegmentoModuloGR();
-    this.validarTienePermisoModuloPlaza();
+    this.validarTienePermisoModuloPlaza('PLAZAS');
+    this.verificarEsMaestroGdr();
   }
 
   private _initialize() {
@@ -178,15 +180,22 @@ export class SidenavComponent implements OnInit {
     let load = await this._gestionRendimientoService.getVotanteByIdUsuario().then((data: any) => {
       if (data != null) {
         this.usuarioVotante = data;
-        if (this.user.id == this.usuarioVotante.idUsuario) {
-          this.votanteSegmento = this.usuarioVotante.idSegmento;
-        }
+        this.votanteSegmento = this.usuarioVotante.idSegmento;
       }
     });
   }
 
-  validarTienePermisoModuloPlaza() {
-    this._userService.usuarioTienePermisoModulo('PLAZAS').subscribe((data)=> {
+  async verificarEsMaestroGdr() {
+    try {
+      const response = await this._gestionRendimientoService.esMaestroGdr();
+      this.esMaestroGdr = response?.esMaestroGdr || false;
+    } catch (error) {
+      this.esMaestroGdr = false;
+    }
+  }
+
+  validarTienePermisoModuloPlaza(modulo: string) {
+    this._userService.usuarioTienePermisoModulo(modulo).subscribe((data)=> {
       this.tienePermisoModuloPlaza = data;
     });
   }
@@ -230,10 +239,10 @@ export class SidenavComponent implements OnInit {
         document.body.removeChild(form);
       },
       error: (error) => {
-        console.error('Error al generar token para PIGRH:', error);
+        //console.error('Error al generar token para PIGRH:', error);
         alert('Error al conectar con PIGRH. Por favor, intente nuevamente.');
       }
     });
   }
-
+	
 }

@@ -1,0 +1,232 @@
+<h2 mat-dialog-title>Carga Masiva de Asignaciones</h2>
+
+<mat-dialog-content>
+  <!-- PASO 1: Instrucciones -->
+  <div class="paso-instrucciones" *ngIf="paso === 'instrucciones'">
+    <p>Suba un archivo Excel con las asignaciones de trabajadores a evaluadores.</p>
+    
+    <div class="formato-info">
+      <h4>Formato del archivo:</h4>
+      <ul>
+        <li>Archivo Excel (.xlsx o .xls)</li>
+        <li><strong>Sin encabezados</strong></li>
+        <li>2 columnas:</li>
+        <li>Columna A: DNI del Evaluador</li>
+        <li>Columna B: DNI del Trabajador</li>
+      </ul>
+      
+      <div class="ejemplo">
+        <strong>Ejemplo:</strong>
+        <table class="ejemplo-tabla">
+          <tr><td>06883590</td><td>40811000</td></tr>
+          <tr><td>40811000</td><td>42388078</td></tr>
+          <tr><td>40811000</td><td>40038988</td></tr>
+        </table>
+      </div>
+      
+      <div class="nota">
+        <mat-icon>info</mat-icon>
+        <span>Un evaluador puede tener múltiples trabajadores. Un trabajador solo puede tener un evaluador.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 2: Selección de archivo -->
+  <div class="paso-archivo" *ngIf="paso === 'archivo'">
+    <div class="upload-area">
+      <mat-icon>upload_file</mat-icon>
+      <p>Seleccione el archivo Excel de asignaciones</p>
+      <input type="file" 
+             accept=".xlsx,.xls" 
+             (change)="onFileSelected($event)" 
+             #fileInput 
+             hidden>
+      <button mat-raised-button color="primary" (click)="fileInput.click()">
+        Seleccionar Archivo
+      </button>
+      <span class="archivo-seleccionado" *ngIf="nombreArchivo">{{ nombreArchivo }}</span>
+    </div>
+  </div>
+
+  <!-- PASO 3: Preview de validación -->
+  <div class="paso-preview" *ngIf="paso === 'preview' && validacionResponse">
+    <div class="resumen">
+      <div class="resumen-item">
+        <span class="numero">{{ validacionResponse.totalFilas }}</span>
+        <span class="label">Total filas</span>
+      </div>
+      <div class="resumen-item valido">
+        <span class="numero">{{ validacionResponse.totalValidos }}</span>
+        <span class="label">Válidos</span>
+      </div>
+      <div class="resumen-item error" *ngIf="validacionResponse.totalErrores > 0">
+        <span class="numero">{{ validacionResponse.totalErrores }}</span>
+        <span class="label">Errores</span>
+      </div>
+    </div>
+
+    <!-- Tabla de válidos -->
+    <h4 *ngIf="validacionResponse.validos.length > 0">Asignaciones a procesar:</h4>
+    <div class="tabla-preview" *ngIf="validacionResponse.validos.length > 0">
+      <table mat-table [dataSource]="validacionResponse.validos">
+        <ng-container matColumnDef="fila">
+          <th mat-header-cell *matHeaderCellDef>Fila</th>
+          <td mat-cell *matCellDef="let element">{{ element.fila }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dniEvaluador">
+          <th mat-header-cell *matHeaderCellDef>DNI Evaluador</th>
+          <td mat-cell *matCellDef="let element">{{ element.dniEvaluador }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombreEvaluador">
+          <th mat-header-cell *matHeaderCellDef>Evaluador</th>
+          <td mat-cell *matCellDef="let element">{{ element.nombreEvaluador }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dniTrabajador">
+          <th mat-header-cell *matHeaderCellDef>DNI Trabajador</th>
+          <td mat-cell *matCellDef="let element">{{ element.dniTrabajador }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombreTrabajador">
+          <th mat-header-cell *matHeaderCellDef>Trabajador</th>
+          <td mat-cell *matCellDef="let element">{{ element.nombreTrabajador }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let element">
+            <span class="badge nuevo" *ngIf="!element.yaAsignado">Nuevo</span>
+            <span class="badge existente" *ngIf="element.yaAsignado" 
+                  [matTooltip]="'Ya asignado a: ' + element.evaluadorActual">
+              Ya asignado
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsPreview"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsPreview;"></tr>
+      </table>
+    </div>
+
+    <!-- Errores -->
+    <h4 *ngIf="validacionResponse.errores.length > 0" class="errores-titulo">
+      <mat-icon>warning</mat-icon> Errores encontrados:
+    </h4>
+    <div class="tabla-errores" *ngIf="validacionResponse.errores.length > 0">
+      <table mat-table [dataSource]="validacionResponse.errores">
+        <ng-container matColumnDef="fila">
+          <th mat-header-cell *matHeaderCellDef>Fila</th>
+          <td mat-cell *matCellDef="let element">{{ element.fila }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dniEvaluador">
+          <th mat-header-cell *matHeaderCellDef>DNI Evaluador</th>
+          <td mat-cell *matCellDef="let element">{{ element.dniEvaluador }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dniTrabajador">
+          <th mat-header-cell *matHeaderCellDef>DNI Trabajador</th>
+          <td mat-cell *matCellDef="let element">{{ element.dniTrabajador }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mensaje">
+          <th mat-header-cell *matHeaderCellDef>Error</th>
+          <td mat-cell *matCellDef="let element" class="error-text">{{ element.mensaje }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsError"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsError;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- PASO: Error (solo errores) -->
+  <div class="paso-error" *ngIf="paso === 'error' && validacionResponse">
+    <div class="error-header">
+      <mat-icon>error</mat-icon>
+      <h4>Se encontraron errores en el archivo</h4>
+    </div>
+    
+    <div class="tabla-errores">
+      <table mat-table [dataSource]="validacionResponse.errores">
+        <ng-container matColumnDef="fila">
+          <th mat-header-cell *matHeaderCellDef>Fila</th>
+          <td mat-cell *matCellDef="let element">{{ element.fila }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dniEvaluador">
+          <th mat-header-cell *matHeaderCellDef>DNI Evaluador</th>
+          <td mat-cell *matCellDef="let element">{{ element.dniEvaluador }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dniTrabajador">
+          <th mat-header-cell *matHeaderCellDef>DNI Trabajador</th>
+          <td mat-cell *matCellDef="let element">{{ element.dniTrabajador }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mensaje">
+          <th mat-header-cell *matHeaderCellDef>Error</th>
+          <td mat-cell *matCellDef="let element" class="error-text">{{ element.mensaje }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsError"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsError;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- PASO: Resultado -->
+  <div class="paso-resultado" *ngIf="paso === 'resultado' && resultadoCarga">
+    <div class="resultado-header" [class.exito]="resultadoCarga.exito">
+      <mat-icon>{{ resultadoCarga.exito ? 'check_circle' : 'warning' }}</mat-icon>
+      <h4>{{ resultadoCarga.exito ? 'Carga completada exitosamente' : 'Carga completada con observaciones' }}</h4>
+    </div>
+    
+    <div class="resultado-detalle">
+      <div class="detalle-item">
+        <span class="label">Total procesados:</span>
+        <span class="valor">{{ resultadoCarga.totalProcesados }}</span>
+      </div>
+      <div class="detalle-item exito">
+        <span class="label">Asignados correctamente:</span>
+        <span class="valor">{{ resultadoCarga.totalAsignados }}</span>
+      </div>
+      <div class="detalle-item warning" *ngIf="resultadoCarga.totalYaAsignados > 0">
+        <span class="label">Ya tenían evaluador (omitidos):</span>
+        <span class="valor">{{ resultadoCarga.totalYaAsignados }}</span>
+      </div>
+      <div class="detalle-item error" *ngIf="resultadoCarga.totalErrores > 0">
+        <span class="label">Errores:</span>
+        <span class="valor">{{ resultadoCarga.totalErrores }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Procesando...</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="volverAInstrucciones()" *ngIf="paso !== 'instrucciones' && paso !== 'resultado'">
+    Volver
+  </button>
+  <button mat-button (click)="cerrar()">{{ paso === 'resultado' ? 'Cerrar' : 'Cancelar' }}</button>
+  
+  <button mat-raised-button color="primary" 
+          (click)="continuarAArchivo()" 
+          *ngIf="paso === 'instrucciones'">
+    Continuar
+  </button>
+  
+  <button mat-raised-button color="primary" 
+          (click)="confirmarCarga()" 
+          *ngIf="paso === 'preview' && validacionResponse && validacionResponse.totalValidos > 0"
+          [disabled]="isLoading">
+    Confirmar Carga ({{ totalNuevosAsignaciones }} nuevos)
+  </button>
+</mat-dialog-actions>

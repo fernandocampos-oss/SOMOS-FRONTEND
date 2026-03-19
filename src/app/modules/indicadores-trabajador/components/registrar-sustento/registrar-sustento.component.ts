@@ -86,14 +86,22 @@ export class RegistrarSustentoComponent implements OnInit {
       this._notification.warning('Complete todos los campos obligatorios');
       this.form.markAllAsTouched();
       return;
-    } else {
-      const model = this._getModel();
-
-      let register = await this._requerimientoService.crearSustentoEvidencia(model).then((data) => {
-      this._notification.success("Evidencia registrada correctamente")
-      });
-      this.dialogRef.close(true);
     }
+    
+    if (!this.retrievedPdf) {
+      this._notification.warning('Debe cargar un archivo PDF');
+      return;
+    }
+    
+    const model = this._getModel();
+
+    let register = await this._requerimientoService.crearSustentoEvidencia(model).then((data) => {
+      this._notification.success("Evidencia registrada correctamente")
+    }).catch((error) => {
+      console.error('Error al guardar:', error);
+      this._notification.error("Error al guardar la evidencia");
+    });
+    this.dialogRef.close(true);
   }
 
   private _getModel(): EvidenciaSustentoRequestDto {
@@ -105,7 +113,7 @@ export class RegistrarSustentoComponent implements OnInit {
     this.globalBase64 = this.retrievedPdf.split(',')[1];
     this.globalextension = this.pdfExtension.split('/')[1];
 
-    if (this.data.model.sustentoFechaRegistro == null) {
+    if (this.data.model.sustentoFechaRegistro == null && this.data.model.plazo) {
       const dateCurrent = new Date();
 
       let fechaSustento = dateCurrent.toISOString().split("T")[0];

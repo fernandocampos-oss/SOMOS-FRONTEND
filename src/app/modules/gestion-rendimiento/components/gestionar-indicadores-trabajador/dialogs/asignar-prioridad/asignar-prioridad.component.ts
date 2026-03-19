@@ -69,7 +69,8 @@ export class AsignarPrioridadComponent implements OnInit {
   onChangeValueTipoValorMeta: number;
 
   confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
-  pesoTotalIndicadoresTrabajador: number;
+  pesoTotalIndicadoresTrabajador: number = 0;
+  pesoIndicadorOriginal: number = 0;
   showHelpCPlanilla = false;
 
   constructor(
@@ -106,7 +107,7 @@ export class AsignarPrioridadComponent implements OnInit {
           if (data.length > 0) {
             this.listTipoValorMeta = data;
           } else {
-            this._notification.warning("Lista de tipo valor meta vacio");
+            this._notification.warning("Lista de tipo valor esperado vacio");
           }
           this.validarEntrante();
         });
@@ -120,6 +121,7 @@ export class AsignarPrioridadComponent implements OnInit {
     this.activaEdicion = false;
     this.desPrioridad = null;
     this.flPrioridad = '1';
+    this.pesoIndicadorOriginal = 0;
     let infActividad:any;
     infActividad = this.listActividad.find((dtActi:any)=>dtActi.idActividad == 1);
     this.formPrioridad.controls["frmActividad"].setValue(infActividad);
@@ -187,11 +189,21 @@ export class AsignarPrioridadComponent implements OnInit {
       this.formPrioridad.controls["frmTipoValorMeta"].setValue(infIndicador.idTipoValorMeta);
       this.onChangeValueTipoValorMeta = infIndicador.idTipoValorMeta;
       this.formPrioridad.controls["frmPeso"].setValue(infIndicador.peso);
+      this.pesoIndicadorOriginal = infIndicador.peso;
       this.formPrioridad.controls["frmValorMeta"].setValue(infIndicador.valorMeta);
+      // Cargar fecha de plazo final si existe (usando moment para evitar problemas de timezone)
+      if(infIndicador.fechaPlazoFinal){
+        // Agregar T12:00:00 para evitar que se interprete como UTC medianoche
+        const fechaStr = infIndicador.fechaPlazoFinal.toString().substring(0, 10) + 'T12:00:00';
+        this.formEvidencia.controls["frmPlazoFinal"].setValue(new Date(fechaStr));
+      }
       //this.listEvidencia = this.data.prioridad.listIndicador[0].listEvidencia;
       this.listEvidencia = [];
       if(infIndicador.listEvidencia.length > 0){
         infIndicador.listEvidencia.forEach((dtEvi:any)=>{
+          // Excluir la evidencia final (SUSTENTO FINAL) de la lista editable
+          if(dtEvi.descripcion === 'SUSTENTO FINAL') return;
+          
           let fecha = new Date(dtEvi.plazo);
           let tienepdf:number = (dtEvi.sustentoDescripcion == null?0:1);
           this.listEvidencia.push({
@@ -235,7 +247,7 @@ export class AsignarPrioridadComponent implements OnInit {
       if (data.length > 0) {
         this.listTipoValorMeta = data;
       } else {
-        this._notification.warning("Lista de tipo valor meta vacio");
+        this._notification.warning("Lista de tipo valor esperado vacio");
       }
     });
   }
@@ -402,7 +414,7 @@ export class AsignarPrioridadComponent implements OnInit {
             this.dialogRef.close(true);
           });
         }else{
-          this._grService.modificarIndicador(this.idIndicador, indicador).then((data) => {
+          this._grService.modificarIndicador(this.idIndicador, indicador).then(async (data) => {
             if (data = 1) {
               this.listEvidencia.forEach((dtEvi:any)=>{
                 if(dtEvi.tiene == 0){
@@ -413,6 +425,19 @@ export class AsignarPrioridadComponent implements OnInit {
                   });
                 }
               });
+              // Actualizar fecha de plazo final si existe
+              if(this.formEvidencia.value.frmPlazoFinal){
+                const fechaValue = this.formEvidencia.value.frmPlazoFinal;
+                let fechaPlazoStr: string;
+                if (fechaValue._d) {
+                  fechaPlazoStr = moment(fechaValue._d).format('YYYY-MM-DD');
+                } else if (fechaValue instanceof Date) {
+                  fechaPlazoStr = moment(fechaValue).format('YYYY-MM-DD');
+                } else {
+                  fechaPlazoStr = moment(fechaValue).format('YYYY-MM-DD');
+                }
+                await this._grService.actualizarFechaPlazoFinal(this.idIndicador, fechaPlazoStr);
+              }
               this._notification.success("Indicador actualizado");
               this.dialogRef.close(true);
             } else {
@@ -474,6 +499,20 @@ export class AsignarPrioridadComponent implements OnInit {
     this.activaEdicion = true;
     this.habEdiTarea();
     this.idEviEditar = 0;
+  }
+
+  /**
+   * Resetea solo los campos de descripción y plazo de evidencia,
+   * preservando el valor de frmPlazoFinal
+   */
+  resetEvidenciaCampos(): void {
+    const plazoFinalValue = this.formEvidencia.controls["frmPlazoFinal"].value;
+    this.formEvidencia.controls["frmDescripcion"].reset();
+    this.formEvidencia.controls["frmPlazo"].reset();
+    // Restaurar el valor del plazo final
+    if (plazoFinalValue) {
+      this.formEvidencia.controls["frmPlazoFinal"].setValue(plazoFinalValue);
+    }
   }
 
   habEdiTarea(){

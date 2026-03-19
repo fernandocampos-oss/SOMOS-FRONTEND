@@ -63,7 +63,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <h4><strong>Valor Meta:</strong></h4>
+            <h4><strong>Valor Esperado:</strong></h4>
             <mat-form-field appearance="outline">
                 <mat-label>Unidad de medida</mat-label>
                 <mat-select [(value)]="idValorMetaSeleccionado" formControlName="frmTipoValorMeta"
@@ -74,14 +74,14 @@
                 </mat-select>
             </mat-form-field>
             <!-- Agregado de Valor de Meta -->
-            <div *ngIf="onChangeValueTipoValorMeta == 1 || onChangeValueTipoValorMeta == 2 || onChangeValueTipoValorMeta == 5">
+            <div *ngIf="onChangeValueTipoValorMeta == 1 || onChangeValueTipoValorMeta == 6">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor Numérico</mat-label>
                     <input matInput formControlName="frmValorMeta" maxlength="3" (keypress)="validaNumero($event)" required />
                 </mat-form-field>
             </div>
             <!-- Agregado de Valor de Meta -->
-            <div *ngIf="onChangeValueTipoValorMeta == 3 || onChangeValueTipoValorMeta == 4 || onChangeValueTipoValorMeta == 6">
+            <div *ngIf="onChangeValueTipoValorMeta == 3 || onChangeValueTipoValorMeta == 7">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor porcentual</mat-label>
                     <input matInput formControlName="frmValorMeta" minlength="1" maxlength="3"
@@ -92,17 +92,19 @@
             <mat-form-field appearance="outline" class="size-field">
                 <mat-label>Peso del Indicador/Producto</mat-label>
                 <input matInput formControlName="frmPeso" class="example-right-align" type="number" minlength="1"
-                    maxlength="3" min="0" max="100" step="0.01" (focus)="showHelpCPlanilla = true" (focusout)="showHelpCPlanilla = false"
+                    maxlength="3" min="20" max="100" step="0.01" (focus)="showHelpCPlanilla = true" (focusout)="showHelpCPlanilla = false"
                     (keypress)="onlyNumbersAndDecimal($event)">
                 <span matSuffix class="percent-align">%</span>
-                <div *ngIf="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador)>100" class="descriptor">
+                <div *ngIf="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador - pesoIndicadorOriginal)>100 || formPrioridad.value.frmPeso < 20" class="descriptor">
                     <div *ngIf="showHelpCPlanilla">
                         <br>
                         <p class="primary-button">¡Peso inválido!</p>
                         <br>
                         <p>El porcentaje total no debe superar el 100%</p>
                         <br>
-                        <p>Ya tiene grabado {{pesoTotalIndicadoresTrabajador}}% en los Indicadores/Productos</p>
+                        <p>El peso mínimo debe ser 20%</p>
+                        <br>
+                        <p>Ya tiene grabado {{pesoTotalIndicadoresTrabajador - pesoIndicadorOriginal}}% en los Indicadores/Productos</p>
                     </div>
                 </div>
             </mat-form-field>
@@ -112,7 +114,7 @@
             <div align="end">
                 <button mat-button mat-dialog-close color="primary">Cancelar</button>&nbsp;
                 <button mat-raised-button matStepperNext color="primary"
-                    [disabled]="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador)>100 || formPrioridad.value.frmTipoValorMeta === '' || formPrioridad.invalid || formPrioridad.value.frmPeso==0">
+                    [disabled]="(formPrioridad.value.frmPeso + pesoTotalIndicadoresTrabajador - pesoIndicadorOriginal)>100 || formPrioridad.value.frmTipoValorMeta === '' || formPrioridad.invalid || formPrioridad.value.frmPeso==0 || formPrioridad.value.frmPeso < 20">
                     <span>Siguiente</span>
                     <mat-icon>chevron_right</mat-icon>
                 </button>
@@ -123,6 +125,13 @@
     <mat-step>
         <ng-template matStepLabel>Evidencia</ng-template>
         <form [formGroup]="formEvidencia">
+            <!-- Nota informativa -->
+            <div style="background-color: #e3f2fd; padding: 12px; border-radius: 4px; margin-bottom: 16px; border-left: 4px solid #1976d2;">
+                <mat-icon style="vertical-align: middle; color: #1976d2;">info</mat-icon>
+                <span style="margin-left: 8px; color: #1565c0;">
+                    <strong>Nota:</strong> En caso se requiera adjuntar más de un documento en un mismo plazo, consolidar toda la información en un solo archivo.
+                </span>
+            </div>
             <mat-grid-list cols="6" rowHeight="90px" gutterSize="6px">
                 <mat-grid-tile [colspan]="6">
                     <mat-form-field appearance="outline">
@@ -141,11 +150,12 @@
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="(idIndicador==0?1:2)">
                     <button mat-raised-button color="primary" class="botonPoi" *ngIf="idIndicador==0"
-                        (click)="crearTarea(); formEvidencia.reset()">Añadir</button>
+                        [disabled]="listEvidencia.length >= 2"
+                        (click)="crearTarea(); resetEvidenciaCampos()">Añadir</button>
                     <button mat-raised-button color="warn" class="botonPoiWarn" *ngIf="idIndicador>0" [disabled]="idEviEditar==0"
-                        (click)="cancelaEdicion(); formEvidencia.reset()">Cancelar</button>
+                        (click)="cancelaEdicion(); resetEvidenciaCampos()">Cancelar</button>
                     <button mat-raised-button color="primary" class="botonPoi" *ngIf="idIndicador>0" [disabled]="idEviEditar==0"
-                        (click)="actualizarTarea(); formEvidencia.reset()">Actualizar</button>
+                        (click)="actualizarTarea(); resetEvidenciaCampos()">Actualizar</button>
                 </mat-grid-tile>
             </mat-grid-list>
             <div style="max-height: 260px; overflow-y: auto;">

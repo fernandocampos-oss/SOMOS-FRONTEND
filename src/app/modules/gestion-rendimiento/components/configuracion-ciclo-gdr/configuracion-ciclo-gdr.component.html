@@ -1,0 +1,159 @@
+<div class="container-component">
+  <div class="header-section">
+    <h3>Configuración del Ciclo GDR</h3>
+    <p class="subtitle">Administra las fases y periodos de registro de evidencias del ciclo de Gestión del Rendimiento</p>
+  </div>
+
+  <mat-card class="config-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>calendar_today</mat-icon>
+        Periodo de Configuración
+      </mat-card-title>
+      <mat-form-field appearance="outline" class="periodo-select">
+        <mat-label>Periodo</mat-label>
+        <mat-select [(ngModel)]="periodoSeleccionado" (selectionChange)="onPeriodoChange()">
+          <mat-option *ngFor="let periodo of periodosDisponibles" [value]="periodo">
+            {{ periodo }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="30"></mat-spinner>
+        <span>Cargando configuración...</span>
+      </div>
+
+      <div *ngIf="!loading && configuracionGdr" class="config-content">
+        <!-- Fases del Ciclo -->
+        <div class="config-group">
+          <h4>
+            <mat-icon>timeline</mat-icon>
+            Fases del Ciclo GDR
+          </h4>
+          <p class="config-description">Active o desactive las fases del ciclo de gestión del rendimiento</p>
+          
+          <div class="toggles-grid">
+            <div class="toggle-item" [class.active]="configuracionGdr.fasePreActiva">
+              <div class="toggle-info">
+                <span class="toggle-label">PRE</span>
+                <span class="toggle-desc">Preparación del ciclo</span>
+              </div>
+              <mat-slide-toggle 
+                [checked]="configuracionGdr.fasePreActiva"
+                (change)="toggleFase('pre')"
+                color="primary">
+              </mat-slide-toggle>
+            </div>
+
+            <div class="toggle-item" [class.active]="configuracionGdr.fasePlanificacionActiva">
+              <div class="toggle-info">
+                <span class="toggle-label">PLANIFICACIÓN</span>
+                <span class="toggle-desc">Enero - Marzo</span>
+              </div>
+              <mat-slide-toggle 
+                [checked]="configuracionGdr.fasePlanificacionActiva"
+                (change)="toggleFase('planificacion')"
+                color="primary">
+              </mat-slide-toggle>
+            </div>
+
+            <div class="toggle-item" [class.active]="configuracionGdr.faseSeguimientoActiva">
+              <div class="toggle-info">
+                <span class="toggle-label">SEGUIMIENTO</span>
+                <span class="toggle-desc">Abril - Noviembre</span>
+              </div>
+              <mat-slide-toggle 
+                [checked]="configuracionGdr.faseSeguimientoActiva"
+                (change)="toggleFase('seguimiento')"
+                color="primary">
+              </mat-slide-toggle>
+            </div>
+
+            <div class="toggle-item" [class.active]="configuracionGdr.faseEvaluacionActiva">
+              <div class="toggle-info">
+                <span class="toggle-label">EVALUACIÓN</span>
+                <span class="toggle-desc">Diciembre</span>
+              </div>
+              <mat-slide-toggle 
+                [checked]="configuracionGdr.faseEvaluacionActiva"
+                (change)="toggleFase('evaluacion')"
+                color="primary">
+              </mat-slide-toggle>
+            </div>
+
+            <div class="toggle-item" [class.active]="configuracionGdr.fasePostActiva">
+              <div class="toggle-info">
+                <span class="toggle-label">POST</span>
+                <span class="toggle-desc">Cierre del ciclo</span>
+              </div>
+              <mat-slide-toggle 
+                [checked]="configuracionGdr.fasePostActiva"
+                (change)="toggleFase('post')"
+                color="primary">
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Evidencias -->
+        <div class="config-group">
+          <h4>
+            <mat-icon>folder_open</mat-icon>
+            Registro de Evidencias
+          </h4>
+          <p class="config-description">Active o desactive los periodos de registro de evidencias</p>
+          
+          <div class="toggles-grid evidencias-grid">
+            <div class="toggle-item evidencia-item" [class.active]="configuracionGdr.evidencia1Activa">
+              <div class="toggle-info">
+                <span class="toggle-label">EVIDENCIA 1</span>
+                <span class="toggle-desc">Julio (Corte intermedio)</span>
+              </div>
+              <mat-slide-toggle 
+                [checked]="configuracionGdr.evidencia1Activa"
+                (change)="toggleEvidencia(1)"
+                color="accent">
+              </mat-slide-toggle>
+            </div>
+
+            <div class="toggle-item evidencia-item" [class.active]="configuracionGdr.evidencia2Activa">
+              <div class="toggle-info">
+                <span class="toggle-label">EVIDENCIA 2</span>
+                <span class="toggle-desc">Octubre (Segundo corte)</span>
+              </div>
+              <mat-slide-toggle 
+                [checked]="configuracionGdr.evidencia2Activa"
+                (change)="toggleEvidencia(2)"
+                color="accent">
+              </mat-slide-toggle>
+            </div>
+
+            <div class="toggle-item evidencia-item" [class.active]="configuracionGdr.evidenciaFinalActiva">
+              <div class="toggle-info">
+                <span class="toggle-label">EVIDENCIA FINAL</span>
+                <span class="toggle-desc">Diciembre (Cierre anual)</span>
+              </div>
+              <mat-slide-toggle 
+                [checked]="configuracionGdr.evidenciaFinalActiva"
+                (change)="toggleEvidencia(3)"
+                color="accent">
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info de última modificación -->
+        <div class="last-modified" *ngIf="configuracionGdr.fechaModificacion">
+          <mat-icon>history</mat-icon>
+          <span>Última modificación: {{ configuracionGdr.fechaModificacion | date:'dd/MM/yyyy HH:mm' }} 
+            <span *ngIf="configuracionGdr.modificadoPor">por {{ configuracionGdr.modificadoPor }}</span>
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
