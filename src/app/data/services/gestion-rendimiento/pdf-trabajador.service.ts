@@ -46,40 +46,40 @@ export class PdfTrabajadorService {
       const y = (yFromTop: number) => height - yFromTop;
 
       // ─── SECCIÓN 1: DATOS DEL EVALUADO ───────────────────────────────────────
-      this.drawText(page, trabajador.numeroDocumento || '-', 89, y(126), helvetica, 6);
-      this.drawText(page, trabajador.nombre || '-',          89, y(136), helvetica, 6);
-      this.drawText(page, trabajador.cargo || '-',           89, y(146), helvetica, 6);
-      this.drawText(page, trabajador.segmento || '-',        89, y(156), helvetica, 6);
-      this.drawText(page, trabajador.codUnidad || '-',       89, y(170), helvetica, 6);
+      this.drawText(page, trabajador.numeroDocumento || '-', 124, y(131), helvetica, 6);
+      this.drawText(page, trabajador.nombre || '-',          124, y(141), helvetica, 5);
+      this.drawText(page, trabajador.cargo || '-',           124, y(151), helvetica, 6);
+      this.drawText(page, trabajador.segmento || '-',        124, y(161), helvetica, 6);
+      this.drawText(page, trabajador.codUnidad || '-',       124, y(175), helvetica, 6);
 
       // ─── SECCIÓN 1: DATOS DEL EVALUADOR ──────────────────────────────────────
-      this.drawText(page, jefe.numeroDocumento || '-', 356, y(126), helvetica, 6);
-      this.drawText(page, jefe.nombre || '-',           356, y(136), helvetica, 6);
-      this.drawText(page, jefe.cargo || '-',            356, y(146), helvetica, 6);
-      this.drawText(page, jefe.segmento || '-',         356, y(156), helvetica, 6);
-      this.drawText(page, jefe.codUnidad || '-',        356, y(170), helvetica, 6);
+      this.drawText(page, jefe.numeroDocumento || '-', 406, y(131), helvetica, 6);
+      this.drawText(page, jefe.nombre || '-',           406, y(141), helvetica, 5);
+      this.drawText(page, jefe.cargo || '-',            406, y(151), helvetica, 6);
+      this.drawText(page, jefe.segmento || '-',         406, y(161), helvetica, 6);
+      this.drawText(page, jefe.codUnidad || '-',        406, y(175), helvetica, 6);
 
       // ─── SECCIÓN 2: REUNIÓN ESTABLECIMIENTO DE METAS ─────────────────────────
       const asistioTexto = reunionData?.asistio === 'S' ? 'Sí' : reunionData?.asistio === 'N' ? 'No' : 'Sí';
-      this.drawText(page, asistioTexto,             124, y(265), helvetica, 8);
-      this.drawText(page, reunionData?.fecha || '-', 257, y(265 ), helvetica, 8);
+      this.drawText(page, asistioTexto,             160, y(278), helvetica, 8);
+      this.drawText(page, reunionData?.fecha || '-', 302, y(278), helvetica, 8);
 
       // ─── SECCIÓN 3: TABLA DINÁMICA DE PRIORIDADES ────────────────────────────
       // Coordenadas X: borde izquierdo de cada columna
       const TCOL = {
-        left:     24,   // borde izquierdo de la tabla
-        num:      24,   // Nº
-        prio:     31,   // Prioridad
-        indic:    84,   // Indicador / Producto
-        sentido: 135,   // Sentido del Indicador
-        meta:    170,   // Valor Esperado (Meta)
-        peso:    199,   // Peso
-        evid:    231,   // Evidencia
-        plazo:   276,   // Plazos
-        coment:  322,   // Comentarios (Seguimiento)
-        alcanz:  434,   // Valor Alcanzado
-        puntaje: 466,   // Puntaje / Meta
-        right:   496,   // borde derecho de la tabla
+        left:     24+30+2+1,   // borde izquierdo de la tabla
+        num:      24+30+2+1,   // Nº
+        prio:     31+30+2,   // Prioridad
+        indic:    84+30+2+5,   // Indicador / Producto
+        sentido: 135+30+2+5+1+1,   // Sentido del Indicador
+        meta:    170+30+2+7+2,   // Valor Esperado (Meta)
+        peso:    199+30+2+7+4+1,   // Peso
+        evid:    231+30+2+13,   // Evidencia
+        plazo:   276+30+2+15,   // Plazos
+        coment:  322+30+2+2+10+7,   // Comentarios (Seguimiento)
+        alcanz:  434+30+2+25,   // Valor Alcanzado
+        puntaje: 466+30+2+27,   // Puntaje / Meta
+        right:   496+30+2+28,   // borde derecho de la tabla
       };
 
       const PADDING    = 2;     // padding interno de texto
@@ -91,7 +91,7 @@ export class PdfTrabajadorService {
       const BORDER_THICK = 0.4;
 
       // Y de inicio de la tabla (desde arriba del PDF)
-      let tableTopY = 293;
+      let tableTopY = 307;
       let curY = tableTopY;
 
       // ── Helpers ────────────────────────────────────────────────────────────
