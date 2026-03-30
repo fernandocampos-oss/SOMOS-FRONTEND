@@ -319,9 +319,14 @@ export class PdfTrabajadorService {
       const scaledH   = footerH * scale;
 
       // Dibujar el footer embebido alineado a la izquierda de la página
+      // FOOTER_CROP_TOP: recorta el espacio en blanco del top del footer PDF
+      // Aumenta este valor para subir el footer (elimina más espacio del top)
+      const FOOTER_CROP_TOP = 30; // px a recortar del top del footer PDF (ajustar si es necesario)
+      const cropScaled = FOOTER_CROP_TOP * scale;
+
       page.drawPage(embeddedFooter, {
         x: 0,
-        y: y(footerTopY + scaledH),
+        y: y(footerTopY + scaledH - cropScaled), // sube el footer
         width: width,
         height: scaledH,
       });
@@ -337,15 +342,15 @@ export class PdfTrabajadorService {
 
       // NOTA: ajustar estos offsets con la grilla de calibración sobre el footer
       // fila 1: Permanencia | Puntuación | Calificación | Acciones capacitación | Fecha reunión
-      this.drawText(page, permanenciaTexto,                               28,  y(footerTopY + 120), helvetica, 4, 70);
-      this.drawText(page, puntuacionFinal.toFixed(2),                    155,  y(footerTopY + 145), helveticaBold, 12);
-      this.drawText(page, calificacion,                                  242,  y(footerTopY + 130), helvetica, 8, 70);
-      this.drawText(page, resultadosFinales?.accionesCapacitacion || '-', 380,  y(footerTopY + 120), helvetica, 4, 130);
-      this.drawText(page, fechaReunionStr,                               520,  y(footerTopY + 150), helvetica, 8);
+      this.drawText(page, permanenciaTexto,                               28,  y(footerTopY + 90), helvetica, 4, 70);
+      this.drawText(page, puntuacionFinal.toFixed(2),                    155,  y(footerTopY + 115), helveticaBold, 12);
+      this.drawText(page, calificacion,                                  242,  y(footerTopY + 100), helvetica, 8, 70);
+      this.drawText(page, resultadosFinales?.accionesCapacitacion || '-', 380,  y(footerTopY + 90), helvetica, 4, 130);
+      this.drawText(page, fechaReunionStr,                               520,  y(footerTopY + 120), helvetica, 8);
       // fila 2: Otras acciones
-      this.drawText(page, resultadosFinales?.otrasAcciones || '-',        380,  y(footerTopY + 145), helvetica, 4, 130);
+      this.drawText(page, resultadosFinales?.otrasAcciones || '-',        380,  y(footerTopY + 115), helvetica, 4, 130);
       // fila 3: Junta directivos
-      this.drawText(page, juntaStr,                                       58,  y(footerTopY + 165), helvetica, 6, 70);
+      this.drawText(page, juntaStr,                                       58,  y(footerTopY + 135), helvetica, 6, 70);
 
       // ─── GUARDAR Y DESCARGAR ─────────────────────────────────────────────────
       const pdfBytes = await pdfDoc.save();
