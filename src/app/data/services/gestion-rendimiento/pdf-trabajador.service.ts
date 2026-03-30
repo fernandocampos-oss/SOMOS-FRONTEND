@@ -67,19 +67,19 @@ export class PdfTrabajadorService {
       // ─── SECCIÓN 3: TABLA DINÁMICA DE PRIORIDADES ────────────────────────────
       // Coordenadas X: borde izquierdo de cada columna
       const TCOL = {
-        left:     24+30+2+1,   // borde izquierdo de la tabla
-        num:      24+30+2+1,   // Nº
-        prio:     31+30+2,   // Prioridad
-        indic:    84+30+2+5,   // Indicador / Producto
-        sentido: 135+30+2+5+1+1,   // Sentido del Indicador
-        meta:    170+30+2+7+2,   // Valor Esperado (Meta)
-        peso:    199+30+2+7+4+1,   // Peso
-        evid:    231+30+2+13,   // Evidencia
-        plazo:   276+30+2+15,   // Plazos
-        coment:  322+30+2+2+10+7,   // Comentarios (Seguimiento)
-        alcanz:  434+30+2+25,   // Valor Alcanzado
-        puntaje: 466+30+2+27,   // Puntaje / Meta
-        right:   496+30+2+28,   // borde derecho de la tabla
+        left:     57,   // borde izquierdo de la tabla
+        num:      57,   // Nº
+        prio:     63,   // Prioridad
+        indic:    121,   // Indicador / Producto
+        sentido: 174,   // Sentido del Indicador
+        meta:    211,   // Valor Esperado (Meta)
+        peso:    243,   // Peso
+        evid:    276,   // Evidencia
+        plazo:   323,   // Plazos
+        coment:  373,   // Comentarios (Seguimiento)
+        alcanz:  491,   // Valor Alcanzado
+        puntaje: 525,   // Puntaje / Meta
+        right:   556,   // borde derecho de la tabla
       };
 
       const PADDING    = 2;     // padding interno de texto
