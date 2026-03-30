@@ -8,6 +8,7 @@ import { GrEquipoComponent } from './dialogs/gr-equipo/gr-equipo.component';
 import { AsignarPrioridadComponent } from './dialogs/asignar-prioridad/asignar-prioridad.component';
 import { AsignarEvidenciaComponent } from './dialogs/asignar-evidencia/asignar-evidencia.component';
 import { ExcelTrabajadorService } from '@data/services/gestion-rendimiento/excel-trabajador.service';
+import { PdfTrabajadorService } from '@data/services/gestion-rendimiento/pdf-trabajador.service';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { EditMasterComponent } from '../buscar-reporte/dialogs/edit-master/edit-master.component';
 import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
@@ -135,6 +136,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     private _notification: NotificationService,
     private _snackbar: SnackbarService,
     private _serviceExcelEjecutor: ExcelTrabajadorService,
+    private _servicePdfEjecutor: PdfTrabajadorService,
     private _matDialog: MatDialog,
   ) { }
 
@@ -1032,13 +1034,15 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     );
     const resultadosFinales = trabajadorFrontend?.resultadosFinales || null;
 
-    let excel = await this._serviceExcelEjecutor.exportExcelTrabajador(
-      trabajador, 
-      jefe, 
-      main.listPrioridad, 
+    await this._servicePdfEjecutor.exportPdfTrabajador(
+      trabajador,
+      jefe,
+      main.listPrioridad,
       { asistio: main.reunionAsistio, fecha: main.reunionFecha },
       resultadosFinales
     );
+    /* CALIBRACIÓN — descomentar si necesitas reajustar coordenadas:
+    await this._servicePdfEjecutor.exportPdfCalibracion(); */
   }
 
   abrirEditor(idVotante:number, registro:any, idInd:number, nombrePrioridad:string){
