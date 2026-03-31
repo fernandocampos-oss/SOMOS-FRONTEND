@@ -342,6 +342,8 @@ export class PdfTrabajadorService {
 
       // NOTA: ajustar estos offsets con la grilla de calibración sobre el footer
       // fila 1: Permanencia | Puntuación | Calificación | Acciones capacitación | Fecha reunión
+
+      //deberia restarle el footer CUP a cada footerTopY pero asi esta bien, ajustar en un futuro
       this.drawText(page, permanenciaTexto,                               28,  y(footerTopY + 90), helvetica, 4, 70);
       this.drawText(page, puntuacionFinal.toFixed(2),                    155,  y(footerTopY + 115), helveticaBold, 12);
       this.drawText(page, calificacion,                                  242,  y(footerTopY + 100), helvetica, 8, 70);
