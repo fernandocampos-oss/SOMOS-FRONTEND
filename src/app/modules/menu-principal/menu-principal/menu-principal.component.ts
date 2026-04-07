@@ -362,8 +362,15 @@ export class MenuPrincipalComponent implements OnInit {
 
   getRoles() {
     let temporal = sessionStorage.getItem('_roles');
-    this.roles = temporal ? `${temporal}` : '';
+    if (!temporal) {
+      this.roles = [];
+      return;
+    }
     this.roles = JSON.parse(temporal);
+    if (!this.roles || !this.roles.length) {
+      this.roles = [];
+      return;
+    }
     if (this.roles.length == 1) {
       if (this.roles[0] === 'ROLE_3') {
         this.rolTemporal_3 = 3;

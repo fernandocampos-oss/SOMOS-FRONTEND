@@ -39,9 +39,9 @@ export class ExcelTrabajadorService {
   ) {
     const datePipe = new DatePipe('en-US');
     try {
-      // Cargar la plantilla desde assets usando fetch
-      const templateUrl = 'assets/docs/modeloGDR.xlsx';
-      const response = await fetch(templateUrl);
+      // Cargar la plantilla desde assets usando fetch (cache-busting para forzar versión actualizada)
+      const templateUrl = `assets/docs/modeloGDR.xlsx?v=${new Date().getTime()}`;
+      const response = await fetch(templateUrl, { cache: 'no-store' });
       const templateArrayBuffer = await response.arrayBuffer();
       
       const workbook = new Workbook();

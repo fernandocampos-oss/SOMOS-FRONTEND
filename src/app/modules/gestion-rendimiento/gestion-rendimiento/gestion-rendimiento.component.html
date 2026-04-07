@@ -60,10 +60,10 @@
       
       <!-- VISTA EVALUADOR (NO MAESTRO GDR) -->
       <mat-tab-group *ngIf="!esMaestroGdr">
-        <mat-tab label="Registro de nuevo Formato GDR" *ngIf="rol != trabajador">
+        <mat-tab label="Registro de nuevo Formato GDR" *ngIf="rol != trabajador || esEvaluador">
           <gestion-rendimiento-gestionar-indicadores-trabajador></gestion-rendimiento-gestionar-indicadores-trabajador>
         </mat-tab>
-        <mat-tab label="Formato GDR" *ngIf="rol != trabajador">
+        <mat-tab label="Formato GDR" *ngIf="rol != trabajador || esEvaluador">
           <gestion-rendimiento-indicadores-pendientes-jefe></gestion-rendimiento-indicadores-pendientes-jefe>
         </mat-tab>
         <div *ngIf="condicionGr ==='03'">

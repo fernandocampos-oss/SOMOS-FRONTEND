@@ -19,6 +19,7 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
 
   condicionGr: any;
   esMaestroGdr: boolean = false;
+  esEvaluador: boolean = false;
   dniUsuario: string = '';
 
   constructor(
@@ -47,6 +48,7 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
         if (data.codCondicion != null) {
           this.condicionGr = data.codCondicion;
         }
+        this.esEvaluador = data.idSegmento === 5;
       }
     });
   }

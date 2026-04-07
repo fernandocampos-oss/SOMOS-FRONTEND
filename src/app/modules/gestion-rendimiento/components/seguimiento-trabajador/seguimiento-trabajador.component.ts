@@ -375,11 +375,12 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     }
 
     try {
-      const resultado = await this._grService.reiniciarConfirmacionReunion(
+      await this._grService.reiniciarConfirmacionReunion(
         this.reunionMetas.idReunion,
         this.dniMaestroGdr
       );
-      this.reunionMetas = resultado;
+      // Recargar datos frescos del servidor para reflejar el nuevo estado
+      await this.cargarReunionMetas();
       this._notification.success('Confirmación reiniciada exitosamente');
     } catch (error: any) {
       this._notification.error(error?.error?.error || 'Error al reiniciar confirmación');
