@@ -129,9 +129,10 @@ export class SeguimientoTrabajadorComponent implements OnInit {
         this.periodoActual
       );
       
-      // Si hay reuniones, tomamos la primera (o podríamos mostrar todas)
+      // Si hay reuniones, preferir la confirmada (caso multi-evaluador);
+      // si ninguna está confirmada, tomar la primera.
       if (reuniones && reuniones.length > 0) {
-        this.reunionMetas = reuniones[0];
+        this.reunionMetas = reuniones.find((r: any) => r.confirmado) || reuniones[0];
       } else {
         this.reunionMetas = null;
       }
