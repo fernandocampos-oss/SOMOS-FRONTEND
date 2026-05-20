@@ -121,7 +121,7 @@ export class PdfTrabajadorService {
 
       // Dibuja rectángulo con fondo blanco y borde
       const drawCell = (x: number, yTop: number, w: number, h: number) => {
-        page.drawRectangle({
+        activePage.drawRectangle({
           x, y: y(yTop + h), width: w, height: h,
           borderColor: BORDER, borderWidth: BORDER_THICK,
           color: rgb(1, 1, 1), opacity: 1,
@@ -144,7 +144,18 @@ export class PdfTrabajadorService {
           const tw = font.widthOfTextAtSize(text, size);
           textX = x + (cellW - tw) / 2;
         }
-        this.drawText(page, text, textX, y(baseline), font, size, usableW);
+        this.drawText(activePage, text, textX, y(baseline), font, size, usableW);
+      };
+
+      // ── Paginación dinámica ──────────────────────────────────────────────
+      let activePage: PDFPage = page;
+      const TABLE_TOP_CONTINUATION = 20;    // Y inicio de tabla en páginas de continuación
+      const PAGE_BOTTOM_LIMIT      = height - 15; // máximo Y antes de saltar de página
+      const FOOTER_HEIGHT_ESTIMATE = 200;   // altura reservada para el footer en última página
+
+      const addNewPage = (): void => {
+        activePage = pdfDoc.addPage([width, height]);
+        curY = TABLE_TOP_CONTINUATION;
       };
 
       let numeroPrioridad = 1;
@@ -197,6 +208,11 @@ export class PdfTrabajadorService {
           const lastBlock = indicadorBlocks[indicadorBlocks.length - 1];
           lastBlock.altoInd += diff;
           lastBlock.rowHeights[lastBlock.rowHeights.length - 1] += diff;
+        }
+
+        // ── Salto de página si no hay espacio suficiente ─────────────────────
+        if (curY + altoPrio > PAGE_BOTTOM_LIMIT) {
+          addNewPage();
         }
 
         // ── Dibujar celda Nº (merge toda la prioridad) ──────────────────────
@@ -270,6 +286,11 @@ export class PdfTrabajadorService {
       // ─── SECCIÓN 4: FOOTER EMBEBIDO (modeloGDR_footer.pdf) ──────────────────
       const FOOTER_MARGIN = 1; // espacio entre tabla y footer, no funciona pero asi está bien, dejarlo
 
+      // Si el footer no cabe en la página actual, añadir una nueva
+      if (curY + FOOTER_HEIGHT_ESTIMATE > height) {
+        addNewPage();
+      }
+
       // Calcular puntuación final
       let puntuacionFinal = 0;
       for (const prioridad of listPrioridades) {
@@ -324,7 +345,7 @@ export class PdfTrabajadorService {
       const FOOTER_CROP_TOP = 30; // px a recortar del top del footer PDF (ajustar si es necesario)
       const cropScaled = FOOTER_CROP_TOP * scale;
 
-      page.drawPage(embeddedFooter, {
+      activePage.drawPage(embeddedFooter, {
         x: 0,
         y: y(footerTopY + scaledH - cropScaled), // sube el footer
         width: width,
@@ -344,15 +365,15 @@ export class PdfTrabajadorService {
       // fila 1: Permanencia | Puntuación | Calificación | Acciones capacitación | Fecha reunión
 
       //deberia restarle el footer CUP a cada footerTopY pero asi esta bien, ajustar en un futuro
-      this.drawText(page, permanenciaTexto,                               28,  y(footerTopY + 90), helvetica, 4, 70);
-      this.drawText(page, puntuacionFinal.toFixed(2),                    155,  y(footerTopY + 115), helveticaBold, 12);
-      this.drawText(page, calificacion,                                  242,  y(footerTopY + 100), helvetica, 8, 70);
-      this.drawText(page, resultadosFinales?.accionesCapacitacion || '-', 380,  y(footerTopY + 90), helvetica, 4, 130);
-      this.drawText(page, fechaReunionStr,                               520,  y(footerTopY + 120), helvetica, 8);
+      this.drawText(activePage, permanenciaTexto,                               28,  y(footerTopY + 90), helvetica, 4, 70);
+      this.drawText(activePage, puntuacionFinal.toFixed(2),                    155,  y(footerTopY + 115), helveticaBold, 12);
+      this.drawText(activePage, calificacion,                                  242,  y(footerTopY + 100), helvetica, 8, 70);
+      this.drawText(activePage, resultadosFinales?.accionesCapacitacion || '-', 380,  y(footerTopY + 90), helvetica, 4, 130);
+      this.drawText(activePage, fechaReunionStr,                               520,  y(footerTopY + 120), helvetica, 8);
       // fila 2: Otras acciones
-      this.drawText(page, resultadosFinales?.otrasAcciones || '-',        380,  y(footerTopY + 115), helvetica, 4, 130);
+      this.drawText(activePage, resultadosFinales?.otrasAcciones || '-',        380,  y(footerTopY + 115), helvetica, 4, 130);
       // fila 3: Junta directivos
-      this.drawText(page, juntaStr,                                       58,  y(footerTopY + 135), helvetica, 6, 70);
+      this.drawText(activePage, juntaStr,                                       58,  y(footerTopY + 135), helvetica, 6, 70);
 
       // ─── GUARDAR Y DESCARGAR ─────────────────────────────────────────────────
       const pdfBytes = await pdfDoc.save();
