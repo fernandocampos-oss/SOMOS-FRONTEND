@@ -52,13 +52,35 @@
         </div>
         <div>
           <span style="color: #666; font-size: 12px; text-transform: uppercase;">Evaluador</span>
-          <p style="margin: 4px 0 0 0; font-weight: 600;">
+
+          <!-- Un solo evaluador: mostrar nombre estático -->
+          <p *ngIf="evaluadoresList.length <= 1" style="margin: 4px 0 0 0; font-weight: 600;">
             <span *ngIf="evaluador">{{ evaluador.nombres }} {{ evaluador.apellidos }}</span>
             <span *ngIf="!evaluador" style="color: #999;">No asignado</span>
           </p>
+
+          <!-- Múltiples evaluadores: selector (permite elegir cuál usar para el PDF) -->
+          <mat-form-field *ngIf="evaluadoresList.length > 1" appearance="outline"
+                          style="margin-top: 4px; width: 100%; font-size: 13px;">
+            <mat-select [(ngModel)]="reunionSeleccionadaId"
+                        (ngModelChange)="seleccionarEvaluador($event)">
+              <mat-option *ngFor="let ev of evaluadoresList; let i = index"
+                          [value]="todasLasReuniones[i].idVotanteEvaluador">
+                {{ ev?.nombres }} {{ ev?.apellidos }}
+                <span *ngIf="todasLasReuniones[i].confirmado"
+                      style="color: #4caf50; font-size: 11px;"> ✓ confirmado</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </mat-card-content>
+    <mat-card-actions style="padding: 8px 16px 16px;">
+      <button mat-raised-button color="primary" (click)="generarPdf()">
+        <mat-icon>download</mat-icon>
+        Descargar PDF GDR
+      </button>
+    </mat-card-actions>
   </mat-card>
 
   <!-- REUNIÓN DE ESTABLECIMIENTO DE METAS -->

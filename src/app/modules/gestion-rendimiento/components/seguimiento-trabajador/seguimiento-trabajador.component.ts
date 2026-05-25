@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
+import { PdfTrabajadorService } from '@data/services/gestion-rendimiento/pdf-trabajador.service';
 import { NotificationService, SnackbarService } from '@core/services';
 import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
 import { ComentarioDialogComponent } from '../gestionar-indicadores-trabajador/dialogs/comentario-dialog/comentario-dialog.component';
@@ -24,6 +25,11 @@ export class SeguimientoTrabajadorComponent implements OnInit {
   evaluador: any = null;
   resultadosFinales: any = null;
 
+  // Multi-evaluador
+  todasLasReuniones: any[] = [];
+  evaluadoresList: any[] = [];
+  reunionSeleccionadaId: number | null = null;
+
   // DNI del Maestro GDR actual
   dniMaestroGdr: string = '';
   periodoActual: string = new Date().getFullYear().toString();
@@ -34,6 +40,7 @@ export class SeguimientoTrabajadorComponent implements OnInit {
 
   constructor(
     private _grService: GestionRendimientoService,
+    private _pdfService: PdfTrabajadorService,
     private _notification: NotificationService,
     private _snackbar: SnackbarService,
     private _dialog: MatDialog
@@ -65,6 +72,9 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     this.reunionMetas = null;
     this.formatoGdr = null;
     this.evaluador = null;
+    this.todasLasReuniones = [];
+    this.evaluadoresList = [];
+    this.reunionSeleccionadaId = null;
 
     try {
       // Buscar trabajador por DNI usando el nuevo endpoint específico
@@ -84,8 +94,8 @@ export class SeguimientoTrabajadorComponent implements OnInit {
       // Buscar la reunión de establecimiento de metas
       await this.cargarReunionMetas();
 
-      // Cargar evaluador si hay reunión
-      await this.cargarEvaluador();
+      // Cargar todos los evaluadores (soporta multi-evaluador/rotación)
+      await this.cargarTodosLosEvaluadores();
 
       // Cargar formato GDR del trabajador
       await this.cargarFormatoGdr();
@@ -129,17 +139,22 @@ export class SeguimientoTrabajadorComponent implements OnInit {
         this.periodoActual
       );
       
-      // Si hay reuniones, preferir la confirmada (caso multi-evaluador);
-      // si ninguna está confirmada, tomar la primera.
+      // Preferir la confirmada; si ninguna está confirmada, tomar la primera.
       if (reuniones && reuniones.length > 0) {
+        this.todasLasReuniones = reuniones;
         this.reunionMetas = reuniones.find((r: any) => r.confirmado) || reuniones[0];
+        this.reunionSeleccionadaId = this.reunionMetas.idVotanteEvaluador;
       } else {
+        this.todasLasReuniones = [];
         this.reunionMetas = null;
+        this.reunionSeleccionadaId = null;
       }
     } catch (error) {
       // Si no existe, puede ser normal
       console.log('No se encontró reunión de metas:', error);
+      this.todasLasReuniones = [];
       this.reunionMetas = null;
+      this.reunionSeleccionadaId = null;
     }
   }
 
@@ -349,18 +364,36 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     }
   }
 
-  async cargarEvaluador() {
-    if (!this.reunionMetas || !this.reunionMetas.idVotanteEvaluador) {
+  async cargarTodosLosEvaluadores() {
+    if (!this.todasLasReuniones || this.todasLasReuniones.length === 0) {
+      this.evaluadoresList = [];
       this.evaluador = null;
       return;
     }
-
     try {
-      const evaluador = await this._grService.findVotanteById(this.reunionMetas.idVotanteEvaluador);
-      this.evaluador = evaluador;
+      this.evaluadoresList = await Promise.all(
+        this.todasLasReuniones.map((r: any) => this._grService.findVotanteById(r.idVotanteEvaluador))
+      );
+      // Sincronizar evaluador con la reunión actualmente seleccionada
+      const idx = this.todasLasReuniones.findIndex(
+        (r: any) => r.idVotanteEvaluador === this.reunionSeleccionadaId
+      );
+      this.evaluador = idx >= 0 ? this.evaluadoresList[idx] : this.evaluadoresList[0];
     } catch (error) {
-      console.error('Error cargando evaluador:', error);
+      console.error('Error cargando evaluadores:', error);
+      this.evaluadoresList = [];
       this.evaluador = null;
+    }
+  }
+
+  seleccionarEvaluador(idVotanteEvaluador: number) {
+    const idx = this.todasLasReuniones.findIndex(
+      (r: any) => r.idVotanteEvaluador === idVotanteEvaluador
+    );
+    if (idx >= 0) {
+      this.reunionMetas = this.todasLasReuniones[idx];
+      this.evaluador = this.evaluadoresList[idx];
+      this.reunionSeleccionadaId = idVotanteEvaluador;
     }
   }
 
@@ -382,6 +415,7 @@ export class SeguimientoTrabajadorComponent implements OnInit {
       );
       // Recargar datos frescos del servidor para reflejar el nuevo estado
       await this.cargarReunionMetas();
+      await this.cargarTodosLosEvaluadores();
       this._notification.success('Confirmación reiniciada exitosamente');
     } catch (error: any) {
       this._notification.error(error?.error?.error || 'Error al reiniciar confirmación');
@@ -395,6 +429,43 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     this.formatoGdr = null;
     this.evaluador = null;
     this.resultadosFinales = null;
+    this.todasLasReuniones = [];
+    this.evaluadoresList = [];
+    this.reunionSeleccionadaId = null;
+  }
+
+  async generarPdf() {
+    if (!this.trabajadorEncontrado) return;
+    const trabajador = {
+      numeroDocumento: this.trabajadorEncontrado.numeroDocumento,
+      nombre: `${this.trabajadorEncontrado.apellidos || ''} ${this.trabajadorEncontrado.nombres || ''}`.trim(),
+      cargo: '-',
+      segmento: this.trabajadorEncontrado.segmento || '-',
+      codUnidad: '-'
+    };
+    const jefe = {
+      numeroDocumento: this.evaluador?.numeroDocumento || '-',
+      nombre: `${this.evaluador?.apellidos || ''} ${this.evaluador?.nombres || ''}`.trim() || '-',
+      cargo: '-',
+      segmento: '-',
+      codUnidad: '-'
+    };
+    const reunionData = {
+      asistio: this.reunionMetas?.asistio || '-',
+      fecha: this.reunionMetas?.fechaReunion || '-'
+    };
+    try {
+      await this._pdfService.exportPdfTrabajador(
+        trabajador,
+        jefe,
+        this.formatoGdr || [],
+        reunionData,
+        this.resultadosFinales
+      );
+    } catch (error) {
+      console.error('Error generando PDF:', error);
+      this._notification.error('Error al generar el PDF');
+    }
   }
 
   getAsistenciaTexto(asistio: string): string {
