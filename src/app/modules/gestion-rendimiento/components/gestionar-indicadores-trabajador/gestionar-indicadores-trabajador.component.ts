@@ -1738,6 +1738,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           trabajador.reunionMetas = {};
         }
         trabajador.reunionMetas.confirmado = true;
+        trabajador.reunionMetas.asistio = 'S'; // el dialog solo cierra exitosamente con asistio='S'
         trabajador.reunionMetas.fechaReunion = result.fechaReunion;
         trabajador.reunionMetas.huboReunion = result.huboReunion;
         
