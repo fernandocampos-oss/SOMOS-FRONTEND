@@ -263,6 +263,11 @@ export class GestionRendimientoService {
     return response;
   }
 
+  async actualizarSentidoIndicador(idIndicador: number, sentido: string): Promise<any> {
+    const url = `${URL_BASE}/gdr/sentido-indicador/${idIndicador}`;
+    return await this.http.put(url, { sentido }).toPromise();
+  }
+
   // Métodos para tipo de evidencia
   async guardarEvidenciaTipo(idEvidencia: number, idIndicador: number, tipo: string, orden: number): Promise<any> {
     const url = `${URL_BASE}/gdr/evidencia-tipo/guardar`;

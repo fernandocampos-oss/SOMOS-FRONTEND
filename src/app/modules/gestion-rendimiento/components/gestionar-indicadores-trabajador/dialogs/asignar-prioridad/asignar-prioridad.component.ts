@@ -191,6 +191,10 @@ export class AsignarPrioridadComponent implements OnInit {
       this.formPrioridad.controls["frmPeso"].setValue(infIndicador.peso);
       this.pesoIndicadorOriginal = infIndicador.peso;
       this.formPrioridad.controls["frmValorMeta"].setValue(infIndicador.valorMeta);
+      const sentidoActual = (infIndicador.sentido || 'ascendente').toString().toLowerCase();
+      this.formPrioridad.controls["frmSentidoIndicador"].setValue(
+        sentidoActual === 'descendente' ? 'descendente' : 'ascendente'
+      );
       // Cargar fecha de plazo final si existe (usando moment para evitar problemas de timezone)
       if(infIndicador.fechaPlazoFinal){
         // Agregar T12:00:00 para evitar que se interprete como UTC medianoche
@@ -416,6 +420,10 @@ export class AsignarPrioridadComponent implements OnInit {
         }else{
           this._grService.modificarIndicador(this.idIndicador, indicador).then(async (data) => {
             if (data = 1) {
+              await this._grService.actualizarSentidoIndicador(
+                this.idIndicador,
+                formValues.frmSentidoIndicador
+              );
               this.listEvidencia.forEach((dtEvi:any)=>{
                 if(dtEvi.tiene == 0){
                   this._grService.modificarEvidencia(dtEvi.idEvidencia, {descripcion: dtEvi.descripcion, plazo:dtEvi.plazo}).then((dataE) => {
