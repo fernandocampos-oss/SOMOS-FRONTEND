@@ -198,11 +198,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                     indicador.editingValorAlcanzado = false;
                   }
                   
-                  // Asignar evidenciaFinal buscando por descripcion 'SUSTENTO FINAL'
+                  // Asignar evidencia final con detección robusta
                   if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-                    indicador.evidenciaFinal = indicador.listEvidencia.find(
-                      (ev: any) => ev.descripcion === 'SUSTENTO FINAL'
-                    );
+                    indicador.evidenciaFinal = indicador.listEvidencia.find((ev: any) => this.esEvidenciaFinal(ev));
                   }
                   
                   // Inicializar comentarios de cada evidencia
@@ -546,20 +544,20 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                   indicador.fechaPlazoFinal = fechaPlazo;
                   
                   if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-                    // Buscar la evidencia final por descripcion 'SUSTENTO FINAL'
-                    const evidenciaFinal = indicador.listEvidencia.find((ev: any) => ev.descripcion === 'SUSTENTO FINAL');
+                    const evidenciaFinal = indicador.listEvidencia.find((ev: any) => this.esEvidenciaFinal(ev));
                     if (evidenciaFinal) {
                       evidenciaFinal.fechaPlazoFinal = fechaPlazo;
+                      indicador.evidenciaFinal = evidenciaFinal;
                     }
     // console.log removed for production
                   } else {
-                    if (!indicador.listEvidencia) {
-                      indicador.listEvidencia = [];
-                    }
-                    indicador.listEvidencia.push({
+                    // No insertar evidencia "fantasma" en listEvidencia; solo mantener referencia final para UI.
+                    indicador.evidenciaFinal = {
+                      idEvidencia: null,
+                      descripcion: 'SUSTENTO FINAL',
                       esFinal: true,
                       fechaPlazoFinal: fechaPlazo
-                    });
+                    };
     // console.log removed for production
                   }
                 } else {
@@ -669,6 +667,12 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   agregarEvidencia(i) {
+    const evidenciasIniciales = this.getEvidenciasIniciales(i);
+    if (evidenciasIniciales.length >= 2) {
+      this._notification.warning('Solo se permiten hasta 2 evidencias iniciales por indicador');
+      return;
+    }
+
     const dialogRef: MatDialogRef<AsignarEvidenciaComponent> = this._dialog.open(AsignarEvidenciaComponent, {
       disableClose: true,
       width: '50%',
@@ -688,13 +692,14 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async eliminarEvidencia(indicador: any) {
-    if (!indicador.listEvidencia || indicador.listEvidencia.length === 0) {
+    const evidenciasIniciales = this.getEvidenciasIniciales(indicador);
+    if (!evidenciasIniciales || evidenciasIniciales.length === 0) {
       this._notification.warning('No hay evidencias para eliminar');
       return;
     }
 
-    // Obtener la penúltima evidencia (la última evidencia inicial)
-    const ultimaEvidenciaInicial = indicador.listEvidencia[indicador.listEvidencia.length - 1];
+    // Eliminar la última evidencia inicial (nunca la evidencia final)
+    const ultimaEvidenciaInicial = evidenciasIniciales[evidenciasIniciales.length - 1];
     
     if (!ultimaEvidenciaInicial || !ultimaEvidenciaInicial.idEvidencia) {
       this._notification.warning('No se puede eliminar esta evidencia');
@@ -921,11 +926,6 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   abrirFechaPlazoDialog(evidencia: any, indicador: any) {
-    if (!evidencia || !evidencia.idEvidencia) {
-      this._notification.warning('No hay evidencia asociada');
-      return;
-    }
-
     if (!indicador || !indicador.idIndicador) {
       this._notification.warning('No se encontró el indicador asociado');
       return;
@@ -936,8 +936,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       width: '400px',
       autoFocus: false,
       data: {
-        idEvidencia: evidencia.idEvidencia,
-        idIndicador: indicador.idIndicador
+        idEvidencia: evidencia?.idEvidencia || null,
+        idIndicador: indicador.idIndicador,
+        esFinal: true,
+        fechaActual: evidencia?.fechaPlazoFinal || indicador?.fechaPlazoFinal || null
       }
     });
 
@@ -1163,14 +1165,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   registrarSustentoFinal(indicador: any) {
-    // Buscar la evidencia final por descripción 'SUSTENTO FINAL'
+    // Buscar la evidencia final con detección robusta
     let evidenciaFinal = null;
     
     if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-      // Buscar la evidencia con descripcion = 'SUSTENTO FINAL'
-      evidenciaFinal = indicador.listEvidencia.find(
-        (ev: any) => ev.descripcion === 'SUSTENTO FINAL'
-      );
+      evidenciaFinal = indicador.listEvidencia.find((ev: any) => this.esEvidenciaFinal(ev));
     }
     
     // Fallback: usar indicador.evidenciaFinal si existe
@@ -1292,7 +1291,16 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     if (!indicador.listEvidencia || indicador.listEvidencia.length === 0) {
       return [];
     }
-    return indicador.listEvidencia.filter((ev: any) => ev.descripcion !== 'SUSTENTO FINAL');
+    return indicador.listEvidencia.filter((ev: any) => !this.esEvidenciaFinal(ev));
+  }
+
+  private esEvidenciaFinal(evidencia: any): boolean {
+    if (!evidencia) {
+      return false;
+    }
+
+    const descripcion = (evidencia.descripcion || '').toString().trim().toUpperCase();
+    return evidencia.esFinal === true || descripcion === 'SUSTENTO FINAL';
   }
 
   /**

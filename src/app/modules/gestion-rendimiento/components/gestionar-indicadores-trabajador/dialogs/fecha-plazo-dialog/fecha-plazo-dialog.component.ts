@@ -33,11 +33,30 @@ export class FechaPlazoDialogComponent implements OnInit {
   async cargarFechaPlazo() {
     this.cargando = true;
     try {
-      const evidenciaTipo = await this.grService.obtenerEvidenciaTipo(this.data.idEvidencia);
-      if (evidenciaTipo && evidenciaTipo.fechaPlazo) {
+      if (this.data?.fechaActual) {
         this.formFechaPlazo.patchValue({
-          fechaPlazo: evidenciaTipo.fechaPlazo
+          fechaPlazo: this.data.fechaActual
         });
+        return;
+      }
+
+      if (this.data?.esFinal && this.data?.idIndicador) {
+        const fechasMap = await this.grService.obtenerFechasPlazoFinalPorIndicadores([this.data.idIndicador]);
+        if (fechasMap && fechasMap[this.data.idIndicador]) {
+          this.formFechaPlazo.patchValue({
+            fechaPlazo: fechasMap[this.data.idIndicador]
+          });
+        }
+        return;
+      }
+
+      if (this.data?.idEvidencia) {
+        const evidenciaTipo = await this.grService.obtenerEvidenciaTipo(this.data.idEvidencia);
+        if (evidenciaTipo && evidenciaTipo.fechaPlazo) {
+          this.formFechaPlazo.patchValue({
+            fechaPlazo: evidenciaTipo.fechaPlazo
+          });
+        }
       }
     } catch (error) {
       // console.log('No hay fecha de plazo guardada o el backend no está disponible');
@@ -109,13 +128,15 @@ export class FechaPlazoDialogComponent implements OnInit {
         return;
       }
       
-      // console.log('Guardando fecha de plazo:', fechaStr, 'para evidencia:', this.data.idEvidencia, 'indicador:', this.data.idIndicador);
-      
-      await this.grService.actualizarFechaPlazo(
-        this.data.idEvidencia,
-        this.data.idIndicador,
-        fechaStr
-      );
+      if (this.data?.esFinal) {
+        await this.grService.actualizarFechaPlazoFinal(this.data.idIndicador, fechaStr);
+      } else {
+        await this.grService.actualizarFechaPlazo(
+          this.data.idEvidencia,
+          this.data.idIndicador,
+          fechaStr
+        );
+      }
       
       this.notification.success('Fecha de plazo guardada exitosamente');
       this.dialogRef.close({ actualizado: true });

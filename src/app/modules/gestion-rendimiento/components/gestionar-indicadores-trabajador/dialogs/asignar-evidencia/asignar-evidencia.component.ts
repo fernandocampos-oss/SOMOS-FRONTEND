@@ -45,6 +45,17 @@ export class AsignarEvidenciaComponent implements OnInit {
   }
 
   crearEvidencia() {
+    const evidenciasExistentes = (this.data?.element?.listEvidencia || [])
+      .filter((ev: any) => {
+        const descripcion = (ev?.descripcion || '').toString().trim().toUpperCase();
+        return descripcion !== 'SUSTENTO FINAL';
+      });
+    const totalIniciales = evidenciasExistentes.length + this.listEvidencia.length;
+    if (totalIniciales >= 2) {
+      this._notification.warning('Solo se permiten hasta 2 evidencias iniciales por indicador');
+      return;
+    }
+
     // console.log(this.formTareasListadas.value);
     if (this.formEvidenciasListadas.value.frmDescripcionEvidencia == undefined || this.formEvidenciasListadas.value.frmFechaLimiteEvidencia == undefined ||
       this.formEvidenciasListadas.value.frmDescripcionEvidencia == '' || this.formEvidenciasListadas.value.frmFechaLimiteEvidencia == '') {
