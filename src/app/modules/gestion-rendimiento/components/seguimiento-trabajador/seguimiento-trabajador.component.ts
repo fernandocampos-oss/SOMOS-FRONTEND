@@ -5,6 +5,8 @@ import { PdfTrabajadorService } from '@data/services/gestion-rendimiento/pdf-tra
 import { NotificationService, SnackbarService } from '@core/services';
 import { VerPdfSustentoComponent } from '@modules/indicadores-trabajador/components/ver-pdf-sustento/ver-pdf-sustento.component';
 import { ComentarioDialogComponent } from '../gestionar-indicadores-trabajador/dialogs/comentario-dialog/comentario-dialog.component';
+import { RegistrarFormatoComponent } from '../gestionar-indicadores-trabajador/dialogs/registrar-formato/registrar-formato.component';
+import { FechaPlazoDialogComponent } from '../gestionar-indicadores-trabajador/dialogs/fecha-plazo-dialog/fecha-plazo-dialog.component';
 import { NotificationDialogComponent } from '@shared/notification-dialog/notification-dialog.component';
 
 @Component({
@@ -32,6 +34,7 @@ export class SeguimientoTrabajadorComponent implements OnInit {
 
   // DNI del Maestro GDR actual
   dniMaestroGdr: string = '';
+  esMaestroGdr: boolean = false;
   periodoActual: string = new Date().getFullYear().toString();
 
   // Columnas para la tabla de indicadores (tabla completa)
@@ -53,7 +56,8 @@ export class SeguimientoTrabajadorComponent implements OnInit {
   async obtenerDniMaestroGdr() {
     try {
       const response = await this._grService.esMaestroGdr();
-      if (response) {
+      this.esMaestroGdr = response?.esMaestroGdr ?? response?.esMaestro ?? false;
+      if (response && this.esMaestroGdr) {
         this.dniMaestroGdr = response.dni || '';
       }
     } catch (error) {
@@ -176,8 +180,17 @@ export class SeguimientoTrabajadorComponent implements OnInit {
             prioridad.listIndicador.forEach(indicador => {
               if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
                 indicador.evidenciaFinal = indicador.listEvidencia.find(
-                  (ev: any) => ev.descripcion === 'SUSTENTO FINAL'
+                  (ev: any) => this.esEvidenciaFinal(ev)
                 );
+              }
+              if (!indicador.hasOwnProperty('comentarioFinal')) {
+                indicador.comentarioFinal = '';
+              }
+              if (!indicador.hasOwnProperty('valorAlcanzado')) {
+                indicador.valorAlcanzado = 0;
+              }
+              if (!indicador.hasOwnProperty('editingValorAlcanzado')) {
+                indicador.editingValorAlcanzado = false;
               }
             });
           }
@@ -263,8 +276,8 @@ export class SeguimientoTrabajadorComponent implements OnInit {
               indicador.fechaPlazoFinal = fechaPlazo;
               
               if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-                // Buscar la evidencia final por descripcion 'SUSTENTO FINAL'
-                const evidenciaFinal = indicador.listEvidencia.find((ev: any) => ev.descripcion === 'SUSTENTO FINAL');
+                // Buscar la evidencia final de forma robusta
+                const evidenciaFinal = this.getEvidenciaFinal(indicador);
                 if (evidenciaFinal) {
                   evidenciaFinal.fechaPlazoFinal = fechaPlazo;
                 }
@@ -422,6 +435,46 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     }
   }
 
+  abrirRegistrarFormato() {
+    if (!this.esMaestroGdr) {
+      this._notification.warning('Solo Maestro GDR puede registrar formato desde esta vista');
+      return;
+    }
+
+    if (!this.trabajadorEncontrado || !this.trabajadorEncontrado.idVotante) {
+      this._notification.warning('Primero busque un trabajador');
+      return;
+    }
+
+    const idVotanteEvaluador = this.reunionMetas?.idVotanteEvaluador || this.reunionSeleccionadaId;
+    if (!idVotanteEvaluador) {
+      this._notification.warning('Seleccione un evaluador válido para registrar el formato');
+      return;
+    }
+
+    const dialogRef = this._dialog.open(RegistrarFormatoComponent, {
+      disableClose: true,
+      width: '600px',
+      maxHeight: '80vh',
+      autoFocus: false,
+      data: {
+        trabajador: this.trabajadorEncontrado,
+        idVotante: this.trabajadorEncontrado.idVotante,
+        idVotanteEvaluador: idVotanteEvaluador,
+        nombreCompleto: `${this.trabajadorEncontrado.apellidos || ''}, ${this.trabajadorEncontrado.nombres || ''}`.trim(),
+        periodo: this.periodoActual
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result?.confirmado) {
+        await this.cargarReunionMetas();
+        await this.cargarTodosLosEvaluadores();
+        this._notification.success('Formato registrado correctamente');
+      }
+    });
+  }
+
   limpiarBusqueda() {
     this.dniBusqueda = '';
     this.trabajadorEncontrado = null;
@@ -513,11 +566,142 @@ export class SeguimientoTrabajadorComponent implements OnInit {
       data: {
         idEvidencia: evidencia.idEvidencia,
         esFinal: esFinal,
-        soloLectura: true // modo solo lectura
+        soloLectura: !this.puedeEditarTabla()
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {});
+  }
+
+  puedeEditarTabla(): boolean {
+    return this.esMaestroGdr && !!this.trabajadorEncontrado && !!this.reunionMetas;
+  }
+
+  async onComentarioChange(tipo: string, valor: string, indicador?: any, evidencia?: any): Promise<void> {
+    if (!this.puedeEditarTabla()) {
+      this._notification.warning('Solo Maestro GDR puede editar en esta vista');
+      return;
+    }
+
+    try {
+      switch (tipo) {
+        case 'individuales':
+          if (evidencia && evidencia.idEvidencia) {
+            evidencia.comentario = valor || '';
+            await this._grService.guardarComentarioEstado(
+              evidencia.idEvidencia,
+              valor || '',
+              evidencia.comentarioAdicional || '',
+              'individual'
+            );
+          }
+          break;
+        case 'final':
+          if (indicador) {
+            indicador.comentarioFinal = valor || '';
+            const evidenciaFinal = this.getEvidenciaFinal(indicador);
+            if (evidenciaFinal?.idEvidencia) {
+              await this._grService.guardarComentarioEstado(
+                evidenciaFinal.idEvidencia,
+                valor || '',
+                evidenciaFinal.comentarioAdicional || '',
+                'final'
+              );
+            } else {
+              this._notification.warning('No se encontró evidencia final para guardar comentario');
+            }
+          }
+          break;
+      }
+      this._notification.success('Comentario guardado correctamente');
+    } catch (error) {
+      this._notification.error('Error al guardar comentario');
+    }
+  }
+
+  abrirFechaPlazoDialog(evidencia: any, indicador: any) {
+    if (!this.puedeEditarTabla()) {
+      this._notification.warning('Solo Maestro GDR puede editar en esta vista');
+      return;
+    }
+
+    if (!indicador || !indicador.idIndicador) {
+      this._notification.warning('No se encontró el indicador asociado');
+      return;
+    }
+
+    const dialogRef: MatDialogRef<FechaPlazoDialogComponent> = this._dialog.open(FechaPlazoDialogComponent, {
+      disableClose: false,
+      width: '400px',
+      autoFocus: false,
+      data: {
+        idEvidencia: evidencia?.idEvidencia || null,
+        idIndicador: indicador.idIndicador,
+        esFinal: true,
+        fechaActual: evidencia?.fechaPlazoFinal || indicador?.fechaPlazoFinal || null
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result?.actualizado) {
+        await this.cargarFormatoGdr();
+      }
+    });
+  }
+
+  editValorAlcanzado(indicador: any): void {
+    if (!this.puedeEditarTabla()) {
+      this._notification.warning('Solo Maestro GDR puede editar en esta vista');
+      return;
+    }
+    indicador.originalValorAlcanzado = indicador.valorAlcanzado;
+    indicador.editingValorAlcanzado = true;
+  }
+
+  onValorAlcanzadoInput(event: any, indicador: any): void {
+    const inputValue = event.target.value;
+    if (inputValue !== '' && (isNaN(inputValue) || parseFloat(inputValue) < 0)) {
+      event.target.value = indicador.valorAlcanzado || 0;
+      return;
+    }
+    indicador.valorAlcanzado = inputValue === '' ? 0 : parseFloat(inputValue);
+  }
+
+  async saveValorAlcanzado(indicador: any): Promise<void> {
+    if (!this.puedeEditarTabla()) {
+      this._notification.warning('Solo Maestro GDR puede editar en esta vista');
+      return;
+    }
+
+    if (indicador.valorAlcanzado === undefined || indicador.valorAlcanzado === null || isNaN(indicador.valorAlcanzado) || indicador.valorAlcanzado < 0) {
+      indicador.valorAlcanzado = 0;
+    }
+
+    indicador.editingValorAlcanzado = false;
+    delete indicador.originalValorAlcanzado;
+
+    try {
+      let idPrioridad = null;
+      for (const prioridad of this.formatoGdr || []) {
+        if (prioridad.listIndicador && prioridad.listIndicador.includes(indicador)) {
+          idPrioridad = prioridad.idPrioridad;
+          break;
+        }
+      }
+
+      if (idPrioridad) {
+        await this._grService.guardarValorAlcanzado(idPrioridad, indicador.valorAlcanzado);
+        this._notification.success('Valor alcanzado guardado correctamente');
+      }
+    } catch (error) {
+      this._notification.error('Error al guardar el valor alcanzado');
+    }
+  }
+
+  cancelEditValorAlcanzado(indicador: any): void {
+    indicador.valorAlcanzado = indicador.originalValorAlcanzado;
+    indicador.editingValorAlcanzado = false;
+    delete indicador.originalValorAlcanzado;
   }
 
   // Método para ver descripción de evidencia a presentar
@@ -547,7 +731,22 @@ export class SeguimientoTrabajadorComponent implements OnInit {
     if (!indicador.listEvidencia || indicador.listEvidencia.length === 0) {
       return [];
     }
-    return indicador.listEvidencia.filter((ev: any) => ev.descripcion !== 'SUSTENTO FINAL');
+    return indicador.listEvidencia.filter((ev: any) => !this.esEvidenciaFinal(ev));
+  }
+
+  getEvidenciaFinal(indicador: any): any {
+    if (!indicador || !indicador.listEvidencia || indicador.listEvidencia.length === 0) {
+      return indicador?.evidenciaFinal || null;
+    }
+    return indicador.listEvidencia.find((ev: any) => this.esEvidenciaFinal(ev)) || indicador.evidenciaFinal || null;
+  }
+
+  private esEvidenciaFinal(evidencia: any): boolean {
+    if (!evidencia) {
+      return false;
+    }
+    const descripcion = (evidencia.descripcion || '').toString().trim().toUpperCase();
+    return evidencia.esFinal === true || descripcion === 'SUSTENTO FINAL';
   }
 
   // Calcular altura de indicador basándose en evidencias
