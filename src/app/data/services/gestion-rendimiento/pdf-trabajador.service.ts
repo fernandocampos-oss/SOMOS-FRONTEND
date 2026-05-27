@@ -96,13 +96,9 @@ export class PdfTrabajadorService {
 
       // ── Helpers ────────────────────────────────────────────────────────────
 
-      // Elimina caracteres de control (\n, \r, \t) que WinAnsi no puede codificar
-      const sanitize = (text: string): string =>
-        (text || '-').replace(/[\n\r\t]/g, ' ').replace(/ {2,}/g, ' ').trim() || '-';
-
       // Calcula el font size óptimo: reduce hasta FONT_MIN para que el texto entre en 1 línea
       const fitFontSize = (text: string, cellW: number, font: PDFFont): number => {
-        text = sanitize(text);
+        text = this.sanitizePdfText(text);
         const usableW = cellW - PADDING * 2;
         for (let size = FONT_MAX; size >= FONT_MIN; size -= 0.5) {
           if (font.widthOfTextAtSize(text, size) <= usableW) return size;
@@ -112,7 +108,7 @@ export class PdfTrabajadorService {
 
       // Calcula cuántas líneas ocupa el texto con un font size y ancho dados
       const numLines = (text: string, cellW: number, font: PDFFont, size: number): number => {
-        text = sanitize(text);
+        text = this.sanitizePdfText(text);
         const usableW = cellW - PADDING * 2;
         const totalW  = font.widthOfTextAtSize(text, size);
         return Math.max(1, Math.ceil(totalW / usableW));
@@ -136,7 +132,7 @@ export class PdfTrabajadorService {
 
       // Dibuja texto centrado vertical y opcionalmente horizontal, con font size adaptado
       const cellText = (text: string, x: number, yTop: number, cellH: number, font: PDFFont, cellW: number, hCenter = false) => {
-        text          = sanitize(text);
+        text          = this.sanitizePdfText(text);
         const size    = fitFontSize(text, cellW, font);
         const lines   = numLines(text, cellW, font, size);
         const usableW = cellW - PADDING * 2;
@@ -467,6 +463,22 @@ export class PdfTrabajadorService {
     fs.saveAs(blob, `calibracion_GDR${PDF_EXTENSION}`);
   }
 
+  private sanitizePdfText(text: string): string {
+    const safeText = (text ?? '-').toString()
+      .replace(/[\n\r\t]/g, ' ')
+      .replace(/\u00A0/g, ' ')
+      .replace(/[“”]/g, '"')
+      .replace(/[‘’]/g, "'")
+      .replace(/[–—]/g, '-')
+      .replace(/…/g, '...')
+      .replace(/[•·]/g, '-')
+      .replace(/[^\u0009\u000A\u000D\u0020-\u00FF]/g, '')
+      .replace(/ {2,}/g, ' ')
+      .trim();
+
+    return safeText || '-';
+  }
+
   /**
    * Dibuja texto en el PDF con truncado opcional
    */
@@ -479,8 +491,7 @@ export class PdfTrabajadorService {
     size: number,
     maxWidth?: number
   ): void {
-    if (text == null) text = '-';
-    const str = String(text);
+    const str = this.sanitizePdfText(String(text ?? '-'));
     page.drawText(str, {
       x,
       y,
