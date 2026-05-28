@@ -489,25 +489,26 @@ export class SeguimientoTrabajadorComponent implements OnInit {
 
   async generarPdf() {
     if (!this.trabajadorEncontrado) return;
-    const trabajador = {
-      numeroDocumento: this.trabajadorEncontrado.numeroDocumento,
-      nombre: `${this.trabajadorEncontrado.apellidos || ''} ${this.trabajadorEncontrado.nombres || ''}`.trim(),
-      cargo: '-',
-      segmento: this.trabajadorEncontrado.segmento || '-',
-      codUnidad: '-'
-    };
-    const jefe = {
-      numeroDocumento: this.evaluador?.numeroDocumento || '-',
-      nombre: `${this.evaluador?.apellidos || ''} ${this.evaluador?.nombres || ''}`.trim() || '-',
-      cargo: '-',
-      segmento: '-',
-      codUnidad: '-'
-    };
-    const reunionData = {
-      asistio: this.reunionMetas?.asistio || '-',
-      fecha: this.reunionMetas?.fechaReunion || '-'
-    };
     try {
+      const excelData: any = await this._grService.generarExcelTrabajadorByVotanteAdmin(this.trabajadorEncontrado.idVotante);
+      const trabajador = {
+        numeroDocumento: this.trabajadorEncontrado.numeroDocumento,
+        nombre: `${this.trabajadorEncontrado.apellidos || ''} ${this.trabajadorEncontrado.nombres || ''}`.trim(),
+        cargo: excelData?.evaluadoPuesto || '-',
+        segmento: this.trabajadorEncontrado.segmento || '-',
+        codUnidad: excelData?.evaluadoCodUnidad || '-'
+      };
+      const jefe = {
+        numeroDocumento: this.evaluador?.numeroDocumento || '-',
+        nombre: `${this.evaluador?.apellidos || ''} ${this.evaluador?.nombres || ''}`.trim() || '-',
+        cargo: excelData?.evaluadorPuesto || '-',
+        segmento: excelData?.evaluadorSegmento || '-',
+        codUnidad: excelData?.evaluadorCodUnidad || '-'
+      };
+      const reunionData = {
+        asistio: this.reunionMetas?.asistio || '-',
+        fecha: this.reunionMetas?.fechaReunion || '-'
+      };
       await this._pdfService.exportPdfTrabajador(
         trabajador,
         jefe,

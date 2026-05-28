@@ -979,19 +979,13 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async generarExcelDirectivo() {
-    // Filtrar trabajadores con formato registrado Y que hayan tenido reunión de metas (asistio = 'S')
-    const trabajadoresConFormato = this.listDataTable.filter(
-      t => t.reunionMetas?.confirmado === true && t.reunionMetas?.asistio === 'S'
-    );
-    
-    if (trabajadoresConFormato.length === 0) {
-      this._notification.warning('No hay trabajadores con formato registrado y reunión de metas realizada para descargar');
+    if (this.listDataTable.length === 0) {
+      this._notification.warning('No hay trabajadores en la lista');
       return;
     }
 
-    // Crear set de nombres para búsqueda rápida
-    const nombresConFormato = new Set(
-      trabajadoresConFormato.map(t => 
+    const nombresEnLista = new Set(
+      this.listDataTable.map(t =>
         `${t.trabajadorApellido} ${t.trabajadorNombre}`.toUpperCase().trim()
       )
     );
@@ -1000,15 +994,16 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       if (data != null && data.length > 0) {
         let descargados = 0;
         for (let i of data) {
-          // Solo generar Excel si tiene formato registrado
           const nombreCompleto = i.evaluadoNombreCompleto?.toUpperCase().trim();
-          if (i.listPrioridad.length > 0 && nombresConFormato.has(nombreCompleto)) {
+          if (i.listPrioridad.length > 0 && nombresEnLista.has(nombreCompleto)) {
             this.servicioExcelDirectivo(i);
             descargados++;
           }
         }
         if (descargados > 0) {
           this._notification.success(`Se descargaron ${descargados} formato(s) GDR`);
+        } else {
+          this._notification.warning('Ningún trabajador tiene formato GDR registrado aún');
         }
       }
     });
@@ -1045,6 +1040,20 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     );
     /* CALIBRACIÓN — descomentar si necesitas reajustar coordenadas:
     await this._servicePdfEjecutor.exportPdfCalibracion(); */
+  }
+
+  async descargarPdfIndividual(trabajador: any) {
+    try {
+      const excelData: any = await this._grService.generarExcelTrabajadorByVotanteAdmin(trabajador.idVotante);
+      if (!excelData || !excelData.listPrioridad || excelData.listPrioridad.length === 0) {
+        this._notification.warning('El trabajador no tiene formato GDR registrado');
+        return;
+      }
+      await this.servicioExcelDirectivo(excelData);
+    } catch (error) {
+      console.error('Error generando PDF individual:', error);
+      this._notification.error('Error al generar el PDF');
+    }
   }
 
   abrirEditor(idVotante:number, registro:any, idInd:number, nombrePrioridad:string){

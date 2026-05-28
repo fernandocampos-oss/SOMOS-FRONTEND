@@ -106,6 +106,11 @@ export class GestionRendimientoService {
     return await this.http.get<Object[]>(url).toPromise();
   }
 
+  async generarExcelTrabajadorByVotanteAdmin(idVotante: number) {
+    const url = `${URL_BASE}/indicadores/excel/trabajador/admin/${idVotante}`;
+    return await this.http.get<any>(url).toPromise();
+  }
+
   async listarIntegrantesPorLider() {
     const url = `${URL_BASE}/equipos/listar`;
     // console.log(url);

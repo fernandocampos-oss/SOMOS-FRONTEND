@@ -55,6 +55,17 @@
                                 {{ i.reunionMetas?.confirmado ? 'FORMATO REGISTRADO' : 'Registrar Formato' }}
                             </button>
                         </div>
+                        <!-- Botón Descargar PDF individual -->
+                        <div style="margin-left: 8px;">
+                            <button mat-icon-button
+                                    color="primary"
+                                    (click)="$event.stopPropagation(); descargarPdfIndividual(i)"
+                                    [disabled]="i.listPrioridad.length === 0"
+                                    matTooltip="Descargar PDF GDR"
+                                    style="font-size: 11px;">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                            </button>
+                        </div>
                         <!--
                         <div class="send-email">
                             <button mat-button color="primary" (click)="$event.stopPropagation(); notificarCorreo(i.email)"
