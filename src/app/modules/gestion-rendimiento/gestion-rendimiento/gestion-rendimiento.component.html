@@ -3,14 +3,17 @@
     <h1 class="matero-page-title"><mat-icon class="page__title__icon" matPrefix svgIcon="remote"></mat-icon>Módulo de
       Gestión del Rendimiento<br>
       <small class="mr-2" *ngIf="!esMaestroGdr">Aqui podrás registrar Indicadores/Productos y gestionar tus trabajadores - Perfil Evaluador</small>
-      <small class="mr-2" *ngIf="esMaestroGdr">Panel de Administración - Maestro GDR</small><br><br>
+      <small class="mr-2" *ngIf="esMaestroGdr && !vistaComoEvaluador">Panel de Administración - Maestro GDR</small>
+      <small class="mr-2" *ngIf="esMaestroGdr && vistaComoEvaluador">Vista como Evaluador - Perfil Evaluador</small><br><br>
       <button mat-raised-button class="primary-button" (click)="back()"><mat-icon>reply</mat-icon> Regresar</button>
+      <button mat-raised-button color="accent" *ngIf="esMaestroGdr && !vistaComoEvaluador" (click)="toggleVista()" style="margin-left: 8px;"><mat-icon>swap_horiz</mat-icon> Cambiar a vista Evaluador</button>
+      <button mat-raised-button color="warn" *ngIf="esMaestroGdr && vistaComoEvaluador" (click)="toggleVista()" style="margin-left: 8px;"><mat-icon>admin_panel_settings</mat-icon> Volver a vista Maestro GDR</button>
     </h1>
   </div>
   <div class="page__body">
     <div class="card shadow no-padd">
       <!-- VISTA MAESTRO GDR -->
-      <mat-tab-group *ngIf="esMaestroGdr">
+      <mat-tab-group *ngIf="esMaestroGdr && !vistaComoEvaluador">
         <mat-tab label="Configuración Ciclo GDR">
           <ng-template matTabContent>
             <app-configuracion-ciclo-gdr></app-configuracion-ciclo-gdr>
@@ -59,7 +62,7 @@
       </mat-tab-group>
       
       <!-- VISTA EVALUADOR (NO MAESTRO GDR) -->
-      <mat-tab-group *ngIf="!esMaestroGdr">
+      <mat-tab-group *ngIf="!esMaestroGdr || vistaComoEvaluador">
         <mat-tab label="Registro de nuevo Formato GDR" *ngIf="rol != trabajador || esEvaluador">
           <gestion-rendimiento-gestionar-indicadores-trabajador></gestion-rendimiento-gestionar-indicadores-trabajador>
         </mat-tab>

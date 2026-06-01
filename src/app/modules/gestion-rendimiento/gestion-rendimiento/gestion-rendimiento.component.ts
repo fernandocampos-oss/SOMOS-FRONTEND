@@ -21,6 +21,7 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
   esMaestroGdr: boolean = false;
   esEvaluador: boolean = false;
   dniUsuario: string = '';
+  vistaComoEvaluador: boolean = false;
 
   constructor(
     private _router: Router,
@@ -64,6 +65,10 @@ export class GestionRendimientoComponent implements OnInit, AfterViewInit {
       console.error('Error verificando Maestro GDR:', error);
       this.esMaestroGdr = false;
     }
+  }
+
+  toggleVista() {
+    this.vistaComoEvaluador = !this.vistaComoEvaluador;
   }
 
   back() {
