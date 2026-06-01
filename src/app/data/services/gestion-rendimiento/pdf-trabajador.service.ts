@@ -264,8 +264,11 @@ export class PdfTrabajadorService {
           for (let ei = 0; ei < evidencias.length; ei++) {
             const evidencia = evidencias[ei];
             const rowH = rowHeights[ei];
-            const plazo = evidencia?.plazo
-              ? datePipe.transform(evidencia.plazo, 'dd/MM/yyyy') || '-' : '-';
+            const plazoRaw = evidencia?.fechaPlazoFinal
+              ? evidencia.fechaPlazoFinal + 'T00:00:00'
+              : evidencia?.plazo;
+            const plazo = plazoRaw
+              ? datePipe.transform(plazoRaw, 'dd/MM/yyyy') || '-' : '-';
 
             drawCell(TCOL.evid,   evidY, TCOL.plazo  - TCOL.evid,   rowH);
             cellText(evidencia?.descripcion || '-', TCOL.evid, evidY, rowH, helvetica, TCOL.plazo - TCOL.evid);
