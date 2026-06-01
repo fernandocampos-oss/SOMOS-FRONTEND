@@ -990,14 +990,15 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       )
     );
 
-    let load = await this._grService.generarExcelDirectivo().then((data: any) => {
+    let load = await this._grService.generarExcelDirectivo().then(async (data: any) => {
       if (data != null && data.length > 0) {
         let descargados = 0;
         for (let i of data) {
           const nombreCompleto = i.evaluadoNombreCompleto?.toUpperCase().trim();
           if (i.listPrioridad.length > 0 && nombresEnLista.has(nombreCompleto)) {
-            this.servicioExcelDirectivo(i);
+            await this.servicioExcelDirectivo(i);
             descargados++;
+            await new Promise(resolve => setTimeout(resolve, 200));
           }
         }
         if (descargados > 0) {
