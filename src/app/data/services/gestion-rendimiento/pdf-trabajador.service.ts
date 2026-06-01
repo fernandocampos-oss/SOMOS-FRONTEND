@@ -176,8 +176,11 @@ export class PdfTrabajadorService {
         }[] = [];
 
         for (const indicador of listIndicadores) {
-          const listEvidencias = indicador.listEvidencia?.length > 0
-            ? indicador.listEvidencia : [null];
+          const evidenciasIniciales = (indicador.listEvidencia || []).filter((ev: any) => {
+            const desc = (ev?.descripcion || '').toString().trim().toUpperCase();
+            return desc !== 'SUSTENTO FINAL' && ev?.esFinal !== true;
+          });
+          const listEvidencias = evidenciasIniciales.length > 0 ? evidenciasIniciales : [null];
 
           const rowHeights = listEvidencias.map((ev: any) => {
             const hEvid   = calcCellH(ev?.descripcion || '-',           TCOL.plazo   - TCOL.evid,   helvetica);

@@ -205,7 +205,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                   
                   // Inicializar comentarios de cada evidencia
                   if (indicador.listEvidencia) {
-                    indicador.listEvidencia.forEach(evidencia => {
+                    indicador.listEvidencia.forEach((evidencia: any) => {
                       if (!evidencia.hasOwnProperty('comentario')) {
                         evidencia.comentario = '';
                       }
