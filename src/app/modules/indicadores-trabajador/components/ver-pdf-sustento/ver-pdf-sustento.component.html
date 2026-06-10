@@ -1,8 +1,17 @@
 <mat-dialog-content>
     <h2 mat-dialog-title>Descripción: {{evidenciaDescripcion}}</h2>
     <br>
-    <ngx-extended-pdf-viewer [base64Src]="pdfSrc" useBrowserLocale="true" height="1000px"
+    <div *ngIf="esArchivoAntiguo" style="text-align: center; padding: 24px; color: #e65100; border: 1px solid #ffb74d; border-radius: 4px; background: #fff3e0;">
+      <mat-icon style="vertical-align: middle; margin-right: 8px;">warning</mat-icon>
+      <strong>Este sustento fue registrado con el sistema anterior y ya no está disponible.</strong><br>
+      <span style="font-size: 13px; margin-top: 8px; display: block;">Por favor, elimine el sustento actual y vuelva a subirlo.</span>
+    </div>
+    <ngx-extended-pdf-viewer *ngIf="!esArchivoAntiguo && pdfSrc" [base64Src]="pdfSrc" useBrowserLocale="true" height="1000px"
         width="100%"></ngx-extended-pdf-viewer>
+    <div *ngIf="!esArchivoAntiguo && !pdfSrc" style="text-align: center; padding: 40px; color: #999;">
+      <mat-icon style="font-size: 48px;">picture_as_pdf</mat-icon>
+      <p>No hay archivo disponible</p>
+    </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close class="close-button">Cerrar</button>

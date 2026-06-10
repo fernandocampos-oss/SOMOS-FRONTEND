@@ -77,7 +77,7 @@
             <div *ngIf="onChangeValueTipoValorMeta == 1 || onChangeValueTipoValorMeta == 6">
                 <mat-form-field appearance="outline">
                     <mat-label>Valor Numérico</mat-label>
-                    <input matInput formControlName="frmValorMeta" maxlength="3" (keypress)="validaNumero($event)" required />
+                    <input matInput formControlName="frmValorMeta" maxlength="5" (keypress)="validaNumero($event)" required />
                 </mat-form-field>
             </div>
             <!-- Agregado de Valor de Meta -->

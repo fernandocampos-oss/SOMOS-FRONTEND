@@ -20,6 +20,7 @@ import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel
 import { RegistrarFormatoComponent } from './dialogs/registrar-formato/registrar-formato.component';
 import { NotificationDialogComponent } from '@shared/notification-dialog/notification-dialog.component';
 import { da } from 'date-fns/locale';
+import { AnyAaaaRecord } from 'dns';
 
 @Component({
   selector: 'gestion-rendimiento-gestionar-indicadores-trabajador',
@@ -69,10 +70,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
 
   // Métodos para manejar cambios de selección específicos por evidencia
   async onComentarioChange(tipo: string, valor: string, indicador?: any, evidencia?: any, index?: number): Promise<void> {
-    // console.log removed for production
-    // console.log removed for production
-    // console.log removed for production
-    // console.log removed for production
+    
+    
+    
+    
     
     switch(tipo) {
       case 'sinEvidencias':
@@ -91,7 +92,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
               evidencia.comentarioAdicional || '',
               'individual'
             );
-    // console.log removed for production
+    
             this._notification.success('Comentario guardado correctamente');
           } catch (error) {
             // console.error('Error al guardar comentario:', error);
@@ -115,7 +116,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                   evidenciaFinal.comentarioAdicional || '',
                   'final'
                 );
-    // console.log removed for production
+    
                 this._notification.success('Comentario final guardado correctamente');
               } catch (error) {
                 // console.error('Error al guardar comentario final:', error);
@@ -179,9 +180,9 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         // Inicializar propiedades para cada trabajador → prioridad → indicador
         this.listDataTable.forEach(trabajador => {
           if (trabajador.listPrioridad) {
-            trabajador.listPrioridad.forEach(prioridad => {
+            trabajador.listPrioridad.forEach((prioridad:any) => {
               if (prioridad.listIndicador) {
-                prioridad.listIndicador.forEach(indicador => {
+                prioridad.listIndicador.forEach((indicador:any) => {
                   // Inicializar comentarios del indicador
                   if (!indicador.hasOwnProperty('comentarioSinEvidencias')) {
                     indicador.comentarioSinEvidencias = '';
@@ -288,7 +289,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     if (!trabajador.reunionMetas || trabajador.reunionMetas.asistio !== 'S') return;
     
     try {
-      const fechaStr = fecha ? fecha.toISOString().split('T')[0] : null;
+      const fechaStr = fecha ? fecha.toISOString().split('T')[0] : undefined;
       const resultado = await this._grService.actualizarAsistenciaReunion(
         trabajador.reunionMetas.idReunion,
         'S',
@@ -345,15 +346,15 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async cargarSentidosIndicadores() {
-    // console.log removed for production
+    
     try {
       // Recolectar todos los IDs de indicadores (recorriendo la estructura anidada correctamente)
       const idsIndicadores: number[] = [];
       this.listDataTable.forEach(trabajador => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-              prioridad.listIndicador.forEach(indicador => {
+              prioridad.listIndicador.forEach((indicador:any) => {
                 if (indicador.idIndicador) {
                   idsIndicadores.push(indicador.idIndicador);
                 }
@@ -363,35 +364,35 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-    // console.log removed for production
+    
 
       if (idsIndicadores.length === 0) {
-    // console.log removed for production
+    
         return;
       }
 
       // Obtener sentidos en batch desde la BD local
-    // console.log removed for production
+    
       const sentidosMap = await this._grService.obtenerSentidosMultiples(idsIndicadores);
-    // console.log removed for production
-    // console.log removed for production
-    // console.log removed for production
+    
+    
+    
       
       // Asignar sentidos a cada indicador (recorriendo la estructura anidada correctamente)
-      this.listDataTable.forEach(trabajador => {
+      this.listDataTable.forEach((trabajador:any) => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-              prioridad.listIndicador.forEach(indicador => {
-    // console.log removed for production
-    // console.log removed for production
+              prioridad.listIndicador.forEach((indicador:any) => {
+    
+    
                 if (indicador.idIndicador && sentidosMap[indicador.idIndicador]) {
                   indicador.sentido = sentidosMap[indicador.idIndicador];
-    // console.log removed for production
+    
                 } else {
                   // No asignar valor si no existe en BD local (quedará undefined)
                   indicador.sentido = null;
-    // console.log removed for production
+    
                 }
               });
             }
@@ -399,16 +400,16 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-    // console.log removed for production
-    // console.log removed for production
+    
+    
     } catch (error) {
       // console.error('Error cargando sentidos:', error);
       // Asignar valor por defecto en caso de error (recorriendo la estructura anidada correctamente)
-      this.listDataTable.forEach(trabajador => {
+      this.listDataTable.forEach((trabajador:any) => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-              prioridad.listIndicador.forEach(indicador => {
+              prioridad.listIndicador.forEach((indicador:any) => {
                 // No asignar valor por defecto en caso de error
                 // Dejar que quede null para que se muestre "Sin definir"
                 if (!indicador.sentido) {
@@ -420,21 +421,21 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
     }
-    // console.log removed for production
+    
   }
 
   async cargarComentariosEvidencias() {
-    // console.log removed for production
+    
     try {
       // Recolectar todos los IDs de evidencias
       const idsEvidencias: number[] = [];
-      this.listDataTable.forEach(trabajador => {
+      this.listDataTable.forEach((trabajador:any) => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-              prioridad.listIndicador.forEach(indicador => {
+              prioridad.listIndicador.forEach((indicador:any) => {
                 if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-                  indicador.listEvidencia.forEach(evidencia => {
+                  indicador.listEvidencia.forEach((evidencia:any) => {
                     if (evidencia.idEvidencia) {
                       idsEvidencias.push(evidencia.idEvidencia);
                     }
@@ -446,26 +447,26 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-    // console.log removed for production
+    
 
       if (idsEvidencias.length === 0) {
-    // console.log removed for production
+    
         return;
       }
 
       // Obtener comentarios en batch desde la BD local (ahora retorna objeto con clave compuesta idEvidencia_tipo)
-    // console.log removed for production
+    
       const comentariosMap = await this._grService.obtenerComentariosEstadoMultiples(idsEvidencias);
-    // console.log removed for production
+    
 
       // Asignar comentarios a cada evidencia
-      this.listDataTable.forEach(trabajador => {
+      this.listDataTable.forEach((trabajador:any) => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-              prioridad.listIndicador.forEach(indicador => {
+              prioridad.listIndicador.forEach((indicador:any) => {
                 if (indicador.listEvidencia && indicador.listEvidencia.length > 0) {
-                  indicador.listEvidencia.forEach((evidencia, index) => {
+                  indicador.listEvidencia.forEach((evidencia:any, index: number) => {
                     if (evidencia.idEvidencia) {
                       // Buscar comentario individual
                       const claveIndividual = evidencia.idEvidencia + '_individual';
@@ -473,7 +474,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                         const comentarioData = comentariosMap[claveIndividual];
                         evidencia.comentario = comentarioData.estadoDropdown || '';
                         evidencia.comentarioAdicional = comentarioData.comentarioAdicional || '';
-    // console.log removed for production
+    
                       }
                       
                       // Si es la última evidencia, buscar también comentario final
@@ -482,7 +483,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                         if (comentariosMap[claveFinal]) {
                           const comentarioFinalData = comentariosMap[claveFinal];
                           indicador.comentarioFinal = comentarioFinalData.estadoDropdown || '';
-    // console.log removed for production
+    
                         }
                       }
                     }
@@ -494,23 +495,23 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-    // console.log removed for production
+    
     } catch (error) {
       // console.error('Error cargando comentarios:', error);
     }
-    // console.log removed for production
+    
   }
 
   async cargarFechasPlazo() {
-    // console.log removed for production
+    
     try {
       const idsIndicadores: number[] = [];
       
-      this.listDataTable.forEach(trabajador => {
+      this.listDataTable.forEach((trabajador:any) => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-              prioridad.listIndicador.forEach(indicador => {
+              prioridad.listIndicador.forEach((indicador:any) => {
                 if (indicador.idIndicador) {
                   idsIndicadores.push(indicador.idIndicador);
                 }
@@ -520,25 +521,25 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-    // console.log removed for production
+    
 
       if (idsIndicadores.length === 0) {
-    // console.log removed for production
+    
         return;
       }
 
       const fechasMap = await this._grService.obtenerFechasPlazoFinalPorIndicadores(idsIndicadores);
-    // console.log removed for production
+    
 
-      this.listDataTable.forEach(trabajador => {
+      this.listDataTable.forEach((trabajador:any) => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-              prioridad.listIndicador.forEach(indicador => {
-    // console.log removed for production
+              prioridad.listIndicador.forEach((indicador:any) => {
+    
                 if (indicador.idIndicador && fechasMap[indicador.idIndicador]) {
                   const fechaPlazo = fechasMap[indicador.idIndicador];
-    // console.log removed for production
+    
                   
                   // Guardar la fecha directamente en el indicador
                   indicador.fechaPlazoFinal = fechaPlazo;
@@ -549,7 +550,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                       evidenciaFinal.fechaPlazoFinal = fechaPlazo;
                       indicador.evidenciaFinal = evidenciaFinal;
                     }
-    // console.log removed for production
+    
                   } else {
                     // No insertar evidencia "fantasma" en listEvidencia; solo mantener referencia final para UI.
                     indicador.evidenciaFinal = {
@@ -558,10 +559,10 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
                       esFinal: true,
                       fechaPlazoFinal: fechaPlazo
                     };
-    // console.log removed for production
+    
                   }
                 } else {
-    // console.log removed for production
+    
                 }
               });
             }
@@ -574,13 +575,13 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
   }
 
   async cargarValoresAlcanzados() {
-    // console.log removed for production
+    
     try {
       // Recolectar todos los IDs de prioridades
       const idsPrioridades: number[] = [];
-      this.listDataTable.forEach(trabajador => {
+      this.listDataTable.forEach((trabajador:any) => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.idPrioridad) {
               idsPrioridades.push(prioridad.idPrioridad);
             }
@@ -589,28 +590,28 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       });
 
       if (idsPrioridades.length === 0) {
-    // console.log removed for production
+    
         return;
       }
 
-    // console.log removed for production
+    
 
       // Llamar al servicio para obtener múltiples valores alcanzados
       const valoresMap = await this._grService.obtenerValoresAlcanzadosMultiples(idsPrioridades);
-    // console.log removed for production
+    
 
       // Asignar valores alcanzados a cada prioridad
-      this.listDataTable.forEach(trabajador => {
+      this.listDataTable.forEach((trabajador:any) => {
         if (trabajador.listPrioridad && trabajador.listPrioridad.length > 0) {
-          trabajador.listPrioridad.forEach(prioridad => {
+          trabajador.listPrioridad.forEach((prioridad:any) => {
             if (prioridad.idPrioridad && valoresMap[prioridad.idPrioridad] !== undefined) {
               const valorAlcanzado = valoresMap[prioridad.idPrioridad];
               
               // Asignar el valor a todos los indicadores de esta prioridad
               if (prioridad.listIndicador && prioridad.listIndicador.length > 0) {
-                prioridad.listIndicador.forEach(indicador => {
+                prioridad.listIndicador.forEach((indicador:any) => {
                   indicador.valorAlcanzado = valorAlcanzado;
-    // console.log removed for production
+    
                 });
               }
             }
@@ -618,11 +619,11 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
         }
       });
 
-    // console.log removed for production
+    
     } catch (error) {
       // console.error('Error cargando valores alcanzados:', error);
     }
-    // console.log removed for production
+    
   }
 
   async registrarPrioridad(trabajador?: any) {
@@ -645,7 +646,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     // this.loadTable();
   }
 
-  agregarIndicador(element, idVotante, i) {
+  agregarIndicador(element: any, idVotante: any, i: any) {
     const dialogRef: MatDialogRef<AsignarIndicadorComponent> = this._dialog.open(AsignarIndicadorComponent, {
       disableClose: true,
       width: '50%',
@@ -666,7 +667,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  agregarEvidencia(i) {
+  agregarEvidencia(i: any) {
     const evidenciasIniciales = this.getEvidenciasIniciales(i);
     if (evidenciasIniciales.length >= 2) {
       this._notification.warning('Solo se permiten hasta 2 evidencias iniciales por indicador');
@@ -848,7 +849,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  verEvidenciaPdf(element) {
+  verEvidenciaPdf(element: any) {
     const dialogRef: MatDialogRef<VerPdfSustentoComponent> = this._dialog.open(VerPdfSustentoComponent, {
       disableClose: false,
       width: '80%',
@@ -1062,7 +1063,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     let indicador:any = registro.listIndicador.find((dtInd:any)=>dtInd.idIndicador == idInd);
     let indicador = {...aux};
     registro.listIndicador = [];
-    // console.log removed for production
+    
     registro.listIndicador.push(indicador);*/
     let info:any = {
       "idPersona":idVotante,
@@ -1155,7 +1156,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 
-  registrarSustento(element) {
+  registrarSustento(element: AnyAaaaRecord) {
     const dialogRef: MatDialogRef<RegistrarSustentoComponent> = this._matDialog.open(RegistrarSustentoComponent, {
       disableClose: false,
       width: '780px',
@@ -1264,7 +1265,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
       }
       
       if (idPrioridad) {
-    // console.log removed for production
+    
         await this._grService.guardarValorAlcanzado(idPrioridad, indicador.valorAlcanzado);
         this._notification.success('Valor alcanzado guardado correctamente');
       } else {
@@ -1502,7 +1503,7 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
           };
         }
       });
-    // console.log removed for production
+    
     } catch (error) {
       console.warn('No se pudieron cargar resultados finales (endpoint puede no estar disponible):', error);
       // Inicializar todos con valores por defecto
@@ -1768,7 +1769,3 @@ export class GestionarIndicadoresTrabajadorComponent implements OnInit {
     });
   }
 }
-
-
-
-

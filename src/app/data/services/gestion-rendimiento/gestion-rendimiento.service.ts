@@ -201,8 +201,12 @@ export class GestionRendimientoService {
 
   async getSustentoByEvidencia(id: number) {
     const url = `${URL_BASE}/evidencias/obtener/evidencia/${id}`;
-    // console.log(url);
     return await this.http.get<EvidenciaResponseDto>(url).toPromise();
+  }
+
+  async storageHealth(): Promise<{ status: string; fileServer: string }> {
+    const url = `${URL_BASE}/evidencias/storage/health`;
+    return await this.http.get<{ status: string; fileServer: string }>(url).toPromise();
   }
   
   async modificarEvidencia(id: number, model: EvidenciaRequest) {

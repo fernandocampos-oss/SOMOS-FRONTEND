@@ -9,7 +9,7 @@ import { ActividadRequest, EvidenciaRequest, IndicadorRequest, PrioridadRequestD
 import { GestionRendimientoService } from '@data/services/gestion-rendimiento/gestion-rendimiento.service';
 import { ConfirmarPanelComponent } from '@shared/confirmar-panel/confirmar-panel.component';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { AlertaPesoComponent } from '../alerta-peso/alerta-peso.component';
 import { UpdatePrioridadDto } from '@data/models/gestion-rendimiento/prioridad-exist-indicador.model';
 
@@ -19,7 +19,7 @@ import { UpdatePrioridadDto } from '@data/models/gestion-rendimiento/prioridad-e
   styleUrls: ['./asignar-prioridad.component.scss']
 })
 export class AsignarPrioridadComponent implements OnInit {
-  expNumero:RegExp = /^[0-9]{1,3}$/;
+  expNumero:RegExp = /^[0-9]{1,5}$/;
   expTexto: RegExp = /^[a-zA-Z\u00C1\u00C9\u00CD\u00D3\u00F3\u00FA\u00d1\u00f1\u00e1\u00e9\u00ed\u00f3\u00fa0-9,.\-\/\+\(\) '\"\[\]]{1,200}$/;
   expTextoFrmDescripcionPrioridad: RegExp = /^[a-zA-Z\u00C1\u00C9\u00CD\u00D3\u00F3\u00FA\u00d1\u00f1\u00e1\u00e9\u00ed\u00f3\u00fa0-9,.\-\/\+\(\) '\"\[\]]{1,350}$/;
 
@@ -32,18 +32,18 @@ export class AsignarPrioridadComponent implements OnInit {
   idEviEditar:number = 0;
   nombrePrioridad:string = "";
   /* Modificación Prioridad - Inicio */
-  desPrioridad:string = null;
+  desPrioridad:string = '';
   flPrioridad:string = '1';
   /* Modificación Prioridad - Fin */
   activaEdicion:boolean = false;
   contador:number = 0;
 
-  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  @ViewChild(MatTable, { static: true }) table!: MatTable<any>;
   displayedColumns: string[] = ['item', 'evidencia', 'plazo', 'Quitar'];
   listEvidencia: Array<{ descripcion: string, plazo: String, idEvidencia: number, tiene: number}> = [];
   dataSource = this.listEvidencia;
 
-  listActividad: ActividadResponse[];
+  listActividad!: ActividadResponse[];
   listEquipo: any[] = [];
 
   formPrioridad = this._formBuilder.group({
@@ -65,10 +65,10 @@ export class AsignarPrioridadComponent implements OnInit {
   });
 
   listTipoValorMeta: any[] = [];
-  idValorMetaSeleccionado: number;
-  onChangeValueTipoValorMeta: number;
+  idValorMetaSeleccionado!: number;
+  onChangeValueTipoValorMeta!: number;
 
-  confirmDialogRef: MatDialogRef<ConfirmarPanelComponent>;
+  confirmDialogRef!: MatDialogRef<ConfirmarPanelComponent> | null;
   pesoTotalIndicadoresTrabajador: number = 0;
   pesoIndicadorOriginal: number = 0;
   showHelpCPlanilla = false;
@@ -119,7 +119,7 @@ export class AsignarPrioridadComponent implements OnInit {
     this.idIndicador = 0;
     this.idPrioridad = 0;
     this.activaEdicion = false;
-    this.desPrioridad = null;
+    this.desPrioridad = '';
     this.flPrioridad = '1';
     this.pesoIndicadorOriginal = 0;
     let infActividad:any;
@@ -309,7 +309,7 @@ export class AsignarPrioridadComponent implements OnInit {
     // console.log("Agregar:",this.listEvidencia);
   }
 
-  deleteTarea(index) {
+  deleteTarea(index: any) {
     this.listEvidencia.splice(index, 1);
     this.table.renderRows();
   }
@@ -543,7 +543,7 @@ export class AsignarPrioridadComponent implements OnInit {
     return this.expTexto.test(inputValue);
   }
 
-  onKey(event){
+  onKey(event: any){
     this.contador = event.target.value.length
   }
 
@@ -560,7 +560,7 @@ export class AsignarPrioridadComponent implements OnInit {
     
     // Obtener el carácter que se está ingresando
     const char = String.fromCharCode(charCode);
-    const newValue = currentValue.substring(0, selectionStart) + char + currentValue.substring(selectionEnd);
+    const newValue = currentValue.substring(0, selectionStart ?? 0) + char + currentValue.substring(selectionEnd ?? 0);
     
     // Permitir punto decimal
     if (charCode === 46) {

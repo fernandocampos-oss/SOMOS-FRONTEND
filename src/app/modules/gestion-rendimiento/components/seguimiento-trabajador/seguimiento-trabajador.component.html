@@ -27,6 +27,21 @@
   </button>
 </div>
 
+<!-- HEALTH CHECK FILE SERVER (solo Maestro GDR) -->
+<div *ngIf="esMaestroGdr" style="text-align: center; margin: 8px 0 4px 0;">
+  <button mat-stroked-button (click)="verificarFileServer()" [disabled]="verificandoStorage"
+          style="font-size: 12px;">
+    <mat-icon style="font-size: 16px; vertical-align: middle;">cloud_queue</mat-icon>
+    {{ verificandoStorage ? 'Verificando...' : 'Verificar servidor de archivos' }}
+  </button>
+  <span *ngIf="storageStatus === 'ok'" style="margin-left: 8px; color: #4caf50; font-size: 12px;">
+    <mat-icon style="font-size: 14px; vertical-align: middle;">check_circle</mat-icon> Servidor de archivos conectado
+  </span>
+  <span *ngIf="storageStatus === 'error'" style="margin-left: 8px; color: #f44336; font-size: 12px;">
+    <mat-icon style="font-size: 14px; vertical-align: middle;">error</mat-icon> Servidor de archivos no disponible
+  </span>
+</div>
+
 <!-- RESULTADOS -->
 <div *ngIf="trabajadorEncontrado" style="padding: 20px;">
   

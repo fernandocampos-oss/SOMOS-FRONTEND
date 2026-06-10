@@ -37,6 +37,10 @@ export class SeguimientoTrabajadorComponent implements OnInit {
   esMaestroGdr: boolean = false;
   periodoActual: string = new Date().getFullYear().toString();
 
+  // Health check file server
+  storageStatus: 'ok' | 'error' | null = null;
+  verificandoStorage: boolean = false;
+
   // Columnas para la tabla de indicadores (tabla completa)
   displayedColumns: string[] = ['item', 'prioridad', 'indicador_producto', 'sentido_indicador', 'valor_esperado', 'peso', 'evidencia', 'plazos', 'comentario', 'valor_alcanzado', 'puntuacion_meta'];
   columnsRow4: string[] = ['indicador_producto', 'sentido_indicador', 'valor_esperado', 'peso', 'evidencia', 'plazos', 'comentario'];
@@ -62,6 +66,19 @@ export class SeguimientoTrabajadorComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error obteniendo DNI Maestro GDR:', error);
+    }
+  }
+
+  async verificarFileServer() {
+    this.verificandoStorage = true;
+    this.storageStatus = null;
+    try {
+      const result = await this._grService.storageHealth();
+      this.storageStatus = result?.status === 'ok' ? 'ok' : 'error';
+    } catch (error) {
+      this.storageStatus = 'error';
+    } finally {
+      this.verificandoStorage = false;
     }
   }
 

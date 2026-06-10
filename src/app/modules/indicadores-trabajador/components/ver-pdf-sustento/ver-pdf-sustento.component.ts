@@ -14,6 +14,7 @@ export class VerPdfSustentoComponent implements OnInit {
 pdfSrc: string = "";
 evidenciaResponseDto: EvidenciaResponseDto;
 evidenciaDescripcion: string = '';
+esArchivoAntiguo: boolean = false;
 
 constructor(
   @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,7 +23,6 @@ constructor(
 ) { }
 
 ngOnInit(): void {
-  // this.loadPdfFile(this.data.model.idArchivo)
   this.loadPdfFile()
 }
 
@@ -32,6 +32,7 @@ async loadPdfFile() {
       this.evidenciaResponseDto = data;
       this.pdfSrc = this.evidenciaResponseDto.fileBase64;
       this.evidenciaDescripcion = this.evidenciaResponseDto.evidenciaDescripcion;
+      this.esArchivoAntiguo = !!data.esArchivoAntiguo;
     } else {
       this.evidenciaResponseDto = null;
     }
