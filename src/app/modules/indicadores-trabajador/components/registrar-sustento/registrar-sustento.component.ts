@@ -66,8 +66,8 @@ export class RegistrarSustentoComponent implements OnInit {
     reader.readAsDataURL(files[0]);
     reader.onload = _event => {
       const fileApp = files[0];
-      if (fileApp.size >= 10485760) {
-        this._notification.warning('Tamaño de archivo excedido, máximo 10MB');
+      if (fileApp.size >= 4194304) {
+        this._notification.warning('Tamaño de archivo excedido, máximo 4MB');
         return;
       }
       this.retrievedPdf = reader.result;
