@@ -204,6 +204,86 @@ export class SidenavComponent implements OnInit {
     window.open('https://www.gob.pe/institucion/essalud/campa%C3%B1as/68712-elecciones-cafae-essalud', '_blank');
   }
 
+  openVotacion() {
+    // Mismo mecanismo SSO que PIGRH/PDP: reutiliza el token de SOMOS, destino = backend Votación.
+    this._plataformaIntegralService.generarToken().subscribe({
+      next: (response) => {
+        const host = window.location.hostname;
+        let urlDestino: string;
+
+        if (host === 'localhost' || host === '127.0.0.1') {
+          // Desarrollo local: backend Votación en puerto 3002
+          urlDestino = 'http://localhost:3002/api/sso/ingreso';
+        } else if (host.includes('appsqa')) {
+          // QA (ajustar a la URL real cuando se despliegue)
+          urlDestino = 'https://appsqa.essalud.gob.pe/votacion-service/api/sso/ingreso';
+        } else {
+          // Producción (ajustar a la URL real cuando se despliegue)
+          urlDestino = 'https://apps.essalud.gob.pe/votacion-service/api/sso/ingreso';
+        }
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = urlDestino;
+        form.target = '_blank';
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = 'token';
+        tokenInput.value = response.token;
+        form.appendChild(tokenInput);
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+      },
+      error: () => {
+        alert('Error al conectar con Votación. Por favor, intente nuevamente.');
+      }
+    });
+  }
+
+  openPDP() {
+    // Reutiliza el MISMO token de SOMOS que usa PIGRH (no requiere cambios en el backend Java):
+    // validarToken() solo busca el token y devuelve los datos del usuario, sin atarlo a un destino.
+    this._plataformaIntegralService.generarToken().subscribe({
+      next: (response) => {
+        // El ambiente se decide por DÓNDE corre el front de SOMOS (no por urlPlataforma,
+        // que apunta al backend QA aun en desarrollo local). El destino es el backend PDP.
+        const host = window.location.hostname;
+        let urlDestino: string;
+
+        if (host === 'localhost' || host === '127.0.0.1') {
+          // Desarrollo local: backend PDP en puerto 3001
+          urlDestino = 'http://localhost:3001/api/sso/ingreso';
+        } else if (host.includes('appsqa')) {
+          // Ambiente QA (ajustar a la URL real del PDP cuando se despliegue)
+          urlDestino = 'https://appsqa.essalud.gob.pe/pdp-service/api/sso/ingreso';
+        } else {
+          // Producción (ajustar a la URL real del PDP cuando se despliegue)
+          urlDestino = 'https://apps.essalud.gob.pe/pdp-service/api/sso/ingreso';
+        }
+
+        // Formulario POST oculto para enviar el token de forma segura
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = urlDestino;
+        form.target = '_blank';
+
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = 'token';
+        tokenInput.value = response.token;
+
+        form.appendChild(tokenInput);
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+      },
+      error: () => {
+        alert('Error al conectar con Essalud - PDP. Por favor, intente nuevamente.');
+      }
+    });
+  }
+
   openPIGRH() {
     this._plataformaIntegralService.generarToken().subscribe({
       next: (response) => {
